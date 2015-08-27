@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client_test {
 
@@ -22,21 +23,25 @@ public class Client_test {
         Socket socket = null; 
         try { 
             socket = new Socket("localhost", 3141); 
+ 
+            PrintStream out = new PrintStream(socket.getOutputStream(), true); 
+//            System.out.println("Login: ");
+//            Scanner inL = new Scanner(System.in);
+//            String login = inL.nextLine();
+//            System.out.println("Password: ");
+//            Scanner inP = new Scanner(System.in);
+//            String password = inP.nextLine();
+            out.println("admin"); 
+            out.println("pw"); 
 
-            OutputStream raus = socket.getOutputStream(); 
-            PrintStream ps = new PrintStream(raus, true); 
-            ps.println("name"); 
-            ps.println("passwort"); 
-
-            InputStream rein = socket.getInputStream(); 
-            //System.out.println("verf\u00FCgbare Bytes: " + rein.available()); 
-            BufferedReader buff = new BufferedReader(new InputStreamReader(rein)); 
-             
-            while (buff.ready()) { 
-                System.out.println(buff.readLine()); 
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
+            String s;
+            while (in.ready()) { 
+            	s = in.readLine();
+                System.out.println(s); 
             } 
-            socket.close(); 
-            System.out.println("closed");
+//            socket.close(); 
+//            System.out.println("closed");
         } catch (IOException e) { 
             e.printStackTrace(); 
         }
