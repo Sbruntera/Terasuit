@@ -11,7 +11,7 @@ public class Loader {
 	public void print() {
 
 		JFrame window = new JFrame("Terasuit");
-		window.setContentPane(new StartPanel(Mainpage2, HEIGHT, WIGTH));
+		window.setContentPane(new Panel(Mainpage2, HEIGHT, WIGTH));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(true);
 		window.pack();

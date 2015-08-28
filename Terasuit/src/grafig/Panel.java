@@ -8,13 +8,13 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class StartPanel extends JPanel{
+public class Panel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
 	private Image img = null;
 	
-	public StartPanel(String picName, int HEIGHT, int WIGTH) {
+	public Panel(String picName, int HEIGHT, int WIGTH) {
 		super();
 		setPreferredSize(new Dimension(HEIGHT, WIGTH));
 		setFocusable(true);
