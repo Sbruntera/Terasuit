@@ -11,26 +11,28 @@ import javax.swing.JPanel;
 public class Panel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-
 	private Image img = null;
+	SetButtons buttons = new SetButtons();
 	
-	public Panel(String picName, int HEIGHT, int WIGTH) {
+	public Panel(String picName, int HEIGHT, int WIGTH, Loader loader) {
 		super();
 		setPreferredSize(new Dimension(HEIGHT, WIGTH));
 		setFocusable(true);
-		requestFocus();
+		setLayout(null);
+		try {
+			ImageIcon u = new ImageIcon(picName);
+			img = u.getImage();			
+		} catch (Exception e) {
+			System.out.println("<ERROR> Kein Bild für diese Aktion vorhanden!!!");
+		}
 
-		ImageIcon u = new ImageIcon(picName);
-		img = u.getImage();
+		buttons.setbuttons(this, picName, loader);
 	}
-	
-	
 	
 	public void paint(Graphics g){
 		super.paint(g);
 		Graphics2D f2 = (Graphics2D)g;
 		f2.drawImage(img, 0,0,null);
-
+		paintChildren(g);
 	}
-
 }
