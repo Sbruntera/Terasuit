@@ -10,8 +10,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class SetButtons {
+	
+	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
 
 	public void setbuttons(Panel panel, String picName, Loader loader){
+		
+		//#########################################################################
+		//
+		//								MAINPANEL
+		//
+		//#########################################################################
 		
 		// Buttons für das Startpanel werden gesetzt und mit Aktionlisener versetzt
 		if (picName.equals("Wallpaper/Start_Hintergrund.png")){
@@ -68,7 +76,7 @@ public class SetButtons {
 			btnLogin.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.switchPanel(loader.Loginpage);
+					loginRegisterPanel.popupLogin(panel);
 				}
 			});
 			panel.add(btnLogin);
@@ -76,7 +84,20 @@ public class SetButtons {
 			JButton btnRegister = new JButton("REGISTER");
 			btnRegister.setBounds(920, 732, 90, 25);
 			btnRegister.setBackground(new Color(255,90,0));
+			btnLogin.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					loginRegisterPanel.popupRegister(panel);
+				}
+			});
 			panel.add(btnRegister);
+		
+			
+		//#########################################################################
+		//
+		//								SERVERLIST
+		//
+		//#########################################################################
 			
 		} else if (picName.equals("Wallpaper/serverlist.png")){
 			// JOIN-Button
@@ -122,6 +143,12 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBACK);	
+		
+		//#########################################################################
+		//
+		//								LOBBY
+		//
+		//#########################################################################	
 			
 		} else if (picName.equals("Wallpaper/Lobby.png")){
 			
@@ -137,7 +164,14 @@ public class SetButtons {
 					loader.switchPanel(loader.Lobbypage);
 				}
 			});
-			panel.add(btnBACK);	
+			panel.add(btnBACK);
+			
+		//#########################################################################
+		//
+		//								LOBBY
+		//
+		//#########################################################################	
+			
 		} else if (picName.equals("Wallpaper/Lobby_BESITZER.png")){
 			// Back-Button
 			JButton btnBACK = new JButton("RETURN");
