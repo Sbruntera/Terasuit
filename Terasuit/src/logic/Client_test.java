@@ -11,39 +11,34 @@ import java.util.Scanner;
 
 public class Client_test {
 
-	public Client_test(){
-		System.out.println("Dat wetter ist so schlimm");
-		System.out.println("Drecks kopfschmerzen");
+	public Client_test(String user) { //String == Userdata
 		/*
-		 * Login Forumla -> Daten werden gesendet -> Server überprüft Daten -> Server sendet Antwort -> User ist eingeloggt
-		 * 
+		 * Login Forumla -> Daten werden gesendet -> Server überprüft Daten ->
+		 * Server sendet Antwort -> User ist eingeloggt
 		 */
-	}
-	public static void main(String[] args) { 
-        Socket socket = null; 
-        try { 
-            socket = new Socket("localhost", 3141); 
- 
-            PrintStream out = new PrintStream(socket.getOutputStream(), true); 
-//            System.out.println("Login: ");
-//            Scanner inL = new Scanner(System.in);
-//            String login = inL.nextLine();
-//            System.out.println("Password: ");
-//            Scanner inP = new Scanner(System.in);
-//            String password = inP.nextLine();
-            out.println("admin"); 
-            out.println("pw"); 
+		Socket socket = null;
+		try {
+			socket = new Socket("localhost", 3141);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
-            String s;
-            while (in.ready()) { 
-            	s = in.readLine();
-                System.out.println(s); 
-            } 
-//            socket.close(); 
-//            System.out.println("closed");
-        } catch (IOException e) { 
-            e.printStackTrace(); 
-        }
-    } 
+			PrintStream out = new PrintStream(socket.getOutputStream(), true);
+			out.println(user);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+			String s;
+			while (in.ready()) {
+				s = in.readLine();
+				System.out.println(s);
+			}
+			// socket.close();
+			// System.out.println("closed");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
