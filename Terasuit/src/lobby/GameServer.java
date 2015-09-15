@@ -10,11 +10,14 @@ public class GameServer {
 	private static final int MAXPLAYERS = 4;
 	private Player[] playerList = new Player[MAXPLAYERS];
 	private LobbyManager lobby;
-	private boolean running = false;
+	private String gameName;
+	private String password;
 	
 	public void createGame(LobbyManager lobby, Player host, String gameName, String password) {
 		playerList[0] = host;
 		this.lobby = lobby;
+		this.gameName = gameName;
+		this.password = password;
 	}
 	
 	public void addPlayer(Player player) {
@@ -29,9 +32,6 @@ public class GameServer {
 				if (i+1 < MAXPLAYERS) {
 					i++;
 				}
-				else {
-					//ERROR: No position found
-				}
 			}
 		}
 	}
@@ -39,23 +39,26 @@ public class GameServer {
 	public void removePlayer(int position) {
 		if (playerList[position] != null) {
 			playerList[position].disconnect();
+			playerList[position] = null;
 		}
-		playerList[position] = null;
 		if (getNumberOfPlayers() == 0) {
 			closeGame();
 		}
 	}
 	
 	public void closeGame() {
-		running = false;
 		for (Player p : playerList) {
 			p.disconnect();
 		}
 		lobby.removeServer(this);
 	}
-	
-	public boolean isRunning() {
-		return running;
+
+	public String getName() {
+		return gameName;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 	
 	public int getNumberOfPlayers() {
@@ -67,5 +70,4 @@ public class GameServer {
 		}
 		return players;
 	}
-	
 }
