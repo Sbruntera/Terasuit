@@ -8,13 +8,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class SetButtons {
 	
 	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
+	PopupServer createServer = new PopupServer();
 	boolean registerOpen = false;
 	boolean loginOpen = false;
+	boolean serverCreateOpen = false;
 
 	public void setbuttons(Panel panel, String picName, Loader loader){
 		
@@ -149,20 +150,27 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-					loader.switchPanel(loader.Grouppage_owner);
+					if (serverCreateOpen == false) {
+						createServer.createPopup(panel);
+					} else {
+						createServer.createdestroy(panel);
+					}
+					
+					//loader.switchPanel(loader.Grouppage_owner);
 				}
 			});
 			panel.add(btnCreateGroup);
 			
 			// Back-Button
 			JButton btnBACK = new JButton("BACK");
-			btnBACK.setBounds(800, 689, 170, 60);//links / runter / breite / höhe
+			btnBACK.setBounds(510, 710, 85, 30);//links / runter / breite / höhe
 			btnBACK.setBackground(new Color(255,90,0));
-			btnBACK.setFont(new Font("Arial", Font.BOLD, 24));
+			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Der Weg zurück
+
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
@@ -192,7 +200,7 @@ public class SetButtons {
 			
 		//#########################################################################
 		//
-		//								LOBBY
+		//								LOBBY_Besitzer
 		//
 		//#########################################################################	
 			
@@ -224,6 +232,22 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBattleStart);	
+		} else if (picName.equals("Wallpaper/Maingame")){
+			
+			// Back-Button
+			JButton btnBACK = new JButton("BACK");
+			btnBACK.setBounds(510, 710, 85, 30);//links / runter / breite / höhe
+			btnBACK.setBackground(new Color(255,90,0));
+			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
+			btnBACK.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					// Der Weg zurück
+					loader.switchPanel(loader.Mainpage);
+				}
+			});
+			panel.add(btnBACK);	
+			panel.repaint();
 		}
 	}
 }
