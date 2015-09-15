@@ -28,12 +28,20 @@ public class Client_Connection implements Runnable {
 			while (true) {
 				while (input.ready()) {
 					String s = input.readLine();
-					if (s.equals("admin, pw")) { // Datenbank überprüfung hier
-						output.println("Success");// Geht nicht
-						System.out.println("bin drin");
-					} else {
-						System.out.println("da ist wohl was falsch");
-					}
+					String[] sl = s.split(",");
+					String name = sl[0];
+					String pw = sl[1];
+					String hashed = BCrypt.hashpw(pw, BCrypt.gensalt()); //test
+					if (name.equals("admin") && BCrypt.checkpw(pw, hashed)){ //hashed: hash steht in der DB
+						output.println("Success");
+						System.out.println("It matches");
+					}else
+						System.out.println("It does not match");
+//					if () { Datenbank überprüfung hier
+//						output.println("Success");
+//					} else {
+//						System.out.println("da ist wohl was falsch");
+//					}
 				}
 			}
 		} catch (IOException e) {

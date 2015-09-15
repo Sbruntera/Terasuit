@@ -34,7 +34,7 @@ public class Test_server extends Thread {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Test_server server = new Test_server(3141);
+		Test_server server = new Test_server(3142);
 		server.connect();
 	}
 }

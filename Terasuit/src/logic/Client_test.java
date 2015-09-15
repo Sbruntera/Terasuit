@@ -18,12 +18,12 @@ public class Client_test {
 		 */
 		Socket socket = null;
 		try {
-			socket = new Socket("localhost", 3141);
+			socket = new Socket("localhost", 3142);
 
 			PrintStream out = new PrintStream(socket.getOutputStream(), true);
 			out.println(user);
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
