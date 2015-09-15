@@ -8,10 +8,13 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class SetButtons {
 	
 	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
+	boolean registerOpen = false;
+	boolean loginOpen = false;
 
 	public void setbuttons(Panel panel, String picName, Loader loader){
 		
@@ -76,7 +79,18 @@ public class SetButtons {
 			btnLogin.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loginRegisterPanel.popupLogin(panel);
+					
+					if (loginOpen == false){
+						if (registerOpen == true){
+							loginRegisterPanel.popupdestroy(panel);
+						}
+						loginRegisterPanel.popupLogin(panel);
+						loginOpen = true;
+						registerOpen = false;
+					} else {
+						loginRegisterPanel.popupdestroy(panel);
+						loginOpen = false;
+					}
 				}
 			});
 			panel.add(btnLogin);
@@ -84,10 +98,20 @@ public class SetButtons {
 			JButton btnRegister = new JButton("REGISTER");
 			btnRegister.setBounds(920, 732, 90, 25);
 			btnRegister.setBackground(new Color(255,90,0));
-			btnLogin.addMouseListener(new MouseAdapter() {
+			btnRegister.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loginRegisterPanel.popupRegister(panel);
+					if (registerOpen == false){
+						if (loginOpen == true){
+							loginRegisterPanel.popupdestroy(panel);
+						}
+						loginRegisterPanel.popupRegister(panel);
+						registerOpen = true;
+						loginOpen = false;
+					} else {
+						loginRegisterPanel.popupdestroy(panel);
+						registerOpen = false;
+					}
 				}
 			});
 			panel.add(btnRegister);
