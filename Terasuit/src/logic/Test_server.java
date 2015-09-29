@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class Test_server extends Thread {
 	private final ServerSocket server;
 	private Socket socket;
+	private DB db;
 	ArrayList<Thread> threads = new ArrayList<Thread>();
 
 	public Test_server(int port) throws IOException {
 		server = new ServerSocket(port);
+		db = new DB();
 	}
 
 	private void connect() {
@@ -27,7 +29,7 @@ public class Test_server extends Thread {
 	}
 	public void client(Socket socket){
 		System.out.println("test");
-		Client_Connection c = new Client_Connection(socket);
+		Client_Connection c = new Client_Connection(socket, db);
 		Thread t = new Thread(c);
 		threads.add(t);
 		t.start();
