@@ -1,5 +1,7 @@
 package grafig;
 
+import inGame.CreateUnit;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -150,13 +152,7 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-					if (serverCreateOpen == false) {
-						createServer.createPopup(panel);
-					} else {
-						createServer.createdestroy(panel);
-					}
-					
-					//loader.switchPanel(loader.Grouppage_owner);
+					loader.switchPanel(loader.Grouppage_owner);
 				}
 			});
 			panel.add(btnCreateGroup);
@@ -231,14 +227,15 @@ public class SetButtons {
 					loader.switchPanel(loader.Gamepage);
 				}
 			});
-			panel.add(btnBattleStart);	
-		} else if (picName.equals("Wallpaper/Maingame")){
+			panel.add(btnBattleStart);
+			
+		} else if (picName.equals("Wallpaper/Maingame.png")){
 			
 			// Back-Button
-			JButton btnBACK = new JButton("BACK");
-			btnBACK.setBounds(510, 710, 85, 30);//links / runter / breite / höhe
-			btnBACK.setBackground(new Color(255,90,0));
-			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
+			JButton btnBACK = new JButton("X");
+			btnBACK.setBounds(700, 550, 60, 60);//links / runter / breite / höhe
+			btnBACK.setBackground(new Color(87,87,87));
+			btnBACK.setFont(new Font("Arial", Font.BOLD, 10));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
@@ -247,6 +244,37 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBACK);	
+
+			
+			// Back-Button
+			JButton btnSpawnSoldat = new JButton("Soldat");
+			btnSpawnSoldat.setBounds(90, 600, 60, 60);//links / runter / breite / höhe
+			btnSpawnSoldat.setBackground(new Color(87,87,87));
+			btnSpawnSoldat.setFont(new Font("Arial", Font.BOLD, 10));
+			btnSpawnSoldat.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					// Der Weg zurück
+					
+				}
+			});
+			panel.add(btnSpawnSoldat);	
+
+			
+			// Back-Button
+			JButton btnSpawnBuilding = new JButton("Build");
+			btnSpawnBuilding.setBounds(20, 600, 60, 60);//links / runter / breite / höhe
+			btnSpawnBuilding.setBackground(new Color(87,87,87));
+			btnSpawnBuilding.setFont(new Font("Arial", Font.BOLD, 10));
+			btnSpawnBuilding.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					// Der Weg zurück
+					CreateUnit CU = new CreateUnit();
+					CU.createSoldir(panel);
+				}
+			});
+			panel.add(btnSpawnBuilding);	
 			panel.repaint();
 		}
 	}
