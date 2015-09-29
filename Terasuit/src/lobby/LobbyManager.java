@@ -9,20 +9,20 @@ import java.util.ArrayList;
  * 
  */
 public class LobbyManager {
-
+	
 	private ArrayList<GameServer> serverList;
-
+	
 	public void addServer() {
 		// TODO
 	}
-
+	
 	protected void removeServer(GameServer server) {
 		serverList.remove(server);
 	}
-
-	public GameServer[] getServerList(Filter filter) {
-
-		ArrayList<GameServer> filteredList = (ArrayList<GameServer>) serverList.clone();
+	
+	public GameLobby[] getServerList(Filter filter) {
+		
+		ArrayList<GameServer> filteredList = new ArrayList<GameServer>();
 		if (filter != null) {
 			for (GameServer server : serverList) {
 				if ((server.getName().contains(filter.getNameContains()))
@@ -33,7 +33,13 @@ public class LobbyManager {
 				}
 			}
 		}
-		GameServer[] filteredArray = filteredList.toArray(new GameServer[filteredList.size()]);
+		else {
+			filteredList = (ArrayList<GameServer>) serverList.clone();
+		}
+		GameLobby[] filteredArray = new GameLobby[filteredList.size()];
+		for (GameServer server : filteredList) {
+			filteredArray[filteredList.indexOf(server)] = new GameLobby(server.getMap(), server.getName(), server.getHostname(), server.hasPassword(), server.getNumberOfPlayers());
+		}
 		return filteredArray;
 	}
 }

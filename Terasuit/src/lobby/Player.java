@@ -11,7 +11,7 @@ public class Player {
 	
 	private InetAddress ipAddress;
 	
-	public void disconnect() {
+	public void disconnect(String message) {
 		// TODO Auto-generated method stub
 		
 	}
