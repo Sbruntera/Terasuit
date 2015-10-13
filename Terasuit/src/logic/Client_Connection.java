@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class Client_Connection implements Runnable {
 
@@ -15,12 +20,22 @@ public class Client_Connection implements Runnable {
 
 	public Client_Connection(Socket socket, DB db) {
 		try {
+			KeyPair kp = createRSA();
+			String pub = kp.getPublic().toString();
+			System.out.println(pub);
+			PrivateKey pri = kp.getPrivate();
 			this.db = db;
 			input = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			output = new PrintStream(socket.getOutputStream(), true);
+			output.print(pub);
+			System.out.println("HEYHO");
+			String aes = input.readLine();
 		} catch (IOException e) {
 
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -62,6 +77,14 @@ public class Client_Connection implements Runnable {
 		}else{
 			System.out.println("It does not match");
 		}
+	}
+	public KeyPair createRSA() throws NoSuchAlgorithmException{
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+		kpg.initialize(1024);
+		return kpg.genKeyPair();
+	}
+	public void decryptAES(String enaes){
+		
 	}
 
 }
