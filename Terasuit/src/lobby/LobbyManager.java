@@ -12,14 +12,26 @@ public class LobbyManager {
 	
 	private ArrayList<GameServer> serverList;
 	
+	/**
+	 * Fügt eine Lobby zu der Liste hinzu
+	 */
 	public void addServer() {
 		// TODO
 	}
 	
+	/**
+	 * Entfernt eine Lobby aus der Liste
+	 * @param server
+	 */
 	protected void removeServer(GameServer server) {
 		serverList.remove(server);
 	}
 	
+	/**
+	 * Gibt eine gefilterte LobbyListe zurück
+	 * @param filter
+	 * @return
+	 */
 	public GameLobby[] getServerList(Filter filter) {
 		
 		ArrayList<GameServer> filteredList = new ArrayList<GameServer>();
@@ -28,7 +40,7 @@ public class LobbyManager {
 				if ((server.getName().contains(filter.getNameContains()))
 						&& (filter.getMap() == server.getMap())
 						&& (filter.getMaxPlayers() >= server.getNumberOfPlayers() && server.getNumberOfPlayers() >= filter.getMinPlayers())
-						&& !(filter.isNoPassword() && server.getPassword() == null)) {
+						&& !(filter.isNoPassword() && server.hasPassword())) {
 					filteredList.add(server);
 				}
 			}

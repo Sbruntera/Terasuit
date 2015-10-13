@@ -13,6 +13,7 @@ public class Filter {
 	private int minPlayers;
 	private int maxPlayers;
 	
+	
 	public Filter(boolean noPassword, String nameContains, Map map, int minPlayers, int maxPlayers) {
 		this.noPassword = noPassword;
 		this.nameContains = nameContains;
