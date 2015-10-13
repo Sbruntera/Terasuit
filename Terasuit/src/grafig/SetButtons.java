@@ -230,7 +230,6 @@ public class SetButtons {
 			panel.add(btnBattleStart);
 			
 		} else if (picName.equals("Wallpaper/Maingame.png")){
-			
 			// Back-Button
 			JButton btnBACK = new JButton("X");
 			btnBACK.setBounds(700, 550, 60, 60);//links / runter / breite / höhe
@@ -274,7 +273,7 @@ public class SetButtons {
 					CU.createSoldir(panel);
 				}
 			});
-			panel.add(btnSpawnBuilding);	
+			panel.add(btnSpawnBuilding);
 			panel.repaint();
 		}
 	}

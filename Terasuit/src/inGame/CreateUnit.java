@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 public class CreateUnit {
 	
-	private JLabel label[];
+	private JLabel label;
 
 	// Produktion der Unit wird inizalisert
 	// Cooldown der Unit wird abgewartet
@@ -19,13 +19,13 @@ public class CreateUnit {
 	
 	public void createSoldir(Panel panel){
 		// Back-Button
-		label[1] = new JLabel("");
-		label[1].setIcon(new ImageIcon("C:\\Users\\dqi12feldmann\\Desktop\\Soldat_Gelb_Rechts_2.png"));
-		label[1].setForeground(Color.MAGENTA);
-		label[1].setBackground(Color.red);
+		label = new JLabel("");
+		label.setIcon(new ImageIcon("Unit/Soldat_Blau_Links.png"));
+		label.setForeground(Color.MAGENTA);
+		label.setBackground(Color.red);
 
-		label[1].setBounds(300 + (random(50)), 200 + (random(200)), 65, 142);
-		panel.add(label[1]);
+		label.setBounds(300 + (random(50)), 200 + (random(200)), 65, 142);
+		panel.add(label);
 		panel.repaint();
 		return;
 	}
