@@ -1,7 +1,7 @@
 package lobby;
 
 /**
- * 
+ * Ein Filter um die lobbyList, dem Nutzer nach seien Ansprüchen gefiltert, zu übertragen
  * @author Simeon Kublenz
  * 
  */
