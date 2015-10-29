@@ -28,7 +28,7 @@ public class Loader {
 	
 	public void print() {
 		
-		window.setContentPane(new Panel(Gamepage, HEIGHT, WIGTH, this));
+		window.setContentPane(new Panel(Mainpage, HEIGHT, WIGTH, this));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();

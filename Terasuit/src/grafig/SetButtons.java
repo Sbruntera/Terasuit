@@ -1,11 +1,14 @@
 package grafig;
 
 import inGame.CreateUnit;
+import inGame.Funktions;
+import inGame.Unit;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,7 +22,9 @@ public class SetButtons {
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;
 
-	public void setbuttons(Panel panel, String picName, Loader loader){
+	
+	
+	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		
 		//#########################################################################
 		//
@@ -229,6 +234,13 @@ public class SetButtons {
 			});
 			panel.add(btnBattleStart);
 			
+			
+		//#########################################################################
+		//
+		//								Maingame
+		//
+		//#########################################################################		
+			
 		} else if (picName.equals("Wallpaper/Maingame.png")){
 			// Back-Button
 			JButton btnBACK = new JButton("X");
@@ -244,9 +256,8 @@ public class SetButtons {
 			});
 			panel.add(btnBACK);	
 
-			
 			// Back-Button
-			JButton btnSpawnSoldat = new JButton("Soldat");
+			JButton btnSpawnSoldat = new JButton("Building");
 			btnSpawnSoldat.setBounds(90, 600, 60, 60);//links / runter / breite / höhe
 			btnSpawnSoldat.setBackground(new Color(87,87,87));
 			btnSpawnSoldat.setFont(new Font("Arial", Font.BOLD, 10));
@@ -258,19 +269,17 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnSpawnSoldat);	
-
 			
-			// Back-Button
-			JButton btnSpawnBuilding = new JButton("Build");
+			// Einheit wird Produziert
+			JButton btnSpawnBuilding = new JButton("Soldat");
 			btnSpawnBuilding.setBounds(20, 600, 60, 60);//links / runter / breite / höhe
 			btnSpawnBuilding.setBackground(new Color(87,87,87));
 			btnSpawnBuilding.setFont(new Font("Arial", Font.BOLD, 10));
 			btnSpawnBuilding.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
-					CreateUnit CU = new CreateUnit();
-					CU.createSoldir(panel);
+					func.createEntity(panel, "Unit/Soldat_Blau_Rechts2.png");
+					panel.repaint();
 				}
 			});
 			panel.add(btnSpawnBuilding);

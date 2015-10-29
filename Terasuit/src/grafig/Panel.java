@@ -1,5 +1,7 @@
 package grafig;
 
+import inGame.Funktions;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,6 +18,7 @@ public class Panel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Image img = null;
 	SetButtons buttons = new SetButtons();
+	Funktions func = new Funktions();
 	
 	private int squareX = 0;
 	private int squareY = -1;
@@ -36,7 +39,7 @@ public class Panel extends JPanel{
 			System.out.println("<ERROR> Kein Bild für diese Aktion vorhanden!!!");
 		}
 
-		buttons.setbuttons(this, picName, loader);
+		buttons.setbuttons(this, picName, loader, func);
 		if (picName.equals("Wallpaper/Maingame.png")){
 			addListenersForMouse();
 		}	
@@ -50,16 +53,7 @@ public class Panel extends JPanel{
 	    g.setColor(Color.RED);
 	    g.drawRect(minX,minY,w,h);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	private void addListenersForMouse() {
 	    addMouseListener(new MouseAdapter() {
 	    	public void mousePressed(MouseEvent e) {
@@ -68,6 +62,7 @@ public class Panel extends JPanel{
 	        }
 	        
 	    	public void mouseReleased(MouseEvent e) {
+	    		func.findAllEntitys(minX, minY, w, h);
 	    		minY = 0;
 	    		minX = -1;
 	    		h = 0;
