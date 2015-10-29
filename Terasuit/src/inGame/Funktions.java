@@ -25,9 +25,6 @@ public class Funktions {
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
-		selectedUnit.getGroupOfUnits(entity, minX, minY, w, h);
-		
+		selectedUnit.getGroupOfUnits(entity, minX, minY, w, h);	
 	}
-	
-	
 }

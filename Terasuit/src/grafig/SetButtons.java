@@ -1,14 +1,13 @@
 package grafig;
 
-import inGame.CreateUnit;
+import inGame.BaseBuildings;
+import inGame.BtnCreator;
 import inGame.Funktions;
-import inGame.Unit;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,8 +20,8 @@ public class SetButtons {
 	boolean registerOpen = false;
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;
-
-	
+	BaseBuildings buildings = new BaseBuildings();
+	BtnCreator btnCreator = new BtnCreator();
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		
@@ -242,47 +241,20 @@ public class SetButtons {
 		//#########################################################################		
 			
 		} else if (picName.equals("Wallpaper/Maingame.png")){
+			
+			// Erstellen der Basis
+			buildings.buildBase(panel, loader, func);
+			
 			// Back-Button
 			JButton btnBACK = new JButton("X");
-			btnBACK.setBounds(700, 550, 60, 60);//links / runter / breite / höhe
-			btnBACK.setBackground(new Color(87,87,87));
-			btnBACK.setFont(new Font("Arial", Font.BOLD, 10));
+			btnCreator.createOne(btnBACK, 700, 550, 60, 60, 87);
 			btnBACK.addMouseListener(new MouseAdapter() {
-				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
 			panel.add(btnBACK);	
 
-			// Back-Button
-			JButton btnSpawnSoldat = new JButton("Building");
-			btnSpawnSoldat.setBounds(90, 600, 60, 60);//links / runter / breite / höhe
-			btnSpawnSoldat.setBackground(new Color(87,87,87));
-			btnSpawnSoldat.setFont(new Font("Arial", Font.BOLD, 10));
-			btnSpawnSoldat.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
-					
-				}
-			});
-			panel.add(btnSpawnSoldat);	
-			
-			// Einheit wird Produziert
-			JButton btnSpawnBuilding = new JButton("Soldat");
-			btnSpawnBuilding.setBounds(20, 600, 60, 60);//links / runter / breite / höhe
-			btnSpawnBuilding.setBackground(new Color(87,87,87));
-			btnSpawnBuilding.setFont(new Font("Arial", Font.BOLD, 10));
-			btnSpawnBuilding.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent arg0) {
-					func.createEntity(panel, "Unit/Soldat_Blau_Rechts2.png");
-					panel.repaint();
-				}
-			});
-			panel.add(btnSpawnBuilding);
 			panel.repaint();
 		}
 	}

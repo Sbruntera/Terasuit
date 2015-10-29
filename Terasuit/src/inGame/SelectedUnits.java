@@ -1,14 +1,18 @@
 package inGame;
 
+import grafig.Panel;
+
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class SelectedUnits {
+	
+	ActionButton actionBtn = new ActionButton();
 
-	public void getUnit(ArrayList<Unit> entity, MouseEvent objUnit){
+	public void getUnit(ArrayList<Unit> entity, MouseEvent objUnit, Panel panel){
 		for (int i = 0; i < entity.size(); i++) {
 			if (entity.get(i).getLabel() == objUnit.getSource()){
-				System.out.println(entity.get(i).getEntityNummer());
+				actionBtn.Entity(i, panel, entity);
 			}
 		}
 	}
