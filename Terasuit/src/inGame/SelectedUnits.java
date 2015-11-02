@@ -5,6 +5,8 @@ import grafig.Panel;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 public class SelectedUnits {
 	
 	ActionButton actionBtn = new ActionButton();
@@ -18,11 +20,18 @@ public class SelectedUnits {
 	}
 	
 	public void getGroupOfUnits(ArrayList<Unit> entity, int x, int y, int h, int w){
-		System.out.println("#####");
 		for (int i = 0; i < entity.size(); i++) {
 			if (entity.get(i).getEntityPositionX() > x && entity.get(i).getEntityPositionY() > y){
 				if (entity.get(i).getEntityPositionX() < (x+h) && entity.get(i).getEntityPositionY() < (y+w)){
-					System.out.println(entity.get(i).getEntityNummer());
+					entity.get(i).setEntitymarked(true);
+					entity.get(i).getLabel().setIcon(new ImageIcon("Unit/Soldat_Blau_Rechts2_makiert.png"));
+					
+					
+					// Nächste Schritte:
+					// Liste der makierten Einheiten
+					// Bei neu makieren Liste abarbeiten und den ursprünglichen Zustand herstellen
+					
+					
 				}
 			}
 		}

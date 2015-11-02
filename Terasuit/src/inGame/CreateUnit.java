@@ -28,9 +28,15 @@ public class CreateUnit {
 		unit.setEntityPositionX(default_spawn_left_X+randValue1);
 		unit.setEntityPositionY(default_spawn_left_Y+randValue2);
 		
+		
+//    	ImageIcon pic = new MirrorImageIcon(Entitytype);
+//    	label.setIcon(pic);
+		
 		ImageIcon pic = new ImageIcon(Entitytype);
 		label = new JLabel("");
 		label.setIcon(pic);
+		
+		
 		label.setBounds(default_spawn_left_X + (randValue1), default_spawn_left_Y + (randValue2), pic.getIconWidth(), pic.getIconHeight());
 		label.addMouseListener(new MouseAdapter() {
 			@Override
@@ -51,3 +57,6 @@ public class CreateUnit {
 	}
 	
 }
+
+
+

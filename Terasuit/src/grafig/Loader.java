@@ -2,7 +2,12 @@ package grafig;
 
 import javax.swing.JFrame;
 
+import logic.Debugger_Thread;
+
 public class Loader {
+	
+	Debugger_Thread debugger = new Debugger_Thread();
+
 	
 	// ------------------------ Bereits Fertige Bilder
 	public final String Mainpage = "Wallpaper/Start_Hintergrund.png";
@@ -26,6 +31,8 @@ public class Loader {
 
 	JFrame window = new JFrame("Terasuit");
 	
+
+	
 	public void print() {
 		
 		window.setContentPane(new Panel(Mainpage, HEIGHT, WIGTH, this));
@@ -46,6 +53,14 @@ public class Loader {
 		window.setResizable(false);
 		window.pack();
 		window.setVisible(true);
+	}
+	
+	public void startDebugger(){
+		debugger.startRound();
+	}
+	
+	public void changeTo(String page){
+		switchPanel(page);
 	}
 	
 	public void exit(){

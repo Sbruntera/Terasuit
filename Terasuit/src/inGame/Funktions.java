@@ -1,8 +1,8 @@
 package inGame;
 
 import grafig.Panel;
-
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 public class Funktions {
 	
@@ -27,4 +27,15 @@ public class Funktions {
 	public void findAllEntitys(int minX, int minY, int w, int h) {
 		selectedUnit.getGroupOfUnits(entity, minX, minY, w, h);	
 	}
+	
+	public void deMarkEntittys(){
+		for (int i = 0; i < entity.size(); i++) {
+			if (entity.get(i).isEntitymarked() == true){
+				entity.get(i).getLabel().setIcon(new ImageIcon("Unit/Soldat_Blau_Rechts2.png"));
+				entity.get(i).setEntitymarked(false);
+			}
+		}
+	}
+	
+	
 }

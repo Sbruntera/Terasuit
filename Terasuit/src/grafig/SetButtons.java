@@ -228,7 +228,8 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Der Weg zurück
-					loader.switchPanel(loader.Gamepage);
+					loader.startDebugger();
+
 				}
 			});
 			panel.add(btnBattleStart);

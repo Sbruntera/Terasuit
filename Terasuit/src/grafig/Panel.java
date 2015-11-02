@@ -62,6 +62,7 @@ public class Panel extends JPanel{
 	        }
 	        
 	    	public void mouseReleased(MouseEvent e) {
+	    		func.deMarkEntittys();
 	    		func.findAllEntitys(minX, minY, w, h);
 	    		minY = 0;
 	    		minX = -1;

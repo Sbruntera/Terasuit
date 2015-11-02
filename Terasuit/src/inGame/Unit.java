@@ -8,13 +8,41 @@ public class Unit {
 	int EntityNummer = 0;
 	int EntityPositionX = 0;
 	int EntityPositionY = 0;
-
 	int Entitymembership = 0;
 	int EntityFirerange = 0;
 	int EntityFirepower = 0;
 	int EntitySplashDmg = 0;
 	int EntityLive = 0;
+	String Entityname = "";
+	boolean newEntity = false;
 	boolean EntityFire = false;
+	boolean Entitymarked = false;
+	
+	
+	
+	public String getEntityname() {
+		return Entityname;
+	}
+
+	public void setEntityname(String entityname) {
+		Entityname = entityname;
+	}
+
+	public boolean isNewEntity() {
+		return newEntity;
+	}
+
+	public void setNewEntity(boolean newEntity) {
+		this.newEntity = newEntity;
+	}
+	
+	public boolean isEntitymarked() {
+		return Entitymarked;
+	}
+
+	public void setEntitymarked(boolean entitymarked) {
+		Entitymarked = entitymarked;
+	}
 
 	public JLabel getLabel() {
 		return label;

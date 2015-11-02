@@ -19,7 +19,7 @@ public class ActionButton {
 	JButton btnSpawnSoldir = new JButton("Building");
 		
 	public void Building(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
-		System.out.println("ddd");
+
 		try {
 			panel.remove(btnForward);
 			panel.remove(btnBackward);

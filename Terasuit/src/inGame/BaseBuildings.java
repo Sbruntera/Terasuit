@@ -15,6 +15,7 @@ public class BaseBuildings {
 	
 	String red = "Buildings/base_red.png";
 	String blue = "Buildings/base_blue.png";
+	String base = "Buildings/base.png";
 	String barracks = "Buildings/barracks.png";
 	int default_position_X = 40;
 	int default_position_Y = 400;
@@ -37,7 +38,9 @@ public class BaseBuildings {
 		createEntity(panel, load, func, blue, default_position_X+default_interval, default_position_Y-default_interval);
 		createEntity(panel, load, func, blue, default_position_X+default_interval*2, default_position_Y-default_interval*2);
 		createEntity(panel, load, func, blue, default_position_X+default_interval*3, default_position_Y-default_interval);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*4, default_position_Y);		
+		createEntity(panel, load, func, blue, default_position_X+default_interval*4, default_position_Y);
+		// MAIN_BASE
+		createEntity(panel, load, func, base, default_position_X+default_interval*2, default_position_Y);
 	}
 	
 	public void createEntity(Panel panel, Loader loader, Funktions func, String Entitytype, int X, int Y){
