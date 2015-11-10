@@ -6,6 +6,13 @@ public class Buildings {
 	
 	int building_Live = 0;
 	int type = 0;
+	int number = 0;
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
+	}
 	boolean attackabel = false;
 	JLabel label = new JLabel("");
 	

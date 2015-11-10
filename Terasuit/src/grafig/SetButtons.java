@@ -16,7 +16,6 @@ import javax.swing.JButton;
 public class SetButtons {
 	
 	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
-	PopupServer createServer = new PopupServer();
 	boolean registerOpen = false;
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;

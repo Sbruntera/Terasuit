@@ -124,7 +124,7 @@ public class LoginRegisterPanel {
 	
 	private void createpopup(Panel panel){
 		registerPanel = new JLabel("");
-		registerPanel.setIcon(new ImageIcon("Wallpaper/kkk.png"));
+		registerPanel.setIcon(new ImageIcon("Wallpaper/LoginBackground.png"));
 		registerPanel.setBounds(770, 335, 500, 500); //links / runter / wbreite / höhe
 		panel.add(registerPanel);
 	}

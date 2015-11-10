@@ -15,11 +15,27 @@ public class Unit {
 	int EntityLive = 0;
 	String Entityname = "";
 	boolean newEntity = false;
+	boolean EntityMove = false;
+	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
 	
-	
-	
+	public boolean isEntityMove() {
+		return EntityMove;
+	}
+
+	public void setEntityMove(boolean entityMove) {
+		EntityMove = entityMove;
+	}
+
+	public boolean isEntityRushLeft() {
+		return EntityRushLeft;
+	}
+
+	public void setEntityRushLeft(boolean entityRushLeft) {
+		EntityRushLeft = entityRushLeft;
+	}
+
 	public String getEntityname() {
 		return Entityname;
 	}
