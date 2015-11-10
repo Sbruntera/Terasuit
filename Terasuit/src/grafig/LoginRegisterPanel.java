@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import logic.Login_Client;
+
 public class LoginRegisterPanel {
 	JLabel registerPanel = new JLabel();
 	JLabel loginPanel = new JLabel();
@@ -30,10 +32,7 @@ public class LoginRegisterPanel {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				
-				// QQ
-				// userField.gettext();
-				// passwortField.gettext();
-				
+				new Login_Client(userField.getText(), passwortField.getPassword());
 			}
 		});
 		panel.add(btnlogin);
@@ -69,11 +68,7 @@ public class LoginRegisterPanel {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				
-				// QQ
-				// userField.gettext();
-				// passwortField.gettext();
-				// passwort2Field.gettext();
-				// mailField.gettext();
+				new Login_Client(userField.getText(), passwortField.getPassword(), passwort2Field.getPassword(), mailField.getText());
 				
 			}
 		});
