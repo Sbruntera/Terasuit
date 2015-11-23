@@ -5,19 +5,17 @@ import java.io.PrintWriter;
 public class Writer extends Thread {
 	
 	private PrintWriter writer;
-	private int id;
+	private String message;
 	
-	public Writer(PrintWriter writer, int id) {
+	public Writer(PrintWriter writer) {
 		this.writer = writer;
-		this.id = id;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 	public void run() {
-		try {
-			
-		}
-		catch(IOException e) {
-			
-		}
+		writer.print(message);
 	}
 }
