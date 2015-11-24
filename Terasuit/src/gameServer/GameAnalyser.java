@@ -42,7 +42,7 @@ public class GameAnalyser implements Analyser {
 			if (bytes[0] < 64) { //Zweites Bit 0 Spiel verlassen
 				
 			} else { //Chat
-				//TODO: Chat erwünscht? Dann check ob chat oder surrender und danach handeln
+				//TODO: Chat erwünscht?
 			}
 		}
 	}
