@@ -25,8 +25,7 @@ public class Login_Client {
 					socket.getInputStream()));
 			PrintStream out = new PrintStream(socket.getOutputStream(), true);
 			String send = "login," + user + "," + pw;
-			// String send = "register," + user + "," + pw +
-			// ",test@test.de,Admin";
+			// String send = "register," + user + "," + pw + ",test@test.de,Admin";
 			System.out.println(send);
 			out.println(send);
 			try {
@@ -51,23 +50,43 @@ public class Login_Client {
 	public Login_Client(String user, char[] password, char[] password2,
 			String mail) {
 		// Register
+		boolean samepw = true;
 		try {
 			for (int i = 0; i < password.length; i++) {
-					if (password[i] != password2[i]) {
-						//Interupt Fehler Meldung
-					}
+				if (password[i] != password2[i]) {
+					// Interupt Fehler Meldung
+					System.out.println("Passwort nicht gleich");
+					samepw = false;
+				}
 
 			}
-			socket = new Socket("localhost", 3142);
-			String pw = "";
-			for (int i = 0; i < password.length; i++) {
-				pw = pw + password[i];
+			if(samepw){
+				socket = new Socket("localhost", 3142);
+				String pw = "";
+				for (int x = 0; x < password.length; x++) {
+					pw = pw + password[x];
+				}
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(socket.getInputStream()));
+				PrintStream out = new PrintStream(socket.getOutputStream(),
+						true);
+				String send = "register," + user + "," + pw + "," + mail
+						+ ",Admin";
+				out.println(send);
+				String s;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				while (in.ready()) {
+					s = in.readLine();
+					System.out.println(s);
+				}
 			}
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-			PrintStream out = new PrintStream(socket.getOutputStream(), true);
-			String send = "register," + user + "," + pw +","+ mail +",Admin";
-			out.println(send);
+			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

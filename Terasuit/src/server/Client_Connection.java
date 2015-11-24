@@ -54,7 +54,12 @@ public class Client_Connection implements Runnable {
 		String email = sl[3];
 		String mode = sl[4];
 		String hashed = BCrypt.hashpw(pw, BCrypt.gensalt());
-		db.addUser(name, hashed, email, mode);
+		if(!db.search(name)){
+			db.addUser(name, hashed, email, mode);
+		}else{
+			//Fehlermeldung
+			output.println("Miep");
+		}
 		System.out.println("Regist");
 	}
 	public void login(){
