@@ -13,12 +13,14 @@ import javax.swing.JLabel;
 public class BaseBuildings {
 	
 	
-	String red = "Buildings/base_red.png";
-	String blue = "Buildings/base_blue.png";
-	String base = "Buildings/base.png";
-	String barracks = "Buildings/barracks.png";
-	int default_position_X = 40;
-	int default_position_Y = 400;
+	public String red = "Buildings/base_red.png";
+	public String blue = "Buildings/base_blue.png";
+	public String base = "Buildings/base.png";
+	public String barracks = "Buildings/barracks.png";
+	public int default_position_Leftside_x = 40;
+	public int default_position_Leftside_y = 400;
+	public int default_position_Rightside_x = 900;
+	public int default_position_Rightside_y = 400;
 	int default_ender = 200;
 	int default_interval = 45;
 	ArrayList<Buildings> BuildingsEntity = new ArrayList<Buildings>();
@@ -27,18 +29,18 @@ public class BaseBuildings {
 	ActionButton btnAction = new ActionButton();
 	
 	
-	public void buildBase(Panel panel, Loader load, Funktions func){
+	public void buildBase(Panel panel, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y){
 		createEntity(panel, load, func, barracks, default_position_X, default_position_Y);
 		// Rot
-		createEntity(panel, load, func, red, default_position_X, default_position_Y);
-		createEntity(panel, load, func, red, default_position_X+default_interval, default_position_Y+default_interval);
-		createEntity(panel, load, func, red, default_position_X+default_interval*2, default_position_Y+default_interval*2);
-		createEntity(panel, load, func, red, default_position_X+default_interval*3, default_position_Y+default_interval);
+		createEntity(panel, load, func, FirstColor, default_position_X, default_position_Y);
+		createEntity(panel, load, func, FirstColor, default_position_X+default_interval, default_position_Y+default_interval);
+		createEntity(panel, load, func, FirstColor, default_position_X+default_interval*2, default_position_Y+default_interval*2);
+		createEntity(panel, load, func, FirstColor, default_position_X+default_interval*3, default_position_Y+default_interval);
 		// Blau
-		createEntity(panel, load, func, blue, default_position_X+default_interval, default_position_Y-default_interval);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*2, default_position_Y-default_interval*2);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*3, default_position_Y-default_interval);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*4, default_position_Y);
+		createEntity(panel, load, func, SecColor, default_position_X+default_interval, default_position_Y-default_interval);
+		createEntity(panel, load, func, SecColor, default_position_X+default_interval*2, default_position_Y-default_interval*2);
+		createEntity(panel, load, func, SecColor, default_position_X+default_interval*3, default_position_Y-default_interval);
+		createEntity(panel, load, func, SecColor, default_position_X+default_interval*4, default_position_Y);
 		// MAIN_BASE
 		createEntity(panel, load, func, base, default_position_X+default_interval*2, default_position_Y);
 	}

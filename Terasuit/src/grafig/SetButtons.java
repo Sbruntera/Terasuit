@@ -43,7 +43,12 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
-					loader.switchPanel(loader.Lobbypage);
+					loader.connection.init();
+					if (loader.connection.isServerAccess()){
+						loader.switchPanel(loader.Lobbypage);
+					}else{
+						System.out.println("Server konnte nicht gefunden werden. ");
+					}
 				}
 			});
 			panel.add(btnStart);
@@ -140,7 +145,12 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-					loader.switchPanel(loader.Grouppage);
+					if (loader.connection.connectGroup()){
+						loader.switchPanel(loader.Grouppage);
+					}else{
+						System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
+					}
+
 				}
 			});
 			panel.add(btnJoin);
@@ -154,8 +164,13 @@ public class SetButtons {
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-					loader.switchPanel(loader.Grouppage_owner);
+					if (loader.connection.createGroup()){
+						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
+						loader.switchPanel(loader.Grouppage_owner);
+					}else{
+						System.out.println("Gruppe konnte nicht erstellt werden!");
+					}
+
 				}
 			});
 			panel.add(btnCreateGroup);
@@ -169,7 +184,7 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Der Weg zurück
-
+					loader.connection.close();
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
@@ -191,8 +206,11 @@ public class SetButtons {
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
-					loader.switchPanel(loader.Lobbypage);
+					if (loader.connection.returnLobby()){
+						loader.switchPanel(loader.Lobbypage);
+					}else{
+						System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
+					}
 				}
 			});
 			panel.add(btnBACK);
@@ -212,8 +230,11 @@ public class SetButtons {
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
-					loader.switchPanel(loader.Lobbypage);
+					if (loader.connection.closeLobby()){
+						loader.switchPanel(loader.Lobbypage);
+					}else{
+						System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
+					}
 				}
 			});
 			panel.add(btnBACK);	
@@ -226,9 +247,11 @@ public class SetButtons {
 			btnBattleStart.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Der Weg zurück
-					loader.startDebugger();
-
+					if (loader.connection.startGame()){
+						loader.switchPanel(loader.Gamepage);
+					}else{
+						System.out.println("Spiel kann nicht gestartet werden");
+					}
 				}
 			});
 			panel.add(btnBattleStart);
@@ -243,14 +266,21 @@ public class SetButtons {
 		} else if (picName.equals("Wallpaper/Maingame.png")){
 			
 			// Erstellen der Basis
-			buildings.buildBase(panel, loader, func);
+			buildings.buildBase(panel, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
+			buildings.buildBase(panel, loader, func, buildings.red, buildings.blue, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
+			
 			
 			// Back-Button
 			JButton btnBACK = new JButton("X");
 			btnCreator.createOne(btnBACK, 700, 550, 60, 60, 87);
 			btnBACK.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent arg0) {
-					loader.switchPanel(loader.Mainpage);
+					if (loader.connection.returnToLobbyFromGame()){
+						loader.switchPanel(loader.Mainpage);
+					}else{
+						System.out.println("Kann das Spiel nicht verlassen!!");
+					}
+					
 				}
 			});
 			panel.add(btnBACK);	
