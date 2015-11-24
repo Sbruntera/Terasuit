@@ -14,5 +14,5 @@ public interface Unit {
 	public Point getPosition();
 	
 	public void move();
-	public void setGoal(int goal);
+	public void setDirection(int direction);
 }

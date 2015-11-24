@@ -1,7 +1,9 @@
-package server;
+package gameServer;
 
 import java.util.HashMap;
 
+import main.Listener;
+import main.Writer;
 import world.Building;
 import world.Unit;
 
@@ -32,10 +34,10 @@ public class GameServer {
 		return recources[id][type];
 	}
 	
-	public void moveUnit(int id, int[] movingUnits, int position) {
+	public void moveUnits(int id, int[] movingUnits, int direction) {
 		for (int i : movingUnits) {
 			if (units[id].containsKey(i)) {
-				units[id].get(i).setGoal(position);
+				units[id].get(i).setDirection(direction);
 			}
 		}
 	}
