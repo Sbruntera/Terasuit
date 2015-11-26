@@ -1,6 +1,10 @@
 package world;
 
 public interface Building {
-	public void dealDamage();
+	
+	public boolean dealDamage(int value);
 	public int getHealth();
+	
+	public void upgrade();
+	public boolean hasUpgrade();
 }

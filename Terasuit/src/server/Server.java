@@ -26,6 +26,7 @@ public class Server extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
 	public void client(Socket socket){
 		System.out.println("test");
 		Client_Connection c = new Client_Connection(socket, db);

@@ -24,8 +24,8 @@ public class Login_Client {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			PrintStream out = new PrintStream(socket.getOutputStream(), true);
-			String send = "login," + user + "," + pw;
-			// String send = "register," + user + "," + pw + ",test@test.de,Admin";
+			String send = "l," + user + "," + pw;
+			// String send = "r," + user + "," + pw + ",test@test.de,Admin";
 			System.out.println(send);
 			out.println(send);
 			try {
@@ -70,7 +70,7 @@ public class Login_Client {
 						new InputStreamReader(socket.getInputStream()));
 				PrintStream out = new PrintStream(socket.getOutputStream(),
 						true);
-				String send = "register," + user + "," + pw + "," + mail
+				String send = "r," + user + "," + pw + "," + mail
 						+ ",Admin";
 				out.println(send);
 				String s;

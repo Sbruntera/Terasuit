@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
+import world.Building;
 import main.Analyser;
 
 public class GameAnalyser implements Analyser {
@@ -21,14 +22,18 @@ public class GameAnalyser implements Analyser {
 		if (bytes[0] < 128) { //Erstes Bit ist 0, recieved Massage is a Gameplay-Message
 			if (bytes[0] < 64) { //Zweites Bit ist 0, recieved Message is a Building-Order
 				boolean freeSpace = false;
-				freeSpace = server.hasBuildingAt(id, bytes[0] >> 3); //Gebäude an position vorhanden
+				int buildingPlace = bytes[0] >> 3;
+				freeSpace = server.hasBuildingAt(id, buildingPlace); //Gebäude an position vorhanden
 				if (bytes[0] < 32) { //Drittes Bit ist 0, recieved Message is a new Building
 					if (freeSpace) {
 						//TODO: Ausgewähltes Gebäude auslesen, Kapital checken, Gebäude bauen 
 					}
 				} else { //Drittes Bit ist 1, recieved Message is a Upgrade-Order
 					if (!freeSpace) {
-						//TODO: Kapital checken, Gebäude bauen
+						Building building = server.getBuildingAt(id, buildingPlace);
+						if (building.hasUpgrade()) {
+							//TODO: Kapital checken, Gebäude bauen
+						}
 					}
 				}
 			} else { //Zweites Bit ist 1, recieved Message is a Unit-Order

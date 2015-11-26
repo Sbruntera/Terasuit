@@ -17,7 +17,7 @@ public class Client_Connection implements Runnable {
 
 	public Client_Connection(Socket socket, DB db) {
 		try {
-	
+
 			this.db = db;
 			input = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
@@ -29,7 +29,6 @@ public class Client_Connection implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			while (true) {
 				while (input.ready()) {
@@ -37,9 +36,9 @@ public class Client_Connection implements Runnable {
 					System.out.println(s);
 					sl = s.split(",");
 					String status = sl[0];
-					if(status.equals("register")){
+					if (status.equals("r")) {
 						register();
-					}else{
+					} else {
 						login();
 					}
 				}
@@ -48,27 +47,30 @@ public class Client_Connection implements Runnable {
 
 		}
 	}
-	public void register(){
+
+	public void register() {
 		String name = sl[1];
 		String pw = sl[2];
 		String email = sl[3];
 		String mode = sl[4];
 		String hashed = BCrypt.hashpw(pw, BCrypt.gensalt());
-		if(!db.search(name)){
+		if (!db.search(name)) {
 			db.addUser(name, hashed, email, mode);
-		}else{
-			//Fehlermeldung
+		} else {
+			// Fehlermeldung
 			output.println("Miep");
 		}
 		System.out.println("Regist");
 	}
-	public void login(){
+
+	public void login() {
 		String name = sl[1];
 		String pw = sl[2];
-		if (BCrypt.checkpw(pw, db.getUser(name))){ //hashed: hash steht in der DB
+		if (BCrypt.checkpw(pw, db.getUser(name))) { // hashed: hash steht in der
+													// DB
 			output.println("Success");
 			System.out.println("It matches");
-		}else{
+		} else {
 			System.out.println("It does not match");
 		}
 	}
