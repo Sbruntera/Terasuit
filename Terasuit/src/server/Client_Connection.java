@@ -7,48 +7,29 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import logic.BCrypt;
+import main.Analyser;
 
-public class Client_Connection implements Runnable {
+public class Client_Connection implements Analyser {
 
-	private BufferedReader input;
-	private PrintStream output;
 	private String[] sl;
 	private DB db;
-
-	public Client_Connection(Socket socket, DB db) {
-		try {
-
-			this.db = db;
-			input = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-			output = new PrintStream(socket.getOutputStream(), true);
-		} catch (IOException e) {
-
-		}
+	
+	public Client_Connection(DB db) {
+		this.db = db;
 	}
 
 	@Override
-	public void run() {
-		try {
-			while (true) {
-				while (input.ready()) {
-					String s = input.readLine();
-					System.out.println(s);
-					sl = s.split(",");
-					String status = sl[0];
-					if (status.equals("r")) {
-						register();
-					} else {
-						login();
-					}
-				}
-			}
-		} catch (IOException e) {
-
+	public void analyse(String in) {
+		sl = in.split(",");
+		String status = sl[0];
+		if (status.equals("r")) {
+			register();
+		} else {
+			login();
 		}
 	}
-
-	public void register() {
+	
+	private void register() {
 		String name = sl[1];
 		String pw = sl[2];
 		String email = sl[3];
@@ -62,8 +43,8 @@ public class Client_Connection implements Runnable {
 		}
 		System.out.println("Regist");
 	}
-
-	public void login() {
+	
+	private void login() {
 		String name = sl[1];
 		String pw = sl[2];
 		if (BCrypt.checkpw(pw, db.getUser(name))) { // hashed: hash steht in der

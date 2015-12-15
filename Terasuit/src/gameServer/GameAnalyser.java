@@ -19,12 +19,12 @@ public class GameAnalyser implements Analyser {
 	
 	public void analyse(String in) {
 		byte[] bytes = in.getBytes();
-		if (bytes[0] < 128) { //Erstes Bit ist 0, recieved Massage is a Gameplay-Message
-			if (bytes[0] < 64) { //Zweites Bit ist 0, recieved Message is a Building-Order
+		if ((bytes[0] & 128) == 128) { //Erstes Bit ist 0, recieved Massage is a Gameplay-Message
+			if ((bytes[0] & 64) == 64) { //Zweites Bit ist 0, recieved Message is a Building-Order
 				boolean freeSpace = false;
 				int buildingPlace = bytes[0] >> 3;
 				freeSpace = server.hasBuildingAt(id, buildingPlace); //Gebäude an position vorhanden
-				if (bytes[0] < 32) { //Drittes Bit ist 0, recieved Message is a new Building
+				if ((bytes[0] & 32) == 32) { //Drittes Bit ist 0, recieved Message is a new Building
 					if (freeSpace) {
 						//TODO: Ausgewähltes Gebäude auslesen, Kapital checken, Gebäude bauen 
 					}
@@ -37,15 +37,15 @@ public class GameAnalyser implements Analyser {
 					}
 				}
 			} else { //Zweites Bit ist 1, recieved Message is a Unit-Order
-				if (bytes[0] < 32) { //Drittes Bit ist 0, Unit creation
-					//TODO: 
+				if ((bytes[0] & 32) == 32) { //Drittes Bit ist 0, Unit creation
+					//TODO: Create Unit
 				} else { //Unit movement
 					server.moveUnits(id, getUnits(bytes), ((int) (bytes[0] >> 2) - 12));
 				}
 			}
 		} else { //Erstes Bit ist 1, recieved Message is a Chat- or Surrender-Message
-			if (bytes[0] < 64) { //Zweites Bit 0 Spiel verlassen
-				
+			if ((bytes[0] & 64) == 64) { //Zweites Bit 0 Spiel verlassen
+				server.disconnect(id);
 			} else { //Chat
 				//TODO: Chat erwünscht?
 			}

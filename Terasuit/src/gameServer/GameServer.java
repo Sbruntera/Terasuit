@@ -2,6 +2,7 @@ package gameServer;
 
 import java.util.HashMap;
 
+import server.Server;
 import main.Listener;
 import main.Writer;
 import world.Building;
@@ -11,16 +12,19 @@ import world.WorldConstants;
 
 public class GameServer {
 	
+	Server server;
+	boolean[] players;
 	Listener[] listeners;
 	Writer[] writers;
 	HashMap<Integer, Unit>[] units;
 	MainBuilding[] mainBuildings;
 	Building[][] buildings;
-	int[][]recources;
+	int[][] recources;
 	
-	public GameServer(Listener[] listeners, Writer[] writers) {
+	public GameServer(Listener[] listeners, Writer[] writers, Server server) {
 		this.listeners = listeners;
 		this.writers = writers;
+		this.server = server;
 		units = new HashMap[writers.length];
 		for (int i = 0; i < units.length; i++) {
 			units[i] = new HashMap<Integer, Unit>();
@@ -51,5 +55,14 @@ public class GameServer {
 				units[id].get(i).setDirection(direction);
 			}
 		}
+	}
+
+	public void build(byte b, int buildingPlace) {
+		
+	}
+
+	public void disconnect(int id) {
+		players[id] = false;
+		//TODO:
 	}
 }
