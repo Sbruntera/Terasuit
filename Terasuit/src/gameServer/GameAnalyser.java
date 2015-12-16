@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
+import server.Analyser;
 import world.Building;
-import main.Analyser;
 
 public class GameAnalyser implements Analyser {
 	

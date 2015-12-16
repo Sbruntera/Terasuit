@@ -23,6 +23,7 @@ public class LoginRegisterPanel {
 	JLabel lbpassword = new JLabel();
 	JLabel lbpassword2 = new JLabel();
 	JLabel lbmail = new JLabel();
+	Login_Client loginClient = new Login_Client();
 	
 	public void popupLogin(Panel panel) {
 		
@@ -31,8 +32,7 @@ public class LoginRegisterPanel {
 		btnlogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				
-				new Login_Client(userField.getText(), passwortField.getPassword());
+				loginClient.login(userField.getText(), passwortField.getPassword());
 			}
 		});
 		panel.add(btnlogin);
@@ -68,7 +68,7 @@ public class LoginRegisterPanel {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				
-				new Login_Client(userField.getText(), passwortField.getPassword(), passwort2Field.getPassword(), mailField.getText());
+				loginClient.register(userField.getText(), passwortField.getPassword(), passwort2Field.getPassword(), mailField.getText());
 				
 			}
 		});

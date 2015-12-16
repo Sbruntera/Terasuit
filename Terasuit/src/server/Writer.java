@@ -1,13 +1,13 @@
-package main;
+package server;
 
-import java.io.PrintWriter;
+import java.io.PrintStream;
 
-public class Writer extends Thread {
+public class Writer implements Runnable {
 	
-	private PrintWriter writer;
+	private PrintStream writer;
 	private String message;
 	
-	public Writer(PrintWriter writer) {
+	public Writer(PrintStream writer) {
 		this.writer = writer;
 	}
 	

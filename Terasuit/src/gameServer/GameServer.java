@@ -2,9 +2,9 @@ package gameServer;
 
 import java.util.HashMap;
 
+import server.Listener;
 import server.Server;
-import main.Listener;
-import main.Writer;
+import server.Writer;
 import world.Building;
 import world.MainBuilding;
 import world.Unit;
