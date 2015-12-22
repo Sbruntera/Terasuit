@@ -1,10 +1,13 @@
 package inGame;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 import grafig.Loader;
 import grafig.Panel;
@@ -17,15 +20,19 @@ public class ActionButton {
 	JButton btnBackward = new JButton("Backward");
 	JButton btnBuilding = new JButton("Building");
 	JButton btnSpawnSoldir = new JButton("Building");
+	
 		
+	private static String wrapLines(String s) {
+		return String.format("<html>%s</html>", s);
+	}
+	
 	public void Building(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
 
-		try {
-			panel.remove(btnForward);
-			panel.remove(btnBackward);
-		} catch (Exception e) {
-		}
-		
+
+		panel.remove(btnForward);
+		panel.remove(btnBackward);
+
+		 
 		// Building-Button
 		JButton btnBuilding = new JButton("Building");
 		btnCreator.createOne(btnBuilding, 200, 600, 60, 60, 87);
@@ -46,6 +53,20 @@ public class ActionButton {
 				panel.repaint();
 			}
 		});
+		
+		JLabel Description = new JLabel("");
+		Description.setText(wrapLines(BuildingsEntity.get(i).getDescription()));
+		Description.setForeground(Color.BLACK);
+		Description.setBounds(20, 500, 180, 300);
+		panel.add(Description);
+		
+		JLabel BuildingNameLbl = new JLabel("");
+		BuildingNameLbl.setText(wrapLines(BuildingsEntity.get(i).getName()));
+		BuildingNameLbl.setForeground(Color.BLACK);
+		BuildingNameLbl.setFont(new Font("Arial", Font.PLAIN, 19));
+		BuildingNameLbl.setBounds(20, 560, 180, 100);
+		panel.add(BuildingNameLbl);
+		
 		panel.add(btnSpawnSoldir);
 		panel.repaint();
 	}

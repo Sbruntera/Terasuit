@@ -1,5 +1,8 @@
 package inGame;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 
 public class Buildings {
@@ -7,6 +10,29 @@ public class Buildings {
 	int building_Live = 0;
 	int type = 0;
 	int number = 0;
+	String description = "";
+	String name = "";
+	String[] spwanableEntity;
+	
+
+	public String[] getSpwanableEntity() {
+		return spwanableEntity;
+	}
+	public void setSpwanableEntity(String[] spwanableEntity) {
+		this.spwanableEntity = spwanableEntity;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public int getNumber() {
 		return number;
 	}

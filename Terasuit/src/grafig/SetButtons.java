@@ -267,7 +267,8 @@ public class SetButtons {
 			
 			// Erstellen der Basis
 			buildings.buildBase(panel, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
-			buildings.buildBase(panel, loader, func, buildings.red, buildings.blue, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
+			buildings.buildBase(panel, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
+			
 			
 			
 			// Back-Button
