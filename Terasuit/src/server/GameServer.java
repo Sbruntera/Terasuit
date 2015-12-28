@@ -54,7 +54,7 @@ public class GameServer {
 	}
 
 	public void build(byte b, int buildingPlace) {
-
+		//TODO:
 	}
 
 	public void disconnect(int id) {

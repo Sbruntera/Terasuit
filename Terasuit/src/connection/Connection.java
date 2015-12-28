@@ -7,9 +7,12 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import server.Server;
+
 public class Connection implements Runnable {
 
 	private Socket socket;
+	private Server server;
 
 	private BufferedReader reader;
 	private Analyser analyser;
@@ -17,10 +20,12 @@ public class Connection implements Runnable {
 	private PrintStream writer;
 	private ConcurrentLinkedQueue<String> queue;
 
+	private String name;
 	private int id;
 
-	public Connection(Socket socket, Analyser analyser, int id) {
+	public Connection(Socket socket, Server server, int id) {
 		this.socket = socket;
+		this.server = server;
 		try {
 			reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
@@ -29,7 +34,6 @@ public class Connection implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.analyser = analyser;
 		queue = new ConcurrentLinkedQueue<String>();
 		this.id = id;
 	}
@@ -40,6 +44,14 @@ public class Connection implements Runnable {
 
 	public void addMessage(String message) {
 		queue.add(message);
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	@Override
@@ -69,6 +81,14 @@ public class Connection implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void leaveLobby() {
+		setAnalyser(new MenuAnalyser(server, this, id, true)); //TODO: Boolean must be checked maybe
+	}
+
+	public void joinLobby(byte b) {
+		server.getLobby(b).addPlayer(this);
 	}
 
 	// public void run() {
