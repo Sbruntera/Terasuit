@@ -8,42 +8,53 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DB {
-	
+
 	private Connection connection;
 	private Statement statement;
 
 	public void loadDatabase() {
 		try {
-			connection = DriverManager.getConnection("jdbc:sqlite:" + "H\\:\\Eigene Dateien\\Git\\Terasuit\\Terasuit\\DB\\Data.db3");
+			connection = DriverManager
+					.getConnection("jdbc:sqlite:"
+							+ "H\\:\\Eigene Dateien\\Git\\Terasuit\\Terasuit\\DB\\Data.db3");
 			statement = connection.createStatement();
 			statement
 					.executeUpdate("CREATE TABLE IF NOT EXISTS Data (Name TEXT NOT NULL, Password TEXT, Email TEXT NOT NULL, Usermode TEXT NOT NULL)");
 		} catch (SQLException e) {
 			try {
-				connection = DriverManager.getConnection("jdbc:sqlite:" + new File("DB\\Data.db3").getAbsolutePath());
+				connection = DriverManager.getConnection("jdbc:sqlite:"
+						+ new File("DB\\Data.db3").getAbsolutePath());
 				statement = connection.createStatement();
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Data (Name TEXT DATE NOT NULL, Password TEXT NOT NULL, Email TEXT NOT NULL, Usermode TEXT NOT NULL)");
+				statement
+						.executeUpdate("CREATE TABLE IF NOT EXISTS Data (Name TEXT DATE NOT NULL, Password TEXT NOT NULL, Email TEXT NOT NULL, Usermode TEXT NOT NULL)");
 			} catch (SQLException exception) {
 				exception.printStackTrace();
 			}
 		}
 	}
-	public DB(){
+
+	public DB() {
 		loadDatabase();
 	}
-//	public static void main(String[] args) {
-//		new DB();
-//	}
-	public void addUser(String Name, String Password, String Email, String Usermode) {
+
+	// public static void main(String[] args) {
+	// new DB();
+	// }
+	public void addUser(String Name, String Password, String Email,
+			String Usermode) {
 		try {
-			statement.executeUpdate("INSERT INTO Data VALUES ('"+ Name +"','"+ Password + "','" + Email + "','" + Usermode +"');");
+			statement.executeUpdate("INSERT INTO Data VALUES ('" + Name + "','"
+					+ Password + "','" + Email + "','" + Usermode + "');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+
 	public String getUser(String name) {
 		try {
-			ResultSet resultSet = statement.executeQuery("SELECT Password FROM Data WHERE Name = '"+ name + "';");
+			ResultSet resultSet = statement
+					.executeQuery("SELECT Password FROM Data WHERE Name = '"
+							+ name + "';");
 			if (resultSet.next()) {
 				return resultSet.getString(1);
 			}
@@ -52,6 +63,7 @@ public class DB {
 		}
 		return null;
 	}
+
 	public void closeConnection() {
 		try {
 			connection.close();
@@ -59,9 +71,12 @@ public class DB {
 			e.printStackTrace();
 		}
 	}
-	public boolean search(String name){
+
+	public boolean search(String name) {
 		try {
-			ResultSet resultSet = statement.executeQuery("SELECT Name FROM Data WHERE Name = '"+ name + "';");
+			ResultSet resultSet = statement
+					.executeQuery("SELECT Name FROM Data WHERE Name = '" + name
+							+ "';");
 			if (resultSet.next()) {
 				return true;
 			}

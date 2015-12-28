@@ -7,14 +7,20 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Login_Client {
-	
+public class Login_Client implements Runnable {
+
+	private Socket socket;
 	private BufferedReader in;
 	private PrintStream out;
-	
+	private boolean login;
+	private String user;
+	private char[] password;
+	private char[] password2;
+	private String mail;
+
 	public Login_Client() {
 		try {
-			Socket socket = new Socket("localhost", 3142);
+			socket = new Socket("localhost", 3142);
 			this.in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			this.out = new PrintStream(socket.getOutputStream(), true);
@@ -26,8 +32,32 @@ public class Login_Client {
 			e.printStackTrace();
 		}
 	}
-	
-	public void login(String user, char[] password) { // String == Userdata
+
+	public void login(String user, char[] password) {
+		this.user = user;
+		this.password = password;
+		login = true;
+	}
+
+	public void register(String user, char[] password, char[] password2,
+			String mail) {
+		this.user = user;
+		this.password = password;
+		this.password2 = password2;
+		this.mail = mail;
+		login = false;
+	}
+
+	@Override
+	public void run() {
+		if (login) {
+			login();
+		} else {
+			register();
+		}
+	}
+
+	private void login() { // String == Userdata
 		/*
 		 * Login Forumla -> Daten werden gesendet -> Server überprüft Daten ->
 		 * Server sendet Antwort -> User ist eingeloggt
@@ -41,25 +71,16 @@ public class Login_Client {
 			// String send = "r," + user + "," + pw + ",test@test.de,Admin";
 			System.out.println(send);
 			out.println(send);
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			String s;
 			while (in.ready()) {
 				s = in.readLine();
-				System.out.println(s);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void register(String user, char[] password, char[] password2,
-			String mail) {
+
+	private void register() {
 		// Register
 		boolean samepw = true;
 		try {
@@ -71,27 +92,20 @@ public class Login_Client {
 				}
 
 			}
-			if(samepw){
+			if (samepw) {
 				String pw = "";
 				for (int x = 0; x < password.length; x++) {
 					pw = pw + password[x];
 				}
-				String send = "r," + user + "," + pw + "," + mail
-						+ ",Admin";
+				String send = "r," + user + "," + pw + "," + mail + ",Admin";
 				out.println(send);
 				String s;
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				while (in.ready()) {
 					s = in.readLine();
 					System.out.println(s);
 				}
 			}
-			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,6 +113,14 @@ public class Login_Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
+	public void disconnect() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

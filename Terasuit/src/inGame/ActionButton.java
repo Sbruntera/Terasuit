@@ -11,21 +11,22 @@ import grafig.Panel;
 
 public class ActionButton {
 
-//	Funktions func = new Funktions();
+	// Funktions func = new Funktions();
 	BtnCreator btnCreator = new BtnCreator();
 	JButton btnForward = new JButton("Forward");
 	JButton btnBackward = new JButton("Backward");
 	JButton btnBuilding = new JButton("Building");
 	JButton btnSpawnSoldir = new JButton("Building");
-		
-	public void Building(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
+
+	public void Building(Panel panel, ArrayList<Buildings> BuildingsEntity,
+			int i, Loader load, Funktions func) {
 
 		try {
 			panel.remove(btnForward);
 			panel.remove(btnBackward);
 		} catch (Exception e) {
 		}
-		
+
 		// Building-Button
 		JButton btnBuilding = new JButton("Building");
 		btnCreator.createOne(btnBuilding, 200, 600, 60, 60, 87);
@@ -34,8 +35,8 @@ public class ActionButton {
 
 			}
 		});
-		panel.add(btnBuilding);	
-		
+		panel.add(btnBuilding);
+
 		// Einheit wird Produziert
 		JButton btnSpawnSoldir = new JButton("Soldat");
 		btnCreator.createOne(btnSpawnSoldir, 270, 600, 60, 60, 87);
@@ -49,14 +50,13 @@ public class ActionButton {
 		panel.add(btnSpawnSoldir);
 		panel.repaint();
 	}
-	
+
 	// Ändert einen Zustand eine Entitys
-	public void Entity(int i, Panel panel, ArrayList<Unit> entity){
+	public void Entity(int i, Panel panel, ArrayList<Unit> entity) {
 
 		panel.remove(btnBuilding);
 		panel.remove(btnSpawnSoldir);
 
-		
 		// Building-Button
 		btnForward = new JButton("Forward");
 		btnCreator.createOne(btnForward, 20, 600, 60, 60, 87);
@@ -66,7 +66,7 @@ public class ActionButton {
 			}
 		});
 		panel.add(btnForward);
-		
+
 		// Building-Button
 		btnBackward = new JButton("Backward");
 		btnCreator.createOne(btnBackward, 90, 600, 60, 60, 87);
@@ -76,18 +76,17 @@ public class ActionButton {
 			}
 		});
 		panel.add(btnBackward);
-		
-		
+
 		panel.repaint();
 		System.out.println(entity.get(i).getEntityNummer());
 	}
-	
+
 	// Änder die Zustände einer ganzen Gruppe
-	public void GroupEntity(ArrayList<Unit> entity, Panel panel){
-		
+	public void GroupEntity(ArrayList<Unit> entity, Panel panel) {
+
 	}
-	
-	public void Barracks(){
-		
+
+	public void Barracks() {
+
 	}
 }

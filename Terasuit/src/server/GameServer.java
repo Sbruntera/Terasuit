@@ -1,42 +1,38 @@
-package gameServer;
+package server;
 
 import java.util.HashMap;
 
-import server.Listener;
-import server.Server;
-import server.Writer;
+import connection.Connection;
 import world.Building;
 import world.MainBuilding;
 import world.Unit;
 import world.WorldConstants;
 
 public class GameServer {
-	
+
 	Server server;
 	boolean[] players;
-	Listener[] listeners;
-	Writer[] writers;
+	Connection[] connections;
 	HashMap<Integer, Unit>[] units;
 	MainBuilding[] mainBuildings;
 	Building[][] buildings;
 	int[][] recources;
-	
-	public GameServer(Listener[] listeners, Writer[] writers, Server server) {
-		this.listeners = listeners;
-		this.writers = writers;
+
+	public GameServer(Connection[] connections, Server server) {
+		this.connections = connections;
 		this.server = server;
-		units = new HashMap[writers.length];
+		units = new HashMap[connections.length];
 		for (int i = 0; i < units.length; i++) {
 			units[i] = new HashMap<Integer, Unit>();
 		}
-		buildings = new Building[writers.length][WorldConstants.BUILDINGSCOUNT];
+		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
 		for (int i = 0; i < units.length; i++) {
 			mainBuildings[i] = new MainBuilding();
 		}
-		//TODO: Startrecourcen festlegen.
+		// TODO: Startrecourcen festlegen.
 	}
-	
+
 	public boolean hasBuildingAt(int id, int pos) {
 		return buildings[id][pos] != null;
 	}
@@ -44,11 +40,11 @@ public class GameServer {
 	public Building getBuildingAt(int id, int pos) {
 		return buildings[id][pos];
 	}
-	
+
 	public int getRecources(int id, int type) {
 		return recources[id][type];
 	}
-	
+
 	public void moveUnits(int id, int[] movingUnits, int direction) {
 		for (int i : movingUnits) {
 			if (units[id].containsKey(i)) {
@@ -58,11 +54,11 @@ public class GameServer {
 	}
 
 	public void build(byte b, int buildingPlace) {
-		
+
 	}
 
 	public void disconnect(int id) {
 		players[id] = false;
-		//TODO:
+		// TODO:
 	}
 }

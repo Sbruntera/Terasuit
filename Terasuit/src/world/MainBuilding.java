@@ -1,17 +1,17 @@
 package world;
 
 public class MainBuilding implements Building {
-	
+
 	private int health;
-	
+
 	private int damage;
 	private int range;
 	private int cooldown;
-	
+
 	public MainBuilding() {
 		health = WorldConstants.MAINBUILDINGHEALTH;
 	}
-	
+
 	@Override
 	public boolean dealDamage(int value) {
 		health -= value;
@@ -24,26 +24,26 @@ public class MainBuilding implements Building {
 	}
 
 	@Override
-	public void upgrade() { //Main Building can't be upgraded
+	public void upgrade() { // Main Building can't be upgraded
 	}
 
 	@Override
 	public boolean hasUpgrade() {
 		return false;
 	}
-	
+
 	public int getDamage() {
 		return damage;
 	}
-	
+
 	public int getRange() {
 		return range;
 	}
-	
+
 	public boolean canShoot() {
 		return cooldown <= 0;
 	}
-	
+
 	public boolean coolDown() {
 		if (cooldown > 0) {
 			cooldown -= 1;

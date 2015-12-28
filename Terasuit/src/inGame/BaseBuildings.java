@@ -11,8 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class BaseBuildings {
-	
-	
+
 	String red = "Buildings/base_red.png";
 	String blue = "Buildings/base_blue.png";
 	String base = "Buildings/base.png";
@@ -25,27 +24,39 @@ public class BaseBuildings {
 	Buildings building = new Buildings();
 	JLabel label = new JLabel("");
 	ActionButton btnAction = new ActionButton();
-	
-	
-	public void buildBase(Panel panel, Loader load, Funktions func){
-		createEntity(panel, load, func, barracks, default_position_X, default_position_Y);
+
+	public void buildBase(Panel panel, Loader load, Funktions func) {
+		createEntity(panel, load, func, barracks, default_position_X,
+				default_position_Y);
 		// Rot
-		createEntity(panel, load, func, red, default_position_X, default_position_Y);
-		createEntity(panel, load, func, red, default_position_X+default_interval, default_position_Y+default_interval);
-		createEntity(panel, load, func, red, default_position_X+default_interval*2, default_position_Y+default_interval*2);
-		createEntity(panel, load, func, red, default_position_X+default_interval*3, default_position_Y+default_interval);
+		createEntity(panel, load, func, red, default_position_X,
+				default_position_Y);
+		createEntity(panel, load, func, red, default_position_X
+				+ default_interval, default_position_Y + default_interval);
+		createEntity(panel, load, func, red, default_position_X
+				+ default_interval * 2, default_position_Y + default_interval
+				* 2);
+		createEntity(panel, load, func, red, default_position_X
+				+ default_interval * 3, default_position_Y + default_interval);
 		// Blau
-		createEntity(panel, load, func, blue, default_position_X+default_interval, default_position_Y-default_interval);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*2, default_position_Y-default_interval*2);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*3, default_position_Y-default_interval);
-		createEntity(panel, load, func, blue, default_position_X+default_interval*4, default_position_Y);
+		createEntity(panel, load, func, blue, default_position_X
+				+ default_interval, default_position_Y - default_interval);
+		createEntity(panel, load, func, blue, default_position_X
+				+ default_interval * 2, default_position_Y - default_interval
+				* 2);
+		createEntity(panel, load, func, blue, default_position_X
+				+ default_interval * 3, default_position_Y - default_interval);
+		createEntity(panel, load, func, blue, default_position_X
+				+ default_interval * 4, default_position_Y);
 		// MAIN_BASE
-		createEntity(panel, load, func, base, default_position_X+default_interval*2, default_position_Y);
+		createEntity(panel, load, func, base, default_position_X
+				+ default_interval * 2, default_position_Y);
 	}
-	
-	public void createEntity(Panel panel, Loader loader, Funktions func, String Entitytype, int X, int Y){
+
+	public void createEntity(Panel panel, Loader loader, Funktions func,
+			String Entitytype, int X, int Y) {
 		building = new Buildings();
-		
+
 		ImageIcon pic = new ImageIcon(Entitytype);
 		label = new JLabel("");
 		label.setIcon(pic);
@@ -53,8 +64,10 @@ public class BaseBuildings {
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < BuildingsEntity.size(); i++) {
-					if (BuildingsEntity.get(i).getLabel() == objUnit.getSource()){
-						btnAction.Building(panel, BuildingsEntity, i, loader, func);
+					if (BuildingsEntity.get(i).getLabel() == objUnit
+							.getSource()) {
+						btnAction.Building(panel, BuildingsEntity, i, loader,
+								func);
 					}
 				}
 			}

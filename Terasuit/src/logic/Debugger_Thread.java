@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
-
 public class Debugger_Thread extends Thread {
-	
+
 	Unit unit = new Unit();
 	ArrayList<Unit> entity = new ArrayList<Unit>();
 	ArrayList<Unit> entity2 = new ArrayList<Unit>();
@@ -16,8 +15,6 @@ public class Debugger_Thread extends Thread {
 	int default_spawn_left_X = 300;
 	int default_spawn_left_Y = 300;
 	int n = 1;
-	
-
 
 	public ArrayList<Unit> getEntity() {
 		return entity;
@@ -26,14 +23,12 @@ public class Debugger_Thread extends Thread {
 	public void updatedEntitylist(ArrayList<Unit> entity) {
 		this.entity = entity;
 	}
-	
-	
-	
+
 	// Update (Tick) Thread
 	public void run() {
-		while (true){
+		while (true) {
 			System.out.println("Update!");
-	        //loader.update(this.getEntity());
+			// loader.update(this.getEntity());
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -41,28 +36,28 @@ public class Debugger_Thread extends Thread {
 				e.printStackTrace();
 			}
 		}
-    }
-	
-	public void startRound(){
-		//Loader  
-		//.changeTo(loader.Mainpage);
 	}
-	
+
+	public void startRound() {
+		// Loader
+		// .changeTo(loader.Mainpage);
+	}
+
 	// UpdateEntity
-	public void UpdateEntity(ArrayList<Unit> ClientList){
-		
+	public void UpdateEntity(ArrayList<Unit> ClientList) {
+
 	}
-	
+
 	// Einheit hinzufügen
-	public void addEntity(String Entitytype, int membership){
+	public void addEntity(String Entitytype, int membership) {
 		unit = new Unit();
 		unit.setEntityNummer(n);
-		
+
 		int randValue1 = random(50);
 		int randValue2 = random(200);
-		
-		unit.setEntityPositionX(default_spawn_left_X+randValue1);
-		unit.setEntityPositionY(default_spawn_left_Y+randValue2);
+
+		unit.setEntityPositionX(default_spawn_left_X + randValue1);
+		unit.setEntityPositionY(default_spawn_left_Y + randValue2);
 		unit.setEntityname(Entitytype);
 		unit.setEntitymembership(membership);
 		unit.setNewEntity(true);
@@ -71,11 +66,10 @@ public class Debugger_Thread extends Thread {
 		updatedEntitylist(entity2);
 		n++;
 	}
-	
-	public int random(int zahl){
-		int rand = (int) (Math.random()*zahl)+1;
+
+	public int random(int zahl) {
+		int rand = (int) (Math.random() * zahl) + 1;
 		return rand;
 	}
-    
-}
 
+}
