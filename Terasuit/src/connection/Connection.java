@@ -85,10 +85,18 @@ public class Connection implements Runnable {
 
 	public void leaveLobby() {
 		setAnalyser(new MenuAnalyser(server, this, id, true)); //TODO: Boolean must be checked maybe
+		queue.clear();
 	}
 
 	public void joinLobby(byte b) {
+		setAnalyser(new LobbyAnalyser());
+		queue.clear();
 		server.getLobby(b).addPlayer(this);
+	}
+
+	public void joinLobby() {
+		setAnalyser(new LobbyAnalyser());
+		queue.clear();
 	}
 
 	// public void run() {

@@ -33,6 +33,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (64): // Serverliste
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
+			connection.addMessage(message);
 			break;
 		case (96): // Spiel erstellen
 			String[] splitted = getSplitString(input);
