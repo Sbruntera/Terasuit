@@ -21,38 +21,30 @@ public class ActionButton {
 	JButton btnBuilding = new JButton("Building");
 	JButton btnSpawnSoldir = new JButton("Building");
 	
-		
+	ArrayList<JButton> jButton = new ArrayList<JButton>();
+	JButton btn;
 	private static String wrapLines(String s) {
 		return String.format("<html>%s</html>", s);
 	}
 	
-	public void Building(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
-
-
-		panel.remove(btnForward);
-		panel.remove(btnBackward);
-
-		 
-		// Building-Button
-		JButton btnBuilding = new JButton("Building");
-		btnCreator.createOne(btnBuilding, 200, 600, 60, 60, 87);
-		btnBuilding.addMouseListener(new MouseAdapter() {
-			public void mouseReleased(MouseEvent arg0) {
-
-			}
-		});
-		panel.add(btnBuilding);	
-		
-		// Einheit wird Produziert
-		JButton btnSpawnSoldir = new JButton("Soldat");
-		btnCreator.createOne(btnSpawnSoldir, 270, 600, 60, 60, 87);
-		btnSpawnSoldir.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				func.createEntity(panel, "Unit/Soldat_Blau_Rechts2.png");
-				panel.repaint();
-			}
-		});
+	// Gebäudeoptionen
+	public void createUserOptions(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
+		String [] noName  = BuildingsEntity.get(i).getSpwanableEntity();
+		// Generiert alle möglichen Gebäudeoptionen
+		for (int n = 0; n != noName.length; n++){
+			System.out.println(noName[n]);
+			btn = new JButton(wrapLines(noName[n]));
+			btnCreator.createOne(btn, 200+(n*62), 600, 60, 60, 87);
+			btn.addMouseListener(new MouseAdapter() {
+				public void mouseReleased(MouseEvent arg0) {
+					System.out.println("Funktion wird aufgerufen!!");
+					int number = (int) (Math.random()*4)+1;
+					func.createEntity(panel, "Unit/test2.png", number);
+				}
+			});
+			jButton.add(btn);
+			panel.add(btn);
+		}
 		
 		JLabel Description = new JLabel("");
 		Description.setText(wrapLines(BuildingsEntity.get(i).getDescription()));
@@ -66,11 +58,18 @@ public class ActionButton {
 		BuildingNameLbl.setFont(new Font("Arial", Font.PLAIN, 19));
 		BuildingNameLbl.setBounds(20, 560, 180, 100);
 		panel.add(BuildingNameLbl);
-		
-		panel.add(btnSpawnSoldir);
+
 		panel.repaint();
 	}
 	
+	public void deselectOptions(Panel panel){
+		for (int i = jButton.size(); i != 0; i--){
+			panel.remove(jButton.get(i));
+			jButton.remove(i);
+		}
+		panel.repaint();
+	}
+
 	// Ändert einen Zustand eine Entitys
 	public void Entity(int i, Panel panel, ArrayList<Unit> entity){
 

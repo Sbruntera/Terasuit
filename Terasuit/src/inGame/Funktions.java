@@ -19,8 +19,8 @@ public class Funktions {
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
-	public void createEntity(Panel panel, String Entitytype){
-		cunit.createEntity(panel, Entitytype, entity);
+	public void createEntity(Panel panel, String Entitytype, int color){
+		cunit.createEntity(panel, Entitytype, entity, color);
 	}
 	
 	// Sucht alle Einheiten in einem Auswahlbereich

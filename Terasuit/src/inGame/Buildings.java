@@ -1,8 +1,5 @@
 package inGame;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import javax.swing.JLabel;
 
 public class Buildings {
