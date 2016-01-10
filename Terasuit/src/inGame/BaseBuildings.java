@@ -84,9 +84,6 @@ public class BaseBuildings {
 		// 12-13 Hospital
 		// 14 Rocketped
 		
-		
-		
-		
 		switch (BuildingType){ 
 		case 0:
 			return new String[]{"Outpost", "Forge", "Hospital", "Bank", "Armory", "Generator", "Special Operations"};

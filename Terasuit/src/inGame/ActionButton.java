@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -35,11 +36,25 @@ public class ActionButton {
 			System.out.println(noName[n]);
 			btn = new JButton(wrapLines(noName[n]));
 			btnCreator.createOne(btn, 200+(n*62), 600, 60, 60, 87);
+			String type = getEntityAction(noName[n]);
 			btn.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent arg0) {
-					System.out.println("Funktion wird aufgerufen!!");
-					int number = (int) (Math.random()*4)+1;
-					func.createEntity(panel, "Unit/test2.png", number);
+					if (type.equals("Building")){
+						System.out.println("Ein Gebäude wurde ausgewählt!");
+					}else if (type.equals("Unit")){
+						System.out.println("Ein Einheit wurde ausgewählt!");
+						int number = (int) (Math.random()*4)+1;
+						func.createEntity(panel, "Unit/test2.png", number);
+					}else if (type.equals("Generation")){
+						System.out.println("Eine generierung wurde ausgewählt!");
+					}else if (type.equals("Destroy")){
+						System.out.println("Das gewählte Gebäude wird abgerissen");
+					}else if (type.equals("null")){
+						System.out.println("Keine Option für dieses Button vorhanden!!");
+					}else{
+						System.out.println("Kritischer Fehler: ActionButton.java => getEntityType.mth");
+					}
+
 				}
 			});
 			jButton.add(btn);
@@ -110,4 +125,56 @@ public class ActionButton {
 	public void Barracks(){
 		
 	}
+	
+	public String getEntityAction(String EntityName){
+		File file;
+		
+		file = new File("Buildings/" + EntityName + ".png");
+		System.out.println(file.getName());
+		if (file.exists()) {
+			return "Building";
+		}
+		file = new File("Unit/%EntityName.png");
+		if (file.exists()) {
+			return "Unit";
+		}
+		
+		switch (EntityName) {
+		case "Recruit":
+			return "Generation";
+		case "Salvage":
+			return "Generation";
+		case "Financel Support":
+			return "Generation";
+		case "Reinforcments":
+			return "Generation";
+		case "Reserve Energy":
+			return "Generation";
+		case "Power":
+			return "Generation";
+		case "Exhange":
+			return "Generation";
+		case "Traiding":
+			return "Generation";
+		case "Resuscitate":
+			return "Generation";
+		case "Recover":
+			return "Generation";
+		case "Black Operations":
+			return "Generation";
+		case "Destroy":
+			return "Destroy";
+		}
+
+		return "null";
+		
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -1,0 +1,13 @@
+Step 1:
+
+	Adding picture of the unit or building into the project.
+	-> Into Buildings
+	-> Into Units
+	
+Step 2 (Building):
+
+	Adding into "BaseBuildings.java" the possible actions.
+	
+Step 3 (Only when something else then buildings or units as a action):
+	
+	Adding into "ActionButton.java" the types of the options.
