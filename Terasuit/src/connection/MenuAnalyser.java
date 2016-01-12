@@ -37,9 +37,8 @@ public class MenuAnalyser implements Analyser {
 			//connection.addMessage(message);
 			break;
 		case (96): // Spiel erstellen
-			System.out.println("Nein");
 			String[] splitted = getSplitString(input);
-			server.createLobby(connection, splitted[0], splitted[1], getMap(bytes[1]));
+			server.createLobby(connection, splitted[0].substring(1, splitted[0].length()), splitted[1], getMap(bytes[1]));
 			break;
 		case(128): //Spiel beitreten
 			connection.joinLobby(bytes[1]);
@@ -47,14 +46,14 @@ public class MenuAnalyser implements Analyser {
 		case (160): // Einloggen
 			if (!logged) {
 				splitted = getSplitString(input);
-				server.loginClient(splitted[0], splitted[1], id);
+				server.loginClient(splitted[0].substring(1, splitted[0].length()), splitted[1], id);
 			}
 			break;
 		case (192): // Registrieren
 			if (!logged) {
 				splitted = getSplitString(input);
-				server.registerClient(splitted[0], splitted[1], splitted[2],
-						splitted[4], id);
+				server.registerClient(splitted[0].substring(1, splitted[0].length()), splitted[1], splitted[2],
+						splitted[3], id);
 			}
 			break;
 		case (224):
