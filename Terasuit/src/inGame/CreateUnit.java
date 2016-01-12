@@ -24,7 +24,7 @@ public class CreateUnit {
 	int default_spawn_left_X = 300;
 	int default_spawn_left_Y = 300;
 
-	public void createEntity(Panel panel, String Entitytype, ArrayList<Unit> entity, int color) {
+	public ArrayList<Unit> createEntity(Panel panel, String Entitytype, ArrayList<Unit> entity, int color) {
 		
 		unit = new Unit();
 		unit.setEntityNummer(entity.size() + 1);
@@ -34,9 +34,6 @@ public class CreateUnit {
 
 		unit.setEntityPositionX(default_spawn_left_X + randValue1);
 		unit.setEntityPositionY(default_spawn_left_Y + randValue2);
-
-		// ImageIcon pic = new MirrorImageIcon(Entitytype);
-		// label.setIcon(pic);
 
 		BufferedImage img = null;
 		try {
@@ -64,13 +61,47 @@ public class CreateUnit {
 				select.getUnit(entity, objUnit, panel);
 			}
 		});
+		
+		
+		unit.setEntityRushLeft(true);
+		unit.setEntitymembership(color);
 		unit.setLabel(label);
+		unit.setEntityname(Entitytype);
 		entity.add(unit);
 		panel.add(label);
 		panel.repaint();
-		return;
+		return entity;
 	}
+	
+	public BufferedImage mark(String Entitytype, boolean directionLeft, int color, boolean deMark){
 
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(Entitytype));
+		} catch (IOException e) {
+		}
+		
+		img = imgManipulator.setnewColors(img, color);
+		if (deMark == true){
+
+		}else{
+			img = imgManipulator.setSelection(img);
+		}
+		
+		Image img2 = imgManipulator.setnewDimension(img, Entitytype);
+		img = this.toBufferedImage(img2);
+	
+		
+		if (directionLeft){
+			img = imgManipulator.rotate(img);
+		}
+		
+		return img;
+	}
+	
+
+	
+	// Zufällige Platzierung in der Welt
 	public int random(int zahl) {
 		int rand = (int) (Math.random() * zahl) + 1;
 		return rand;

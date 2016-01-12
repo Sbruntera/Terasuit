@@ -89,6 +89,30 @@ public class ImageManipulator {
 		return Color;
 	}
 	
+	public BufferedImage setDeSelection(BufferedImage img) {
+		for (int y = 0; y < img.getHeight(); y++) {
+			for (int x = 0; x < img.getWidth(); x++) {
+				Color imageColor = new Color(img.getRGB(x, y));
+				if ( (img.getRGB(x, y)>>24) == 0x00 ) {
+				}else{
+					imageColor = new Color(newDeSelectionColor(imageColor.getRed()), newDeSelectionColor(imageColor.getGreen()), newDeSelectionColor(imageColor.getBlue()));
+					img.setRGB(x, y, imageColor.getRGB());
+				}
+			}
+		}
+		return img;
+	}
+	
+	
+	public int newDeSelectionColor(int Color){
+		Color = Color - Colorbrightness;
+		if (Color >= 0){
+			Color = 0;
+		}
+		return Color;
+	}
+	
+	
 	/**
 	 * Giebt die Skalierungsgröße zurück, diese wird an Hand des Namens ermittelt.
 	 * @return int

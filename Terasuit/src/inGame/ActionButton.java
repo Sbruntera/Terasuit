@@ -115,6 +115,7 @@ public class ActionButton {
 		
 		panel.repaint();
 		System.out.println(entity.get(i).getEntityNummer());
+		System.out.println(entity.get(i).getEntityname());
 	}
 	
 	// Änder die Zustände einer ganzen Gruppe
@@ -134,7 +135,7 @@ public class ActionButton {
 		if (file.exists()) {
 			return "Building";
 		}
-		file = new File("Unit/%EntityName.png");
+		file = new File("Unit/" + EntityName + ".png");
 		if (file.exists()) {
 			return "Unit";
 		}

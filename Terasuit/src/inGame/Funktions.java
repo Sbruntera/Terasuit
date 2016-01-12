@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 public class Funktions {
 	
 	ArrayList<Unit> entity = new ArrayList<Unit>();
+	ArrayList<Integer> selectedEntitysID = new ArrayList<Integer>();
 	CreateUnit cunit = new CreateUnit();
 	SelectedUnits selectedUnit = new SelectedUnits();
 	
@@ -20,21 +21,41 @@ public class Funktions {
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel panel, String Entitytype, int color){
-		cunit.createEntity(panel, Entitytype, entity, color);
+		entity = cunit.createEntity(panel, Entitytype, entity, color);
 	}
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
-		selectedUnit.getGroupOfUnits(entity, minX, minY, w, h);	
+		selectedEntitysID = selectedUnit.getGroupOfUnits(entity, selectedEntitysID, minX, minY, w, h);
+		for (int id : selectedEntitysID) {
+			System.out.println(id);
+		}
+		
+		for (int id : selectedEntitysID) {
+			String type = entity.get(id-1).getEntityname();
+			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
+			int color = entity.get(id-1).getEntitymembership();
+			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
+			Unit unit = new Unit();
+			unit = entity.get(id-1);
+			unit.getLabel().setIcon(pic);
+			entity.set(id-1, unit);
+		}
 	}
 	
+	// Iteriert über eine Liste mit IDs von Einheiten in der Entity List und verändert ihre Helligkeit zu dunkel
 	public void deMarkEntittys(){
-		for (int i = 0; i < entity.size(); i++) {
-			if (entity.get(i).isEntitymarked() == true){
-				entity.get(i).getLabel().setIcon(new ImageIcon("Unit/Soldat_Blau_Rechts2.png"));
-				entity.get(i).setEntitymarked(false);
-			}
+		for (int id : selectedEntitysID) {
+			String type = entity.get(id-1).getEntityname();
+			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
+			int color = entity.get(id-1).getEntitymembership();
+			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, true));
+			Unit unit = new Unit();
+			unit = entity.get(id-1);
+			unit.getLabel().setIcon(pic);
+			entity.set(id-1, unit);
 		}
+		selectedEntitysID.clear();
 	}
 	
 	/**
