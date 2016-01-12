@@ -76,7 +76,7 @@ public class Server {
 	}
 
 	public void diconnect(int id) {
-		connections.get(id).close();
+//		connections.get(id).close();
 	}
 
 	public Lobby[] getLobbylist(Filter filter) {

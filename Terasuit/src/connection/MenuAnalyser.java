@@ -22,6 +22,7 @@ public class MenuAnalyser implements Analyser {
 	@Override
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
+		System.out.println(bytes.length);
 		switch (bytes[0] & 224) {
 		case (0): // Stats
 			// TODO: Get Stats
@@ -36,6 +37,7 @@ public class MenuAnalyser implements Analyser {
 			//connection.addMessage(message);
 			break;
 		case (96): // Spiel erstellen
+			System.out.println("Nein");
 			String[] splitted = getSplitString(input);
 			server.createLobby(connection, splitted[0], splitted[1], getMap(bytes[1]));
 			break;

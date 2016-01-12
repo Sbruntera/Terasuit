@@ -59,7 +59,7 @@ public class Login_Client implements Runnable {
 
 	private void login() { // String == Userdata
 		/*
-		 * Login Forumla -> Daten werden gesendet -> Server überprüft Daten ->
+		 * Login Forumla -> Daten werden gesendet -> Server Ã¼berprÃ¼ft Daten ->
 		 * Server sendet Antwort -> User ist eingeloggt
 		 */
 		try {
@@ -67,7 +67,7 @@ public class Login_Client implements Runnable {
 			for (int i = 0; i < password.length; i++) {
 				pw = pw + password[i];
 			}
-			String send = "l," + user + "," + pw;
+			String send = (char) 160 + user + "," + pw;
 			// String send = "r," + user + "," + pw + ",test@test.de,Admin";
 			System.out.println(send);
 			out.println(send);
@@ -97,7 +97,7 @@ public class Login_Client implements Runnable {
 				for (int x = 0; x < password.length; x++) {
 					pw = pw + password[x];
 				}
-				String send = "r," + user + "," + pw + "," + mail + ",Admin";
+				String send = (char) 192 + user + "," + pw + "," + mail + ",Admin";
 				out.println(send);
 				String s;
 				while (in.ready()) {

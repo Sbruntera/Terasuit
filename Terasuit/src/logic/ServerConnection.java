@@ -19,10 +19,10 @@ public class ServerConnection {
 	public ServerConnection() {
 		Socket socket;
 		try {
-			socket = new Socket("localhost", 1337);
+			socket = new Socket("localhost", 3142);
 			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String answer = input.readLine();
-			JOptionPane.showMessageDialog(null, answer);
+			//String answer = input.readLine();
+			//JOptionPane.showMessageDialog(null, answer);
 			this.setServerAccess(true);
 		}
 		catch (ConnectException e) {
