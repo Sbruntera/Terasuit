@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import logic.Login_Client;
+
 public class LoginRegisterPanel {
 	JLabel registerPanel = new JLabel();
 	JLabel loginPanel = new JLabel();
@@ -21,6 +23,7 @@ public class LoginRegisterPanel {
 	JLabel lbpassword = new JLabel();
 	JLabel lbpassword2 = new JLabel();
 	JLabel lbmail = new JLabel();
+	Login_Client loginClient = new Login_Client();
 	
 	public void popupLogin(Panel panel) {
 		
@@ -29,10 +32,13 @@ public class LoginRegisterPanel {
 		btnlogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				
-				// QQ
-				// userField.gettext();
-				// passwortField.gettext();
+				Thread thread = new Thread(loginClient);
+				loginClient.login(userField.getText(),
+						passwortField.getPassword());
+				Controller controller = new Controller(thread, 5000);
+				Thread controlThread = new Thread(controller);
+				thread.start();
+				controlThread.start();
 				
 			}
 		});
@@ -68,12 +74,11 @@ public class LoginRegisterPanel {
 		btnlogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				
-				// QQ
-				// userField.gettext();
-				// passwortField.gettext();
-				// passwort2Field.gettext();
-				// mailField.gettext();
+				Thread thread = new Thread(loginClient);
+				loginClient.register(userField.getText(),
+						passwortField.getPassword(),
+						passwort2Field.getPassword(), mailField.getText());
+				thread.start();
 				
 			}
 		});
