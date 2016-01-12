@@ -37,6 +37,7 @@ public class ActionButton {
 			btn = new JButton(wrapLines(noName[n]));
 			btnCreator.createOne(btn, 200+(n*62), 600, 60, 60, 87);
 			String type = getEntityAction(noName[n]);
+
 			btn.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")){
@@ -44,7 +45,10 @@ public class ActionButton {
 					}else if (type.equals("Unit")){
 						System.out.println("Ein Einheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
-						func.createEntity(panel, "Unit/test2.png", number);
+						System.out.println(((JButton)arg0.getSource()).getText());
+						String lol = "Unit/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
+						System.out.println(lol);
+						func.createEntity(panel, lol, number);
 					}else if (type.equals("Generation")){
 						System.out.println("Eine generierung wurde ausgewählt!");
 					}else if (type.equals("Destroy")){
@@ -171,7 +175,12 @@ public class ActionButton {
 		
 	}	
 	
-	
+	public String cutHTMLout(String html){
+		String ButtonName = html.substring(6);
+		String[] parts = ButtonName.split("<");
+		ButtonName = parts[0]; // 004
+		return ButtonName;
+	}
 	
 	
 	

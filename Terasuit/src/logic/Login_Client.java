@@ -26,7 +26,6 @@ public class Login_Client implements Runnable {
 			this.out = new PrintStream(socket.getOutputStream(), true);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
