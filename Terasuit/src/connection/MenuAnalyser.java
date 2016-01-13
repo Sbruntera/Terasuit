@@ -38,7 +38,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (96): // Spiel erstellen
 			String[] splitted = getSplitString(input);
-			server.createLobby(connection, splitted[0].substring(1, splitted[0].length()), splitted[1], getMap(bytes[1]));
+			server.createLobby(connection, splitted[0].substring(2, splitted[0].length()), splitted[1], getMap(bytes[1]));
 			break;
 		case(128): //Spiel beitreten
 			connection.joinLobby(bytes[1]);

@@ -44,7 +44,7 @@ public class ServerConnection implements Runnable {
 				if (reader.ready()) {
 					System.out.println("Testerino");
 					String in = reader.readLine();
-					//Nachricht interpretieren
+					// Nachricht interpretieren
 				}
 				if (!queue.isEmpty()) {
 					writer.println(queue.remove());
@@ -68,45 +68,54 @@ public class ServerConnection implements Runnable {
 		addMessage((char) 160 + user + password);
 	}
 
-	public boolean createGroup() {
+	public void createGroup(byte mapID, String name, String password) {
 		// Guppe erstellen
 		// Sendet erschaffung zurück
-		return true;
+		queue.clear();
+		addMessage((char) 96 + mapID + name + "," + password);
+		return;
 	}
 
-	public boolean connectGroup() {
+	public void connectGroup(byte id) {
 		// Versucht der Gruppe zu joinen
 		// Sendet erfolgreiche Verbindung zurück oder auch nicht
-		return true;
+		queue.clear();
+		addMessage(String.valueOf((char) 128 + id));
+		return;
 	}
 
-	public boolean returnLobby() {
+	public void returnLobby() {
 		// Verlässt die aktuelle Gruppe
 		// Sendet erfolgreiche verlassen der Gruppe
-		return true;
-	}
-
-	public boolean closeLobby() {
-		// Verlässt die aktuelle Gruppe
-		// Sendet erfolgreiche schließen der Gruppe
-		return true;
+		queue.clear();
+		addMessage(String.valueOf((char) 64));
 	}
 
 	public void close() {
 		// Schließst die Verbindung
+		queue.clear();
+		queue.add(String.valueOf((char) 224));
 	}
 
-	public boolean startGame() {
+	public void startGame() {
+		queue.clear();
+		addMessage(String.valueOf((char) 192));
 		// Startet für alle in der Gruppe das Spiel
-		return true;
 	}
 
-	public boolean returnToLobbyFromGame() {
+	public void kickPlayer(byte playerNumber) {
+		addMessage(String.valueOf((char) 128 + playerNumber)); //TODO: Playernumber maybe verschieben
+	}
+	
+	public void leaveGame() {
 		// Gibt zurück ob das verlassen vom Server akzeptiert worden ist
-		return true;
 	}
 
-	public void refreshServerList() {
+	public void refreshServerList(boolean noPassword, byte minPlayers,
+			byte maxPlayers, byte mapID) {
+		addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
+				false) << 4) + (minPlayers << 2) + maxPlayers)
+				+ mapID);
 		// Aktuellisiert die Listen
 		// RETURN!!!
 	}
