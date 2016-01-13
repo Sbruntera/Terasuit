@@ -84,11 +84,12 @@ public class BaseBuildings {
 		// 12-13 Hospital
 		// 14 Rocketped
 		
+		// Recruit
 		switch (BuildingType){ 
 		case 0:
 			return new String[]{"Outpost", "Forge", "Hospital", "Bank", "Armory", "Generator", "Special Operations"};
 		case 1:
-			return new String[]{"Marine", "Chronite Tank", "Recruit", "Barracks", "Destroy"};
+			return new String[]{"Marine", "Chronite Tank", "Scout", "Barracks", "Destroy"};
 		case 2:
 			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Recruit", "Arsenal", "Destroy"};
 		case 3:

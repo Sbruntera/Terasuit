@@ -21,20 +21,28 @@ public class CreateUnit {
 	JLabel label = new JLabel("");
 	SelectedUnits select = new SelectedUnits();
 	ImageManipulator imgManipulator = new ImageManipulator();
-	int default_spawn_left_X = 300;
-	int default_spawn_left_Y = 300;
+	int default_spawn_left = 300;
+	int default_spawn_leftside_Ground = 350;
+	int default_spawn_leftside_Air = 150;
 
-	public ArrayList<Unit> createEntity(Panel panel, String Entitytype, ArrayList<Unit> entity, int color) {
+	public ArrayList<Unit> createEntity(Panel panel, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit) {
 		
 		unit = new Unit();
 		unit.setEntityNummer(entity.size() + 1);
 
-		int randValue1 = random(50);
-		int randValue2 = random(200);
-
-		unit.setEntityPositionX(default_spawn_left_X + randValue1);
-		unit.setEntityPositionY(default_spawn_left_Y + randValue2);
-
+		int unit_X_Position = 0;
+		int unit_Y_Position = 0;
+		
+		if (airUnit) {
+			unit_X_Position = default_spawn_left + random(70);
+			unit_Y_Position = default_spawn_leftside_Air + random(150);
+		}else{
+			unit_X_Position = default_spawn_left + random(70);
+			unit_Y_Position = default_spawn_leftside_Ground + random(150);
+		}
+		unit.setEntityPositionX(unit_X_Position);
+		unit.setEntityPositionY(unit_Y_Position);
+		
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File(Entitytype));
@@ -52,9 +60,7 @@ public class CreateUnit {
 		label = new JLabel("");
 		label.setIcon(pic);
 
-		label.setBounds(default_spawn_left_X + (randValue1),
-				default_spawn_left_Y + (randValue2), pic.getIconWidth(),
-				pic.getIconHeight());
+		label.setBounds(unit_X_Position, unit_Y_Position, pic.getIconWidth(), pic.getIconHeight());
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent objUnit) {
@@ -99,7 +105,6 @@ public class CreateUnit {
 		return img;
 	}
 	
-
 	
 	// Zufällige Platzierung in der Welt
 	public int random(int zahl) {

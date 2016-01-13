@@ -5,8 +5,6 @@ import grafig.Panel;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 public class SelectedUnits {
 	
 	ActionButton actionBtn = new ActionButton();
@@ -23,8 +21,6 @@ public class SelectedUnits {
 		for (int i = 0; i < entity.size(); i++) {
 			if (entity.get(i).getEntityPositionX() > x && entity.get(i).getEntityPositionY() > y){
 				if (entity.get(i).getEntityPositionX() < (x+h) && entity.get(i).getEntityPositionY() < (y+w)){
-					System.out.println("Deuggeeffff");
-					System.out.println(entity.get(i).getEntityNummer());
 					selectedEntitysID.add(entity.get(i).getEntityNummer());
 					entity.get(i).setEntitymarked(true);
 				}

@@ -20,17 +20,13 @@ public class Funktions {
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
-	public void createEntity(Panel panel, String Entitytype, int color){
-		entity = cunit.createEntity(panel, Entitytype, entity, color);
+	public void createEntity(Panel panel, String Entitytype, int color, boolean airUnit){
+		entity = cunit.createEntity(panel, Entitytype, entity, color, airUnit);
 	}
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
 		selectedEntitysID = selectedUnit.getGroupOfUnits(entity, selectedEntitysID, minX, minY, w, h);
-		for (int id : selectedEntitysID) {
-			System.out.println(id);
-		}
-		
 		for (int id : selectedEntitysID) {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();

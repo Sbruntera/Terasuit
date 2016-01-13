@@ -119,12 +119,18 @@ public class ImageManipulator {
 	 */
 	public void getUnitDeminsionSize(String Entitytype){
 	     switch (Entitytype) {
-         case "Unit/test2.png":
-        	 setxSkalierung(40);
-        	 setySkalierung(40);
-         case "Unit/test.png":
-        	 setxSkalierung(20);
-        	 setySkalierung(44);
+         case "Unit/Ground/Marine.png":
+        	 setxSkalierung(15);
+        	 setySkalierung(38);
+        	 return;
+         case "Unit/Ground/Chronite Tank.png":
+        	 setxSkalierung(65);
+        	 setySkalierung(27);
+        	 return;
+         case "Unit/Air/Scout.png":
+        	 setxSkalierung(65);
+        	 setySkalierung(27);
+        	 return;
 	     }
 	}
 

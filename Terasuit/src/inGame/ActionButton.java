@@ -42,13 +42,16 @@ public class ActionButton {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")){
 						System.out.println("Ein Gebäude wurde ausgewählt!");
-					}else if (type.equals("Unit")){
-						System.out.println("Ein Einheit wurde ausgewählt!");
+					}else if (type.equals("Ground")){
+						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
-						System.out.println(((JButton)arg0.getSource()).getText());
-						String lol = "Unit/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						System.out.println(lol);
-						func.createEntity(panel, lol, number);
+						String UnitString = "Unit/Ground/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
+						func.createEntity(panel, UnitString, number, false);
+					}else if (type.equals("Air")){
+						System.out.println("Eine Lufteinheit wurde ausgewählt!");
+						int number = (int) (Math.random()*4)+1;
+						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
+						func.createEntity(panel, UnitString, number, true);
 					}else if (type.equals("Generation")){
 						System.out.println("Eine generierung wurde ausgewählt!");
 					}else if (type.equals("Destroy")){
@@ -114,12 +117,8 @@ public class ActionButton {
 
 			}
 		});
-		panel.add(btnBackward);
-		
-		
+		panel.add(btnBackward);	
 		panel.repaint();
-		System.out.println(entity.get(i).getEntityNummer());
-		System.out.println(entity.get(i).getEntityname());
 	}
 	
 	// Änder die Zustände einer ganzen Gruppe
@@ -133,15 +132,19 @@ public class ActionButton {
 	
 	public String getEntityAction(String EntityName){
 		File file;
-		
+		System.out.println(EntityName);
 		file = new File("Buildings/" + EntityName + ".png");
 		System.out.println(file.getName());
 		if (file.exists()) {
 			return "Building";
 		}
-		file = new File("Unit/" + EntityName + ".png");
+		file = new File("Unit/Air/" + EntityName + ".png");
 		if (file.exists()) {
-			return "Unit";
+			return "Air";
+		}
+		file = new File("Unit/Ground/" + EntityName + ".png");
+		if (file.exists()) {
+			return "Ground";
 		}
 		
 		switch (EntityName) {
@@ -178,7 +181,7 @@ public class ActionButton {
 	public String cutHTMLout(String html){
 		String ButtonName = html.substring(6);
 		String[] parts = ButtonName.split("<");
-		ButtonName = parts[0]; // 004
+		ButtonName = parts[0];
 		return ButtonName;
 	}
 	
