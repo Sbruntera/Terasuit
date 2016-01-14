@@ -14,11 +14,21 @@ public class Unit {
 	int EntitySplashDmg = 0;
 	int EntityLive = 0;
 	String Entityname = "";
+	boolean flyingEntity = false;
 	boolean newEntity = false;
 	boolean EntityMove = false;
 	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
+	
+	public boolean isFlyingEntity() {
+		return flyingEntity;
+	}
+
+	public void setFlyingEntity(boolean flyingEntity) {
+		this.flyingEntity = flyingEntity;
+	}
+
 	
 	public boolean isEntityMove() {
 		return EntityMove;

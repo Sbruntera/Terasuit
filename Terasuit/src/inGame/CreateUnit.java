@@ -68,7 +68,7 @@ public class CreateUnit {
 			}
 		});
 		
-		
+		unit.setFlyingEntity(airUnit);
 		unit.setEntityRushLeft(true);
 		unit.setEntitymembership(color);
 		unit.setLabel(label);

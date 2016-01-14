@@ -128,7 +128,7 @@ public class ImageManipulator {
         	 setySkalierung(27);
         	 return;
          case "Unit/Air/Scout.png":
-        	 setxSkalierung(65);
+        	 setxSkalierung(60);
         	 setySkalierung(27);
         	 return;
 	     }
