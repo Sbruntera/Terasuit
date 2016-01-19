@@ -42,7 +42,7 @@ public class Connection implements Runnable {
 		this.analyser = analyser;
 	}
 
-	public void addMessage(String message) {
+	private void addMessage(String message) {
 		queue.add(message);
 	}
 
@@ -84,7 +84,9 @@ public class Connection implements Runnable {
 	}
 
 	public void leaveLobby() {
-		setAnalyser(new MenuAnalyser(server, this, id, true)); //TODO: Boolean must be checked maybe
+		setAnalyser(new MenuAnalyser(server, this, id, true)); // TODO: Boolean
+																// must be
+																// checked maybe
 		queue.clear();
 	}
 
@@ -94,20 +96,105 @@ public class Connection implements Runnable {
 		server.getLobby(b).addPlayer(this);
 	}
 
-	public void joinLobby() {
+	public void joinLobby(byte bytes, String string) {
 		setAnalyser(new LobbyAnalyser());
 		queue.clear();
 	}
 
-	// public void run() {
-	// String in;
-	// try {
-	// System.out.println("nachricht");
-	// while ((in = reader.readLine()) != null) {
-	// analyser.analyse(in);
-	// }
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
+	// /////////////////////////////////////////////////////////////////////////////
+	// Menü
+
+	public void sendStats() {
+		addMessage("");
+	}
+
+	public void sendGameList() {
+		addMessage("");
+	}
+
+	public void sendGameJoin() {
+		addMessage("");
+	}
+
+	/**
+	 * Bestätigt die Login Anfrage des Client
+	 */
+	public void sendLogin() {
+		addMessage(String.valueOf((char) 192));
+	}
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// Lobby
+
+	/**
+	 * Unterrichtet den Client, dass der Spieler die position gewechselt hat
+	 * 
+	 * @param player
+	 *            Spieler der die Position wechselt
+	 * @param position
+	 *            Position bei der der Spieler landet
+	 */
+	public void sendSwitchPosition(byte player, byte position) {
+		addMessage(String.valueOf((char) (player << 3 + position << 1)));
+	}
+
+	/**
+	 * Unterrichtet den Client, dass ein Spieler dem Spiel beitritt
+	 * 
+	 * @param position
+	 *            position des neuen Spielers
+	 * @param name
+	 *            Name des neuen Spielers
+	 */
+	public void sendPlayerJoined(byte position, byte id, String name) {
+		addMessage((char) (64 + position << 3 + id << 1) + name);
+	}
+
+	/**
+	 * Unterrichtet den Client, dass ein Spieler das Spiel verlassen hat
+	 * 
+	 * @param player
+	 *            Der neue Spieler
+	 */
+	public void sendPlayerLeftLobby(byte player) {
+		addMessage(String.valueOf((char) (128 + player << 3)));
+	}
+
+	/**
+	 * Unterrichtet den Client, dass das Spiel gestartet wird
+	 */
+	public void sendStarting() {
+		addMessage(String.valueOf((char) 192));
+	}
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// Game
+
+	public void sendCreateBuilding() {
+		addMessage("");
+	}
+
+	public void sendUpgradeBuilding() {
+		addMessage("");
+	}
+
+	public void sendCreateUnit() {
+		addMessage("");
+	}
+
+	public void sendMoveUnit() {
+		addMessage("");
+	}
+
+	public void sendPlayerLeftGame(byte playerID) {
+		addMessage("");
+	}
+
+	public void sendGameEnded(boolean won) {
+		addMessage(String.valueOf((char) (160 + Boolean.compare(won, false) << 4)));
+	}
+
+	public void sendChatMessage(byte player, String message) {
+		addMessage(String.valueOf((char) 192) + message);
+	}
 }

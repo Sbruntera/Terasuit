@@ -30,23 +30,27 @@ public class MenuAnalyser implements Analyser {
 		case (32): // logout
 			if (logged) {
 				logged = false;
+				connection.setName(null);
 			}
 			break;
 		case (64): // Serverliste
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
-			//connection.addMessage(message);
+			connection.sendGameList();
 			break;
 		case (96): // Spiel erstellen
 			String[] splitted = getSplitString(input);
 			server.createLobby(connection, splitted[0].substring(2, splitted[0].length()), splitted[1], getMap(bytes[1]));
 			break;
 		case(128): //Spiel beitreten
-			connection.joinLobby(bytes[1]);
+			connection.joinLobby(bytes[1], input.substring(2, input.length()));
 			break;
 		case (160): // Einloggen
 			if (!logged) {
 				splitted = getSplitString(input);
-				server.loginClient(splitted[0].substring(1, splitted[0].length()), splitted[1], id);
+				if (server.loginClient(splitted[0].substring(1, splitted[0].length()), splitted[1], id)) {
+					connection.sendLogin();
+					logged = true;
+				}
 			}
 			break;
 		case (192): // Registrieren

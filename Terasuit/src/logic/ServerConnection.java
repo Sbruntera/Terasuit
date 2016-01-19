@@ -8,21 +8,18 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.swing.JOptionPane;
-
 public class ServerConnection implements Runnable {
 
-	public boolean ServerAccess = true;
-	ConcurrentLinkedQueue<String> queue;
+	private boolean ServerAccess = true;
+	private ConcurrentLinkedQueue<String> queue;
 	private PrintStream writer;
 	private BufferedReader reader;
+	private Analyser analyser;
 
 	public ServerConnection() {
 		Socket socket;
 		try {
 			socket = new Socket("localhost", 3142);
-			BufferedReader input = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
 			this.reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			this.writer = new PrintStream(socket.getOutputStream(), true);
@@ -35,6 +32,8 @@ public class ServerConnection implements Runnable {
 		}
 
 		queue = new ConcurrentLinkedQueue<String>();
+
+		analyser = new Analyser();
 	}
 
 	@Override
@@ -42,9 +41,8 @@ public class ServerConnection implements Runnable {
 		try {
 			while (true) {
 				if (reader.ready()) {
-					System.out.println("Testerino");
 					String in = reader.readLine();
-					// Nachricht interpretieren
+					analyser.analyse(in);
 				}
 				if (!queue.isEmpty()) {
 					writer.println(queue.remove());
@@ -60,64 +58,207 @@ public class ServerConnection implements Runnable {
 	}
 
 	// #################################################################
-	public void sendInformation() {
-		// Liste der Updates wird gesendet
+	// Menü
+
+	/**
+	 * Loggt den aktuell eingeloggten Spieler aus
+	 */
+	public void logout() {
+		addMessage(String.valueOf((char) 32));
 	}
 
-	public void login(String user, char[] password) {
-		addMessage((char) 160 + user + password);
-	}
-
-	public void createGroup(byte mapID, String name, String password) {
-		// Guppe erstellen
-		// Sendet erschaffung zurück
-		queue.clear();
-		addMessage((char) 96 + mapID + name + "," + password);
-		return;
-	}
-
-	public void connectGroup(byte id) {
-		// Versucht der Gruppe zu joinen
-		// Sendet erfolgreiche Verbindung zurück oder auch nicht
-		queue.clear();
-		addMessage(String.valueOf((char) 128 + id));
-		return;
-	}
-
-	public void returnLobby() {
-		// Verlässt die aktuelle Gruppe
-		// Sendet erfolgreiche verlassen der Gruppe
-		queue.clear();
-		addMessage(String.valueOf((char) 64));
-	}
-
-	public void close() {
-		// Schließst die Verbindung
-		queue.clear();
-		queue.add(String.valueOf((char) 224));
-	}
-
-	public void startGame() {
-		queue.clear();
-		addMessage(String.valueOf((char) 192));
-		// Startet für alle in der Gruppe das Spiel
-	}
-
-	public void kickPlayer(byte playerNumber) {
-		addMessage(String.valueOf((char) 128 + playerNumber)); //TODO: Playernumber maybe verschieben
-	}
-	
-	public void leaveGame() {
-		// Gibt zurück ob das verlassen vom Server akzeptiert worden ist
-	}
-
+	/**
+	 * Fordert eine aktuelle Liste der Spiel-Server mit den übergebenen
+	 * Filteroptionen an.
+	 * 
+	 * @param noPassword
+	 *            true: nur Spiele ohne Passwort; false: egal
+	 * @param minPlayers
+	 *            Minimale Anzahl an Spielern wird im Server =max gesetzt wenn
+	 *            größer als max
+	 * @param maxPlayers
+	 *            Maximale Anzahl an Spielern
+	 * @param mapID
+	 *            Die ID der gewünschten Map; 0 wenn keine spezielle Map
+	 *            gewünscht
+	 */
 	public void refreshServerList(boolean noPassword, byte minPlayers,
 			byte maxPlayers, byte mapID) {
 		addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
 				false) << 4) + (minPlayers << 2) + maxPlayers)
 				+ mapID);
-		// Aktuellisiert die Listen
-		// RETURN!!!
+	}
+
+	/**
+	 * Erstellt eine neue Spiellobby und tritt dieser als Host bei
+	 * 
+	 * @param mapID
+	 *            ID der gewählten Map
+	 * @param name
+	 *            Name des Spiels
+	 * @param password
+	 *            Passwort des Spiels
+	 */
+	public void createGroup(byte mapID, String name, String password) {
+		queue.clear();
+		addMessage((char) 96 + mapID + name + "," + password);
+		return;
+	}
+
+	/**
+	 * Tritt dem Spiel mit der übergebenen ID bei
+	 * 
+	 * @param id
+	 *            ID des gewünschten Spiels
+	 * @param password
+	 *            Passwort des gewünschten Spiels
+	 */
+	public void connectGroup(byte id, String password) {
+		queue.clear();
+		addMessage(String.valueOf((char) 128 + id));
+		return;
+	}
+
+	/**
+	 * Loggt einen Account in das Spiel ein
+	 * 
+	 * @param user
+	 *            Name des Accounts
+	 * @param password
+	 *            Passwort des Accounts
+	 */
+	public void login(String user, char[] password) {
+		addMessage((char) 160 + user + password.toString());
+	}
+
+	/**
+	 * Registriert einen neuen Account mit den übergebenen Daten
+	 * 
+	 * @param user
+	 *            Name des Accounts
+	 * @param password
+	 *            Passwort des Accounts
+	 * @param mail
+	 *            E-Mail Addresse des Accounts
+	 */
+	public void register(String user, char[] password, String mail) {
+		addMessage((char) 192 + user + "," + password.toString() + "," + mail
+				+ ",Admin");
+	}
+
+	// #################################################################
+	// Lobby
+
+	/**
+	 * wechselt die Position in der aktuellen Lobby
+	 * 
+	 * @param newPosition
+	 *            gewünschte Position nur Zahlen 0-3
+	 */
+	public void switchPosition(byte newPosition) {
+		if (newPosition < 4) {
+			addMessage(String.valueOf((char) newPosition));
+		}
+	}
+
+	/**
+	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
+	 */
+	public void returnLobby() {
+		queue.clear();
+		addMessage(String.valueOf((char) 64));
+	}
+
+	/**
+	 * Entfernt einen Spieler aus der Lobby (Benötigt Hostrechte)
+	 * 
+	 * @param playerNumber
+	 *            Die Nummer des Spielers
+	 */
+	public void kickPlayer(byte playerNumber) {
+		addMessage(String.valueOf((char) (128 + playerNumber)));
+		// TODO: Playernumber maybe verschieben
+	}
+
+	/**
+	 * Startet ein Spiel mit der aktuellen Lobby (Benötigt Hostrechte)
+	 */
+	public void startGame() {
+		queue.clear();
+		addMessage(String.valueOf((char) 192));
+	}
+
+	// #################################################################
+	// Game
+
+	/**
+	 * Erstellt ein erwünschtes Gebäude an der gewünschten Position
+	 *
+	 * @param position
+	 *            Position des Gebäudes
+	 * @param buildingType
+	 *            Typ des Gebäudes
+	 */
+	public void createBuilding(byte position, byte buildingType) {
+		if ((position & 252) == 0) {
+			addMessage(String.valueOf((char) (32 + position)) + buildingType);
+		}
+	}
+
+	/**
+	 * Verbessert ein ausgewähltes Gebäude
+	 *
+	 * @param position
+	 *            Position des Gebäudes
+	 */
+	public void upgradeBuilding(byte position) {
+		if ((position & 252) == 0) {
+			addMessage(String.valueOf((char) (32 + position)));
+		}
+	}
+
+	/**
+	 * Erstellt eine Einheit
+	 * 
+	 * @param id
+	 *            ID der Einheit
+	 */
+	public void createUnit(byte id) {
+		addMessage(String.valueOf((char) 64) + id);
+	}
+
+	/**
+	 * Bewegt die Einheiten in eine gewünschte richtung
+	 * 
+	 * @param unitID
+	 *            IDs der Einheiten
+	 * @param right
+	 *            Läuft rechts
+	 * @param walking
+	 *            läuft überhaupt
+	 */
+	public void moveUnit(short[] unitID, boolean right, boolean walking) {
+		addMessage(String.valueOf((char) (96
+				+ (Boolean.compare(false, right) << 2)
+				+ (Boolean.compare(false, walking) << 1)))
+				+ unitID);
+	}
+
+	/**
+	 * Verlässt ein laufendes Spiel und kehrt zum Menü zurück
+	 */
+	public void leaveGame() {
+		addMessage(String.valueOf((char) 128));
+	}
+
+	/**
+	 * Beendet die Verbindung zum Server
+	 * 
+	 * nur aufrufen wenn das Spiel geschlossen wird
+	 */
+	public void close() {
+		queue.clear();
+		queue.add(String.valueOf((char) 224));
 	}
 
 	public boolean isServerAccess() {

@@ -49,7 +49,7 @@ public class GameAnalyser {
 				// TODO: Create Unit
 				break;
 			case (32):
-				server.moveUnits(id, getUnits(bytes), (bytes[0] & 6));
+				server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2) * Double.compare(bytes[0] & 2, 0.5));
 				break;
 			}
 			break;

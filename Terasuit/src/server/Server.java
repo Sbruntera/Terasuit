@@ -56,27 +56,26 @@ public class Server {
 			db.addUser(name, hashed, email, mode);
 		} else {
 			// TODO: Fehlermeldung
-			connections.get(id).addMessage("Miep");
+			connections.get(id).sendLogin();
 		}
 		System.out.println("Regist");
 	}
 
-	public void loginClient(String name, String pw, int id) {
+	public boolean loginClient(String name, String pw, int id) {
 		if (db.getUser(name) != null) {
 			if (BCrypt.checkpw(pw, db.getUser(name))) { // hashed: hash steht in
 														// der DB
-				connections.get(id).addMessage("Success");
-				System.out.println("It matches");
+				return (true);
 			} else {
-				System.out.println("It does not match");
+				return (false);
 			}
 		} else {
-			System.out.println("It does not match");
+			return (false);
 		}
 	}
 
 	public void diconnect(int id) {
-//		connections.get(id).close();
+		// connections.get(id).close();
 	}
 
 	public Lobby[] getLobbylist(Filter filter) {
