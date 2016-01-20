@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import server.Lobby;
 import server.Server;
 
 public class Connection implements Runnable {
@@ -83,20 +84,14 @@ public class Connection implements Runnable {
 		}
 	}
 
-	public void leaveLobby() {
+	private void leaveLobby() {
 		setAnalyser(new MenuAnalyser(server, this, id, true)); // TODO: Boolean
 																// must be
 																// checked maybe
 		queue.clear();
 	}
 
-	public void joinLobby(byte b) {
-		setAnalyser(new LobbyAnalyser());
-		queue.clear();
-		server.getLobby(b).addPlayer(this);
-	}
-
-	public void joinLobby(byte bytes, String string) {
+	private void joinLobby() {
 		setAnalyser(new LobbyAnalyser());
 		queue.clear();
 	}
@@ -108,11 +103,12 @@ public class Connection implements Runnable {
 		addMessage("");
 	}
 
-	public void sendGameList() {
+	public void sendGameList(Lobby[] lobbys) {
 		addMessage("");
 	}
 
-	public void sendGameJoin() {
+	public void sendGameJoin(Lobby lobby) {
+		joinLobby();
 		addMessage("");
 	}
 

@@ -12,7 +12,8 @@ public class MenuAnalyser implements Analyser {
 	int id;
 	boolean logged;
 
-	public MenuAnalyser(Server server, Connection connection, int id, boolean logged) {
+	public MenuAnalyser(Server server, Connection connection, int id,
+			boolean logged) {
 		this.server = server;
 		this.connection = connection;
 		this.id = id;
@@ -35,14 +36,16 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (64): // Serverliste
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
-			connection.sendGameList();
+			connection.sendGameList(lobbyList);
 			break;
 		case (96): // Spiel erstellen
 			String[] splitted = getSplitString(input);
 			server.createLobby(connection, splitted[0].substring(2, splitted[0].length()), splitted[1], getMap(bytes[1]));
+			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case(128): //Spiel beitreten
-			connection.joinLobby(bytes[1], input.substring(2, input.length()));
+			server.getLobby(bytes[1]).addPlayer(connection);
+			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case (160): // Einloggen
 			if (!logged) {
@@ -71,27 +74,27 @@ public class MenuAnalyser implements Analyser {
 		boolean noPassword;
 		if ((bytes[0] & 16) == 0) {
 			noPassword = false;
-		}
-		else {
+		} else {
 			noPassword = true;
 		}
 		int minPlayers = bytes[0] & 243;
 		int maxPlayers = bytes[0] & 252;
 		Map map = getMap(bytes[1]);
 
-		return new Filter(noPassword, input.substring(1, input.length()), map, minPlayers, maxPlayers);
+		return new Filter(noPassword, input.substring(1, input.length()), map,
+				minPlayers, maxPlayers);
 	}
-	
+
 	private Map getMap(byte b) {
 		Map map = null;
 		switch (b) {
-		case(1):
+		case (1):
 			map = Map.Nightsun;
 			break;
 		}
 		return map;
 	}
-	
+
 	private String[] getSplitString(String string) {
 		return string.substring(1, string.length()).split(",");
 	}
