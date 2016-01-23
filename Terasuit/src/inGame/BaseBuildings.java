@@ -20,9 +20,9 @@ public class BaseBuildings {
 	public String base = "Buildings/base.png";
 	public String barracks = "Buildings/barracks.png";
 	public int default_position_Leftside_x = 40;
-	public int default_position_Leftside_y = 400;
-	public int default_position_Rightside_x = 900;
-	public int default_position_Rightside_y = 400;
+	public int default_position_Leftside_y = 380;
+	public int default_position_Rightside_x = 1350;
+	public int default_position_Rightside_y = 380;
 	int default_ender = 200;
 	int default_interval = 45;
 	ArrayList<Buildings> BuildingsEntity = new ArrayList<Buildings>();
@@ -31,23 +31,23 @@ public class BaseBuildings {
 	ActionButton btnAction = new ActionButton();
 	
 	
-	public void buildBase(Panel panel, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y){
-		createEntity(panel, load, func, barracks, 1, default_position_X, default_position_Y);
+	public void buildBase(Panel field, Panel console, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y){
+		createEntity(field, console, load, func, barracks, 1, default_position_X, default_position_Y);
 		// Rot
-		createEntity(panel, load, func, FirstColor, 0, default_position_X, default_position_Y);
-		createEntity(panel, load, func, FirstColor, 0, default_position_X+default_interval, default_position_Y+default_interval);
-		createEntity(panel, load, func, FirstColor, 0, default_position_X+default_interval*2, default_position_Y+default_interval*2);
-		createEntity(panel, load, func, FirstColor, 0, default_position_X+default_interval*3, default_position_Y+default_interval);
+		createEntity(field, console, load, func, FirstColor, 0, default_position_X, default_position_Y);
+		createEntity(field, console, load, func, FirstColor, 0, default_position_X+default_interval, default_position_Y+default_interval);
+		createEntity(field, console, load, func, FirstColor, 0, default_position_X+default_interval*2, default_position_Y+default_interval*2);
+		createEntity(field, console, load, func, FirstColor, 0, default_position_X+default_interval*3, default_position_Y+default_interval);
 		// Blau
-		createEntity(panel, load, func, SecColor, 0, default_position_X+default_interval, default_position_Y-default_interval);
-		createEntity(panel, load, func, SecColor, 0, default_position_X+default_interval*2, default_position_Y-default_interval*2);
-		createEntity(panel, load, func, SecColor, 0, default_position_X+default_interval*3, default_position_Y-default_interval);
-		createEntity(panel, load, func, SecColor, 0, default_position_X+default_interval*4, default_position_Y);
+		createEntity(field, console, load, func, SecColor, 0, default_position_X+default_interval, default_position_Y-default_interval);
+		createEntity(field, console, load, func, SecColor, 0, default_position_X+default_interval*2, default_position_Y-default_interval*2);
+		createEntity(field, console, load, func, SecColor, 0, default_position_X+default_interval*3, default_position_Y-default_interval);
+		createEntity(field, console, load, func, SecColor, 0, default_position_X+default_interval*4, default_position_Y);
 		// MAIN_BASE
-		createEntity(panel, load, func, base, -1,  default_position_X+default_interval*2, default_position_Y);
+		createEntity(field, console, load, func, base, -1,  default_position_X+default_interval*2, default_position_Y);
 	}
 	
-	public void createEntity(Panel panel, Loader loader, Funktions func, String Entitytype, int EntityNumber,  int  X, int Y){
+	public void createEntity(Panel field, Panel console, Loader loader, Funktions func, String Entitytype, int EntityNumber,  int  X, int Y){
 		building = new Buildings();
 		
 		ImageIcon pic = new ImageIcon(Entitytype);
@@ -58,7 +58,7 @@ public class BaseBuildings {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < BuildingsEntity.size(); i++) {
 					if (BuildingsEntity.get(i).getLabel() == objUnit.getSource()){
-						btnAction.createUserOptions(panel, BuildingsEntity, i, loader, func);
+						btnAction.createUserOptions(console, field, BuildingsEntity, i, loader, func);
 					}
 				}
 			}
@@ -68,8 +68,8 @@ public class BaseBuildings {
 		building.setName("Barracks");
 		building.setSpwanableEntity(searchForPossibleEntitys(EntityNumber));
 		BuildingsEntity.add(building);
-		panel.add(label);
-		panel.repaint();
+		field.add(label);
+		field.repaint();
 		return;
 	}
 	

@@ -2,6 +2,7 @@ package grafig;
 
 import inGame.Funktions;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,13 +13,15 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class Panel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private Image img = null;
 	SetButtons buttons = new SetButtons();
-	Funktions func = new Funktions();
+	
 	
 	private int squareX = 0;
 	private int squareY = -1;
@@ -26,23 +29,51 @@ public class Panel extends JPanel{
 	int h;
 	int minX;
 	int w;
+	Funktions func;
 	
-	public Panel(String picName, int HEIGHT, int WIGTH, Loader loader) {
+	public Panel(String picName, Funktions func, int HEIGHT, int WIGTH, Loader loader) {
 		super();
-		setPreferredSize(new Dimension(HEIGHT, WIGTH));
 		setFocusable(true);
-		setLayout(null);
-		try {
-			ImageIcon u = new ImageIcon(picName);
-			img = u.getImage();			
-		} catch (Exception e) {
-			System.out.println("<ERROR> Kein Bild für diese Aktion vorhanden!!!");
+		this.func = func;
+		if (picName.equals("Wallpaper/Field.png")){
+			// Ausnamhe für das Feld
+		}else if ( picName.equals("Wallpaper/Console.png")){
+			// Ausnahme für die Konsole
+		}else{
+			setPreferredSize(new Dimension(HEIGHT-2, WIGTH-2));
+			System.out.println(picName);
 		}
-
-		buttons.setbuttons(this, picName, loader, func);
+		
+		// Das Spiel wird gestartet, es werden das Feld und die Konsole inizalisiert und auf das Feld der Listener aktiviert
 		if (picName.equals("Wallpaper/Maingame.png")){
-			addListenersForMouse();
-		}	
+			
+			setLayout(new BorderLayout(0, 0));
+			
+			Panel field = new Panel("Wallpaper/Field.png", func, HEIGHT, WIGTH, loader);
+			field.setPreferredSize(new Dimension(1600, 590));
+			field.addListenersForMouse();
+			JScrollPane scrollPane = new JScrollPane(field);
+			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+			add(scrollPane, BorderLayout.CENTER);
+			
+			Panel console = new Panel("Wallpaper/Console.png", func, HEIGHT, WIGTH, loader);
+			console.setLayout(null);
+			console.setPreferredSize(new Dimension(WIGTH, 185));
+			add(console, BorderLayout.SOUTH);
+			
+			loader.init(this, field, console, func);
+			
+		}else{
+			setLayout(null);
+			try {
+				ImageIcon u = new ImageIcon(picName);
+				img = u.getImage();			
+			} catch (Exception e) {
+				System.out.println("<ERROR> Kein Bild für diese Aktion vorhanden!!!");
+			}
+			buttons.setbuttons(this, picName, loader, func);
+		}
 	}
 	
 	public void paint(Graphics g){

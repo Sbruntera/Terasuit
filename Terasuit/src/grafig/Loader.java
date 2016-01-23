@@ -1,5 +1,8 @@
 package grafig;
 
+import inGame.Funktions;
+import inGame.Game;
+
 import javax.swing.JFrame;
 
 import logic.Debugger_Thread;
@@ -8,7 +11,9 @@ import logic.ServerConnection;
 public class Loader {
 	
 	Debugger_Thread debugger = new Debugger_Thread();
-	ServerConnection connection = new ServerConnection();
+	public ServerConnection connection = new ServerConnection();
+	Funktions func = new Funktions();
+	Game game;
 
 	public final String Mainpage = "Wallpaper/Start_Hintergrund.png";
 	public final String Lobbypage = "Wallpaper/serverlist.png";
@@ -25,7 +30,8 @@ public class Loader {
 	JFrame window = new JFrame("Terasuit");
 	
 	public void print() {
-		window.setContentPane(new Panel(Gamepage, HEIGHT, WIGTH, this));
+
+		window.setContentPane(new Panel(Gamepage, func, HEIGHT, WIGTH, this));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();
@@ -33,15 +39,20 @@ public class Loader {
 	}
 	
 	public void switchPanel(String newPage){
-		if (newPage == Mainpage) window.setContentPane(new Panel(Mainpage, HEIGHT, WIGTH, this));
-	    else if(newPage == Lobbypage) window.setContentPane(new Panel(Lobbypage, HEIGHT, WIGTH, this));
-		else if(newPage == Gamepage) window.setContentPane(new Panel(Gamepage, HEIGHT, WIGTH, this));
-		else if(newPage == Grouppage) window.setContentPane(new Panel(Grouppage, HEIGHT, WIGTH, this));
-		else if(newPage == Grouppage_owner) window.setContentPane(new Panel(Grouppage_owner, HEIGHT, WIGTH, this));
+		if (newPage == Mainpage) window.setContentPane(new Panel(Mainpage, func, HEIGHT, WIGTH, this));
+	    else if(newPage == Lobbypage) window.setContentPane(new Panel(Lobbypage, func, HEIGHT, WIGTH, this));
+		else if(newPage == Gamepage) window.setContentPane(new Panel(Gamepage, func, HEIGHT, WIGTH, this));
+		else if(newPage == Grouppage) window.setContentPane(new Panel(Grouppage, func, HEIGHT, WIGTH, this));
+		else if(newPage == Grouppage_owner) window.setContentPane(new Panel(Grouppage_owner, func, HEIGHT, WIGTH, this));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();
 		window.setVisible(true);
+	}
+	
+	public void init(Panel panel, Panel field, Panel console, Funktions func){
+		game = new Game();
+		game.init(panel, field, console, this, func);
 	}
 	
 	public void startDebugger(){

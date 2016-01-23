@@ -264,29 +264,7 @@ public class SetButtons {
 		//#########################################################################		
 			
 		} else if (picName.equals("Wallpaper/Maingame.png")){
-			
-			// Erstellen der Basis
-			buildings.buildBase(panel, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
-			buildings.buildBase(panel, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
-			
-			
-			
-			// Back-Button
-			JButton btnBACK = new JButton("X");
-			btnCreator.createOne(btnBACK, 700, 550, 60, 60, 87);
-			btnBACK.addMouseListener(new MouseAdapter() {
-				public void mouseReleased(MouseEvent arg0) {
-					if (loader.connection.returnToLobbyFromGame()){
-						loader.switchPanel(loader.Mainpage);
-					}else{
-						System.out.println("Kann das Spiel nicht verlassen!!");
-					}
-					
-				}
-			});
-			panel.add(btnBACK);	
 
-			panel.repaint();
 		}
 	}
 }

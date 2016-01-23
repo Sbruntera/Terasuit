@@ -1,8 +1,12 @@
 package inGame;
 
 import grafig.Panel;
+
+import java.awt.Component;
 import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 public class Funktions {
 	
@@ -20,13 +24,13 @@ public class Funktions {
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
-	public void createEntity(Panel panel, String Entitytype, int color, boolean airUnit){
-		entity = cunit.createEntity(panel, Entitytype, entity, color, airUnit);
+	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit){
+		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit);
 	}
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
-		selectedEntitysID = selectedUnit.getGroupOfUnits(entity, selectedEntitysID, minX, minY, w, h);
+		selectedEntitysID = selectedUnit.getGroupOfUnits(getEntity(), selectedEntitysID, minX, minY, w, h);
 		for (int id : selectedEntitysID) {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
@@ -107,6 +111,23 @@ public class Funktions {
 		for (int i = 0; i != building.size(); i++){
 			
 		}
+	}
+	
+	/**
+	 * Sucht im Panel nach Panels und gibt nach Wunsch das richtige zurück
+	 * @return
+	 */
+	public Panel searchForThePanel(Panel panel){
+		
+		ArrayList<JPanel> list = new ArrayList<JPanel>();
+		Component[] components = panel.getComponents();
+		for (Component component : components) {
+		    if (component.getClass().equals(JPanel.class)) {
+		        list.add((JPanel)component);
+		    }
+		}
+		
+		return null;
 	}
 	
 	

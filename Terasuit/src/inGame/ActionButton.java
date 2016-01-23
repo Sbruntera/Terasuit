@@ -29,13 +29,13 @@ public class ActionButton {
 	}
 	
 	// Gebäudeoptionen
-	public void createUserOptions(Panel panel, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
+	public void createUserOptions(Panel console, Panel field, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
 		String [] noName  = BuildingsEntity.get(i).getSpwanableEntity();
 		// Generiert alle möglichen Gebäudeoptionen
 		for (int n = 0; n != noName.length; n++){
 			System.out.println(noName[n]);
 			btn = new JButton(wrapLines(noName[n]));
-			btnCreator.createOne(btn, 200+(n*62), 600, 60, 60, 87);
+			btnCreator.createOne(btn, 200+(n*62), 30, 60, 60, 87);
 			String type = getEntityAction(noName[n]);
 
 			btn.addMouseListener(new MouseAdapter() {
@@ -46,12 +46,12 @@ public class ActionButton {
 						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Ground/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						func.createEntity(panel, UnitString, number, false);
+						func.createEntity(field, UnitString, number, false);
 					}else if (type.equals("Air")){
 						System.out.println("Eine Lufteinheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						func.createEntity(panel, UnitString, number, true);
+						func.createEntity(field, UnitString, number, true);
 					}else if (type.equals("Generation")){
 						System.out.println("Eine generierung wurde ausgewählt!");
 					}else if (type.equals("Destroy")){
@@ -65,23 +65,23 @@ public class ActionButton {
 				}
 			});
 			jButton.add(btn);
-			panel.add(btn);
+			console.add(btn);
 		}
 		
 		JLabel Description = new JLabel("");
 		Description.setText(wrapLines(BuildingsEntity.get(i).getDescription()));
 		Description.setForeground(Color.BLACK);
-		Description.setBounds(20, 500, 180, 300);
-		panel.add(Description);
+		Description.setBounds(20, -50, 180, 300);
+		console.add(Description);
 		
 		JLabel BuildingNameLbl = new JLabel("");
 		BuildingNameLbl.setText(wrapLines(BuildingsEntity.get(i).getName()));
 		BuildingNameLbl.setForeground(Color.BLACK);
 		BuildingNameLbl.setFont(new Font("Arial", Font.PLAIN, 19));
-		BuildingNameLbl.setBounds(20, 560, 180, 100);
-		panel.add(BuildingNameLbl);
+		BuildingNameLbl.setBounds(20, -20, 180, 100);
+		console.add(BuildingNameLbl);
 
-		panel.repaint();
+		console.repaint();
 	}
 	
 	public void deselectOptions(Panel panel){
