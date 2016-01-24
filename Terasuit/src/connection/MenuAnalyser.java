@@ -10,14 +10,11 @@ public class MenuAnalyser implements Analyser {
 	Server server;
 	Connection connection;
 	int id;
-	boolean logged;
 
-	public MenuAnalyser(Server server, Connection connection, int id,
-			boolean logged) {
+	public MenuAnalyser(Server server, Connection connection, int id) {
 		this.server = server;
 		this.connection = connection;
 		this.id = id;
-		this.logged = logged;
 	}
 
 	@Override
@@ -29,10 +26,7 @@ public class MenuAnalyser implements Analyser {
 			// TODO: Get Stats
 			break;
 		case (32): // logout
-			if (logged) {
-				logged = false;
-				connection.setName(null);
-			}
+			connection.setName(null);
 			break;
 		case (64): // Serverliste
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
@@ -48,16 +42,16 @@ public class MenuAnalyser implements Analyser {
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case (160): // Einloggen
-			if (!logged) {
+			if (connection.getName() == null) {
 				splitted = getSplitString(input);
 				if (server.loginClient(splitted[0].substring(1, splitted[0].length()), splitted[1], id)) {
 					connection.sendLogin();
-					logged = true;
+					connection.setName(splitted[0].substring(1, splitted[0].length()));
 				}
 			}
 			break;
 		case (192): // Registrieren
-			if (!logged) {
+			if (connection.getName() == null) {
 				splitted = getSplitString(input);
 				server.registerClient(splitted[0].substring(1, splitted[0].length()), splitted[1], splitted[2],
 						splitted[3], id);

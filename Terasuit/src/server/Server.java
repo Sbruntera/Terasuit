@@ -15,7 +15,7 @@ public class Server {
 	private DB db;
 	ArrayList<Thread> connectionThreads = new ArrayList<Thread>();
 	ArrayList<Connection> connections = new ArrayList<Connection>();
-	int idIterator;
+	short idIterator;
 	ArrayList<GameServer> games = new ArrayList<GameServer>();
 	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
 

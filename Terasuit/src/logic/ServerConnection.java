@@ -64,7 +64,9 @@ public class ServerConnection implements Runnable {
 	 * Loggt den aktuell eingeloggten Spieler aus
 	 */
 	public void logout() {
-		addMessage(String.valueOf((char) 32));
+		if (analyser.getState() == State.MENU) {
+			addMessage(String.valueOf((char) 32));
+		}
 	}
 
 	/**
@@ -84,9 +86,11 @@ public class ServerConnection implements Runnable {
 	 */
 	public void refreshServerList(boolean noPassword, byte minPlayers,
 			byte maxPlayers, byte mapID) {
-		addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
-				false) << 4) + (minPlayers << 2) + maxPlayers)
-				+ mapID);
+		if (analyser.getState() == State.MENU) {
+			addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
+					false) << 4) + (minPlayers << 2) + maxPlayers)
+					+ mapID);
+		}
 	}
 
 	/**
@@ -100,9 +104,11 @@ public class ServerConnection implements Runnable {
 	 *            Passwort des Spiels
 	 */
 	public void createGroup(byte mapID, String name, String password) {
-		queue.clear();
-		addMessage((char) 96 + mapID + name + "," + password);
-		return;
+		if (analyser.getState() == State.MENU) {
+			queue.clear();
+			addMessage((char) 96 + mapID + name + "," + password);
+			return;
+		}
 	}
 
 	/**
@@ -114,9 +120,11 @@ public class ServerConnection implements Runnable {
 	 *            Passwort des gewünschten Spiels
 	 */
 	public void connectGroup(byte id, String password) {
-		queue.clear();
-		addMessage(String.valueOf((char) 128 + id));
-		return;
+		if (analyser.getState() == State.MENU) {
+			queue.clear();
+			addMessage(String.valueOf((char) 128 + id));
+			return;
+		}
 	}
 
 	/**
@@ -128,7 +136,9 @@ public class ServerConnection implements Runnable {
 	 *            Passwort des Accounts
 	 */
 	public void login(String user, char[] password) {
-		addMessage((char) 160 + user + password.toString());
+		if (analyser.getState() == State.MENU) {
+			addMessage((char) 160 + user + password.toString());
+		}
 	}
 
 	/**
@@ -142,8 +152,22 @@ public class ServerConnection implements Runnable {
 	 *            E-Mail Addresse des Accounts
 	 */
 	public void register(String user, char[] password, String mail) {
-		addMessage((char) 192 + user + "," + password.toString() + "," + mail
-				+ ",Admin");
+		if (analyser.getState() == State.MENU) {
+			addMessage((char) 192 + user + "," + password.toString() + ","
+					+ mail + ",Admin");
+		}
+	}
+
+	/**
+	 * Beendet die Verbindung zum Server
+	 * 
+	 * nur aufrufen wenn das Spiel geschlossen wird
+	 */
+	public void close() {
+		if (analyser.getState() == State.GAME) {
+			queue.clear();
+			queue.add(String.valueOf((char) 224));
+		}
 	}
 
 	// #################################################################
@@ -156,8 +180,10 @@ public class ServerConnection implements Runnable {
 	 *            gewünschte Position nur Zahlen 0-3
 	 */
 	public void switchPosition(byte newPosition) {
-		if (newPosition < 4) {
-			addMessage(String.valueOf((char) newPosition));
+		if (analyser.getState() == State.LOBBY) {
+			if (newPosition < 4) {
+				addMessage(String.valueOf((char) newPosition));
+			}
 		}
 	}
 
@@ -165,8 +191,10 @@ public class ServerConnection implements Runnable {
 	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
 	 */
 	public void returnLobby() {
-		queue.clear();
-		addMessage(String.valueOf((char) 64));
+		if (analyser.getState() == State.LOBBY) {
+			queue.clear();
+			addMessage(String.valueOf((char) 64));
+		}
 	}
 
 	/**
@@ -176,16 +204,20 @@ public class ServerConnection implements Runnable {
 	 *            Die Nummer des Spielers
 	 */
 	public void kickPlayer(byte playerNumber) {
-		addMessage(String.valueOf((char) (128 + playerNumber)));
-		// TODO: Playernumber maybe verschieben
+		if (analyser.getState() == State.LOBBY) {
+			addMessage(String.valueOf((char) (128 + playerNumber)));
+			// TODO: Playernumber maybe verschieben
+		}
 	}
 
 	/**
 	 * Startet ein Spiel mit der aktuellen Lobby (Benötigt Hostrechte)
 	 */
 	public void startGame() {
-		queue.clear();
-		addMessage(String.valueOf((char) 192));
+		if (analyser.getState() == State.LOBBY) {
+			queue.clear();
+			addMessage(String.valueOf((char) 192));
+		}
 	}
 
 	// #################################################################
@@ -200,8 +232,11 @@ public class ServerConnection implements Runnable {
 	 *            Typ des Gebäudes
 	 */
 	public void createBuilding(byte position, byte buildingType) {
-		if ((position & 252) == 0) {
-			addMessage(String.valueOf((char) (32 + position)) + buildingType);
+		if (analyser.getState() == State.GAME) {
+			if ((position & 252) == 0) {
+				addMessage(String.valueOf((char) (32 + position))
+						+ buildingType);
+			}
 		}
 	}
 
@@ -212,8 +247,10 @@ public class ServerConnection implements Runnable {
 	 *            Position des Gebäudes
 	 */
 	public void upgradeBuilding(byte position) {
-		if ((position & 252) == 0) {
-			addMessage(String.valueOf((char) (32 + position)));
+		if (analyser.getState() == State.GAME) {
+			if ((position & 252) == 0) {
+				addMessage(String.valueOf((char) (32 + position)));
+			}
 		}
 	}
 
@@ -224,7 +261,9 @@ public class ServerConnection implements Runnable {
 	 *            ID der Einheit
 	 */
 	public void createUnit(byte id) {
-		addMessage(String.valueOf((char) 64) + id);
+		if (analyser.getState() == State.GAME) {
+			addMessage(String.valueOf((char) 64) + id);
+		}
 	}
 
 	/**
@@ -238,27 +277,20 @@ public class ServerConnection implements Runnable {
 	 *            läuft überhaupt
 	 */
 	public void moveUnit(short[] unitID, boolean right, boolean walking) {
-		addMessage(String.valueOf((char) (96
-				+ (Boolean.compare(false, right) << 2)
-				+ (Boolean.compare(false, walking) << 1)))
-				+ unitID);
+		if (analyser.getState() == State.GAME) {
+			addMessage(String.valueOf((char) (96 + (Boolean.compare(false,
+					right) << 2) + (Boolean.compare(false, walking) << 1)))
+					+ unitID);
+		}
 	}
 
 	/**
 	 * Verlässt ein laufendes Spiel und kehrt zum Menü zurück
 	 */
 	public void leaveGame() {
-		addMessage(String.valueOf((char) 128));
-	}
-
-	/**
-	 * Beendet die Verbindung zum Server
-	 * 
-	 * nur aufrufen wenn das Spiel geschlossen wird
-	 */
-	public void close() {
-		queue.clear();
-		queue.add(String.valueOf((char) 224));
+		if (analyser.getState() == State.GAME) {
+			addMessage(String.valueOf((char) 128));
+		}
 	}
 
 	public boolean isServerAccess() {
