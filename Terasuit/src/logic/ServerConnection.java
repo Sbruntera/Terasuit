@@ -190,7 +190,7 @@ public class ServerConnection implements Runnable {
 	/**
 	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
 	 */
-	public void returnLobby() {
+	public void returnFromLobby() {
 		if (analyser.getState() == State.LOBBY) {
 			queue.clear();
 			addMessage(String.valueOf((char) 64));
@@ -205,7 +205,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void kickPlayer(byte playerNumber) {
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) (128 + playerNumber)));
+			addMessage(String.valueOf((char) 128) + playerNumber);
 			// TODO: Playernumber maybe verschieben
 		}
 	}
@@ -218,6 +218,10 @@ public class ServerConnection implements Runnable {
 			queue.clear();
 			addMessage(String.valueOf((char) 192));
 		}
+	}
+
+	public void sendLobbyChatMessage() {
+
 	}
 
 	// #################################################################
@@ -290,6 +294,18 @@ public class ServerConnection implements Runnable {
 	public void leaveGame() {
 		if (analyser.getState() == State.GAME) {
 			addMessage(String.valueOf((char) 128));
+		}
+	}
+
+	/**
+	 * Sendet eine Chatnachricht an den Server
+	 * 
+	 * @param message
+	 *            Chatnachricht
+	 */
+	public void sendChatMessage(String message) {
+		if (!message.contains("")) {
+			addMessage((char) 192 + message);
 		}
 	}
 

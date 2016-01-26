@@ -95,15 +95,25 @@ public class Lobby {
 		}
 	}
 
+	public void broadcast(String msg, short id) {
+		for (int i = 0; i < playerList.length; i++) {
+			playerList[i].sendGameChatMessage(id, msg);
+		}
+	}
+
 	/**
 	 * Verschiebt einen Spieler innnerhalb der Lobby
 	 * 
 	 * @param oldPosition
 	 * @param newPosition
 	 */
-	public void movePlayer(int oldPosition, int newPosition) {
-		if (playerList[oldPosition] != null && playerList[newPosition] == null) {
-			playerList[newPosition] = playerList[oldPosition];
+	public void movePlayer(short playerID, int newPosition) {
+		for (int i = 0; i < playerList.length; i++) {
+			if (playerList[i] != null) {
+				if (playerList[i].getID() == playerID && playerList[newPosition] != null) {
+					playerList[newPosition] = playerList[i];
+				}
+			}
 		}
 	}
 
@@ -167,7 +177,7 @@ public class Lobby {
 			iDs[counter] = p.getID();
 			counter++;
 		}
-		return new Object[] {iDs, names};
+		return new Object[] { iDs, names };
 	}
 
 	/**

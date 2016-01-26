@@ -9,9 +9,9 @@ public class MenuAnalyser implements Analyser {
 
 	Server server;
 	Connection connection;
-	int id;
+	short id;
 
-	public MenuAnalyser(Server server, Connection connection, int id) {
+	public MenuAnalyser(Server server, Connection connection, short id) {
 		this.server = server;
 		this.connection = connection;
 		this.id = id;

@@ -40,8 +40,7 @@ public class Server {
 
 	public void createConnection(Socket socket) {
 		Connection connection = new Connection(socket, this, idIterator);
-		connection.setAnalyser(new MenuAnalyser(this, connection, idIterator,
-				false));
+		connection.setAnalyser(new MenuAnalyser(this, connection, idIterator));
 		idIterator++;
 		connections.add(connection);
 		Thread connectionThread = new Thread(connection);

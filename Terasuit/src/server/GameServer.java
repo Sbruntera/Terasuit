@@ -32,6 +32,12 @@ public class GameServer {
 		}
 		// TODO: Startrecourcen festlegen.
 	}
+	
+	public void broadcast(String msg, short id){
+		for(int i=0;i<connections.length;i++){
+			connections[i].sendGameChatMessage(id, msg);
+		}
+	}
 
 	public boolean hasBuildingAt(int id, int pos) {
 		return buildings[id][pos] != null;

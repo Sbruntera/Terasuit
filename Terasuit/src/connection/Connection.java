@@ -92,8 +92,8 @@ public class Connection implements Runnable {
 		queue.clear();
 	}
 
-	private void joinLobby() {
-		setAnalyser(new LobbyAnalyser());
+	private void joinLobby(Lobby lobby) {
+		setAnalyser(new LobbyAnalyser(lobby, id));
 		queue.clear();
 	}
 
@@ -122,7 +122,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendGameJoin(Lobby lobby) {
-		joinLobby();
+		joinLobby(lobby);
 		String message = String.valueOf((char) 128) + (char) lobby.getMap().getID();
 		Object[] arrays = lobby.getPlayerNamesAndIDs();
 		int[] iDs = (int[]) arrays[0];
@@ -228,7 +228,7 @@ public class Connection implements Runnable {
 				.valueOf((char) (160 + (Boolean.compare(won, false) << 4))));
 	}
 
-	public void sendChatMessage(byte player, String message) {
-		addMessage(String.valueOf((char) 192) + message);
+	public void sendGameChatMessage(short id, String message) {
+		addMessage(String.valueOf((char) 192) + id + message);
 	}
 }

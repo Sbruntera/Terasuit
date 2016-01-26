@@ -10,9 +10,9 @@ import world.Building;
 public class GameAnalyser {
 
 	GameServer server;
-	int id;
+	short id;
 
-	public GameAnalyser(GameServer server, int id) {
+	public GameAnalyser(GameServer server, short id) {
 		this.server = server;
 		this.id = id;
 	}
@@ -59,7 +59,7 @@ public class GameAnalyser {
 			break;
 
 		case (192): // Chat
-			// TODO: Chat erwünscht?
+			server.broadcast(input, id);
 			break;
 		}
 	}
