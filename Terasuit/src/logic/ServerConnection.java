@@ -235,11 +235,40 @@ public class ServerConnection implements Runnable {
 	 * @param buildingType
 	 *            Typ des Gebäudes
 	 */
-	public void createBuilding(byte position, byte buildingType) {
-		if (analyser.getState() == State.GAME) {
+	public void createBuilding(byte position, String buildingType) {
+		byte buildingID = -2;
+		switch (buildingType) {
+		case ("Barracks"):
+			buildingID = 0;
+			break;
+		case ("Forge"):
+			buildingID = 8;
+			break;
+		case ("Armory"):
+			buildingID = 16;
+			break;
+		case ("Hospital"):
+			buildingID = 24;
+			break;
+		case ("Outpost"):
+			buildingID = 32;
+			break;
+		case ("Bank"):
+			buildingID = 40;
+			break;
+		case ("Generator"):
+			buildingID = 48;
+			break;
+		case ("Special Operations"):
+			buildingID = 52;
+			break;
+		case ("Destroy"):
+			buildingID = -1;
+			break;
+		}
+		if (analyser.getState() == State.GAME && buildingID != -2) {
 			if ((position & 252) == 0) {
-				addMessage(String.valueOf((char) (32 + position))
-						+ buildingType);
+				addMessage(String.valueOf((char) (32 + position)) + buildingID);
 			}
 		}
 	}
@@ -254,6 +283,20 @@ public class ServerConnection implements Runnable {
 		if (analyser.getState() == State.GAME) {
 			if ((position & 252) == 0) {
 				addMessage(String.valueOf((char) (32 + position)));
+			}
+		}
+	}
+
+	/**
+	 * Zerstört ein ausgewähltes Gebäude
+	 * 
+	 * @param position
+	 *            : Position des Gebäudes
+	 */
+	public void destroyBuilding(byte position) {
+		if (analyser.getState() == State.GAME) {
+			if ((position & 252) == 0) {
+				addMessage(String.valueOf((char) (32 + 4 + position)));
 			}
 		}
 	}

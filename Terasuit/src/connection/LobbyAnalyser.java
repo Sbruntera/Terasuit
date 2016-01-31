@@ -2,8 +2,13 @@ package connection;
 
 import server.Lobby;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class LobbyAnalyser implements Analyser {
-	
+
 	private Lobby lobby;
 	private short id;
 
@@ -11,7 +16,12 @@ public class LobbyAnalyser implements Analyser {
 		this.lobby = lobby;
 		this.id = id;
 	}
-	
+
+	/**
+	 * Analysiert die Nachricht als Lobby Nachricht
+	 * 
+	 * @param input
+	 */
 	@Override
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
@@ -20,10 +30,10 @@ public class LobbyAnalyser implements Analyser {
 			lobby.movePlayer(id, bytes[0]);
 			break;
 		case (64): // Spiel verlassen
-			lobby.removePlayer(id);
+			lobby.removePlayer(id, id);
 			break;
 		case (128): // Spieler kicken
-			lobby.removePlayer(id, ((short) ((short) bytes[1]) << 8 + (short) bytes[2]));
+			lobby.removePlayer(id, (short) ((short) bytes[1] << 8 + bytes[2]));
 			break;
 		case (192): // Spiel starten
 			switch (bytes[0] & 32) {

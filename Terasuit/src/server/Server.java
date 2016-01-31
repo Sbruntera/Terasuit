@@ -9,6 +9,11 @@ import connection.Connection;
 import connection.MenuAnalyser;
 import logic.BCrypt;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class Server {
 	private final ServerSocket server;
 	private Socket socket;
@@ -26,6 +31,9 @@ public class Server {
 		idIterator = 0;
 	}
 
+	/**
+	 * Wartet auf einen neuen Nutzer und baut eine Verbindung mit dem Nutzer auf
+	 */
 	private void acceptConnection() {
 		try {
 			while (true) {
@@ -38,7 +46,12 @@ public class Server {
 		}
 	}
 
-	public void createConnection(Socket socket) {
+	/**
+	 * Baut eine Verbindung mit dem Nutzer auf
+	 * 
+	 * @param socket
+	 */
+	private void createConnection(Socket socket) {
 		Connection connection = new Connection(socket, this, idIterator);
 		connection.setAnalyser(new MenuAnalyser(this, connection, idIterator));
 		idIterator++;
@@ -48,6 +61,15 @@ public class Server {
 		connectionThread.start();
 	}
 
+	/**
+	 * registriert einen Nutzer in der Datenbank
+	 * 
+	 * @param name: Name des Nutzers
+	 * @param pw: Passwort des Nutzers als Hash
+	 * @param email: E-Mail des Nutzers
+	 * @param mode: Privilegien
+	 * @param id: ID des Nutzers
+	 */
 	public void registerClient(String name, String pw, String email,
 			String mode, int id) {
 		String hashed = BCrypt.hashpw(pw, BCrypt.gensalt());
@@ -60,6 +82,14 @@ public class Server {
 		System.out.println("Regist");
 	}
 
+	/**
+	 * Loggt einen Nutzer ein
+	 * 
+	 * @param name
+	 * @param pw
+	 * @param id
+	 * @return
+	 */
 	public boolean loginClient(String name, String pw, int id) {
 		if (db.getUser(name) != null) {
 			if (BCrypt.checkpw(pw, db.getUser(name))) { // hashed: hash steht in
@@ -77,6 +107,13 @@ public class Server {
 		// connections.get(id).close();
 	}
 
+	/**
+	 * Gibt die Liste aller aktiven Lobby zurück
+	 * 
+	 * @param filter
+	 *            : Filter nach dem die Lobbys gefiltert werden sollen
+	 * @return
+	 */
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
 		if (filter != null) {
@@ -98,15 +135,40 @@ public class Server {
 		return filteredArray;
 	}
 
+	/**
+	 * Erstellt eine Lobby
+	 * 
+	 * @param connection
+	 *            : Verbindung des Host
+	 * @param name
+	 *            : Name der Lobby
+	 * @param password
+	 *            : Passwort der Lobby
+	 * @param map
+	 *            : Karte der Lobby
+	 */
 	public void createLobby(Connection connection, String name,
 			String password, Map map) {
 		lobbys.add(new Lobby(this, connection, name, password, map));
 	}
 
+	/**
+	 * Löscht eine Lobby
+	 * 
+	 * @param lobby
+	 *            : zu entfernende Lobby
+	 */
 	public void removeLobby(Lobby lobby) {
 		lobbys.remove(lobby);
 	}
 
+	/**
+	 * Gibt eine Lobby zurück
+	 * 
+	 * @param id
+	 *            : ID der Lobby
+	 * @return
+	 */
 	public Lobby getLobby(byte id) {
 		return lobbys.get(id);
 	}

@@ -5,6 +5,11 @@ import server.Lobby;
 import server.Map;
 import server.Server;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class MenuAnalyser implements Analyser {
 
 	Server server;
@@ -17,6 +22,11 @@ public class MenuAnalyser implements Analyser {
 		this.id = id;
 	}
 
+	/**
+	 * Analysiert die Nachricht als Menü Nachricht
+	 * 
+	 * @param input
+	 */
 	@Override
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
@@ -34,27 +44,33 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (96): // Spiel erstellen
 			String[] splitted = getSplitString(input);
-			server.createLobby(connection, splitted[0].substring(2, splitted[0].length()), splitted[1], getMap(bytes[1]));
+			server.createLobby(connection,
+					splitted[0].substring(2, splitted[0].length()),
+					splitted[1], getMap(bytes[1]));
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
-		case(128): //Spiel beitreten
+		case (128): // Spiel beitreten
 			server.getLobby(bytes[1]).addPlayer(connection);
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case (160): // Einloggen
 			if (connection.getName() == null) {
 				splitted = getSplitString(input);
-				if (server.loginClient(splitted[0].substring(1, splitted[0].length()), splitted[1], id)) {
+				if (server.loginClient(
+						splitted[0].substring(1, splitted[0].length()),
+						splitted[1], id)) {
 					connection.sendLogin();
-					connection.setName(splitted[0].substring(1, splitted[0].length()));
+					connection.setName(splitted[0].substring(1,
+							splitted[0].length()));
 				}
 			}
 			break;
 		case (192): // Registrieren
 			if (connection.getName() == null) {
 				splitted = getSplitString(input);
-				server.registerClient(splitted[0].substring(1, splitted[0].length()), splitted[1], splitted[2],
-						splitted[3], id);
+				server.registerClient(
+						splitted[0].substring(1, splitted[0].length()),
+						splitted[1], splitted[2], splitted[3], id);
 			}
 			break;
 		case (224):
@@ -63,6 +79,13 @@ public class MenuAnalyser implements Analyser {
 		}
 	}
 
+	/**
+	 * Entnimmt der Bytefolge den Filter
+	 * 
+	 * @param input
+	 *            : byte[]
+	 * @return: Filter
+	 */
 	private Filter getFilter(String input) {
 		byte[] bytes = input.getBytes();
 		boolean noPassword;
@@ -79,6 +102,11 @@ public class MenuAnalyser implements Analyser {
 				minPlayers, maxPlayers);
 	}
 
+	/**
+	 * Entnimmt der Bytefolge die Map
+	 * @param b
+	 * @return
+	 */
 	private Map getMap(byte b) {
 		Map map = null;
 		switch (b) {
@@ -89,6 +117,11 @@ public class MenuAnalyser implements Analyser {
 		return map;
 	}
 
+	/**
+	 * Schneidet aus einem String den ersten String ab und trennt nach ","
+	 * @param string
+	 * @return
+	 */
 	private String[] getSplitString(String string) {
 		return string.substring(1, string.length()).split(",");
 	}

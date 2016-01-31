@@ -1,5 +1,10 @@
 package server;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public enum Map {
 	Nightsun ((byte) 0);
 	

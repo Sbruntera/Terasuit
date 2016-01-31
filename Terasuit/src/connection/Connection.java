@@ -10,6 +10,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import server.Lobby;
 import server.Server;
 
+/**
+ * 
+ * @author Simeon, Jan-Philipp
+ *
+ */
 public class Connection implements Runnable {
 
 	private Socket socket;
@@ -23,6 +28,12 @@ public class Connection implements Runnable {
 	private String name;
 	private short id;
 
+	/**
+	 * 
+	 * @param socket
+	 * @param server
+	 * @param id
+	 */
 	public Connection(Socket socket, Server server, short id) {
 		this.socket = socket;
 		this.server = server;
@@ -87,11 +98,19 @@ public class Connection implements Runnable {
 		}
 	}
 
+	/**
+	 * Wechselt den Analyser zum MenuAnalyser
+	 */
 	private void switchToMenu() {
 		setAnalyser(new MenuAnalyser(server, this, id));
 		queue.clear();
 	}
 
+	/**
+	 * Wechselt den Analyser zum LobbyAnalyser
+	 * 
+	 * @param lobby
+	 */
 	private void joinLobby(Lobby lobby) {
 		setAnalyser(new LobbyAnalyser(lobby, id));
 		queue.clear();
@@ -104,6 +123,11 @@ public class Connection implements Runnable {
 		addMessage("");
 	}
 
+	/**
+	 * Sendet die gefilterte Liste der aktuellen Lobby an den Client
+	 * 
+	 * @param lobbys
+	 */
 	public void sendGameList(Lobby[] lobbys) {
 		String message = String.valueOf((char) 64);
 		boolean first = true;
@@ -121,9 +145,16 @@ public class Connection implements Runnable {
 		addMessage(message);
 	}
 
+	/**
+	 * Sendet dem Spieler das er der Lobby beitreten darf
+	 * 
+	 * @param lobby
+	 *            : angeforderte Lobby zum beitreten
+	 */
 	public void sendGameJoin(Lobby lobby) {
 		joinLobby(lobby);
-		String message = String.valueOf((char) 128) + (char) lobby.getMap().getID();
+		String message = String.valueOf((char) 128)
+				+ (char) lobby.getMap().getID();
 		Object[] arrays = lobby.getPlayerNamesAndIDs();
 		int[] iDs = (int[]) arrays[0];
 		String[] names = (String[]) arrays[1];

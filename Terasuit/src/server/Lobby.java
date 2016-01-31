@@ -2,6 +2,11 @@ package server;
 
 import connection.Connection;
 
+/**
+ * 
+ * @author Simeon, Jan-Philipp
+ *
+ */
 public class Lobby {
 
 	private static final int MAXPLAYERS = 4;
@@ -51,50 +56,62 @@ public class Lobby {
 	/**
 	 * Entfernt einen Spieler aus der Lobby
 	 * 
+	 * @param s
+	 * 
 	 * @param position
 	 */
-	public void removePlayer(int id) {
-		boolean found = false;
-		int i = 0;
-		while (!found && i < MAXPLAYERS) {
-			if (playerList[0] != null) {
-				if (playerList[0].getID() == id) {
-					found = true;
+	public void removePlayer(short senderID, short playerID) {
+		if (senderID == playerID || senderID == host.getID()) {
+			boolean found = false;
+			int i = 0;
+			while (!found && i < MAXPLAYERS) {
+				if (playerList[0] != null) {
+					if (playerList[0].getID() == id) {
+						found = true;
+					} else {
+						i++;
+					}
 				} else {
 					i++;
 				}
-			} else {
-				i++;
 			}
-		}
-		if (found) {
-			for (Connection c : playerList) {
-				if (c == playerList[i]) {
-					c.sendLeftLobby();
-				} else {
-					c.sendPlayerLeftGame(playerList[i].getID());
+			if (found) {
+				for (Connection c : playerList) {
+					if (c == playerList[i]) {
+						c.sendLeftLobby();
+					} else {
+						c.sendPlayerLeftGame(playerList[i].getID());
+					}
 				}
 			}
-		}
-		if (playerList[i] == host) { // Der Spieler ist Host
-			boolean playerFound = false;
-			int actualPlayer = 0;
-			while (!playerFound && actualPlayer < MAXPLAYERS) {
-				if (playerList[actualPlayer] != null
-						&& playerList[actualPlayer] != host) {
-					playerFound = true;
-					host = playerList[actualPlayer];
-				} else {
-					actualPlayer++;
+			if (playerList[i] == host) { // Der Spieler ist Host
+				boolean playerFound = false;
+				int actualPlayer = 0;
+				while (!playerFound && actualPlayer < MAXPLAYERS) {
+					if (playerList[actualPlayer] != null
+							&& playerList[actualPlayer] != host) {
+						playerFound = true;
+						host = playerList[actualPlayer];
+					} else {
+						actualPlayer++;
+					}
 				}
 			}
-		}
-		playerList[i] = null;
-		if (getNumberOfPlayers() == 0) {
-			closeGame();
+			playerList[i] = null;
+			if (getNumberOfPlayers() == 0) {
+				closeGame();
+			}
 		}
 	}
 
+	/**
+	 * Sendet eine Nachricht an alle Nutzer im Raum
+	 * 
+	 * @param msg
+	 *            : Nachricht
+	 * @param id
+	 *            : Nummer des Senders
+	 */
 	public void broadcast(String msg, short id) {
 		for (int i = 0; i < playerList.length; i++) {
 			playerList[i].sendGameChatMessage(id, msg);
@@ -110,7 +127,8 @@ public class Lobby {
 	public void movePlayer(short playerID, int newPosition) {
 		for (int i = 0; i < playerList.length; i++) {
 			if (playerList[i] != null) {
-				if (playerList[i].getID() == playerID && playerList[newPosition] != null) {
+				if (playerList[i].getID() == playerID
+						&& playerList[newPosition] != null) {
 					playerList[newPosition] = playerList[i];
 				}
 			}
