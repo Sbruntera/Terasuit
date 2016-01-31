@@ -56,4 +56,10 @@ public class MainBuilding implements Building {
 	public int getPosition() {
 		return position;
 	}
+
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
 }

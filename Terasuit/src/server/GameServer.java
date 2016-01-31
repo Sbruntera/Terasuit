@@ -1,9 +1,11 @@
 package server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import connection.Connection;
 import world.Building;
+import world.Bullet;
 import world.MainBuilding;
 import world.Unit;
 import world.WorldConstants;
@@ -13,29 +15,93 @@ import world.WorldConstants;
  * @author Simeon, Jan-Philipp
  *
  */
-public class GameServer {
+public class GameServer implements Runnable {
 
-	Server server;
-	Connection[] connections;
-	HashMap<Integer, Unit>[] units;
-	MainBuilding[] mainBuildings;
-	Building[][] buildings;
-	int[][] recources;
+	private Server server;
+	private Connection[] connections;
+	private HashMap<Integer, Unit> units;
+	private ArrayList<Integer> unitIDs;
+	private ArrayList<Bullet> bullets;
+	private MainBuilding[] mainBuildings;
+	private Building[][] buildings;
+	private int[][] recources;
+	
+	private Unit[] farestUnits;
+	private boolean ended;
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
 		this.server = server;
-		units = new HashMap[connections.length];
-		for (int i = 0; i < units.length; i++) {
-			units[i] = new HashMap<Integer, Unit>();
-		}
+		unitIDs = new ArrayList<Integer>();
+		units = new HashMap<Integer, Unit>();
+		bullets = new ArrayList<Bullet>();
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
-		for (int i = 0; i < units.length; i++) {
+		for (int i = 0; i < connections.length; i++) {
 			mainBuildings[i] = new MainBuilding();
 		}
 		recources = new int[connections.length][];
 		// TODO: Startrecourcen festlegen.
+		farestUnits = new Unit[2];
+	}
+
+	@Override
+	public void run() {
+		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
+		while (!ended) {
+			//Kugeln bewegen
+			for (Bullet b : bullets) {
+				if (b.move()) {
+					b.getTarget().dealDamage(b.getDamage());
+					bulletsToRemove.add(b);
+					if (b.getTarget().isDead()) {
+						unitsToRemove.add(b.getTarget());
+					}
+				}
+			}
+			for (Bullet b : bulletsToRemove) {
+				bullets.remove(b);
+			}
+			
+			for (Unit u : unitsToRemove) {
+				units.remove(u.getID());
+				unitIDs.remove(u.getID());
+			}
+			
+			
+			// Einheiten bewegen
+			Unit unit;
+			for (Integer i : unitIDs) {
+				unit = units.get(i);
+				if (unit.getPlayer() < 2) {
+					if (unit.getPosition() - unit.getRange() <= farestUnits[0].getPosition()) {
+						Bullet b = unit.shoot();
+						if (b != null) {
+							bullets.add(b);
+						}
+					} else {
+						unit.move();
+					}
+				} else {
+					if (unit.getPosition() + unit.getRange() >= farestUnits[1].getPosition()) {
+						Bullet b = unit.shoot();
+						if (b != null) {
+							bullets.add(b);
+						}
+					} else {
+						unit.move();
+					}
+				}
+			}
+			
+			//Gebäude bauen
+			for (Building[] array : buildings) {
+				for (Building b : array) {
+					b.build();
+				}
+			}
+		}
 	}
 
 	/**
@@ -103,8 +169,10 @@ public class GameServer {
 	 */
 	public void moveUnits(int id, int[] movingUnits, int direction) {
 		for (int i : movingUnits) {
-			if (units[id].containsKey(i)) {
-				units[id].get(i).setDirection(direction);
+			if (units.containsKey(i)) {
+				if (units.get(i).getPlayer() == id) {
+					units.get(i).setDirection(direction);
+				}
 			}
 		}
 	}
@@ -123,7 +191,7 @@ public class GameServer {
 
 	public void destroyBuilding(int buildingPlace) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void disconnect(int id) {

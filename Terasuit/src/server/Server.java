@@ -11,7 +11,7 @@ import logic.BCrypt;
 
 /**
  * 
- * @author Simeon
+ * @author Simeon, Jan-Philipp
  *
  */
 public class Server {

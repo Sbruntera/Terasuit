@@ -11,4 +11,6 @@ public interface Building {
 	public boolean hasUpgrade();
 
 	public int getPosition();
+
+	public void build();
 }
