@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ServerConnection implements Runnable {
 
-	private boolean ServerAccess = true;
+	private boolean serverAccess = false;
 	private ConcurrentLinkedQueue<String> queue;
 	private PrintStream writer;
 	private BufferedReader reader;
@@ -23,6 +23,7 @@ public class ServerConnection implements Runnable {
 			this.reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			this.writer = new PrintStream(socket.getOutputStream(), true);
+			serverAccess = true;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Server Not Reachable");
@@ -50,6 +51,7 @@ public class ServerConnection implements Runnable {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			serverAccess = false;
 		}
 	}
 
@@ -84,8 +86,8 @@ public class ServerConnection implements Runnable {
 	 *            Die ID der gewünschten Map; 0 wenn keine spezielle Map
 	 *            gewünscht
 	 */
-	public void refreshServerList(boolean noPassword, byte minPlayers,
-			byte maxPlayers, byte mapID) {
+	public void refreshServerList(boolean noPassword, int minPlayers,
+			int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
 			addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
 					false) << 4) + (minPlayers << 2) + maxPlayers)
@@ -103,7 +105,7 @@ public class ServerConnection implements Runnable {
 	 * @param password
 	 *            Passwort des Spiels
 	 */
-	public void createGroup(byte mapID, String name, String password) {
+	public void createGroup(int mapID, String name, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
 			addMessage((char) 96 + mapID + name + "," + password);
@@ -119,7 +121,7 @@ public class ServerConnection implements Runnable {
 	 * @param password
 	 *            Passwort des gewünschten Spiels
 	 */
-	public void connectGroup(byte id, String password) {
+	public void connectGroup(int id, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
 			addMessage(String.valueOf((char) 128 + id));
@@ -179,7 +181,7 @@ public class ServerConnection implements Runnable {
 	 * @param newPosition
 	 *            gewünschte Position nur Zahlen 0-3
 	 */
-	public void switchPosition(byte newPosition) {
+	public void switchPosition(int newPosition) {
 		if (analyser.getState() == State.LOBBY) {
 			if (newPosition < 4) {
 				addMessage(String.valueOf((char) newPosition));
@@ -203,7 +205,7 @@ public class ServerConnection implements Runnable {
 	 * @param playerNumber
 	 *            Die Nummer des Spielers
 	 */
-	public void kickPlayer(byte playerNumber) {
+	public void kickPlayer(int playerNumber) {
 		if (analyser.getState() == State.LOBBY) {
 			addMessage(String.valueOf((char) 128) + playerNumber);
 			// TODO: Playernumber maybe verschieben
@@ -235,7 +237,7 @@ public class ServerConnection implements Runnable {
 	 * @param buildingType
 	 *            Typ des Gebäudes
 	 */
-	public void createBuilding(byte position, String buildingType) {
+	public void createBuilding(int position, String buildingType) {
 		byte buildingID = -2;
 		switch (buildingType) {
 		case ("Barracks"):
@@ -279,7 +281,7 @@ public class ServerConnection implements Runnable {
 	 * @param position
 	 *            Position des Gebäudes
 	 */
-	public void upgradeBuilding(byte position) {
+	public void upgradeBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if ((position & 252) == 0) {
 				addMessage(String.valueOf((char) (32 + position)));
@@ -293,7 +295,7 @@ public class ServerConnection implements Runnable {
 	 * @param position
 	 *            : Position des Gebäudes
 	 */
-	public void destroyBuilding(byte position) {
+	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if ((position & 252) == 0) {
 				addMessage(String.valueOf((char) (32 + 4 + position)));
@@ -307,7 +309,7 @@ public class ServerConnection implements Runnable {
 	 * @param id
 	 *            ID der Einheit
 	 */
-	public void createUnit(byte id) {
+	public void createUnit(int id) {
 		if (analyser.getState() == State.GAME) {
 			addMessage(String.valueOf((char) 64) + id);
 		}
@@ -353,10 +355,6 @@ public class ServerConnection implements Runnable {
 	}
 
 	public boolean isServerAccess() {
-		return ServerAccess;
-	}
-
-	public void setServerAccess(boolean serverAccess) {
-		ServerAccess = serverAccess;
+		return serverAccess;
 	}
 }

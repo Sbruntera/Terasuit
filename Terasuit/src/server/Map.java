@@ -6,7 +6,7 @@ package server;
  *
  */
 public enum Map {
-	Nightsun ((byte) 0);
+	Nightsun ((byte) 1);
 	
 	private byte id;
 	
