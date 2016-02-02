@@ -6,6 +6,7 @@ public class Controller implements Runnable {
 	int time;
 
 	public Controller(Thread thread, int time) {
+		this.thread = thread;
 		this.time = time;
 	}
 

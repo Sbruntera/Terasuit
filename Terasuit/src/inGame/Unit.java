@@ -3,7 +3,7 @@ package inGame;
 import javax.swing.JLabel;
 
 public class Unit {
-
+	
 	JLabel label = new JLabel("");
 	int EntityNummer = 0;
 	int EntityPositionX = 0;
@@ -14,9 +14,37 @@ public class Unit {
 	int EntitySplashDmg = 0;
 	int EntityLive = 0;
 	String Entityname = "";
+	boolean flyingEntity = false;
 	boolean newEntity = false;
+	boolean EntityMove = false;
+	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
+	
+	public boolean isFlyingEntity() {
+		return flyingEntity;
+	}
+
+	public void setFlyingEntity(boolean flyingEntity) {
+		this.flyingEntity = flyingEntity;
+	}
+
+	
+	public boolean isEntityMove() {
+		return EntityMove;
+	}
+
+	public void setEntityMove(boolean entityMove) {
+		EntityMove = entityMove;
+	}
+
+	public boolean isEntityRushLeft() {
+		return EntityRushLeft;
+	}
+
+	public void setEntityRushLeft(boolean entityRushLeft) {
+		EntityRushLeft = entityRushLeft;
+	}
 
 	public String getEntityname() {
 		return Entityname;
@@ -33,7 +61,7 @@ public class Unit {
 	public void setNewEntity(boolean newEntity) {
 		this.newEntity = newEntity;
 	}
-
+	
 	public boolean isEntitymarked() {
 		return Entitymarked;
 	}
@@ -113,7 +141,7 @@ public class Unit {
 	public void setLabel(JLabel label) {
 		this.label = label;
 	}
-
+	
 	public int getEntityPositionY() {
 		return EntityPositionY;
 	}

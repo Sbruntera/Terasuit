@@ -1,8 +1,8 @@
 package world;
 
-import java.awt.Point;
-
 public interface Unit {
+
+	public int getPlayer();
 
 	public void dealDamage(int value);
 
@@ -16,9 +16,15 @@ public interface Unit {
 
 	public int getShootSpeed();
 
-	public Point getPosition();
+	public int getPosition();
 
 	public void move();
 
 	public void setDirection(int direction);
+
+	public Bullet shoot();
+
+	public boolean isDead();
+
+	public Integer getID();
 }

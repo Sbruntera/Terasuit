@@ -7,22 +7,32 @@ import java.nio.IntBuffer;
 import server.GameServer;
 import world.Building;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class GameAnalyser {
 
 	GameServer server;
-	int id;
+	short id;
 
-	public GameAnalyser(GameServer server, int id) {
+	public GameAnalyser(GameServer server, short id) {
 		this.server = server;
 		this.id = id;
 	}
 
+	/**
+	 * Analysiert die Nachricht als Ingame Nachricht
+	 * 
+	 * @param input
+	 */
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
 		switch (bytes[0] & 192) {
 		case (0): // Gebäude (aus)bauen
 			boolean freeSpace = false;
-			int buildingPlace = bytes[0] >> 3;
+			int buildingPlace = bytes[0] & 3;
 			freeSpace = server.hasBuildingAt(id, buildingPlace); // Gebäude an
 																	// position
 																	// vorhanden
@@ -32,11 +42,15 @@ public class GameAnalyser {
 					// TODO: Ausgewähltes Gebäude auslesen, Kapital checken,
 					// Gebäude bauen
 				}
-			case (32): // Gebäude ausbauen
+			case (32): // Gebäude ausbauen/abreißen
 				if (!freeSpace) {
-					Building building = server.getBuildingAt(id, buildingPlace);
-					if (building.hasUpgrade()) {
-						// TODO: Kapital checken, Gebäude bauen
+					if ((bytes[0] & 4) == 0) {
+						server.destroyBuilding(buildingPlace);
+					} else {
+						Building building = server.getBuildingAt(id, buildingPlace);
+						if (building.hasUpgrade()) {
+							// TODO: Kapital checken, Gebäude bauen
+						}
 					}
 				}
 				break;
@@ -49,7 +63,8 @@ public class GameAnalyser {
 				// TODO: Create Unit
 				break;
 			case (32):
-				server.moveUnits(id, getUnits(bytes), (bytes[0] & 6));
+				server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2)
+						* Double.compare(bytes[0] & 2, 0.5));
 				break;
 			}
 			break;
@@ -59,11 +74,17 @@ public class GameAnalyser {
 			break;
 
 		case (192): // Chat
-			// TODO: Chat erwünscht?
+			server.broadcast(input, id);
 			break;
 		}
 	}
 
+	/**
+	 * Entnimmt einer bytefolge die enthaltenen Einheiten
+	 * 
+	 * @param bytes
+	 * @return
+	 */
 	private int[] getUnits(byte[] bytes) {
 		byte[] bytes1 = new byte[bytes.length - 1];
 		for (int i = 2; i <= bytes.length; i++) {

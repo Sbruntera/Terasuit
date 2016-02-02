@@ -2,6 +2,11 @@ package server;
 
 import connection.Connection;
 
+/**
+ * 
+ * @author Simeon, Jan-Philipp
+ *
+ */
 public class Lobby {
 
 	private static final int MAXPLAYERS = 4;
@@ -11,17 +16,19 @@ public class Lobby {
 	private String password;
 	private Map map;
 	private Connection host;
-	private int id;
-	
+	private byte id;
+
 	/**
 	 * Erstellt ein neues Spiel
+	 * 
 	 * @param lobby
 	 * @param host
 	 * @param gameName
 	 * @param password
 	 * @param map
 	 */
-	public Lobby(Server server, Connection host, String gameName, String password, Map map) {
+	public Lobby(Server server, Connection host, String gameName,
+			String password, Map map) {
 		playerList[0] = host;
 		this.host = host;
 		this.server = server;
@@ -29,85 +36,127 @@ public class Lobby {
 		this.password = password;
 		this.map = map;
 	}
-	
+
 	/**
 	 * Fügt einen Spieler zu der Lobby hinzu
+	 * 
 	 * @param player
 	 */
 	public void addPlayer(Connection player) {
 		boolean playerJoined = false;
 		int i = 0;
-		while (!playerJoined) {
+		while (!playerJoined && i < MAXPLAYERS) {
 			if (playerList[i] == null) {
 				playerList[i] = player;
 				playerJoined = true;
 			}
-			else {
-				if (i+1 < MAXPLAYERS) {
+		}
+	}
+
+	/**
+	 * Entfernt einen Spieler aus der Lobby
+	 * 
+	 * @param s
+	 * 
+	 * @param position
+	 */
+	public void removePlayer(short senderID, short playerID) {
+		if (senderID == playerID || senderID == host.getID()) {
+			boolean found = false;
+			int i = 0;
+			while (!found && i < MAXPLAYERS) {
+				if (playerList[0] != null) {
+					if (playerList[0].getID() == id) {
+						found = true;
+					} else {
+						i++;
+					}
+				} else {
 					i++;
 				}
 			}
-		}
-	}
-	
-	/**
-	 * Entfernt einen Spieler aus der Lobby
-	 * @param position
-	 */
-	public void removePlayer(int position) {
-		if (playerList[position] != null) { // An dieser Position existiert ein Spieler
-			if (playerList[position] == host) { // Der Spieler ist Host
-				boolean playerFound = false;
-				int actualPlayer = 0;
-				while (!playerFound && actualPlayer < 4) {
-					if (playerList[actualPlayer] == null) {
-						actualPlayer++;
-					}
-					else {
-						playerFound = true;
-						host = playerList[actualPlayer];
+			if (found) {
+				for (Connection c : playerList) {
+					if (c == playerList[i]) {
+						c.sendLeftLobby();
+					} else {
+						c.sendPlayerLeftGame(playerList[i].getID());
 					}
 				}
 			}
-			playerList[position].leaveLobby();
-			playerList[position] = null;
-		}
-		if (getNumberOfPlayers() == 0) {
-			closeGame();
+			if (playerList[i] == host) { // Der Spieler ist Host
+				boolean playerFound = false;
+				int actualPlayer = 0;
+				while (!playerFound && actualPlayer < MAXPLAYERS) {
+					if (playerList[actualPlayer] != null
+							&& playerList[actualPlayer] != host) {
+						playerFound = true;
+						host = playerList[actualPlayer];
+					} else {
+						actualPlayer++;
+					}
+				}
+			}
+			playerList[i] = null;
+			if (getNumberOfPlayers() == 0) {
+				closeGame();
+			}
 		}
 	}
-	
+
+	/**
+	 * Sendet eine Nachricht an alle Nutzer im Raum
+	 * 
+	 * @param msg
+	 *            : Nachricht
+	 * @param id
+	 *            : Nummer des Senders
+	 */
+	public void broadcast(String msg, short id) {
+		for (int i = 0; i < playerList.length; i++) {
+			playerList[i].sendGameChatMessage(id, msg);
+		}
+	}
+
 	/**
 	 * Verschiebt einen Spieler innnerhalb der Lobby
+	 * 
 	 * @param oldPosition
 	 * @param newPosition
 	 */
-	public void movePlayer(int oldPosition, int newPosition) {
-		if (playerList[oldPosition] != null && playerList[newPosition] == null) {
-			playerList[newPosition] = playerList[oldPosition];
+	public void movePlayer(short playerID, int newPosition) {
+		for (int i = 0; i < playerList.length; i++) {
+			if (playerList[i] != null) {
+				if (playerList[i].getID() == playerID
+						&& playerList[newPosition] != null) {
+					playerList[newPosition] = playerList[i];
+				}
+			}
 		}
 	}
-	
+
 	/**
 	 * Schließt die Lobby
 	 */
 	public void closeGame() {
 		for (Connection p : playerList) {
-			p.leaveLobby();
+			p.sendLeftLobby();
 		}
 		server.removeLobby(this);
 	}
-	
+
 	/**
 	 * Gibt den Namen der Lobby zurück
+	 * 
 	 * @return Name
 	 */
 	public String getName() {
 		return gameName;
 	}
-	
+
 	/**
 	 * Gibt zurück ob das eingegebene Passwort dem Passwort der Lobby entspricht
+	 * 
 	 * @return true: Passwörter gleich
 	 */
 	public boolean checkPassword(String password) {
@@ -118,9 +167,10 @@ public class Lobby {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Gibt zurück ob ein Passwort vorhanden ist
+	 * 
 	 * @return true: Passwort vorhanden
 	 */
 	public boolean hasPassword() {
@@ -129,9 +179,28 @@ public class Lobby {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Gibt die Namen der Spieler zurück
+	 * 
+	 * @return Namen der Spieler Das erste Object ist die IDliste als int[], die
+	 *         zweite ist die Namensliste als String[]
+	 */
+	public Object[] getPlayerNamesAndIDs() {
+		String[] names = new String[getNumberOfPlayers()];
+		int[] iDs = new int[names.length];
+		int counter = 0;
+		for (Connection p : playerList) {
+			names[counter] = p.getName();
+			iDs[counter] = p.getID();
+			counter++;
+		}
+		return new Object[] { iDs, names };
+	}
+
 	/**
 	 * Gibt die anzahl der beigetretenen Spieler zurück
+	 * 
 	 * @return Anzahl der Spieler
 	 */
 	public int getNumberOfPlayers() {
@@ -143,24 +212,26 @@ public class Lobby {
 		}
 		return players;
 	}
-	
+
 	/**
 	 * Gibt die ausgewählte Karte zurück
+	 * 
 	 * @return Karte der Lobby
 	 */
 	public Map getMap() {
 		return map;
 	}
-	
+
 	/**
 	 * Gibt den Namen des Hosts zurück
+	 * 
 	 * @return Hostname
 	 */
 	public String getHostname() {
 		return playerList[0].getName();
 	}
-	
-	public int getID() {
+
+	public byte getID() {
 		return id;
 	}
 }
