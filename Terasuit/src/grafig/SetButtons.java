@@ -224,7 +224,7 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					//TODO:closeLobby?	loader.switchPanel(loader.Lobbypage);
+					//TODO	loader.switchPanel(loader.Lobbypage);
 					//TODO	System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
 				}
 			});

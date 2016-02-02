@@ -11,7 +11,8 @@ import logic.ServerConnection;
 public class Loader {
 	
 	Debugger_Thread debugger = new Debugger_Thread();
-	public ServerConnection connection = new ServerConnection();
+	public ServerConnection connection = new ServerConnection(this);
+	Thread connectionThread = new Thread(connection);
 	Funktions func = new Funktions();
 	Game game;
 
@@ -31,11 +32,12 @@ public class Loader {
 	
 	public void print() {
 
-		window.setContentPane(new Panel(Gamepage, func, HEIGHT, WIGTH, this));
+		window.setContentPane(new Panel(Mainpage, func, HEIGHT, WIGTH, this));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();
 		window.setVisible(true);
+		connectionThread.start();
 	}
 	
 	public void switchPanel(String newPage){

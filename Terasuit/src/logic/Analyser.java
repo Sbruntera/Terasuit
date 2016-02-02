@@ -1,12 +1,16 @@
 package logic;
 
+import grafig.Loader;
+import grafig.Panel;
+
 import java.util.ArrayList;
 
 public class Analyser {
 
+	private Loader loader;
 	private State state;
 
-	public Analyser() {
+	public Analyser(Loader loader) {
 		state = State.MENU;
 	}
 
@@ -58,7 +62,8 @@ public class Analyser {
 				iDs[i] = splittedMessage[i].getBytes()[0];
 				names[i] = splittedMessage[i].substring(1);
 			}
-			//TODO: AnFeldmann: Hier Funktionsaufruf zum Beitreten einer Lobby
+			loader.switchPanel(loader.Grouppage);
+			//TODO: An Feldmann: Hier Funktionsaufruf zum Beitreten einer Lobby
 			break;
 		case (192): // Log in
 			//TODO: An Feldmann: Hier Funktionsaufruf zum Anzeige ändern (Login disabeln Logout enabeln)
@@ -91,6 +96,7 @@ public class Analyser {
 			break;
 		case (192): // Spiel wird gestartet
 			switchState(State.GAME);
+			loader.switchPanel(loader.Gamepage);
 			//TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		}

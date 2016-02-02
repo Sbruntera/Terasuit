@@ -1,5 +1,7 @@
 package logic;
 
+import grafig.Loader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,8 +17,9 @@ public class ServerConnection implements Runnable {
 	private PrintStream writer;
 	private BufferedReader reader;
 	private Analyser analyser;
+	private Loader loader;
 
-	public ServerConnection() {
+	public ServerConnection(Loader loader) {
 		Socket socket;
 		try {
 			socket = new Socket("localhost", 3142);
@@ -34,7 +37,7 @@ public class ServerConnection implements Runnable {
 
 		queue = new ConcurrentLinkedQueue<String>();
 
-		analyser = new Analyser();
+		analyser = new Analyser(loader);
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	// #################################################################
-	// Menü
+	// MenÃ¼
 
 	/**
 	 * Loggt den aktuell eingeloggten Spieler aus
@@ -72,19 +75,19 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Fordert eine aktuelle Liste der Spiel-Server mit den übergebenen
+	 * Fordert eine aktuelle Liste der Spiel-Server mit den ï¿½bergebenen
 	 * Filteroptionen an.
 	 * 
 	 * @param noPassword
 	 *            true: nur Spiele ohne Passwort; false: egal
 	 * @param minPlayers
 	 *            Minimale Anzahl an Spielern wird im Server =max gesetzt wenn
-	 *            größer als max
+	 *            grÃ¶ÃŸer als max
 	 * @param maxPlayers
 	 *            Maximale Anzahl an Spielern
 	 * @param mapID
-	 *            Die ID der gewünschten Map; 0 wenn keine spezielle Map
-	 *            gewünscht
+	 *            Die ID der gewÃ¼nschten Map; 0 wenn keine spezielle Map
+	 *            gewÃ¼nscht
 	 */
 	public void refreshServerList(boolean noPassword, int minPlayers,
 			int maxPlayers, int mapID) {
@@ -99,7 +102,7 @@ public class ServerConnection implements Runnable {
 	 * Erstellt eine neue Spiellobby und tritt dieser als Host bei
 	 * 
 	 * @param mapID
-	 *            ID der gewählten Map
+	 *            ID der gewÃ¤hlten Map
 	 * @param name
 	 *            Name des Spiels
 	 * @param password
@@ -114,18 +117,18 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Tritt dem Spiel mit der übergebenen ID bei
+	 * Tritt dem Spiel mit der Ã¼bergebenen ID bei
 	 * 
 	 * @param id
-	 *            ID des gewünschten Spiels
+	 *            ID des gewÃ¼nschten Spiels
 	 * @param password
-	 *            Passwort des gewünschten Spiels
+	 *            Passwort des gewÃ¼nschten Spiels
 	 */
 	public void connectGroup(int id, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage(String.valueOf((char) 128 + id));
-			return;
+			addMessage(String.valueOf((char) (160))); //+id
+		} else {
 		}
 	}
 
@@ -144,7 +147,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Registriert einen neuen Account mit den übergebenen Daten
+	 * Registriert einen neuen Account mit den Ã¼bergebenen Daten
 	 * 
 	 * @param user
 	 *            Name des Accounts
@@ -179,7 +182,7 @@ public class ServerConnection implements Runnable {
 	 * wechselt die Position in der aktuellen Lobby
 	 * 
 	 * @param newPosition
-	 *            gewünschte Position nur Zahlen 0-3
+	 *            gewÃ¼nschte Position nur Zahlen 0-3
 	 */
 	public void switchPosition(int newPosition) {
 		if (analyser.getState() == State.LOBBY) {
@@ -190,7 +193,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
+	 * Verlï¿½sst die aktuelle Lobby und kehrt ins MenÃ¼ zurÃ¼ck
 	 */
 	public void returnFromLobby() {
 		if (analyser.getState() == State.LOBBY) {
@@ -200,7 +203,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Entfernt einen Spieler aus der Lobby (Benötigt Hostrechte)
+	 * Entfernt einen Spieler aus der Lobby (BenÃ¶tigt Hostrechte)
 	 * 
 	 * @param playerNumber
 	 *            Die Nummer des Spielers
@@ -213,7 +216,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Startet ein Spiel mit der aktuellen Lobby (Benötigt Hostrechte)
+	 * Startet ein Spiel mit der aktuellen Lobby (BenÃ¶tigt Hostrechte)
 	 */
 	public void startGame() {
 		if (analyser.getState() == State.LOBBY) {
@@ -230,12 +233,12 @@ public class ServerConnection implements Runnable {
 	// Game
 
 	/**
-	 * Erstellt ein erwünschtes Gebäude an der gewünschten Position
+	 * Erstellt ein erwÃ¼nschtes GebÃ¤ude an der gewÃ¼nschten Position
 	 *
 	 * @param position
-	 *            Position des Gebäudes
+	 *            Position des Gebï¿½udes
 	 * @param buildingType
-	 *            Typ des Gebäudes
+	 *            Typ des Gebï¿½udes
 	 */
 	public void createBuilding(int position, String buildingType) {
 		byte buildingID = -2;
@@ -276,10 +279,10 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Verbessert ein ausgewähltes Gebäude
+	 * Verbessert ein ausgewÃ¤hltes GebÃ¤ude
 	 *
 	 * @param position
-	 *            Position des Gebäudes
+	 *            Position des GebÃ¤udes
 	 */
 	public void upgradeBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
@@ -290,10 +293,10 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Zerstört ein ausgewähltes Gebäude
+	 * ZerstÃ¶rt ein ausgewÃ¤hltes GebÃ¤ude
 	 * 
 	 * @param position
-	 *            : Position des Gebäudes
+	 *            : Position des GebÃ¤udes
 	 */
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
@@ -316,14 +319,14 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Bewegt die Einheiten in eine gewünschte richtung
+	 * Bewegt die Einheiten in eine gewÃ¼nschte richtung
 	 * 
 	 * @param unitID
 	 *            IDs der Einheiten
 	 * @param right
-	 *            Läuft rechts
+	 *            LÃ¤uft rechts
 	 * @param walking
-	 *            läuft überhaupt
+	 *            lÃ¤uft Ã¼berhaupt
 	 */
 	public void moveUnit(short[] unitID, boolean right, boolean walking) {
 		if (analyser.getState() == State.GAME) {
@@ -334,7 +337,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * Verlässt ein laufendes Spiel und kehrt zum Menü zurück
+	 * VerlÃ¤sst ein laufendes Spiel und kehrt zum MenÃ¼ zurï¿½ck
 	 */
 	public void leaveGame() {
 		if (analyser.getState() == State.GAME) {

@@ -30,19 +30,24 @@ public class MenuAnalyser implements Analyser {
 	@Override
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
-		System.out.println(bytes.length);
-		switch (bytes[0] & 224) {
+		//System.out.println(bytes.length);
+		System.out.println(bytes[0]);
+		switch (0 & 224) {
 		case (0): // Stats
+			System.out.println("stats");
 			// TODO: Get Stats
 			break;
 		case (32): // logout
+			System.out.println("logout");
 			connection.setName(null);
 			break;
 		case (64): // Serverliste
+			//System.out.println("serverlist");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
 		case (96): // Spiel erstellen
+			System.out.println("create");
 			String[] splitted = getSplitString(input);
 			server.createLobby(connection,
 					splitted[0].substring(2, splitted[0].length()),
@@ -50,10 +55,12 @@ public class MenuAnalyser implements Analyser {
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case (128): // Spiel beitreten
+			System.out.println("join");
 			server.getLobby(bytes[1]).addPlayer(connection);
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
 		case (160): // Einloggen
+			System.out.println("login");
 			if (connection.getName() == null) {
 				splitted = getSplitString(input);
 				if (server.loginClient(
@@ -66,6 +73,7 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (192): // Registrieren
+			System.out.println("register");
 			if (connection.getName() == null) {
 				splitted = getSplitString(input);
 				server.registerClient(
@@ -74,6 +82,7 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (224):
+			System.out.println("disconnect");
 			server.diconnect(id);
 			break;
 		}

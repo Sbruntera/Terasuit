@@ -37,7 +37,6 @@ public class Server {
 	private void acceptConnection() {
 		try {
 			while (true) {
-				System.out.println("tuff");
 				socket = server.accept();
 				createConnection(socket);
 			}
@@ -79,7 +78,6 @@ public class Server {
 			// TODO: Fehlermeldung
 			connections.get(id).sendLogin();
 		}
-		System.out.println("Regist");
 	}
 
 	/**
