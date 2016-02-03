@@ -1,5 +1,7 @@
 package connection;
 
+import java.nio.charset.StandardCharsets;
+
 import server.Filter;
 import server.Lobby;
 import server.Map;
@@ -29,8 +31,8 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(String input) {
-		byte[] bytes = input.getBytes();
-		//System.out.println(bytes.length);
+		byte[] bytes = input.getBytes(StandardCharsets.UTF_16);
+		System.out.println(bytes.length);
 		System.out.println(bytes[0]);
 		switch (0 & 224) {
 		case (0): // Stats

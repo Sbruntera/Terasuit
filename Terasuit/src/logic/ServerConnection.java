@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ServerConnection implements Runnable {
@@ -50,6 +51,8 @@ public class ServerConnection implements Runnable {
 				}
 				if (!queue.isEmpty()) {
 					writer.println(queue.remove());
+					writer.write(b);
+					queue.remove().getBytes(StandardCharsets.US_ASCII)
 				}
 			}
 		} catch (IOException e) {
@@ -63,7 +66,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	// #################################################################
-	// Men√º
+	// Men¸
 
 	/**
 	 * Loggt den aktuell eingeloggten Spieler aus
@@ -82,7 +85,7 @@ public class ServerConnection implements Runnable {
 	 *            true: nur Spiele ohne Passwort; false: egal
 	 * @param minPlayers
 	 *            Minimale Anzahl an Spielern wird im Server =max gesetzt wenn
-	 *            gr√∂√üer als max
+	 *            grˆﬂer als max
 	 * @param maxPlayers
 	 *            Maximale Anzahl an Spielern
 	 * @param mapID
@@ -277,7 +280,7 @@ public class ServerConnection implements Runnable {
 			}
 		}
 	}
-
+	
 	/**
 	 * Verbessert ein ausgew√§hltes Geb√§ude
 	 *
