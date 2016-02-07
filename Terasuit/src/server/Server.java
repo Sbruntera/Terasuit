@@ -185,4 +185,13 @@ public class Server {
 			return null;
 		}
 	}
+
+	public void createGame(Lobby lobby) {
+		lobbys.remove(lobby);
+		GameServer game = new GameServer(lobby.getConnections(), this);
+		games.add(game);
+		for (Connection c : lobby.getConnections()) {
+			c.sendStarting(game);
+		}
+	}
 }

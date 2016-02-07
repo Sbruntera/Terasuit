@@ -12,7 +12,7 @@ import world.Building;
  * @author Simeon
  *
  */
-public class GameAnalyser {
+public class GameAnalyser implements Analyser{
 
 	GameServer server;
 	short id;

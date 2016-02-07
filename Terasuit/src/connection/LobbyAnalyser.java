@@ -36,7 +36,7 @@ public class LobbyAnalyser implements Analyser {
 			lobby.removePlayer(id, (short) ((int) bytes[1] << 8 + bytes[2]));
 			break;
 		case (19): // Spiel starten
-			// Spiel starten
+			lobby.startGame(id);
 			break;
 		case (20):
 			lobby.broadcast(input.substring(1), id);

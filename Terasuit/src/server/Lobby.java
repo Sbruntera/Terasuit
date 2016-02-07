@@ -235,4 +235,14 @@ public class Lobby {
 	public byte getID() {
 		return id;
 	}
+
+	public void startGame(short id) {
+		if (host.getID() == id) {
+			server.createGame(this);
+		}
+	}
+
+	public Connection[] getConnections() {
+		return playerList;
+	}
 }

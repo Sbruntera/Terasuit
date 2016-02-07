@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import server.GameServer;
 import server.Lobby;
 import server.Server;
 
@@ -233,7 +234,8 @@ public class Connection implements Runnable {
 	/**
 	 * Unterrichtet den Client, dass das Spiel gestartet wird
 	 */
-	public void sendStarting() {
+	public void sendStarting(GameServer server) {
+		setAnalyser(new GameAnalyser(server, id));
 		addMessage(String.valueOf((char) 19));
 	}
 
