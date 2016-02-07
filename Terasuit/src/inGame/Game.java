@@ -5,11 +5,8 @@ import grafig.Panel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +18,8 @@ public class Game {
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	UnitPics pics = new UnitPics();
+	
+	
 	
 	public void init(Panel panel, Panel field, Panel console, Loader loader, Funktions func){
 		
@@ -36,14 +35,14 @@ public class Game {
 //		} catch (IOException e) {
 //		}
 		
-		// TEST
-		JLabel label = new JLabel("");
-		ImageIcon pic = pics.getEntityPic("Chronite Tank", 1, true, true);
-//		ImageIcon pic = new ImageIcon(img);
-		label.setIcon(pic);
-		label.setBounds(10, 10, 50, 50);
-		console.add(label);
-		console.repaint();
+//		// TEST
+//		JLabel label = new JLabel("");
+//		ImageIcon pic = pics.getEntityPic("Chronite Tank", 1, true, true);
+////		ImageIcon pic = new ImageIcon(img);
+//		label.setIcon(pic);
+//		label.setBounds(10, 10, 50, 50);
+//		console.add(label);
+//		console.repaint();
 		
 		// Back-Button
 		JButton btnBACK = new JButton("X");
@@ -62,6 +61,20 @@ public class Game {
 
 
 		panel.repaint();
+	}
+	
+	public void removeButtonsOnPane(){
+		
+	}
+	
+	public void refreshUnitLists(){
+		
+		
+		updateGame();
+	}
+	
+	public void updateGame(){
+		
 	}
 
 }

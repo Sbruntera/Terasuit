@@ -21,6 +21,7 @@ public class ActionButton {
 	JButton btnBackward = new JButton("Backward");
 	JButton btnBuilding = new JButton("Building");
 	JButton btnSpawnSoldir = new JButton("Building");
+	ArrayList<JButton> ContentButtonArray = new ArrayList<JButton>();
 	
 	ArrayList<JButton> jButton = new ArrayList<JButton>();
 	JButton btn;
@@ -30,14 +31,14 @@ public class ActionButton {
 	
 	// Gebäudeoptionen
 	public void createUserOptions(Panel console, Panel field, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
+		deselectOptions(console);
 		String [] noName  = BuildingsEntity.get(i).getSpwanableEntity();
 		// Generiert alle möglichen Gebäudeoptionen
 		for (int n = 0; n != noName.length; n++){
-			System.out.println(noName[n]);
 			btn = new JButton(wrapLines(noName[n]));
 			btnCreator.createOne(btn, 200+(n*62), 30, 60, 60, 87);
 			String type = getEntityAction(noName[n]);
-
+			
 			btn.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")){
@@ -60,14 +61,13 @@ public class ActionButton {
 						System.out.println("Keine Option für dieses Button vorhanden!!");
 					}else{
 						System.out.println("Kritischer Fehler: ActionButton.java => getEntityType.mth");
-					}
-
+					}	
 				}
 			});
 			jButton.add(btn);
 			console.add(btn);
 		}
-		
+		System.out.println(jButton.size());
 		JLabel Description = new JLabel("");
 		Description.setText(wrapLines(BuildingsEntity.get(i).getDescription()));
 		Description.setForeground(Color.BLACK);
@@ -85,10 +85,16 @@ public class ActionButton {
 	}
 	
 	public void deselectOptions(Panel panel){
-		for (int i = jButton.size(); i != 0; i--){
-			panel.remove(jButton.get(i));
-			jButton.remove(i);
+		JButton[] jButtonArray = new JButton[jButton.size()];
+		jButtonArray = jButton.toArray(jButtonArray);
+		if (jButtonArray.length == 0){
+		}else{
+			
+			for (JButton n : jButtonArray){
+				panel.remove(n);
+			}
 		}
+		jButton.clear();;
 		panel.repaint();
 	}
 
@@ -132,9 +138,7 @@ public class ActionButton {
 	
 	public String getEntityAction(String EntityName){
 		File file;
-		System.out.println(EntityName);
 		file = new File("Buildings/" + EntityName + ".png");
-		System.out.println(file.getName());
 		if (file.exists()) {
 			return "Building";
 		}

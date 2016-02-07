@@ -30,7 +30,6 @@ public class BaseBuildings {
 	JLabel label = new JLabel("");
 	ActionButton btnAction = new ActionButton();
 	
-	
 	public void buildBase(Panel field, Panel console, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y){
 		createEntity(field, console, load, func, barracks, 1, default_position_X, default_position_Y);
 		// Rot
@@ -70,7 +69,6 @@ public class BaseBuildings {
 		BuildingsEntity.add(building);
 		field.add(label);
 		field.repaint();
-		return;
 	}
 	
 	private String[] searchForPossibleEntitys(int BuildingType){
