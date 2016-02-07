@@ -29,35 +29,29 @@ public class GameAnalyser {
 	 */
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
-		switch (bytes[0] & 192) {
-		case (0): // Geb‰ude (aus)bauen
+		switch (bytes[0]) {
+		case (32): // Geb‰ude (aus)bauen
 			boolean freeSpace = false;
-			int buildingPlace = bytes[0] & 3;
+			int buildingPlace = bytes[1];
 			freeSpace = server.hasBuildingAt(id, buildingPlace); // Geb‰ude an
 																	// position
 																	// vorhanden
-			switch (bytes[0] & 32) {
-			case (0): // Geb‰ude bauen
-				if (freeSpace) {
-					// TODO: Ausgew‰hltes Geb‰ude auslesen, Kapital checken,
-					// Geb‰ude bauen
-				}
-			case (32): // Geb‰ude ausbauen/abreiﬂen
-				if (!freeSpace) {
-					if ((bytes[0] & 4) == 0) {
-						server.destroyBuilding(buildingPlace);
-					} else {
-						Building building = server.getBuildingAt(id, buildingPlace);
-						if (building.hasUpgrade()) {
-							// TODO: Kapital checken, Geb‰ude bauen
-						}
+			
+			if (freeSpace) {
+				server.build(bytes[2], buildingPlace);
+			} else {
+				if (bytes[2] == 0) {
+					server.destroyBuilding(buildingPlace);
+				} else {
+					Building building = server.getBuildingAt(id, buildingPlace);
+					if (building.hasUpgrade()) {
+						building.upgrade(bytes[2]);
 					}
 				}
-				break;
 			}
 			break;
 
-		case (64): // Einheit erstellen/bewegen
+		case (33): // Einheit erstellen/bewegen
 			switch (bytes[0] & 32) {
 			case (0):
 				// TODO: Create Unit
@@ -69,11 +63,11 @@ public class GameAnalyser {
 			}
 			break;
 
-		case (128): // Spiel verlassen
+		case (34): // Spiel verlassen
 			server.disconnect(id);
 			break;
 
-		case (192): // Chat
+		case (35): // Chat
 			server.broadcast(input, id);
 			break;
 		}

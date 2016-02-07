@@ -77,7 +77,7 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Schlieﬂst das Programm
-
+					loader.connection.close();
 					loader.exit();
 				}
 			});

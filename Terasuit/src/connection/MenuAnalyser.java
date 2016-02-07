@@ -1,7 +1,5 @@
 package connection;
 
-import java.nio.charset.StandardCharsets;
-
 import server.Filter;
 import server.Lobby;
 import server.Map;
@@ -31,50 +29,53 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(String input) {
-		byte[] bytes = input.getBytes(StandardCharsets.UTF_16);
-		System.out.println(bytes.length);
-		System.out.println(bytes[0]);
-		switch (0 & 224) {
+		byte[] bytes = input.getBytes();
+		switch (bytes[0]) {
 		case (0): // Stats
 			System.out.println("stats");
 			// TODO: Get Stats
 			break;
-		case (32): // logout
+		case (1): // logout
 			System.out.println("logout");
 			connection.setName(null);
 			break;
-		case (64): // Serverliste
-			//System.out.println("serverlist");
+		case (2): // Serverliste
+			System.out.println("serverlist");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
-		case (96): // Spiel erstellen
+		case (3): // Spiel erstellen
 			System.out.println("create");
 			String[] splitted = getSplitString(input);
-			server.createLobby(connection,
-					splitted[0].substring(2, splitted[0].length()),
-					splitted[1], getMap(bytes[1]));
+			String password = null;
+			if (splitted.length > 1) {
+				password = splitted[1];
+			}
+			server.createLobby(connection, splitted[0], password,
+					getMap(bytes[1]));
 			connection.sendGameJoin(server.getLobby(bytes[1]));
 			break;
-		case (128): // Spiel beitreten
+		case (4): // Spiel beitreten
 			System.out.println("join");
-			server.getLobby(bytes[1]).addPlayer(connection);
-			connection.sendGameJoin(server.getLobby(bytes[1]));
-			break;
-		case (160): // Einloggen
-			System.out.println("login");
-			if (connection.getName() == null) {
-				splitted = getSplitString(input);
-				if (server.loginClient(
-						splitted[0].substring(1, splitted[0].length()),
-						splitted[1], id)) {
-					connection.sendLogin();
-					connection.setName(splitted[0].substring(1,
-							splitted[0].length()));
+			if (bytes.length > 1) {
+				if (server.hasLobby(bytes[1])) {
+					server.getLobby(bytes[1]).addPlayer(connection,
+							input.substring(2));
+					connection.sendGameJoin(server.getLobby(bytes[1]));
 				}
 			}
 			break;
-		case (192): // Registrieren
+		case (5): // Einloggen
+			System.out.println("login");
+			if (connection.getName() == null) {
+				splitted = getSplitString(input);
+				if (server.loginClient(splitted[0], splitted[1], id)) {
+					connection.sendLogin();
+					connection.setName(splitted[0]);
+				}
+			}
+			break;
+		case (6): // Registrieren
 			System.out.println("register");
 			if (connection.getName() == null) {
 				splitted = getSplitString(input);
@@ -83,7 +84,7 @@ public class MenuAnalyser implements Analyser {
 						splitted[1], splitted[2], splitted[3], id);
 			}
 			break;
-		case (224):
+		case (7):
 			System.out.println("disconnect");
 			server.diconnect(id);
 			break;
@@ -100,21 +101,28 @@ public class MenuAnalyser implements Analyser {
 	private Filter getFilter(String input) {
 		byte[] bytes = input.getBytes();
 		boolean noPassword;
-		if ((bytes[0] & 16) == 0) {
-			noPassword = false;
-		} else {
-			noPassword = true;
+		Map map = null;
+		switch (bytes.length) {
+		case (2):
+			map = getMap(bytes[2]);
+		case (1):
+			if ((bytes[1] & 16) == 0) {
+				noPassword = false;
+			} else {
+				noPassword = true;
+			}
+			int minPlayers = bytes[1] & 243;
+			int maxPlayers = bytes[1] & 252;
+			return new Filter(noPassword, input.substring(1), map, minPlayers,
+					maxPlayers);
+		default:
+			return null;
 		}
-		int minPlayers = bytes[0] & 243;
-		int maxPlayers = bytes[0] & 252;
-		Map map = getMap(bytes[1]);
-
-		return new Filter(noPassword, input.substring(1, input.length()), map,
-				minPlayers, maxPlayers);
 	}
 
 	/**
 	 * Entnimmt der Bytefolge die Map
+	 * 
 	 * @param b
 	 * @return
 	 */
@@ -129,11 +137,12 @@ public class MenuAnalyser implements Analyser {
 	}
 
 	/**
-	 * Schneidet aus einem String den ersten String ab und trennt nach ","
+	 * Schneidet aus einem String die ersten beiden Char ab und trennt nach ","
+	 * 
 	 * @param string
 	 * @return
 	 */
 	private String[] getSplitString(String string) {
-		return string.substring(1, string.length()).split(",");
+		return string.substring(2, string.length()).split(",");
 	}
 }

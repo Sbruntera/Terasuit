@@ -25,7 +25,7 @@ public class MainBuilding implements Building {
 	}
 
 	@Override
-	public void upgrade() { // Main Building can't be upgraded
+	public void upgrade(byte bytes) { //Main Building can not be upgraded
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import grafig.Loader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ public class ServerConnection implements Runnable {
 
 	private boolean serverAccess = false;
 	private ConcurrentLinkedQueue<String> queue;
-	private PrintStream writer;
+	private OutputStream writer;
 	private BufferedReader reader;
 	private Analyser analyser;
 	private Loader loader;
@@ -26,7 +26,7 @@ public class ServerConnection implements Runnable {
 			socket = new Socket("localhost", 3142);
 			this.reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
-			this.writer = new PrintStream(socket.getOutputStream(), true);
+			this.writer = socket.getOutputStream();
 			serverAccess = true;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
@@ -50,9 +50,8 @@ public class ServerConnection implements Runnable {
 					analyser.analyse(in);
 				}
 				if (!queue.isEmpty()) {
-					writer.println(queue.remove());
-					writer.write(b);
-					queue.remove().getBytes(StandardCharsets.US_ASCII)
+					writer.write(queue.remove().getBytes());
+					writer.write(10);
 				}
 			}
 		} catch (IOException e) {
@@ -66,26 +65,26 @@ public class ServerConnection implements Runnable {
 	}
 
 	// #################################################################
-	// Men�
+	// Menü
 
 	/**
 	 * Loggt den aktuell eingeloggten Spieler aus
 	 */
 	public void logout() {
 		if (analyser.getState() == State.MENU) {
-			addMessage(String.valueOf((char) 32));
+			addMessage(String.valueOf((char) 1));
 		}
 	}
 
 	/**
-	 * Fordert eine aktuelle Liste der Spiel-Server mit den �bergebenen
+	 * Fordert eine aktuelle Liste der Spiel-Server mit den übergebenen
 	 * Filteroptionen an.
 	 * 
 	 * @param noPassword
 	 *            true: nur Spiele ohne Passwort; false: egal
 	 * @param minPlayers
 	 *            Minimale Anzahl an Spielern wird im Server =max gesetzt wenn
-	 *            gr��er als max
+	 *            größer als max
 	 * @param maxPlayers
 	 *            Maximale Anzahl an Spielern
 	 * @param mapID
@@ -95,9 +94,9 @@ public class ServerConnection implements Runnable {
 	public void refreshServerList(boolean noPassword, int minPlayers,
 			int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
-			addMessage(String.valueOf((char) (64 + Boolean.compare(noPassword,
-					false) << 4) + (minPlayers << 2) + maxPlayers)
-					+ mapID);
+			addMessage(String.valueOf((char) 2)
+					+ (char) (Boolean.compare(noPassword, false) << 4
+							+ (minPlayers << 2) + maxPlayers) + (char) mapID);
 		}
 	}
 
@@ -114,7 +113,7 @@ public class ServerConnection implements Runnable {
 	public void createGroup(int mapID, String name, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage((char) 96 + mapID + name + "," + password);
+			addMessage(String.valueOf((char) 3) + (char) mapID + name + "," + password);
 			return;
 		}
 	}
@@ -130,8 +129,8 @@ public class ServerConnection implements Runnable {
 	public void connectGroup(int id, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage(String.valueOf((char) (160))); //+id
-		} else {
+			addMessage("");
+			addMessage(String.valueOf((char) 4) + (char) id + password);
 		}
 	}
 
@@ -145,7 +144,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void login(String user, char[] password) {
 		if (analyser.getState() == State.MENU) {
-			addMessage((char) 160 + user + password.toString());
+			addMessage((char) 5 + user + password.toString());
 		}
 	}
 
@@ -161,8 +160,8 @@ public class ServerConnection implements Runnable {
 	 */
 	public void register(String user, char[] password, String mail) {
 		if (analyser.getState() == State.MENU) {
-			addMessage((char) 192 + user + "," + password.toString() + ","
-					+ mail + ",Admin");
+			addMessage((char) 6 + user + "," + password.toString() + "," + mail
+					+ ",Admin");
 		}
 	}
 
@@ -172,10 +171,8 @@ public class ServerConnection implements Runnable {
 	 * nur aufrufen wenn das Spiel geschlossen wird
 	 */
 	public void close() {
-		if (analyser.getState() == State.GAME) {
-			queue.clear();
-			queue.add(String.valueOf((char) 224));
-		}
+		queue.clear();
+		addMessage(String.valueOf((char) 7));
 	}
 
 	// #################################################################
@@ -190,7 +187,7 @@ public class ServerConnection implements Runnable {
 	public void switchPosition(int newPosition) {
 		if (analyser.getState() == State.LOBBY) {
 			if (newPosition < 4) {
-				addMessage(String.valueOf((char) newPosition));
+				addMessage(String.valueOf((char) 16) + (char) newPosition);
 			}
 		}
 	}
@@ -201,7 +198,7 @@ public class ServerConnection implements Runnable {
 	public void returnFromLobby() {
 		if (analyser.getState() == State.LOBBY) {
 			queue.clear();
-			addMessage(String.valueOf((char) 64));
+			addMessage(String.valueOf((char) 17));
 		}
 	}
 
@@ -213,7 +210,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void kickPlayer(int playerNumber) {
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) 128) + playerNumber);
+			addMessage(String.valueOf((char) 18) + playerNumber);
 			// TODO: Playernumber maybe verschieben
 		}
 	}
@@ -224,11 +221,11 @@ public class ServerConnection implements Runnable {
 	public void startGame() {
 		if (analyser.getState() == State.LOBBY) {
 			queue.clear();
-			addMessage(String.valueOf((char) 192));
+			addMessage(String.valueOf((char) 19));
 		}
 	}
 
-	public void sendLobbyChatMessage() {
+	public void sendLobbyChatMessage(String msg) {
 
 	}
 
@@ -275,12 +272,13 @@ public class ServerConnection implements Runnable {
 			break;
 		}
 		if (analyser.getState() == State.GAME && buildingID != -2) {
-			if ((position & 252) == 0) {
-				addMessage(String.valueOf((char) (32 + position)) + buildingID);
+			if (position < 4) {
+				addMessage(String.valueOf((char) 32) + (char) position
+						+ (char) buildingID);
 			}
 		}
 	}
-	
+
 	/**
 	 * Verbessert ein ausgewähltes Gebäude
 	 *
@@ -290,7 +288,7 @@ public class ServerConnection implements Runnable {
 	public void upgradeBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if ((position & 252) == 0) {
-				addMessage(String.valueOf((char) (32 + position)));
+				addMessage(String.valueOf((char) 32) + (char) position);
 			}
 		}
 	}
@@ -303,8 +301,8 @@ public class ServerConnection implements Runnable {
 	 */
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
-			if ((position & 252) == 0) {
-				addMessage(String.valueOf((char) (32 + 4 + position)));
+			if (position < 4) {
+				addMessage(String.valueOf((char) 32) + (char) position);
 			}
 		}
 	}
@@ -317,7 +315,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createUnit(int id) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 64) + id);
+			addMessage(String.valueOf((char) 33) + (char) id);
 		}
 	}
 
@@ -331,11 +329,11 @@ public class ServerConnection implements Runnable {
 	 * @param walking
 	 *            läuft überhaupt
 	 */
-	public void moveUnit(short[] unitID, boolean right, boolean walking) {
+	public void moveUnit(int[] unitID, boolean right, boolean walking) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) (96 + (Boolean.compare(false,
-					right) << 2) + (Boolean.compare(false, walking) << 1)))
-					+ unitID);
+			addMessage(String.valueOf((char) 34)
+					+ (char) (Boolean.compare(false, right) << 1 + Boolean
+							.compare(false, walking)) + unitID);
 		}
 	}
 
@@ -344,7 +342,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void leaveGame() {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 128));
+			addMessage(String.valueOf((char) 35));
 		}
 	}
 
@@ -356,7 +354,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void sendChatMessage(String message) {
 		if (!message.contains("")) {
-			addMessage((char) 192 + message);
+			addMessage((char) 36 + message);
 		}
 	}
 

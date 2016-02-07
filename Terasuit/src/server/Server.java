@@ -63,11 +63,16 @@ public class Server {
 	/**
 	 * registriert einen Nutzer in der Datenbank
 	 * 
-	 * @param name: Name des Nutzers
-	 * @param pw: Passwort des Nutzers als Hash
-	 * @param email: E-Mail des Nutzers
-	 * @param mode: Privilegien
-	 * @param id: ID des Nutzers
+	 * @param name
+	 *            : Name des Nutzers
+	 * @param pw
+	 *            : Passwort des Nutzers als Hash
+	 * @param email
+	 *            : E-Mail des Nutzers
+	 * @param mode
+	 *            : Privilegien
+	 * @param id
+	 *            : ID des Nutzers
 	 */
 	public void registerClient(String name, String pw, String email,
 			String mode, int id) {
@@ -102,7 +107,7 @@ public class Server {
 	}
 
 	public void diconnect(int id) {
-		// connections.get(id).close();
+		connections.get(id).close();
 	}
 
 	/**
@@ -117,12 +122,14 @@ public class Server {
 		if (filter != null) {
 			for (Lobby lobby : lobbys) {
 				if ((lobby.getName().contains(filter.getNameContains()))
-						&& (filter.getMap() == lobby.getMap())
 						&& (filter.getMaxPlayers() >= lobby
 								.getNumberOfPlayers() && lobby
 								.getNumberOfPlayers() >= filter.getMinPlayers())
 						&& !(filter.isNoPassword() && lobby.hasPassword())) {
-					filteredList.add(lobby);
+					if (filter.getMap() == null
+							|| filter.getMap() == lobby.getMap()) {
+						filteredList.add(lobby);
+					}
 				}
 			}
 		} else {
@@ -160,6 +167,10 @@ public class Server {
 		lobbys.remove(lobby);
 	}
 
+	public boolean hasLobby(byte id) {
+		return lobbys.contains(id);
+	}
+
 	/**
 	 * Gibt eine Lobby zurück
 	 * 
@@ -168,6 +179,10 @@ public class Server {
 	 * @return
 	 */
 	public Lobby getLobby(byte id) {
-		return lobbys.get(id);
+		if (lobbys.contains(id)) {
+			return lobbys.get(id);
+		} else {
+			return null;
+		}
 	}
 }

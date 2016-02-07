@@ -27,6 +27,7 @@ public class Connection implements Runnable {
 
 	private String name;
 	private short id;
+	private boolean running;
 
 	/**
 	 * 
@@ -47,6 +48,7 @@ public class Connection implements Runnable {
 		}
 		queue = new ConcurrentLinkedQueue<String>();
 		this.id = id;
+		running = true;
 	}
 
 	public void setAnalyser(Analyser analyser) {
@@ -72,11 +74,12 @@ public class Connection implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while (true) {
+			while (running) {
 				if (reader.ready()) {
 					String in = reader.readLine();
-					analyser.analyse(in);
-					System.out.println("he");
+					if (in.length() != 0) {
+						analyser.analyse(in);
+					}
 				}
 				if (!queue.isEmpty()) {
 					writer.println(queue.remove());
@@ -89,6 +92,7 @@ public class Connection implements Runnable {
 
 	public void close() {
 		try {
+			running = false;
 			reader.close();
 			writer.close();
 			socket.close();
@@ -129,7 +133,7 @@ public class Connection implements Runnable {
 	 * @param lobbys
 	 */
 	public void sendGameList(Lobby[] lobbys) {
-		String message = String.valueOf((char) 64);
+		String message = String.valueOf((char) 1);
 		boolean first = true;
 		for (Lobby l : lobbys) {
 			if (!first) {
@@ -152,19 +156,21 @@ public class Connection implements Runnable {
 	 *            : angeforderte Lobby zum beitreten
 	 */
 	public void sendGameJoin(Lobby lobby) {
-		joinLobby(lobby);
-		String message = String.valueOf((char) 128)
-				+ (char) lobby.getMap().getID();
-		Object[] arrays = lobby.getPlayerNamesAndIDs();
-		int[] iDs = (int[]) arrays[0];
-		String[] names = (String[]) arrays[1];
-		for (int i = 0; i < iDs.length; i++) {
-			if (i == 0) {
-				message += ",";
+		if (lobby != null) {
+			joinLobby(lobby);
+			String message = String.valueOf((char) 2)
+					+ (char) lobby.getMap().getID();
+			Object[] arrays = lobby.getPlayerNamesAndIDs();
+			int[] iDs = (int[]) arrays[0];
+			String[] names = (String[]) arrays[1];
+			for (int i = 0; i < iDs.length; i++) {
+				if (i == 0) {
+					message += ",";
+				}
+				message += iDs[i] + names[i];
 			}
-			message += iDs[i] + names[i];
+			addMessage(message);
 		}
-		addMessage(message);
 	}
 
 	/**
@@ -185,8 +191,8 @@ public class Connection implements Runnable {
 	 * @param position
 	 *            Position bei der der Spieler landet
 	 */
-	public void sendSwitchPosition(byte player, byte position) {
-		addMessage(String.valueOf((char) position) + (char) player);
+	public void sendSwitchPosition(short player, byte position) {
+		addMessage(String.valueOf((char) 16) + (char) position + (char) (player >> 8) + (char) player);
 	}
 
 	/**
@@ -197,8 +203,9 @@ public class Connection implements Runnable {
 	 * @param name
 	 *            Name des neuen Spielers
 	 */
-	public void sendPlayerJoined(byte position, byte id, String name) {
-		addMessage((char) (64 + position) + (id + name));
+	public void sendPlayerJoined(byte position, short id, String name) {
+		addMessage(String.valueOf((char) 17) + (char) position + (char) (id >> 8) + (char) id
+				+ name);
 	}
 
 	/**
@@ -207,8 +214,8 @@ public class Connection implements Runnable {
 	 * @param player
 	 *            Der neue Spieler
 	 */
-	public void sendPlayerLeftLobby(byte player) {
-		addMessage(String.valueOf((char) 128) + (char) player);
+	public void sendPlayerLeftLobby(short player) {
+		addMessage(String.valueOf((char) 18) + (char) (player >> 8) + (char) player);
 	}
 
 	/**
@@ -220,46 +227,72 @@ public class Connection implements Runnable {
 	 */
 	public void sendLeftLobby() {
 		switchToMenu();
-		addMessage(String.valueOf((char) 128));
+		addMessage(String.valueOf((char) 18));
 	}
 
 	/**
 	 * Unterrichtet den Client, dass das Spiel gestartet wird
 	 */
 	public void sendStarting() {
-		addMessage(String.valueOf((char) 192));
+		addMessage(String.valueOf((char) 19));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// Game
 
-	public void sendCreateBuilding() {
-		addMessage("");
+	public void sendCreateOrUpgradeBuilding(short playerNumber, byte position, byte id) {
+		addMessage(String.valueOf((char) 32)
+				+ (char) (playerNumber << 8) + (char) playerNumber + (char) position + (char) id);
 	}
 
-	public void sendUpgradeBuilding() {
-		addMessage("");
+	public void sendCreateUnit(short playerNumber, short position, byte typeID,
+			short unitID) {
+		addMessage(String.valueOf((char) 33) + (char) (playerNumber >> 8) + (char) playerNumber + (char) (position >> 8)
+				+ (char) (position) + (char) typeID + (char) (unitID >> 8)
+				+ (char) unitID);
 	}
 
-	public void sendCreateUnit() {
-		addMessage("");
+	public void sendMoveUnit(short playerNumber, byte direction, short[] unitIDs) {
+		String msg = String.valueOf((char) 34) + (char) (playerNumber >> 8) + (char) playerNumber + (char) direction;
+		for (short s : unitIDs) {
+			msg += (char) (s << 8) + (char) direction;
+		}
+		addMessage(msg);
 	}
 
-	public void sendMoveUnit() {
-		addMessage("");
+	public void sendUnitStartsShooting(short[][] units, short[][] targets) {
+		String msg = String.valueOf((char) 35);
+		for (int x = 0; x < units.length; x++) {
+			for (int y = 0; y < units[x].length; y++) {
+				msg += (char) (units[x][y] << 8) + (char) (units[x][y]) + (char) (targets[x][y] << 8) + (char) (targets[x][y]);
+			}
+			msg += (char) 255;
+		}
+		addMessage(msg);
 	}
 
-	public void sendPlayerLeftGame(short i) {
-		addMessage("");
+	public void sendUnitDied(short[][] units) {
+		String msg = String.valueOf((char) 36);
+		for (short[] sA : units) {
+			for (short s : sA) {
+				msg += (char) (s << 8) + (char) s;
+			}
+			msg += (char) 255;
+		}
+		addMessage(msg);
+	}
+
+	public void sendPlayerLeftGame(short playerID) {
+		addMessage(String.valueOf((char) 37) + (char) (playerID >> 8) + (char) playerID);
 	}
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
 		addMessage(String
-				.valueOf((char) (160 + (Boolean.compare(won, false) << 4))));
+				.valueOf((char) (38 + (Boolean.compare(won, false) << 4))));
 	}
 
 	public void sendGameChatMessage(short id, String message) {
-		addMessage(String.valueOf((char) 192) + id + message);
+		addMessage(String.valueOf((char) 39) + (char) (id >> 8) + (char) id + message);
 	}
 }

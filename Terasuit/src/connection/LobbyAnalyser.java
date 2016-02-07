@@ -25,25 +25,22 @@ public class LobbyAnalyser implements Analyser {
 	@Override
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
-		switch (bytes[0] & 192) {
-		case (0): // Position wechseln
-			lobby.movePlayer(id, bytes[0]);
+		switch (bytes[0]) {
+		case (16): // Position wechseln
+			lobby.movePlayer(id, bytes[1]);
 			break;
-		case (64): // Spiel verlassen
+		case (17): // Spiel verlassen
 			lobby.removePlayer(id, id);
 			break;
-		case (128): // Spieler kicken
-			lobby.removePlayer(id, (short) ((short) bytes[1] << 8 + bytes[2]));
+		case (18): // Spieler kicken
+			lobby.removePlayer(id, (short) ((int) bytes[1] << 8 + bytes[2]));
 			break;
-		case (192): // Spiel starten
-			switch (bytes[0] & 32) {
-			case (0):
-				// Spiel starten
-				break;
-			case (32):
-				lobby.broadcast(input, id);
-				break;
-			}
+		case (19): // Spiel starten
+			// Spiel starten
+			break;
+		case (20):
+			lobby.broadcast(input.substring(1), id);
+			break;
 		}
 	}
 

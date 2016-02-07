@@ -6,7 +6,7 @@ public interface Building {
 
 	public int getHealth();
 
-	public void upgrade();
+	public void upgrade(byte bytes);
 
 	public boolean hasUpgrade();
 

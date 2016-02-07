@@ -41,8 +41,9 @@ public class Lobby {
 	 * Fügt einen Spieler zu der Lobby hinzu
 	 * 
 	 * @param player
+	 * @param password 
 	 */
-	public void addPlayer(Connection player) {
+	public void addPlayer(Connection player, String password) {
 		boolean playerJoined = false;
 		int i = 0;
 		while (!playerJoined && i < MAXPLAYERS) {
