@@ -46,7 +46,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (3): // Spiel erstellen
 			System.out.println("create");
-			String[] splitted = getSplitString(input);
+			String[] splitted = getSplitString(input, 2);
 			String password = null;
 			if (splitted.length > 1) {
 				password = splitted[1];
@@ -68,20 +68,28 @@ public class MenuAnalyser implements Analyser {
 		case (5): // Einloggen
 			System.out.println("login");
 			if (connection.getName() == null) {
-				splitted = getSplitString(input);
-				if (server.loginClient(splitted[0], splitted[1], id)) {
-					connection.sendLogin();
-					connection.setName(splitted[0]);
+				splitted = getSplitString(input, 1);
+				password = "";
+				switch (splitted.length) {
+				case (2):
+					password = splitted[1];
+				case (1):
+					if (server.loginClient(splitted[0], password, id)) {
+						connection.sendLogin();
+						connection.setName(splitted[0]);
+					}
+					break;
 				}
 			}
 			break;
 		case (6): // Registrieren
 			System.out.println("register");
 			if (connection.getName() == null) {
-				splitted = getSplitString(input);
-				server.registerClient(
-						splitted[0].substring(1, splitted[0].length()),
-						splitted[1], splitted[2], splitted[3], id);
+				splitted = getSplitString(input, 1);
+				if (splitted.length == 4) {
+					server.registerClient(splitted[0], splitted[1],
+							splitted[2], splitted[3], id);
+				}
 			}
 			break;
 		case (7):
@@ -142,7 +150,7 @@ public class MenuAnalyser implements Analyser {
 	 * @param string
 	 * @return
 	 */
-	private String[] getSplitString(String string) {
-		return string.substring(2, string.length()).split(",");
+	private String[] getSplitString(String string, int bytesToCut) {
+		return string.substring(bytesToCut, string.length()).split(",");
 	}
 }

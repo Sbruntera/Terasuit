@@ -15,7 +15,7 @@ import javax.swing.JButton;
 
 public class SetButtons {
 	
-	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
+	LoginRegisterPanel loginRegisterPanel;
 	boolean registerOpen = false;
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;
@@ -82,7 +82,7 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnExit);
-			
+			loginRegisterPanel = new LoginRegisterPanel(loader.connection);
 			JButton btnLogin = new JButton("LOGIN");
 			btnLogin.setBounds(800, 732, 90, 25);
 			btnLogin.setBackground(new Color(255,90,0));
