@@ -33,7 +33,7 @@ public class CreateUnit {
 		UnitTable.createUnitData();
 	}
 	
-	public ArrayList<Unit> createEntity(Panel field, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit) {
+	public ArrayList<Unit> createEntity(Panel field, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
@@ -80,7 +80,7 @@ public class CreateUnit {
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent objUnit) {
-				select.getUnit(entity, objUnit, field);
+				funktions.findEntity(objUnit);
 			}
 		});
 		
@@ -90,7 +90,7 @@ public class CreateUnit {
 		
 		// Hülle wird mit Attributen belegt
 		unit.setFlyingEntity(airUnit);
-		unit.setEntityRushLeft(true);
+		unit.setEntityRushLeft(true);	
 		unit.setEntitymembership(color);
 		unit.setLabel(label);
 		unit.setEntityname(Entitytype);

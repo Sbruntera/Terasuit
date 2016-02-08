@@ -3,6 +3,7 @@ package inGame;
 import grafig.Panel;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -25,8 +26,23 @@ public class Funktions {
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit){
-		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit);
+		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit, this);
 	}
+	
+	public void findEntity(MouseEvent objUnit) {
+		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
+		for (int id : selectedEntitysID) {
+			String type = entity.get(id-1).getEntityname();
+			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
+			int color = entity.get(id-1).getEntitymembership();
+			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
+			Unit unit2 = new Unit();
+			unit2 = entity.get(id-1);
+			unit2.getLabel().setIcon(pic);
+			entity.set(id-1, unit2);
+		}
+	}
+	
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
