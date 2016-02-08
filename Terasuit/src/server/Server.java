@@ -25,7 +25,7 @@ public class Server {
 	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
 
 	public Server(int port) throws IOException {
-		lobbys.add(new Lobby(this, null, "na", "", Map.Nightsun, (byte) 1));
+		lobbys.add(new Lobby(this, null, "na", null, Map.Nightsun, (byte) 1));
 		server = new ServerSocket(port);
 		db = new DB();
 		acceptConnection();
@@ -126,18 +126,16 @@ public class Server {
 						&& (filter.getMaxPlayers() >= lobby
 								.getNumberOfPlayers() && lobby
 								.getNumberOfPlayers() >= filter.getMinPlayers())
-						&& !(filter.isNoPassword() && lobby.hasPassword())) {
-					if (filter.getMap() == null
-							|| filter.getMap() == lobby.getMap()) {
-						filteredList.add(lobby);
-					}
+						&& !(filter.isNoPassword() && lobby.hasPassword())
+						&& (filter.getMap() == null || filter.getMap() == lobby
+								.getMap())) {
+					filteredList.add(lobby);
 				}
 			}
 		} else {
 			filteredList = (ArrayList<Lobby>) lobbys.clone();
 		}
-		Lobby[] filteredArray = new Lobby[filteredList.size()];
-
+		Lobby[] filteredArray = filteredList.toArray(new Lobby[filteredList.size()]);
 		return filteredArray;
 	}
 
@@ -156,7 +154,8 @@ public class Server {
 	public Lobby createLobby(Connection connection, String name,
 			String password, Map map) {
 		byte idGenerator = 0;
-		Lobby lobby = new Lobby(this, connection, name, password, map, idGenerator);
+		Lobby lobby = new Lobby(this, connection, name, password, map,
+				idGenerator);
 		idGenerator++;
 		lobbys.add(lobby);
 		return lobby;
@@ -196,7 +195,9 @@ public class Server {
 		GameServer game = new GameServer(lobby.getConnections(), this);
 		games.add(game);
 		for (Connection c : lobby.getConnections()) {
-			c.sendStarting(game);
+			if (c != null) {
+				c.sendStarting(game);
+			}
 		}
 	}
 }

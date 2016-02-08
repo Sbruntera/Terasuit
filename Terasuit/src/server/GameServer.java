@@ -37,7 +37,7 @@ public class GameServer implements Runnable {
 		bullets = new ArrayList<Bullet>();
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
-		for (int i = 0; i < connections.length; i++) {
+		for (int i = 0; i < 2; i++) {
 			mainBuildings[i] = new MainBuilding();
 		}
 		recources = new int[connections.length][];

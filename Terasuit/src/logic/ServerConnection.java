@@ -82,6 +82,8 @@ public class ServerConnection implements Runnable {
 	 * 
 	 * @param noPassword
 	 *            true: nur Spiele ohne Passwort; false: egal
+	 * @param name
+	 *            substring der im namen enthalten sein soll
 	 * @param minPlayers
 	 *            Minimale Anzahl an Spielern wird im Server =max gesetzt wenn
 	 *            größer als max
@@ -91,12 +93,13 @@ public class ServerConnection implements Runnable {
 	 *            Die ID der gewünschten Map; 0 wenn keine spezielle Map
 	 *            gewünscht
 	 */
-	public void refreshServerList(boolean noPassword, int minPlayers,
-			int maxPlayers, int mapID) {
+	public void refreshServerList(boolean noPassword, String name,
+			int minPlayers, int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
 			addMessage(String.valueOf((char) 2)
 					+ (char) (Boolean.compare(noPassword, false) << 4
-							+ (minPlayers << 2) + maxPlayers) + (char) mapID);
+							+ (minPlayers << 2) + maxPlayers) + (char) mapID
+					+ name);
 		}
 	}
 
@@ -113,7 +116,8 @@ public class ServerConnection implements Runnable {
 	public void createGroup(int mapID, String name, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage(String.valueOf((char) 3) + (char) mapID + name + "," + password);
+			addMessage(String.valueOf((char) 3) + (char) mapID + name + ","
+					+ password);
 		}
 	}
 

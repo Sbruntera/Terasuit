@@ -136,7 +136,6 @@ public class Connection implements Runnable {
 	public void sendGameList(Lobby[] lobbys) {
 		String message = String.valueOf((char) 1);
 		boolean first = true;
-		System.out.println(lobbys.length);
 		for (Lobby l : lobbys) {
 			if (!first) {
 				message += ",";
@@ -148,6 +147,7 @@ public class Connection implements Runnable {
 					+ (char) (Boolean.compare(l.hasPassword(), false) << 2)
 					+ l.getNumberOfPlayers() + l.getName();
 		}
+		System.out.println(message);
 		addMessage(message);
 	}
 

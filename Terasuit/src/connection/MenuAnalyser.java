@@ -41,7 +41,8 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (2): // Serverliste
 			System.out.println("serverlist");
-			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
+			Lobby[] lobbyList = server.getLobbylist(getFilter(input
+					.substring(1)));
 			connection.sendGameList(lobbyList);
 			break;
 		case (3): // Spiel erstellen
@@ -108,23 +109,22 @@ public class MenuAnalyser implements Analyser {
 	private Filter getFilter(String input) {
 		byte[] bytes = input.getBytes();
 		boolean noPassword;
-		Map map = null;
-		switch (bytes.length) {
-		case (2):
-			map = getMap(bytes[2]);
-		case (1):
-			if ((bytes[1] & 16) == 0) {
-				noPassword = false;
-			} else {
-				noPassword = true;
-			}
+		System.out.println(bytes.length);
+		if (bytes.length > 0) {
+			Map map = null;
+			String name = "";
+			noPassword = (bytes[0] & 16) != 0;
 			int minPlayers = bytes[1] & 243;
 			int maxPlayers = bytes[1] & 252;
-			return new Filter(noPassword, input.substring(1), map, minPlayers,
-					maxPlayers);
-		default:
-			return null;
+			if (bytes.length > 1) {
+				map = getMap(bytes[1]);
+				if (bytes.length > 2) {
+					name = input.substring(2);
+				}
+			}
+			return new Filter(noPassword, name, map, minPlayers, maxPlayers);
 		}
+		return null;
 	}
 
 	/**

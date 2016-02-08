@@ -46,12 +46,14 @@ public class Lobby {
 	 * @param password 
 	 */
 	public void addPlayer(Connection player, String password) {
-		boolean playerJoined = false;
-		int i = 0;
-		while (!playerJoined && i < MAXPLAYERS) {
-			if (playerList[i] == null) {
-				playerList[i] = player;
-				playerJoined = true;
+		if (password == this.password || !this.hasPassword()) {
+			boolean playerJoined = false;
+			int i = 0;
+			while (!playerJoined && i < MAXPLAYERS) {
+				if (playerList[i] == null) {
+					playerList[i] = player;
+					playerJoined = true;
+				}
 			}
 		}
 	}

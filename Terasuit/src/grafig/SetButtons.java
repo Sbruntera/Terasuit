@@ -178,7 +178,7 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.connection.refreshServerList(true, 0, 4, 0);
+					loader.connection.refreshServerList(false, "", 0, 4, 0);
 				}
 			});
 			panel.add(btnRefreshGroup);
@@ -193,7 +193,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Der Weg zurück
-					loader.connection.close();
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
