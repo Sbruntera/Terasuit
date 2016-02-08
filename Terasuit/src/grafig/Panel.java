@@ -29,19 +29,17 @@ public class Panel extends JPanel{
 	int h;
 	int minX;
 	int w;
-	Funktions func;
+
 	
 	public Panel(String picName, Funktions func, int HEIGHT, int WIGTH, Loader loader) {
 		super();
 		setFocusable(true);
-		this.func = func;
 		if (picName.equals("Wallpaper/Field.png")){
 			// Ausnamhe für das Feld
 		}else if ( picName.equals("Wallpaper/Console.png")){
 			// Ausnahme für die Konsole
 		}else{
 			setPreferredSize(new Dimension(HEIGHT-2, WIGTH-2));
-			System.out.println(picName);
 		}
 		
 		// Das Spiel wird gestartet, es werden das Feld und die Konsole inizalisiert und auf das Feld der Listener aktiviert
@@ -51,7 +49,7 @@ public class Panel extends JPanel{
 			
 			Panel field = new Panel("Wallpaper/Field.png", func, HEIGHT, WIGTH, loader);
 			field.setPreferredSize(new Dimension(1600, 590));
-			field.addListenersForMouse();
+			field.addListenersForMouse(loader);
 			JScrollPane scrollPane = new JScrollPane(field);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -85,7 +83,7 @@ public class Panel extends JPanel{
 	    g.drawRect(minX,minY,w,h);
 	}
 
-	private void addListenersForMouse() {
+	private void addListenersForMouse(Loader loader) {
 	    addMouseListener(new MouseAdapter() {
 	    	public void mousePressed(MouseEvent e) {
 	        	squareX = e.getX();
@@ -93,8 +91,7 @@ public class Panel extends JPanel{
 	        }
 	        
 	    	public void mouseReleased(MouseEvent e) {
-	    		func.deMarkEntittys();
-	    		func.findAllEntitys(minX, minY, w, h);
+	    		loader.blubb(minX, minY, w, h);
 	    		minY = 0;
 	    		minX = -1;
 	    		h = 0;

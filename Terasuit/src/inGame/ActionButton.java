@@ -22,9 +22,9 @@ public class ActionButton {
 	JButton btnBuilding = new JButton("Building");
 	JButton btnSpawnSoldir = new JButton("Building");
 	ArrayList<JButton> ContentButtonArray = new ArrayList<JButton>();
-	
 	ArrayList<JButton> jButton = new ArrayList<JButton>();
 	JButton btn;
+	
 	private static String wrapLines(String s) {
 		return String.format("<html>%s</html>", s);
 	}

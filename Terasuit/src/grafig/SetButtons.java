@@ -255,16 +255,6 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBattleStart);
-			
-			
-		//#########################################################################
-		//
-		//								Maingame
-		//
-		//#########################################################################		
-			
-		} else if (picName.equals("Wallpaper/Maingame.png")){
-
 		}
 	}
 }

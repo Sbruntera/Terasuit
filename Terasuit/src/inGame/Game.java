@@ -5,12 +5,10 @@ import grafig.Panel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
+import sun.security.pkcs11.wrapper.Functions;
 import logic.UnitPics;
 
 public class Game {
@@ -18,10 +16,13 @@ public class Game {
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	UnitPics pics = new UnitPics();
+	Funktions func;
 	
 	
 	
 	public void init(Panel panel, Panel field, Panel console, Loader loader, Funktions func){
+		this.func = func;
+		
 		
 		// Erstellen der Basis
 		buildings.buildBase(field, console, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
@@ -75,6 +76,11 @@ public class Game {
 	
 	public void updateGame(){
 		
+	}
+
+	public void addMousListerner(int minX, int minY, int w, int h) {
+		func.deMarkEntittys();
+		func.findAllEntitys(minX, minY, w, h);	
 	}
 
 }

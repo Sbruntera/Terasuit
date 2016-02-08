@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,62 +26,48 @@ public class UnitPics {
 		for (int i = 0; i != entityGroundList.length; i++){
 			picLocation = "Unit/Ground/" + entityGroundList[i] + ".png";
 			picName = entityGroundList[i];
-			this.generate(UnitPicHash, i);
+			this.generate(UnitPicHash);
 		}
 		for (int i = 0; i != entityAirList.length; i++){
 			picLocation = "Unit/Air/" + entityAirList[i] + ".png";
 			picName = entityAirList[i];
-			this.generate(UnitPicHash, i);
+			this.generate(UnitPicHash);
 		}
 	}
 	
-	public ImageIcon getEntityPic(String EnityName, int color, boolean right, boolean mark){
+	public ImageIcon getEntityPic(String EnityName, int color, boolean left, boolean mark){
 		
 	    String searchString = EnityName + "_" + color;
-		if (right && !mark){
-			searchString = searchString + "_false_false";
-		}else if (!right && !mark){
-			searchString = searchString + "_true_false";
-		}else if (right && mark){
-			searchString = searchString + "_false_true";
+		if (left && !mark){
+			searchString = searchString + "_turn";
+		}else if (!left && !mark){
+		}else if (left && mark){
+			searchString = searchString + "_mark_turn";
 		}else{
-			searchString = searchString + "_true_true";
+			searchString = searchString + "_mark";
 		}
 		
-		System.out.println(searchString + "  >=====");
+		System.out.println(searchString);
 		
-		for(Entry<String, BufferedImage> entry : UnitPicHash.entrySet()) {
-		    String key = entry.getKey();
-		    BufferedImage unitObject = entry.getValue();
-		    System.out.println(key);
-		    if (key.equals(searchString)){
-		    	System.out.println("habs");
-		    	ImageIcon pic = new ImageIcon(unitObject);
-		    	return pic;
-		    }
-		}
-		return null;
+		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	
-	private HashMap<String, BufferedImage> generate(HashMap<String, BufferedImage> unitPicHash, int i){
+	private HashMap<String, BufferedImage> generate(HashMap<String, BufferedImage> unitPicHash){
 
 		// Bild der Einheite wird geladen
 		BufferedImage img = null;
-		BufferedImage imgBackup = null;
 		try {
 			img = ImageIO.read(new File(picLocation));
-		} catch (IOException e) {
-		}
-		
-		imgBackup = img;
+		} catch (IOException e) {}
 		
 		// Vier verschiedene Farben werden generiert (Rechts)
 		for (int n = 1; n != 5; n++){
 			img = imgMani.setnewColors(img, n);
 			Image img2 = imgMani.setnewDimension(img, picLocation);
 			img = this.toBufferedImage(img2);
-			UnitPicHash.put((picName + "_" + n + "_false_false"), img);
-			img = imgBackup;
+			UnitPicHash.put((picName + "_" + n), img);
+			try {img = ImageIO.read(new File(picLocation));
+			} catch (IOException e) {}
 		}
 		// Vier verschiedene Farben werden generiert (Links)
 		for (int n = 1; n != 5; n++){
@@ -90,8 +75,9 @@ public class UnitPics {
 			Image img2 = imgMani.setnewDimension(img, picLocation);
 			img = this.toBufferedImage(img2);
 			img = imgMani.rotate(img);
-			UnitPicHash.put((picName + "_" + n + "_true_false"), img);
-			img = imgBackup;
+			UnitPicHash.put((picName + "_" + n + "_turn"), img);
+			try {img = ImageIO.read(new File(picLocation));
+			} catch (IOException e) {}
 		}
 		// Vier verschiedene Farben werden generiert (Rechts und makiert)
 		for (int n = 1; n != 5; n++){
@@ -99,8 +85,9 @@ public class UnitPics {
 			Image img2 = imgMani.setnewDimension(img, picLocation);
 			img = this.toBufferedImage(img2);
 			img = imgMani.setSelection(img);
-			UnitPicHash.put((picName + "_" + n + "_false_true"), img);
-			img = imgBackup;
+			UnitPicHash.put((picName + "_" + n + "_mark"), img);
+			try {img = ImageIO.read(new File(picLocation));
+			} catch (IOException e) {}
 		}
 		// Vier verschiedene Farben werden generiert (Links und makiert)
 		for (int n = 1; n != 5; n++){
@@ -109,8 +96,9 @@ public class UnitPics {
 			img = this.toBufferedImage(img2);
 			img = imgMani.setSelection(img);
 			img = imgMani.rotate(img);
-			UnitPicHash.put((picName + "_" + n + "_true_true"), img);
-			img = imgBackup;
+			UnitPicHash.put((picName + "_" + n + "_mark_turn"), img);
+			try {img = ImageIO.read(new File(picLocation));
+			} catch (IOException e) {}
 		}
 		
 		return unitPicHash;

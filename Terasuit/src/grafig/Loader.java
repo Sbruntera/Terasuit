@@ -66,4 +66,9 @@ public class Loader {
 	public void exit(){
 		System.exit(0);
 	}
+	
+	public void blubb(int minX, int minY, int w, int h){
+		game.addMousListerner(minX, minY, w, h);
+	}
+	
 }

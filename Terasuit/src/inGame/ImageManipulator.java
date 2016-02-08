@@ -15,7 +15,7 @@ public class ImageManipulator {
 	
 	int xSkalierung = 0;
 	int ySkalierung = 0;
-	static int Colorbrightness = 20;
+	static int Colorbrightness = 100;
 
 	public int getxSkalierung() {
 		return xSkalierung;
