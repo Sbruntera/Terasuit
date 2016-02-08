@@ -14,7 +14,7 @@ public class Game {
 	
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
-	UnitPics pics = new UnitPics();
+
 	Funktions func;
 	
 	
@@ -27,7 +27,7 @@ public class Game {
 		buildings.buildBase(field, console, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
 		buildings.buildBase(field, console, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
 		
-		pics.generateAllEntityPictures();
+//		pics.generateAllEntityPictures();
 		
 //		BufferedImage img = null;
 //		try {
@@ -61,20 +61,6 @@ public class Game {
 
 
 		panel.repaint();
-	}
-	
-	public void removeButtonsOnPane(){
-		
-	}
-	
-	public void refreshUnitLists(){
-		
-		
-		updateGame();
-	}
-	
-	public void updateGame(){
-		
 	}
 
 	public void addMousListerner(int minX, int minY, int w, int h) {

@@ -23,6 +23,7 @@ public class UnitPics {
 	HashMap<String, BufferedImage> UnitPicHash = new HashMap<String, BufferedImage>();
 	
 	public void generateAllEntityPictures(){
+		System.out.println("jdsjsjd");
 		for (int i = 0; i != entityGroundList.length; i++){
 			picLocation = "Unit/Ground/" + entityGroundList[i] + ".png";
 			picName = entityGroundList[i];
@@ -48,7 +49,6 @@ public class UnitPics {
 		}
 		
 		System.out.println(searchString);
-		
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	

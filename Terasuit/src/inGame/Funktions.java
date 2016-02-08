@@ -9,12 +9,19 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import logic.UnitPics;
+
 public class Funktions {
 	
 	ArrayList<Unit> entity = new ArrayList<Unit>();
 	ArrayList<Integer> selectedEntitysID = new ArrayList<Integer>();
 	CreateUnit cunit = new CreateUnit();
 	SelectedUnits selectedUnit = new SelectedUnits();
+	UnitPics pics = new UnitPics();
+	
+	public Funktions(){
+		pics.generateAllEntityPictures();
+	}
 	
 	public ArrayList<Unit> getEntity() {
 		return entity;
@@ -35,7 +42,9 @@ public class Funktions {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
+			
+			//ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
 			Unit unit2 = new Unit();
 			unit2 = entity.get(id-1);
 			unit2.getLabel().setIcon(pic);
@@ -141,10 +150,7 @@ public class Funktions {
 		    if (component.getClass().equals(JPanel.class)) {
 		        list.add((JPanel)component);
 		    }
-		}
-		
+		}	
 		return null;
 	}
-	
-	
 }
