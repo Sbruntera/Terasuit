@@ -25,6 +25,7 @@ public class Server {
 	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
 
 	public Server(int port) throws IOException {
+		lobbys.add(new Lobby(this, null, "na", "", Map.Nightsun, (byte) 1));
 		server = new ServerSocket(port);
 		db = new DB();
 		acceptConnection();
@@ -152,9 +153,13 @@ public class Server {
 	 * @param map
 	 *            : Karte der Lobby
 	 */
-	public void createLobby(Connection connection, String name,
+	public Lobby createLobby(Connection connection, String name,
 			String password, Map map) {
-		lobbys.add(new Lobby(this, connection, name, password, map));
+		byte idGenerator = 0;
+		Lobby lobby = new Lobby(this, connection, name, password, map, idGenerator);
+		idGenerator++;
+		lobbys.add(lobby);
+		return lobby;
 	}
 
 	/**

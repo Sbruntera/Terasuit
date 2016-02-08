@@ -136,6 +136,7 @@ public class Connection implements Runnable {
 	public void sendGameList(Lobby[] lobbys) {
 		String message = String.valueOf((char) 1);
 		boolean first = true;
+		System.out.println(lobbys.length);
 		for (Lobby l : lobbys) {
 			if (!first) {
 				message += ",";
@@ -156,19 +157,20 @@ public class Connection implements Runnable {
 	 * @param lobby
 	 *            : angeforderte Lobby zum beitreten
 	 */
-	public void sendGameJoin(Lobby lobby) {
+	public void sendGameJoin(Lobby lobby, boolean host) {
+		System.out.println(lobby);
 		if (lobby != null) {
 			joinLobby(lobby);
 			String message = String.valueOf((char) 2)
-					+ (char) lobby.getMap().getID();
+					+ (char) lobby.getMap().getID() + (char) Boolean.compare(host, false);
 			Object[] arrays = lobby.getPlayerNamesAndIDs();
 			int[] iDs = (int[]) arrays[0];
 			String[] names = (String[]) arrays[1];
 			for (int i = 0; i < iDs.length; i++) {
-				if (i == 0) {
+				if (i != 0) {
 					message += ",";
 				}
-				message += iDs[i] + names[i];
+				message += (char) (iDs[i] >> 8) + (char) iDs[i] + names[i];
 			}
 			addMessage(message);
 		}

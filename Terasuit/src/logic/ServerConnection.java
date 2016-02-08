@@ -45,6 +45,7 @@ public class ServerConnection implements Runnable {
 		try {
 			while (true) {
 				if (reader.ready()) {
+					System.out.println("jasf");
 					String in = reader.readLine();
 					analyser.analyse(in);
 				}
@@ -113,7 +114,6 @@ public class ServerConnection implements Runnable {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
 			addMessage(String.valueOf((char) 3) + (char) mapID + name + "," + password);
-			return;
 		}
 	}
 
@@ -121,7 +121,7 @@ public class ServerConnection implements Runnable {
 	 * Tritt dem Spiel mit der übergebenen ID bei
 	 * 
 	 * @param id
-	 *            ID des gewänschten Spiels
+	 *            ID des gewünschten Spiels
 	 * @param password
 	 *            Passwort des gewünschten Spiels
 	 */
@@ -195,7 +195,9 @@ public class ServerConnection implements Runnable {
 	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
 	 */
 	public void returnFromLobby() {
+		System.out.println("ghjD");
 		if (analyser.getState() == State.LOBBY) {
+			System.out.println("ghjD");
 			queue.clear();
 			addMessage(String.valueOf((char) 17));
 		}

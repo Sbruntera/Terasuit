@@ -26,15 +26,17 @@ public class Lobby {
 	 * @param gameName
 	 * @param password
 	 * @param map
+	 * @param id
 	 */
 	public Lobby(Server server, Connection host, String gameName,
-			String password, Map map) {
+			String password, Map map, byte id) {
 		playerList[0] = host;
 		this.host = host;
 		this.server = server;
 		this.gameName = gameName;
 		this.password = password;
 		this.map = map;
+		this.id = id;
 	}
 
 	/**
@@ -66,10 +68,13 @@ public class Lobby {
 			boolean found = false;
 			int i = 0;
 			while (!found && i < MAXPLAYERS) {
-				if (playerList[0] != null) {
-					if (playerList[0].getID() == id) {
+				if (playerList[i] != null) {
+					if (playerList[i].getID() != id) {
+						playerList[i].sendPlayerLeftGame(playerList[i].getID());
 						found = true;
 					} else {
+						playerList[i].sendLeftLobby();
+						playerList[i] = null;
 						i++;
 					}
 				} else {
@@ -77,30 +82,21 @@ public class Lobby {
 				}
 			}
 			if (found) {
-				for (Connection c : playerList) {
-					if (c == playerList[i]) {
-						c.sendLeftLobby();
-					} else {
-						c.sendPlayerLeftGame(playerList[i].getID());
+				if (playerList[i] == host) { // Der Spieler ist Host
+					boolean playerFound = false;
+					int actualPlayer = 0;
+					while (!playerFound && actualPlayer < MAXPLAYERS) {
+						if (playerList[actualPlayer] != null
+								&& playerList[actualPlayer] != host) {
+							playerFound = true;
+							host = playerList[actualPlayer];
+						} else {
+							actualPlayer++;
+						}
 					}
 				}
-			}
-			if (playerList[i] == host) { // Der Spieler ist Host
-				boolean playerFound = false;
-				int actualPlayer = 0;
-				while (!playerFound && actualPlayer < MAXPLAYERS) {
-					if (playerList[actualPlayer] != null
-							&& playerList[actualPlayer] != host) {
-						playerFound = true;
-						host = playerList[actualPlayer];
-					} else {
-						actualPlayer++;
-					}
-				}
-			}
-			playerList[i] = null;
-			if (getNumberOfPlayers() == 0) {
-				closeGame();
+			} else {
+				closeGame(true);
 			}
 		}
 	}
@@ -139,9 +135,11 @@ public class Lobby {
 	/**
 	 * Schließt die Lobby
 	 */
-	public void closeGame() {
-		for (Connection p : playerList) {
-			p.sendLeftLobby();
+	public void closeGame(boolean empty) {
+		if (!empty) {
+			for (Connection p : playerList) {
+				p.sendLeftLobby();
+			}
 		}
 		server.removeLobby(this);
 	}
@@ -192,9 +190,11 @@ public class Lobby {
 		int[] iDs = new int[names.length];
 		int counter = 0;
 		for (Connection p : playerList) {
-			names[counter] = p.getName();
-			iDs[counter] = p.getID();
-			counter++;
+			if (p != null) {
+				names[counter] = p.getName();
+				iDs[counter] = p.getID();
+				counter++;
+			}
 		}
 		return new Object[] { iDs, names };
 	}

@@ -51,9 +51,8 @@ public class MenuAnalyser implements Analyser {
 			if (splitted.length > 1) {
 				password = splitted[1];
 			}
-			server.createLobby(connection, splitted[0], password,
-					getMap(bytes[1]));
-			connection.sendGameJoin(server.getLobby(bytes[1]));
+			connection.sendGameJoin(server.createLobby(connection, splitted[0],
+					password, getMap(bytes[1])), true);
 			break;
 		case (4): // Spiel beitreten
 			System.out.println("join");
@@ -61,7 +60,7 @@ public class MenuAnalyser implements Analyser {
 				if (server.hasLobby(bytes[1])) {
 					server.getLobby(bytes[1]).addPlayer(connection,
 							input.substring(2));
-					connection.sendGameJoin(server.getLobby(bytes[1]));
+					connection.sendGameJoin(server.getLobby(bytes[1]), false);
 				}
 			}
 			break;

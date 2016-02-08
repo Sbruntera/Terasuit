@@ -11,6 +11,7 @@ public class Analyser {
 
 	public Analyser(Loader loader) {
 		state = State.MENU;
+		this.loader = loader;
 	}
 
 	public void analyse(String message) {
@@ -44,25 +45,35 @@ public class Analyser {
 			ArrayList<Lobby> list = new ArrayList<Lobby>();
 			String[] splittedMessage = message.substring(1).split(",");
 			for (String s : splittedMessage) {
-				byte[] b = s.getBytes();
-				list.add(new Lobby(b[0], s.substring(1), b[1],
-						((b[2] & 4) >> 2) == 1, (byte) (b[2] & 3)));
+				if (s.length() != 0) {
+					byte[] b = s.getBytes();
+					list.add(new Lobby(b[0], s.substring(1), b[1],
+							((b[2] & 4) >> 2) == 1, (byte) (b[2] & 3)));
+				}
 			}
 			Lobby[] lobbyList = list.toArray(new Lobby[list.size()]);
 			// TODO: An Feldmann: Hier einen Funktionsaufruf einfügen der diese
 			// Liste anzeigt
 			break;
 		case (2): // Join Game
-			byte mapID = (byte) Character.getNumericValue(message.charAt(2));
-			splittedMessage = message.substring(1).split(",");
+			byte mapID = (byte) bytes[1];
+			boolean host = bytes[2] > 0;
+			splittedMessage = message.substring(2).split(",");
 			short[] iDs = new short[splittedMessage.length];
 			String[] names = new String[splittedMessage.length];
 			for (int i = 0; i < splittedMessage.length; i++) {
+				System.out.println(splittedMessage[i].length());
 				iDs[i] = (short) (splittedMessage[i].getBytes()[0] << 8 + splittedMessage[i]
 						.getBytes()[1]);
 				names[i] = splittedMessage[i].substring(2);
 			}
-			loader.switchPanel(loader.Grouppage);
+			if (host) {
+				state = State.LOBBY;
+				loader.switchPanel(loader.Grouppage_owner);
+			} else {
+				state = State.LOBBY;
+				loader.switchPanel(loader.Grouppage);
+			}
 			// TODO: An Feldmann: Hier Funktionsaufruf zum Beitreten einer Lobby
 			break;
 		case (3): // Log in
@@ -95,7 +106,9 @@ public class Analyser {
 				// TODO: An Feldmann: Hier funktionsaufruf GUI aktualisieren
 				// (Spieler entfernen)
 			} else {
+				System.out.println("her");
 				switchState(State.MENU);
+				loader.switchPanel(loader.Lobbypage);
 				// TODO: An Feldmann: Hier Funktionsaufruf ins Menü zurückkehren
 				// (Spieler wurde aus dem Spiel entfernt)
 			}

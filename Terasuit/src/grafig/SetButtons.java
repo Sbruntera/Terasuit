@@ -45,7 +45,7 @@ public class SetButtons {
 					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
 					if (loader.connection.isServerAccess()){
 						loader.switchPanel(loader.Lobbypage);
-					}else{
+					} else {
 						System.out.println("Server konnte nicht gefunden werden. ");
 					}
 				}
@@ -170,9 +170,23 @@ public class SetButtons {
 			});
 			panel.add(btnCreateGroup);
 			
+			// Refresh-Button
+			JButton btnRefreshGroup = new JButton("Refresh");
+			btnRefreshGroup.setBounds(510, 680, 85, 30);//links / runter / breite / höhe
+			btnRefreshGroup.setBackground(new Color(255,90,0));
+			btnRefreshGroup.setFont(new Font("Arial", Font.BOLD, 12));
+			btnRefreshGroup.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					loader.connection.refreshServerList(true, 0, 4, 0);
+				}
+			});
+			panel.add(btnRefreshGroup);
+			
+			
 			// Back-Button
 			JButton btnBACK = new JButton("BACK");
-			btnBACK.setBounds(510, 710, 85, 30);//links / runter / breite / höhe
+			btnBACK.setBounds(510, 715, 85, 30);//links / runter / breite / höhe
 			btnBACK.setBackground(new Color(255,90,0));
 			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
 			btnBACK.addMouseListener(new MouseAdapter() {
