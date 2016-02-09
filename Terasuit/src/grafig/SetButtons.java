@@ -161,6 +161,7 @@ public class SetButtons {
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
+					System.out.println("gahk");
 					loader.connection.createGroup(1, "Testspiel", "");
 						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
 					//TODO	loader.switchPanel(loader.Grouppage_owner);

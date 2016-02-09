@@ -26,6 +26,7 @@ public class ServerConnection implements Runnable {
 			this.reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			this.writer = socket.getOutputStream();
+			this.loader = loader;
 			serverAccess = true;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
@@ -132,7 +133,6 @@ public class ServerConnection implements Runnable {
 	public void connectGroup(int id, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage("");
 			addMessage(String.valueOf((char) 4) + (char) id + password);
 		}
 	}
@@ -199,9 +199,7 @@ public class ServerConnection implements Runnable {
 	 * Verlässt die aktuelle Lobby und kehrt ins Menü zurück
 	 */
 	public void returnFromLobby() {
-		System.out.println("ghjD");
 		if (analyser.getState() == State.LOBBY) {
-			System.out.println("ghjD");
 			queue.clear();
 			addMessage(String.valueOf((char) 17));
 		}
@@ -347,7 +345,9 @@ public class ServerConnection implements Runnable {
 	 */
 	public void leaveGame() {
 		if (analyser.getState() == State.GAME) {
+			queue.clear();
 			addMessage(String.valueOf((char) 35));
+			analyser.switchState(State.MENU);
 		}
 	}
 

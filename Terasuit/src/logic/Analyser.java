@@ -74,7 +74,6 @@ public class Analyser {
 				state = State.LOBBY;
 				loader.switchPanel(loader.Grouppage);
 			}
-			// TODO: An Feldmann: Hier Funktionsaufruf zum Beitreten einer Lobby
 			break;
 		case (3): // Log in
 			System.out.println("success");

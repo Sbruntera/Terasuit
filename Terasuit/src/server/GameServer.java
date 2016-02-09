@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import connection.Connection;
+import connection.MenuAnalyser;
 import world.Building;
 import world.Bullet;
 import world.MainBuilding;
@@ -114,7 +115,7 @@ public class GameServer implements Runnable {
 	 */
 	public void broadcast(String msg, short id) {
 		for (int i = 0; i < connections.length; i++) {
-			connections[i].sendGameChatMessage(id, msg);
+			connections[i].sendChatMessage(id, msg);
 		}
 	}
 
@@ -194,8 +195,16 @@ public class GameServer implements Runnable {
 
 	}
 
-	public void disconnect(int id) {
-		connections[id] = null;
-		// TODO:
+	public void disconnect(short id) {
+		for (Connection c : connections) {
+			if (c != null) {
+				if (c.getID() == id) {
+					c.setAnalyser(new MenuAnalyser(server, c, id));
+					c = null;
+				} else {
+					c.sendPlayerLeftGame(id);
+				}
+			}
+		}
 	}
 }

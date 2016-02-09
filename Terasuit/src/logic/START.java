@@ -11,14 +11,10 @@ public class START {
 		
 		try {
 			new Thread(new Server(3142)).start();
-			Loader ld = new Loader();
-			ld.print();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
-		
+		Loader ld = new Loader();
+		ld.print();
 	}
 
 }

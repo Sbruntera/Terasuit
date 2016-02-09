@@ -12,7 +12,7 @@ import world.Building;
  * @author Simeon
  *
  */
-public class GameAnalyser implements Analyser{
+public class GameAnalyser implements Analyser {
 
 	GameServer server;
 	short id;
@@ -36,7 +36,7 @@ public class GameAnalyser implements Analyser{
 			freeSpace = server.hasBuildingAt(id, buildingPlace); // Gebäude an
 																	// position
 																	// vorhanden
-			
+
 			if (freeSpace) {
 				server.build(bytes[2], buildingPlace);
 			} else {
@@ -51,23 +51,19 @@ public class GameAnalyser implements Analyser{
 			}
 			break;
 
-		case (33): // Einheit erstellen/bewegen
-			switch (bytes[0] & 32) {
-			case (0):
-				// TODO: Create Unit
-				break;
-			case (32):
-				server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2)
-						* Double.compare(bytes[0] & 2, 0.5));
-				break;
-			}
+		case (33): // Einheit erstellen
+					// TODO: Create Unit
 			break;
-
-		case (34): // Spiel verlassen
+		case (34): // Einheit bewegen
+			server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2)
+					* Double.compare(bytes[0] & 2, 0.5));
+			break;
+		case (35): // Spiel verlassen
+			System.out.println("leave");
 			server.disconnect(id);
 			break;
 
-		case (35): // Chat
+		case (36): // Chat
 			server.broadcast(input, id);
 			break;
 		}

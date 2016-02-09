@@ -113,7 +113,7 @@ public class Lobby {
 	 */
 	public void broadcast(String msg, short id) {
 		for (int i = 0; i < playerList.length; i++) {
-			playerList[i].sendGameChatMessage(id, msg);
+			playerList[i].sendChatMessage(id, msg);
 		}
 	}
 

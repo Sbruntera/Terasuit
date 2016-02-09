@@ -47,12 +47,8 @@ public class Game {
 		btnCreator.createOne(btnBACK, 680, 5, 60, 60, 87);
 		btnBACK.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
-//				if (loader.connection.returnToLobbyFromGame()){
-//					loader.switchPanel(loader.Mainpage);
-//				}else{
-//					System.out.println("Kann das Spiel nicht verlassen!!");
-//				}
-				
+				loader.connection.leaveGame();
+				loader.switchPanel(loader.Mainpage);
 			}
 		});
 		console.add(btnBACK);

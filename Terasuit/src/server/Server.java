@@ -122,6 +122,7 @@ public class Server implements Runnable {
 	 *            : Filter nach dem die Lobbys gefiltert werden sollen
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
 		if (filter != null) {
