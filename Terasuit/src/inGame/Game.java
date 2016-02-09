@@ -5,51 +5,42 @@ import grafig.Panel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-
-import logic.UnitPics;
 
 public class Game {
 	
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
-	UnitPics pics = new UnitPics();
-	ActionButton btnAction = new ActionButton();
-	Funktions func = new Funktions();
+
+	Funktions func;
 	
-	Panel panel;
-	Panel field;
-	Panel console;
-	Loader loader;
+	
 	
 	public void init(Panel panel, Panel field, Panel console, Loader loader, Funktions func){
-		
-		this.panel = panel;
-		this.field = field;
-		this.console = console;
-		this.loader = loader;
 		this.func = func;
 		
+		
 		// Erstellen der Basis
-		buildings.buildBase(field, console, loader, func, this, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
-		buildings.buildBase(field, console, loader, func, this, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
+		buildings.buildBase(field, console, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y);
+		buildings.buildBase(field, console, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y);
 		
-		pics.generateAllEntityPictures();
+//		pics.generateAllEntityPictures();
 		
+//		BufferedImage img = null;
+//		try {
+//			img = ImageIO.read(new File("Unit/Ground/Marine.png"));
+//		} catch (IOException e) {
+//		}
 		
-		
-		// TEST
-		JLabel label = new JLabel("");
-		ImageIcon pic = pics.getEntityPic("Scout", 4, true, true);
-		label.setIcon(pic);
-		label.setBounds(20, 20, 150, 150);
-		console.add(label);
-		console.repaint();
-		console.revalidate();
+//		// TEST
+//		JLabel label = new JLabel("");
+//		ImageIcon pic = pics.getEntityPic("Chronite Tank", 1, true, true);
+////		ImageIcon pic = new ImageIcon(img);
+//		label.setIcon(pic);
+//		label.setBounds(10, 10, 50, 50);
+//		console.add(label);
+//		console.repaint();
 		
 		// Back-Button
 		JButton btnBACK = new JButton("X");
@@ -69,16 +60,10 @@ public class Game {
 
 		panel.repaint();
 	}
-	
-	public void createAktion(ArrayList<Buildings> buildingsEntity, int i){
-		btnAction.createUserOptions(console, field, buildingsEntity, i, loader, func);
-	}
 
 	public void addMousListerner(int minX, int minY, int w, int h) {
-		
 		func.deMarkEntittys();
-		func.findAllEntitys(minX, minY, w, h);
-		
+		func.findAllEntitys(minX, minY, w, h);	
 	}
 
 }

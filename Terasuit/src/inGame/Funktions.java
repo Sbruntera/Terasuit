@@ -3,10 +3,13 @@ package inGame;
 import grafig.Panel;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import logic.UnitPics;
 
 public class Funktions {
 	
@@ -14,6 +17,11 @@ public class Funktions {
 	ArrayList<Integer> selectedEntitysID = new ArrayList<Integer>();
 	CreateUnit cunit = new CreateUnit();
 	SelectedUnits selectedUnit = new SelectedUnits();
+	UnitPics pics = new UnitPics();
+	
+	public Funktions(){
+		pics.generateAllEntityPictures();
+	}
 	
 	public ArrayList<Unit> getEntity() {
 		return entity;
@@ -25,8 +33,24 @@ public class Funktions {
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit){
-		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit);
+		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit, this);
 	}
+	
+	public void findEntity(MouseEvent objUnit) {
+		deMarkEntittys();
+		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
+		for (int id : selectedEntitysID) {
+			String type = entity.get(id-1).getEntityname();
+			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
+			int color = entity.get(id-1).getEntitymembership();
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
+			Unit unit2 = new Unit();
+			unit2 = entity.get(id-1);
+			unit2.getLabel().setIcon(pic);
+			entity.set(id-1, unit2);
+		}
+	}
+	
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
 	public void findAllEntitys(int minX, int minY, int w, int h) {
@@ -35,7 +59,7 @@ public class Funktions {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
 			Unit unit = new Unit();
 			unit = entity.get(id-1);
 			unit.getLabel().setIcon(pic);
@@ -49,7 +73,7 @@ public class Funktions {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, true));
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, false);
 			Unit unit = new Unit();
 			unit = entity.get(id-1);
 			unit.getLabel().setIcon(pic);
@@ -125,10 +149,7 @@ public class Funktions {
 		    if (component.getClass().equals(JPanel.class)) {
 		        list.add((JPanel)component);
 		    }
-		}
-		
+		}	
 		return null;
 	}
-	
-	
 }

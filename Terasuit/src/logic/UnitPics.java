@@ -37,7 +37,12 @@ public class UnitPics {
 	
 	public ImageIcon getEntityPic(String EnityName, int color, boolean left, boolean mark){
 		
-	    String searchString = EnityName + "_" + color;
+		String []splitEntityName = EnityName.split("/");
+		String EnityName2 = splitEntityName[2];
+		splitEntityName = EnityName2.split("\\.");
+
+
+	    String searchString = splitEntityName[0] + "_" + color;
 		if (left && !mark){
 			searchString = searchString + "_turn";
 		}else if (!left && !mark){
@@ -46,9 +51,6 @@ public class UnitPics {
 		}else{
 			searchString = searchString + "_mark";
 		}
-		
-		System.out.println(searchString);
-		
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	
