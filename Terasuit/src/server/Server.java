@@ -14,7 +14,7 @@ import logic.BCrypt;
  * @author Simeon, Jan-Philipp
  *
  */
-public class Server {
+public class Server implements Runnable {
 	private final ServerSocket server;
 	private Socket socket;
 	private DB db;
@@ -28,8 +28,12 @@ public class Server {
 		lobbys.add(new Lobby(this, null, "na", null, Map.Nightsun, (byte) 1));
 		server = new ServerSocket(port);
 		db = new DB();
-		acceptConnection();
 		idIterator = 0;
+	}
+
+	@Override
+	public void run() {
+		acceptConnection();
 	}
 
 	/**
