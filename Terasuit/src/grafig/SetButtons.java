@@ -12,6 +12,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class SetButtons {
 	
@@ -21,6 +25,8 @@ public class SetButtons {
 	boolean serverCreateOpen = false;
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
+	JLabel tl;
+	private String s = "Willkommen im Chat";
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		
@@ -220,6 +226,19 @@ public class SetButtons {
 					//TODO	System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
 				}
 			});
+			tl = new JLabel(s);
+			tl.setBounds(668, 350, 318, 334);
+			tl.setForeground(Color.WHITE);
+			tl.setVerticalAlignment(SwingConstants.TOP);
+			//666, 350, 320, 364
+			JTextField tf = new JTextField("PENNNIS");
+			tf.setBounds(666, 684, 320, 30);
+			tf.addActionListener(e -> {
+				loader.connection.sendLobbyChatMessage(tf.getText());
+				tf.setText("");
+			});
+			panel.add(tl);
+			panel.add(tf);
 			panel.add(btnBACK);
 			
 		//#########################################################################
@@ -244,6 +263,26 @@ public class SetButtons {
 			});
 			panel.add(btnBACK);	
 			
+			tl = new JLabel(s);
+			tl.setBounds(668, 350, 318, 334);
+			tl.setForeground(Color.WHITE);
+			tl.setVerticalAlignment(SwingConstants.TOP);
+			//666, 350, 320, 364
+			JTextField tf = new JTextField("PENNNIS");
+			tf.setBounds(666, 684, 320, 30);
+			tf.addActionListener(e -> {
+				loader.connection.sendLobbyChatMessage(tf.getText());
+				tf.setText("");
+			});
+			panel.add(tl);
+			panel.add(tf);
+			panel.add(btnBACK);	
+			
+			JComboBox c1 = new JComboBox();
+			JComboBox c2 = new JComboBox();
+			JComboBox c3 = new JComboBox();
+			JComboBox c4 = new JComboBox();
+			
 			// START-BATTLE-Button
 			JButton btnBattleStart = new JButton("START");
 			btnBattleStart.setBounds(135, 695, 170, 60);//links / runter / breite / höhe
@@ -259,5 +298,11 @@ public class SetButtons {
 			});
 			panel.add(btnBattleStart);
 		}
+		
+	}
+	public void setText(String text){
+		s = s + "<br>" + "User: " + text;
+		System.out.println(text);
+		tl.setText("<html>" + s + "</html>");
 	}
 }

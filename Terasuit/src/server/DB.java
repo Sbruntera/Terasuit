@@ -116,6 +116,16 @@ public class DB {
 		}
 		return null;
 	}
+	
+	public void delUser(String name){
+		try {
+			statement.executeUpdate("DELETE FROM Data WHERE Name = '"+name+"';");
+			statement.executeUpdate("DELETE FROM Stats WHERE User = '"+name+"';");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Schlieﬂt die verbindung zur Datenbank

@@ -117,6 +117,10 @@ public class Analyser {
 			loader.switchPanel(loader.Gamepage);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
+		case (20):
+			String msg = message.substring(3);
+			loader.setText(msg);
+			break;
 		}
 	}
 

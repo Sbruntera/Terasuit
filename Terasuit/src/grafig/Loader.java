@@ -15,6 +15,7 @@ public class Loader {
 	Thread connectionThread = new Thread(connection);
 	Funktions func = new Funktions();
 	Game game;
+	Panel panel;
 
 	public final String Mainpage = "Wallpaper/Start_Hintergrund.png";
 	public final String Lobbypage = "Wallpaper/serverlist.png";
@@ -57,6 +58,10 @@ public class Loader {
 		game.init(panel, field, console, this, func);
 	}
 	
+	public void init(Panel panel){
+		this.panel = panel;
+	}
+	
 	public void startDebugger(){
 		debugger.startRound();
 	}
@@ -71,6 +76,10 @@ public class Loader {
 	
 	public void mousListernerAction(int minX, int minY, int w, int h){
 		game.searchForEntitysInRectangle(minX, minY, w, h);
+	}
+	
+	public void setText(String text) {
+		panel.buttons.setText(text);
 	}
 	
 }

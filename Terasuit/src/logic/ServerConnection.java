@@ -229,7 +229,9 @@ public class ServerConnection implements Runnable {
 	}
 
 	public void sendLobbyChatMessage(String msg) {
-
+		if (!msg.equals("")) {
+			addMessage((char) 20 + msg);
+		}
 	}
 
 	// #################################################################
