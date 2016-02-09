@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import logic.UnitPics;
-
 public class Game {
 	
 	BaseBuildings buildings = new BaseBuildings();

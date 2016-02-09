@@ -43,8 +43,6 @@ public class Funktions {
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
 			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-			
-			//ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
 			Unit unit2 = new Unit();
 			unit2 = entity.get(id-1);
 			unit2.getLabel().setIcon(pic);
@@ -60,7 +58,7 @@ public class Funktions {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, false));
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
 			Unit unit = new Unit();
 			unit = entity.get(id-1);
 			unit.getLabel().setIcon(pic);
@@ -74,7 +72,7 @@ public class Funktions {
 			String type = entity.get(id-1).getEntityname();
 			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
 			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = new ImageIcon(cunit.mark(type, directionLeft, color, true));
+			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, false);
 			Unit unit = new Unit();
 			unit = entity.get(id-1);
 			unit.getLabel().setIcon(pic);
