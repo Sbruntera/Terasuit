@@ -33,7 +33,7 @@ public class CreateUnit {
 		UnitTable.createUnitData();
 	}
 	
-	public ArrayList<Unit> createEntity(Panel field, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions) {
+	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
@@ -80,7 +80,7 @@ public class CreateUnit {
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent objUnit) {
-				funktions.findEntity(objUnit);
+				game.selectSingleEntity(objUnit);
 			}
 		});
 		

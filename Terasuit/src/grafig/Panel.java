@@ -91,7 +91,7 @@ public class Panel extends JPanel{
 	        }
 	        
 	    	public void mouseReleased(MouseEvent e) {
-	    		loader.blubb(minX, minY, w, h);
+	    		loader.mousListernerAction(minX, minY, w, h);
 	    		minY = 0;
 	    		minX = -1;
 	    		h = 0;

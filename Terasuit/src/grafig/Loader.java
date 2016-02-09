@@ -69,8 +69,8 @@ public class Loader {
 		System.exit(0);
 	}
 	
-	public void blubb(int minX, int minY, int w, int h){
-		game.addMousListerner(minX, minY, w, h);
+	public void mousListernerAction(int minX, int minY, int w, int h){
+		game.searchForEntitysInRectangle(minX, minY, w, h);
 	}
 	
 }

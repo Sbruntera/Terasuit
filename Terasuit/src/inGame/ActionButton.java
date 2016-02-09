@@ -15,7 +15,6 @@ import grafig.Panel;
 
 public class ActionButton {
 
-//	Funktions func = new Funktions();
 	BtnCreator btnCreator = new BtnCreator();
 	JButton btnForward = new JButton("Forward");
 	JButton btnBackward = new JButton("Backward");
@@ -29,8 +28,51 @@ public class ActionButton {
 		return String.format("<html>%s</html>", s);
 	}
 	
+	public void createUserUnitOptions(Panel console){
+		deselectOptions(console);
+		btn = new JButton(wrapLines("Forward"));
+		btnCreator.createOne(btn, 200+(0*62), 30, 60, 60, 87);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent arg0) {
+				System.out.println("Forward! MY FIRENDS ATACKKKKKK!!!");
+			}
+		});
+		jButton.add(btn);
+		console.add(btn);
+		
+		btn = new JButton(wrapLines("Fast Forward"));
+		btnCreator.createOne(btn, 200+(1*62), 30, 60, 60, 87);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent arg0) {
+				System.out.println("NOW! ATTACK THE BASE!");
+			}
+		});
+		jButton.add(btn);
+		console.add(btn);
+		
+		btn = new JButton(wrapLines("Stay"));
+		btnCreator.createOne(btn, 200+(2*62), 30, 60, 60, 87);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent arg0) {
+				System.out.println("Stop guys. Let them come!");
+			}
+		});
+		jButton.add(btn);
+		console.add(btn);
+		
+		btn = new JButton(wrapLines("Retreat"));
+		btnCreator.createOne(btn, 200+(3*62), 30, 60, 60, 87);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent arg0) {
+				System.out.println("Reverse of Forward!!");
+			}
+		});
+		jButton.add(btn);
+		console.add(btn);
+	}
+	
 	// Gebäudeoptionen
-	public void createUserOptions(Panel console, Panel field, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
+	public void createUserOptions(Panel console, Panel field, Game game, ArrayList<Buildings> BuildingsEntity, int i, Loader load, Funktions func){
 		deselectOptions(console);
 		String [] noName  = BuildingsEntity.get(i).getSpwanableEntity();
 		// Generiert alle möglichen Gebäudeoptionen
@@ -47,12 +89,13 @@ public class ActionButton {
 						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Ground/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						func.createEntity(field, UnitString, number, false);
+						game.entity(UnitString, number, false);
+
 					}else if (type.equals("Air")){
 						System.out.println("Eine Lufteinheit wurde ausgewählt!");
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						func.createEntity(field, UnitString, number, true);
+						game.entity(UnitString, number, true);
 					}else if (type.equals("Generation")){
 						System.out.println("Eine generierung wurde ausgewählt!");
 					}else if (type.equals("Destroy")){
@@ -89,7 +132,6 @@ public class ActionButton {
 		jButtonArray = jButton.toArray(jButtonArray);
 		if (jButtonArray.length == 0){
 		}else{
-			
 			for (JButton n : jButtonArray){
 				panel.remove(n);
 			}
@@ -177,7 +219,6 @@ public class ActionButton {
 		case "Destroy":
 			return "Destroy";
 		}
-
 		return "null";
 		
 	}	
@@ -188,10 +229,9 @@ public class ActionButton {
 		ButtonName = parts[0];
 		return ButtonName;
 	}
-	
-	
-	
-	
-	
-	
+
+	public void destroyUserOptions(Panel console) {
+		deselectOptions(console);
+	}
+
 }
