@@ -2,7 +2,7 @@ package world;
 
 public interface Unit {
 
-	public int getPlayer();
+	public short getPlayer();
 
 	public void dealDamage(int value);
 
@@ -20,11 +20,13 @@ public interface Unit {
 
 	public void move();
 
-	public void setDirection(int direction);
+	public void setDirection(int direction, boolean running);
 
-	public Bullet shoot();
+	public boolean isRunning();
 
-	public boolean isDead();
+	public Bullet shoot(Unit farestUnits);
 
-	public Integer getID();
+	public boolean isAlive();
+
+	public short getID();
 }

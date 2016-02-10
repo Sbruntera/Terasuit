@@ -85,24 +85,38 @@ public class ActionButton {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")){
 						System.out.println("Ein Gebäude wurde ausgewählt!");
-					}else if (type.equals("Ground")){
+						load.connection.createBuilding(i, cutHTMLout(((JButton)arg0.getSource()).getText()));
+					} else if (type.equals("Ground")) {
 						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
-						int number = (int) (Math.random()*4)+1;
-						String UnitString = "Unit/Ground/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						game.entity(UnitString, number, false);
-
-					}else if (type.equals("Air")){
+						switch (cutHTMLout(((JButton)arg0.getSource()).getText())) {
+						case ("Marine"):
+							System.out.println("Marine");
+							load.connection.createUnit(1);
+							break;
+						case ("Chronite Tank"):
+							System.out.println("Chronit Tank");
+							load.connection.createUnit(2);
+							break;
+						}
+					} else if (type.equals("Air")) {
 						System.out.println("Eine Lufteinheit wurde ausgewählt!");
+						switch (cutHTMLout(((JButton)arg0.getSource()).getText())) {
+						case ("Scout"):
+							System.out.println("Scout");
+							load.connection.createUnit(3);
+							break;
+						}
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
 						game.entity(UnitString, number, true);
-					}else if (type.equals("Generation")){
+					} else if (type.equals("Generation")) {
 						System.out.println("Eine generierung wurde ausgewählt!");
-					}else if (type.equals("Destroy")){
+					} else if (type.equals("Destroy")) {
 						System.out.println("Das gewählte Gebäude wird abgerissen");
-					}else if (type.equals("null")){
+						load.connection.destroyBuilding(i);
+					} else if (type.equals("null")) {
 						System.out.println("Keine Option für dieses Button vorhanden!!");
-					}else{
+					} else {
 						System.out.println("Kritischer Fehler: ActionButton.java => getEntityType.mth");
 					}	
 				}

@@ -2,6 +2,12 @@ package world;
 
 public class Bullet {
 
+	private Unit target;
+
+	public Bullet(Unit marine, Unit target) {
+		this.target = target;
+	}
+
 	public boolean move() {
 		return false;
 	}
@@ -11,6 +17,6 @@ public class Bullet {
 	}
 
 	public Unit getTarget() {
-		return null;
+		return target;
 	}
 }

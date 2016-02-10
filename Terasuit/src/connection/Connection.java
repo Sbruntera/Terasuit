@@ -237,7 +237,7 @@ public class Connection implements Runnable {
 	 * Unterrichtet den Client, dass das Spiel gestartet wird
 	 */
 	public void sendStarting(GameServer server) {
-		setAnalyser(new GameAnalyser(server, id));
+		setAnalyser(new GameAnalyser(server, id, server.getPosition(this)));
 		addMessage(String.valueOf((char) 19));
 	}
 

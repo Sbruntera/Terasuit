@@ -14,12 +14,14 @@ import world.Building;
  */
 public class GameAnalyser implements Analyser {
 
-	GameServer server;
-	short id;
+	private GameServer server;
+	private short id;
+	private byte position;
 
-	public GameAnalyser(GameServer server, short id) {
+	public GameAnalyser(GameServer server, short id, byte position) {
 		this.server = server;
 		this.id = id;
+		this.position = position;
 	}
 
 	/**
@@ -31,19 +33,14 @@ public class GameAnalyser implements Analyser {
 		byte[] bytes = input.getBytes();
 		switch (bytes[0]) {
 		case (32): // Gebäude (aus)bauen
-			boolean freeSpace = false;
 			int buildingPlace = bytes[1];
-			freeSpace = server.hasBuildingAt(id, buildingPlace); // Gebäude an
-																	// position
-																	// vorhanden
-
-			if (freeSpace) {
-				server.build(bytes[2], buildingPlace);
+			if (!server.hasBuildingAt(id, buildingPlace)) {
+				server.build(position, buildingPlace, bytes[2]);
 			} else {
 				if (bytes[2] == 0) {
-					server.destroyBuilding(buildingPlace);
+					server.destroyBuilding(buildingPlace, position);
 				} else {
-					Building building = server.getBuildingAt(id, buildingPlace);
+					Building building = server.getBuildingAt(position, buildingPlace);
 					if (building.hasUpgrade()) {
 						building.upgrade(bytes[2]);
 					}
@@ -52,11 +49,11 @@ public class GameAnalyser implements Analyser {
 			break;
 
 		case (33): // Einheit erstellen
-					// TODO: Create Unit
+			
 			break;
 		case (34): // Einheit bewegen
-			server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2)
-					* Double.compare(bytes[0] & 2, 0.5));
+			server.moveUnits(id, getUnits(bytes), ((bytes[1] & 2) >> 1)
+					* Double.compare(bytes[0] & 2, 0.5), (bytes[1] & 1) == 1);
 			break;
 		case (35): // Spiel verlassen
 			System.out.println("leave");

@@ -56,7 +56,7 @@ public class GameServer implements Runnable {
 				if (b.move()) {
 					b.getTarget().dealDamage(b.getDamage());
 					bulletsToRemove.add(b);
-					if (b.getTarget().isDead()) {
+					if (!b.getTarget().isAlive()) {
 						unitsToRemove.add(b.getTarget());
 					}
 				}
@@ -75,9 +75,10 @@ public class GameServer implements Runnable {
 			Unit unit;
 			for (Integer i : unitIDs) {
 				unit = units.get(i);
+				
 				if (unit.getPlayer() < 2) {
-					if (unit.getPosition() - unit.getRange() <= farestUnits[0].getPosition()) {
-						Bullet b = unit.shoot();
+					if (unit.getPosition() - unit.getRange() <= farestUnits[0].getPosition() || unit.isRunning()) {
+						Bullet b = unit.shoot(farestUnits[0]);
 						if (b != null) {
 							bullets.add(b);
 						}
@@ -85,8 +86,8 @@ public class GameServer implements Runnable {
 						unit.move();
 					}
 				} else {
-					if (unit.getPosition() + unit.getRange() >= farestUnits[1].getPosition()) {
-						Bullet b = unit.shoot();
+					if (unit.getPosition() + unit.getRange() >= farestUnits[1].getPosition() || unit.isRunning()) {
+						Bullet b = unit.shoot(farestUnits[1]);
 						if (b != null) {
 							bullets.add(b);
 						}
@@ -103,6 +104,15 @@ public class GameServer implements Runnable {
 				}
 			}
 		}
+	}
+
+	public byte getPosition(Connection connection) {
+		for (byte i = 0; i < connections.length; i++) {
+			if (connections[i] == connection) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -170,11 +180,11 @@ public class GameServer implements Runnable {
 	 *            : Richtung in die die einheiten laufen sollen 1: rechts 0:
 	 *            stehen -1: links
 	 */
-	public void moveUnits(int id, int[] movingUnits, int direction) {
+	public void moveUnits(int id, int[] movingUnits, int direction, boolean running) {
 		for (int i : movingUnits) {
 			if (units.containsKey(i)) {
 				if (units.get(i).getPlayer() == id) {
-					units.get(i).setDirection(direction);
+					units.get(i).setDirection(direction, running);
 				}
 			}
 		}
@@ -188,11 +198,11 @@ public class GameServer implements Runnable {
 	 * @param buildingPlace
 	 *            : position des Gebäudes
 	 */
-	public void build(byte b, int buildingPlace) {
-		// TODO:
+	public void build(byte position, int buildingPlace, int id) {
+		buildings[position][buildingPlace] = WorldConstants.getBuilding(id);
 	}
 
-	public void destroyBuilding(int buildingPlace) {
+	public void destroyBuilding(int buildingPlace, byte position) {
 		// TODO Auto-generated method stub
 
 	}

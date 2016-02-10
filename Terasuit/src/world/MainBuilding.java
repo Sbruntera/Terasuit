@@ -13,19 +13,17 @@ public class MainBuilding implements Building {
 	public MainBuilding() {
 	}
 
-	@Override
 	public boolean dealDamage(int value) {
 		health -= value;
 		return health <= 0;
 	}
 
-	@Override
 	public int getHealth() {
 		return health;
 	}
 
 	@Override
-	public void upgrade(byte bytes) { //Main Building can not be upgraded
+	public void upgrade() { //Main Building can not be upgraded
 	}
 
 	@Override
