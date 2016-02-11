@@ -27,13 +27,14 @@ public class GameServer implements Runnable {
 	private MainBuilding[] mainBuildings;
 	private Building[][] buildings;
 	private int[][] recources;
-	
+
 	ArrayList<Bullet> bulletsToRemove;
 	ArrayList<Unit> unitsToRemove;
-	
+
+	private short unitIDCounter;
 	private Unit[] farestUnits;
-	private boolean ended;
-	
+	private AtomicBoolean ended = new AtomicBoolean(false);
+
 	private AtomicBoolean tick = new AtomicBoolean(false);
 
 	public GameServer(Connection[] connections, Server server) {
@@ -52,73 +53,99 @@ public class GameServer implements Runnable {
 		farestUnits = new Unit[2];
 		bulletsToRemove = new ArrayList<Bullet>();
 		unitsToRemove = new ArrayList<Unit>();
+		Controller controller = new Controller(this);
+		Thread controlThread = new Thread(controller);
+		controlThread.start();
 	}
 
 	@Override
 	public void run() {
-		while (!ended) {
-			System.out.println("tick");
-			//Kugeln bewegen
-			tick.set(true);
-			for (Bullet b : bullets) {
-				if (b.move()) {
-					b.getTarget().dealDamage(b.getDamage());
-					bulletsToRemove.add(b);
-					if (!b.getTarget().isAlive()) {
-						unitsToRemove.add(b.getTarget());
-					}
+		//Kugeln bewegen
+		tick.set(true);
+		for (Bullet b : bullets) {
+			if (b.move()) {
+				b.getTarget().dealDamage(b.getDamage());
+				bulletsToRemove.add(b);
+				if (!b.getTarget().isAlive()) {
+					unitsToRemove.add(b.getTarget());
 				}
 			}
-			for (Bullet b : bulletsToRemove) {
-				bullets.remove(b);
-			}
+		}
+		for (Bullet b : bulletsToRemove) {
+			bullets.remove(b);
+		}
+		
+		bulletsToRemove.clear();
+		
+		for (Unit u : unitsToRemove) {
+			units.remove(u.getID());
+			unitIDs.remove(u.getID());
+		}
+		
+		unitsToRemove.clear();
+		
+		// Einheiten bewegen
+		Unit unit;
+		for (Integer i : unitIDs) {
+			unit = units.get(i);
 			
-			bulletsToRemove.clear();
-			
-			for (Unit u : unitsToRemove) {
-				units.remove(u.getID());
-				unitIDs.remove(u.getID());
-			}
-			
-			unitsToRemove.clear();
-			
-			// Einheiten bewegen
-			Unit unit;
-			for (Integer i : unitIDs) {
-				unit = units.get(i);
-				
-				if (unit.getPlayer() < 2) {
-					if (unit.getPosition() - unit.getRange() <= farestUnits[0].getPosition() || unit.isRunning()) {
-						Bullet b = unit.shoot(farestUnits[0]);
-						if (b != null) {
-							bullets.add(b);
-						}
-					} else {
-						unit.move();
+			if (unit.getPlayer() > 2) {
+				if (unit.hasInRange(farestUnits[0]) && !unit.isRunning()) {
+					Bullet b = unit.shoot(farestUnits[0]);
+					if (b != null) {
+						bullets.add(b);
+					}
+				} else if (unit.hasInRange(mainBuildings[0])) {
+					Bullet b = unit.shoot(mainBuildings[0]);
+					if (b != null) {
+						bullets.add(b);
 					}
 				} else {
-					if (unit.getPosition() + unit.getRange() >= farestUnits[1].getPosition() || unit.isRunning()) {
-						Bullet b = unit.shoot(farestUnits[1]);
-						if (b != null) {
-							bullets.add(b);
-						}
-					} else {
-						unit.move();
-					}
+					unit.move();
 				}
-			}
-			
-			//Gebäude bauen
-			for (Building[] array : buildings) {
-				for (Building b : array) {
+			} else {
+				if (unit.hasInRange(farestUnits[1]) && !unit.isRunning()) {
+					Bullet b = unit.shoot(farestUnits[1]);
 					if (b != null) {
-						b.build();
+						bullets.add(b);
 					}
+				} else if (unit.hasInRange(mainBuildings[1])) {
+					Bullet b = unit.shoot(mainBuildings[1]);
+					if (b != null) {
+						bullets.add(b);
+					}
+				} else {
+					unit.move();
 				}
 			}
-			tick.set(false);
-			
 		}
+		
+		//Gebäude bauen
+		for (Building[] array : buildings) {
+			for (Building b : array) {
+				if (b != null) {
+					b.build();
+				}
+			}
+		}
+		
+		if (!mainBuildings[0].isAlive() && !mainBuildings[1].isAlive()) {
+			for (Connection c : connections) {
+				if (c != null) {
+					c.sendGameEnded(false);
+				}
+			}
+		} else if (!mainBuildings[0].isAlive()) {
+			for (int i = 0; i < connections.length; i++) {
+				connections[i].sendGameEnded((connections.length-1)/2 > 1);
+			}
+		} else if (!mainBuildings[1].isAlive()) {
+			for (int i = 0; i < connections.length; i++) {
+				connections[i].sendGameEnded((connections.length-1)/2 < 0);
+			}
+		}
+		
+		tick.set(false);
 	}
 
 	public byte getPosition(Connection connection) {
@@ -140,7 +167,7 @@ public class GameServer implements Runnable {
 	 */
 	public void broadcast(String msg, short id) {
 		for (int i = 0; i < connections.length; i++) {
-			if(connections[i] != null){
+			if (connections[i] != null) {
 				connections[i].sendChatMessage(id, msg);
 			}
 		}
@@ -195,7 +222,8 @@ public class GameServer implements Runnable {
 	 *            : Richtung in die die einheiten laufen sollen 1: rechts 0:
 	 *            stehen -1: links
 	 */
-	public void moveUnits(int id, int[] movingUnits, int direction, boolean running) {
+	public void moveUnits(int id, int[] movingUnits, int direction,
+			boolean running) {
 		for (int i : movingUnits) {
 			if (units.containsKey(i)) {
 				if (units.get(i).getPlayer() == id) {
@@ -213,8 +241,14 @@ public class GameServer implements Runnable {
 	 * @param buildingPlace
 	 *            : position des Gebäudes
 	 */
-	public void build(byte position, int buildingPlace, int id) {
-		buildings[position][buildingPlace] = WorldConstants.getBuilding(id, buildingPlace);
+	public void build(byte position, byte buildingPlace, byte id) {
+		buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
+				buildingPlace);
+		for (Connection c : connections) {
+			if (c != null) {
+				c.sendCreateOrUpgradeBuilding(position, buildingPlace, id);
+			}
+		}
 	}
 
 	public void destroyBuilding(int buildingPlace, byte position) {
@@ -230,6 +264,36 @@ public class GameServer implements Runnable {
 				} else {
 					c.sendPlayerLeftGame(id);
 				}
+			}
+		}
+	}
+
+	public boolean ended() {
+		return ended.get();
+	}
+
+	public void upgradeBuilding(byte position, byte buildingPlace) {
+		if (hasBuildingAt(position, buildingPlace)) {
+			if (buildings[position][buildingPlace].hasUpgrade()) {
+				buildings[position][buildingPlace].upgrade();
+				for (Connection c : connections) {
+					if (c != null) {
+						c.sendCreateOrUpgradeBuilding(position, buildingPlace, (byte) 0);
+					}
+				}
+			}
+		}
+		for (Connection c : connections) {
+			if (c != null) {
+				c.sendCreateOrUpgradeBuilding(position, buildingPlace, (byte) 127);
+			}
+		}
+	}
+
+	public void createUnit(byte playerPosition, byte id, byte buildingPlace) {
+		if (playerPosition < connections.length && playerPosition > 0 && buildingPlace < WorldConstants.BUILDINGSCOUNT && buildingPlace > 0) {
+			if (buildings[playerPosition][buildingPlace].createUnit(id)) {
+				connections[playerPosition].sendGenerateUnit(id, buildingPlace);
 			}
 		}
 	}

@@ -8,14 +8,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+/**
+ * 
+ * @author Alexander, Jan-Philipp, Simeon
+ *
+ */
 
 public class SetButtons {
 	
@@ -26,9 +34,14 @@ public class SetButtons {
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	JLabel tl;
+	Panel panel;
+	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
+	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
+	String[] standartselect;
 	private String s = "Willkommen im Chat";
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
+		this.panel = panel;
 		
 		//#########################################################################
 		//
@@ -226,12 +239,57 @@ public class SetButtons {
 					//TODO	System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
 				}
 			});
+			
+			//Team bezeichungen
+			for(int i = 0; i <4;i++){
+				JLabel color = new JLabel();
+				if(i==0){
+					color.setText("RED");
+					color.setForeground(Color.RED);
+					color.setBounds(75, 150, 200, 50);
+				} else if(i ==1){
+					color.setText("BLUE");
+					color.setForeground(Color.BLUE);
+					color.setBounds(75, 400, 200, 50);
+				} else if(i ==2){
+					color.setText("GREEN");
+					color.setForeground(Color.GREEN);
+					color.setBounds(425, 150, 200, 50);
+				} else{
+					color.setText("YELLOW");
+					color.setForeground(Color.YELLOW);
+					color.setBounds(425, 400, 200, 50);
+				}
+				color.setHorizontalAlignment(SwingConstants.CENTER);
+				color.setFont(new Font("Arial", Font.BOLD, 24));
+				panel.add(color);
+			}
+			
+			//Lobbby Player Showcase
+			for(int i = 0; i <4;i++){
+				JLabel players = new JLabel();
+				if (i==0 || i==1){
+					players.setBounds(75, 230+(250*i), 200, 50);
+				}else{
+					players.setBounds(425, 230+(250*(i-2)), 200, 50);
+				}
+				players.setHorizontalAlignment(SwingConstants.CENTER);
+				players.setBackground(new Color(255,90,0));
+				players.setFont(new Font("Arial", Font.BOLD, 24));
+				players.setOpaque(true);
+				labellist.add(players);
+				panel.add(players);
+			}
+			String[] player = { "hey", "test", "bird", ""}; //PLS DELETE !!!! LATER
+			updateLabels(player); //ME TOOOOO
+			
+			//Chat
 			tl = new JLabel(s);
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
 			//666, 350, 320, 364
-			JTextField tf = new JTextField("PENNNIS");
+			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
 			tf.addActionListener(e -> {
 				loader.connection.sendLobbyChatMessage(tf.getText());
@@ -263,12 +321,13 @@ public class SetButtons {
 			});
 			panel.add(btnBACK);	
 			
+			//Chat
 			tl = new JLabel(s);
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
 			//666, 350, 320, 364
-			JTextField tf = new JTextField("PENNNIS");
+			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
 			tf.addActionListener(e -> {
 				loader.connection.sendLobbyChatMessage(tf.getText());
@@ -278,10 +337,64 @@ public class SetButtons {
 			panel.add(tf);
 			panel.add(btnBACK);	
 			
-			JComboBox c1 = new JComboBox();
-			JComboBox c2 = new JComboBox();
-			JComboBox c3 = new JComboBox();
-			JComboBox c4 = new JComboBox();
+			//Team bezeichungen
+			for(int i = 0; i <4;i++){
+				JLabel color = new JLabel();
+				if(i==0){
+					color.setText("RED");
+					color.setForeground(Color.RED);
+					color.setBounds(75, 150, 200, 50);
+				} else if(i ==1){
+					color.setText("BLUE");
+					color.setForeground(Color.BLUE);
+					color.setBounds(75, 400, 200, 50);
+				} else if(i ==2){
+					color.setText("GREEN");
+					color.setForeground(Color.GREEN);
+					color.setBounds(425, 150, 200, 50);
+				} else{
+					color.setText("YELLOW");
+					color.setForeground(Color.YELLOW);
+					color.setBounds(425, 400, 200, 50);
+				}
+				color.setHorizontalAlignment(SwingConstants.CENTER);
+				color.setFont(new Font("Arial", Font.BOLD, 24));
+				panel.add(color);
+			}
+			//Lobby Host Player movement
+			for(int i = 0; i <4;i++){
+				JComboBox<String> players = new JComboBox<String>();
+				JButton jb = new JButton("KICK");
+				if (i==0 || i==1){
+					players.setBounds(75, 230+(250*i), 200, 50);
+					jb.setBounds(75, 300+(250*i), 200, 60);//links / runter / breite / höhe
+				}else{
+					players.setBounds(425, 230+(250*(i-2)), 200, 50);
+					jb.setBounds(425, 300+(250*(i-2)), 200, 60);//links / runter / breite / höhe
+				}
+				players.setFont(new Font("Arial", Font.BOLD, 24));
+				jb.setBackground(new Color(255,90,0));
+				jb.setFont(new Font("Arial", Font.BOLD, 24));
+				players.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent arg0) {
+						newplayers();
+					}
+				});
+				int x = i;
+				jb.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseReleased(MouseEvent arg0) {
+						loader.connection.kickPlayer(x);
+					}
+				});
+				combolist.add(players);
+				panel.add(players);
+				panel.add(jb);
+			}
+			String[] player = { "hey", "test", "bird", "cat"}; //PLS DELETE !!!! LATER
+			updateCombo(player); //ME TOOOOO
+			
 			
 			// START-BATTLE-Button
 			JButton btnBattleStart = new JButton("START");
@@ -304,5 +417,53 @@ public class SetButtons {
 		s = s + "<br>" + "User: " + text;
 		System.out.println(text);
 		tl.setText("<html>" + s + "</html>");
+	}
+	public void updateCombo(String[] player){
+		standartselect = player;
+		for(int i = 0; i <4;i++){
+			combolist.get(i).setModel(new DefaultComboBoxModel<String>(player));
+			combolist.get(i).setSelectedIndex(i);
+		}
+		panel.repaint();
+	}
+	public void updateLabels(String[] player){
+		for(int i = 0; i <4;i++){
+			labellist.get(i).setText(player[i]);
+		}
+		panel.repaint();
+	}
+	public String[] newplayers(){
+		String[] test = new String[4];
+		for (int i =0 ; i <4;i++){
+			test[i] = standartselect[i];
+		}
+		String temp1 = "";
+		String temp2 = "";
+		for(int i = 0; i <4;i++){
+			if(temp2.equals(test[i])){
+				test[i] = temp1;
+				temp1 = test[i];
+				temp2 = test[i];
+			}else if(temp2.equals(temp1)){
+				temp1 = test[i];
+				temp2 = combolist.get(i).getSelectedItem().toString();
+				test[i] = combolist.get(i).getSelectedItem().toString();
+			}else{
+				test[i] = combolist.get(i).getSelectedItem().toString();
+			}
+			
+		}
+		int counter = 0;
+		for(int i = 0; i <4;i++){
+			if (counter == 0){
+				if (test[i].equals(temp2)){
+					test[i] = temp1;
+					counter = 1;
+				}
+			}
+			
+		}
+		updateCombo(test);
+		return test;
 	}
 }

@@ -2,9 +2,9 @@ package world;
 
 public class Marine implements Unit {
 	
-	private int damage;
-	private int range;
-	private int shootSpeed;
+	private static int damage;
+	private static int range;
+	private static int shootSpeed;
 	
 	private short playerID;
 	private short id;
@@ -89,6 +89,18 @@ public class Marine implements Unit {
 	@Override
 	public short getID() {
 		return id;
+	}
+
+	@Override
+	public boolean hasInRange(Unit unit) {
+		if (unit != null) {
+			if (playerID < 2 && position + range  >= unit.getPosition()) {
+				return true;
+			} else if (playerID > 1 && position - range <= unit.getPosition()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

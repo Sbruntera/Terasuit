@@ -101,4 +101,14 @@ public class MainBuilding implements Building, Unit {
 	public short getID() {
 		return WorldConstants.MAINBUILDINGID;
 	}
+
+	@Override
+	public boolean hasInRange(Unit unit) { // MainBuilding can not shoot
+		return false;
+	}
+
+	@Override
+	public boolean createUnit(short id) { //MainBuilding can not create Units
+		return false;
+	}
 }

@@ -128,41 +128,47 @@ public class Analyser {
 		byte[] bytes = message.getBytes();
 		switch (bytes[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
-			short playerNumber = (short) (bytes[1] << 8 + bytes[2]);
-			byte buildingPosition = bytes[3];
-			byte id = bytes[4];
-			// TODO: An Feldmann: Hier Funktionsaufruf Gebäude bauen
+			byte playerNumber = bytes[1];
+			byte buildingPosition = bytes[2];
+			byte id = bytes[3];
+			// TODO: An Feldmann: Hier Funktionsaufruf Gebäude bauen (id127 ist upgrade)
 			break;
-		case (33): // Spieler erstellt eine Einheit
-			playerNumber = (short) (bytes[1] << 8 + bytes[2]);
-			short unitPosition = (short) (bytes[3] << 8 + bytes[4]);
-			id = bytes[5];
-			short unitID = (short) (bytes[6] << 8 + bytes[7]);
+		case (33): // Ein eigenes Gebäude startet eine Produktion
+			id = bytes[1];
+			buildingPosition = bytes[2];
+			//TODO: An Feldmann: Hier Einheitenproduktion starten
+			break;
+		case (34): // Spieler erstellt eine Einheit
+			playerNumber = bytes[1];
+			short unitPosition = (short) (bytes[2] << 8 + bytes[3]);
+			id = bytes[4];
+			short unitID = (short) (bytes[5] << 8 + bytes[6]);
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit erstellen
 			break;
-		case (34): // Spieler bewegt eine Einheit
-			playerNumber = (short) (bytes[1] << 8 + bytes[2]);
-			byte direction = bytes[3];
-			short[] unitIDs = new short[(bytes.length - 3) / 2];
+		case (35): // Spieler bewegt eine Einheit
+			playerNumber = bytes[1];
+			byte direction = bytes[2];
+			short[] unitIDs = new short[(bytes.length - 2) / 2];
 			for (int i = 3; i < bytes.length; i += 2) {
-				unitIDs[(i - 3) / 2] = (short) (bytes[i] << 8 + bytes[i + 1]);
+				unitIDs[(i - 2) / 2] = (short) (bytes[i] << 8 + bytes[i + 1]);
 			}
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
-		case (35): // Einheit beginnt schießen
+		case (36): // Einheit beginnt schießen
 			break;
-		case (36): // Einheit stirbt
+		case (37): // Einheit stirbt
 			break;
-		case (37): // Spieler verlässt das Spiel
-			playerNumber = (short) (bytes[1] << 8 + bytes[2]);
+		case (38): // Spieler verlässt das Spiel
+			playerNumber = bytes[1];
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;
-		case (38): // Spiel gewonnen/verloren
+		case (39): // Spiel gewonnen/verloren
 			boolean won = bytes[1] > 0;
 			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
 			break;
-		case (39): // Chat
-			playerNumber = (short) (bytes[1] << 8 + bytes[2]);
+		case (40):
+			String msg = message.substring(3);
+			loader.setText(msg);
 			break;
 		}
 	}

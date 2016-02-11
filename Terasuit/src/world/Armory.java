@@ -34,4 +34,10 @@ public class Armory implements Building {
 		buildTime--;
 	}
 
+	@Override
+	public boolean createUnit(short id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -10,4 +10,6 @@ public interface Building {
 
 	public void build();
 
+	public boolean createUnit(short id);
+
 }

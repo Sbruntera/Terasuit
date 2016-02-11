@@ -5,7 +5,6 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import server.GameServer;
-import world.Building;
 
 /**
  * 
@@ -34,29 +33,33 @@ public class GameAnalyser implements Analyser {
 		switch (bytes[0]) {
 		case (32): // Gebäude (aus)bauen
 			if (bytes.length == 3) {
-				int buildingPlace = bytes[1];
-				if (bytes[2] >= 0) {
-					if (!server.hasBuildingAt(id, buildingPlace)) {
+				byte buildingPlace = bytes[1];
+				if (bytes[2] < 126) {
+					System.out.println("af");
+					if (!server.hasBuildingAt(position, buildingPlace)) {
 						server.build(position, buildingPlace, bytes[2]);
 					}
-				} else if(bytes[2] == -1) {
-					if (server.hasBuildingAt(id, buildingPlace)) {
-						Building building = server.getBuildingAt(position, buildingPlace);
-						if (building.hasUpgrade()) {
-							building.upgrade();
-						}
-					}
+				} else if (bytes[2] == 127) {
+					server.upgradeBuilding(position, buildingPlace);
+
 				} else {
 					server.destroyBuilding(buildingPlace, position);
 				}
 			}
 			break;
 		case (33): // Einheit erstellen
-			
+			if (bytes.length == 3) {
+				byte unitID = bytes[1];
+				byte buildingPlace = bytes[2];
+				server.createUnit(position, unitID, buildingPlace);
+			}
 			break;
 		case (34): // Einheit bewegen
-			server.moveUnits(id, getUnits(bytes), ((bytes[1] & 2) >> 1)
-					* Double.compare(bytes[0] & 2, 0.5), (bytes[1] & 1) == 1);
+			if (bytes.length > 2) {
+				server.moveUnits(id, getUnits(bytes), ((bytes[2] & 2) >> 1)
+						* Double.compare(bytes[1] & 2, 0.5),
+						(bytes[2] & 1) == 1);
+			}
 			break;
 		case (35): // Spiel verlassen
 			System.out.println("leave");

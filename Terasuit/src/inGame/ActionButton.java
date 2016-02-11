@@ -91,11 +91,11 @@ public class ActionButton {
 						switch (cutHTMLout(((JButton)arg0.getSource()).getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							load.connection.createUnit(1);
+							load.connection.createUnit(1, i);
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							load.connection.createUnit(2);
+							load.connection.createUnit(2, i);
 							break;
 						}
 					} else if (type.equals("Air")) {
@@ -103,11 +103,11 @@ public class ActionButton {
 						switch (cutHTMLout(((JButton)arg0.getSource()).getText())) {
 						case ("Scout"):
 							System.out.println("Scout");
-							load.connection.createUnit(3);
+							load.connection.createUnit(3, i);
 							break;
 						}
-						int number = (int) (Math.random()*4)+1;
-						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
+						//int number = (int) (Math.random()*4)+1;
+						//String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
 						//game.entity(UnitString, number, true);
 					} else if (type.equals("Generation")) {
 						System.out.println("Eine generierung wurde ausgewählt!");

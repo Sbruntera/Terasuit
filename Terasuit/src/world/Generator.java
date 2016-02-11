@@ -33,4 +33,10 @@ public class Generator implements Building {
 	public void build() {
 		buildTime--;
 	}
+
+	@Override
+	public boolean createUnit(short id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

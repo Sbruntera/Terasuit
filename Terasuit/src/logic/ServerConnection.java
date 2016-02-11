@@ -17,7 +17,6 @@ public class ServerConnection implements Runnable {
 	private OutputStream writer;
 	private BufferedReader reader;
 	private Analyser analyser;
-	private Loader loader;
 
 	public ServerConnection(Loader loader) {
 		Socket socket;
@@ -26,7 +25,6 @@ public class ServerConnection implements Runnable {
 			this.reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			this.writer = socket.getOutputStream();
-			this.loader = loader;
 			serverAccess = true;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
@@ -246,43 +244,33 @@ public class ServerConnection implements Runnable {
 	 *            Typ des Gebäudes
 	 */
 	public void createBuilding(int position, String buildingType) {
-		byte buildingID = -2;
+		byte buildingID = 127;
 		switch (buildingType) {
-		case ("Barracks"):
+		case ("Outpost"):
 			buildingID = 0;
 			break;
 		case ("Forge"):
 			buildingID = 8;
 			break;
-		case ("Armory"):
+		case ("Hospital"):
 			buildingID = 16;
 			break;
-		case ("Hospital"):
+		case ("Bank"):
 			buildingID = 24;
 			break;
-		case ("Outpost"):
+		case ("Armory"):
 			buildingID = 32;
 			break;
-		case ("Bank"):
+		case ("Generator"):
 			buildingID = 40;
 			break;
-		case ("Generator"):
-			buildingID = 48;
-			break;
 		case ("Special Operations"):
-			buildingID = 52;
-			break;
-		case ("Destroy"):
-			buildingID = -1;
+			buildingID = 48;
 			break;
 		}
 		if (position < 4 && analyser.getState() == State.GAME) {
-			if (buildingID != -2) {
-				addMessage(String.valueOf((char) 32) + (char) position
-						+ (char) buildingID);
-			} else {
-				addMessage(String.valueOf((char) 32) + (char) position + (char) -1);
-			}
+			addMessage(String.valueOf((char) 32) + (char) position
+					+ (char) buildingID);
 		}
 	}
 
@@ -295,7 +283,7 @@ public class ServerConnection implements Runnable {
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if (position < 4) {
-				addMessage(String.valueOf((char) 32) + (char) position + (char) -2);
+				addMessage(String.valueOf((char) 32) + (char) position + (char) 126);
 			}
 		}
 	}
@@ -305,10 +293,11 @@ public class ServerConnection implements Runnable {
 	 * 
 	 * @param id
 	 *            ID der Einheit
+	 * @param i 
 	 */
-	public void createUnit(int id) {
+	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 33) + (char) id);
+			addMessage(String.valueOf((char) 33) + (char) id + (char) buildingPlace);
 		}
 	}
 

@@ -244,20 +244,24 @@ public class Connection implements Runnable {
 	// /////////////////////////////////////////////////////////////////////////////
 	// Game
 
-	public void sendCreateOrUpgradeBuilding(short playerNumber, byte position, byte id) {
+	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position, byte id) {
 		addMessage(String.valueOf((char) 32)
-				+ (char) (playerNumber << 8) + (char) playerNumber + (char) position + (char) id);
+				+ (char) playerNumber + (char) position + (char) id);
+	}
+
+	public void sendGenerateUnit(byte buildingPlace, byte typeID) {
+		addMessage(String.valueOf((char) 33) + (char) typeID + (char) buildingPlace);
 	}
 
 	public void sendCreateUnit(short playerNumber, short position, byte typeID,
 			short unitID) {
-		addMessage(String.valueOf((char) 33) + (char) (playerNumber >> 8) + (char) playerNumber + (char) (position >> 8)
+		addMessage(String.valueOf((char) 34) + (char) (playerNumber >> 8) + (char) playerNumber + (char) (position >> 8)
 				+ (char) (position) + (char) typeID + (char) (unitID >> 8)
 				+ (char) unitID);
 	}
 
 	public void sendMoveUnit(short playerNumber, byte direction, short[] unitIDs) {
-		String msg = String.valueOf((char) 34) + (char) (playerNumber >> 8) + (char) playerNumber + (char) direction;
+		String msg = String.valueOf((char) 35) + (char) (playerNumber >> 8) + (char) playerNumber + (char) direction;
 		for (short s : unitIDs) {
 			msg += (char) (s << 8) + (char) direction;
 		}
@@ -265,7 +269,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendUnitStartsShooting(short[][] units, short[][] targets) {
-		String msg = String.valueOf((char) 35);
+		String msg = String.valueOf((char) 36);
 		for (int x = 0; x < units.length; x++) {
 			for (int y = 0; y < units[x].length; y++) {
 				msg += (char) (units[x][y] << 8) + (char) (units[x][y]) + (char) (targets[x][y] << 8) + (char) (targets[x][y]);
@@ -276,7 +280,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendUnitDied(short[][] units) {
-		String msg = String.valueOf((char) 36);
+		String msg = String.valueOf((char) 37);
 		for (short[] sA : units) {
 			for (short s : sA) {
 				msg += (char) (s << 8) + (char) s;
@@ -287,13 +291,13 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(short playerID) {
-		addMessage(String.valueOf((char) 37) + (char) (playerID >> 8) + (char) playerID);
+		addMessage(String.valueOf((char) 38) + (char) (playerID >> 8) + (char) playerID);
 	}
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
 		addMessage(String
-				.valueOf((char) (38 + (Boolean.compare(won, false) << 4))));
+				.valueOf((char) (39 + (Boolean.compare(won, false) << 4))));
 	}
 
 	public void sendChatMessage(short id, String message) {

@@ -29,4 +29,6 @@ public interface Unit {
 	public boolean isAlive();
 
 	public short getID();
+
+	public boolean hasInRange(Unit unit);
 }
