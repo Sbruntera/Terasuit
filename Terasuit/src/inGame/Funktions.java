@@ -32,11 +32,12 @@ public class Funktions {
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
-	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit){
-		entity = cunit.createEntity(field, Entitytype, entity, color, airUnit, this);
+	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game){
+		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this);
 	}
 	
 	public void findEntity(MouseEvent objUnit) {
+		deMarkEntittys();
 		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
 		for (int id : selectedEntitysID) {
 			String type = entity.get(id-1).getEntityname();
@@ -150,5 +151,13 @@ public class Funktions {
 		    }
 		}	
 		return null;
+	}
+
+	public void destroyUserOptions(Panel console, Game game) {
+		if (this.selectedEntitysID.size() != 0){
+			game.btnAction.createUserUnitOptions(console);
+		}else{
+			game.btnAction.destroyUserOptions(console);
+		}
 	}
 }

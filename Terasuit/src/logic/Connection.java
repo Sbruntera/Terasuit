@@ -46,7 +46,6 @@ public class Connection implements Runnable {
 		try {
 			while (true) {
 				if (reader.ready()) {
-					System.out.println("Testerino");
 					String in = reader.readLine();
 //					analyser.analyse(in);
 				}

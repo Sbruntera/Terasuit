@@ -32,8 +32,6 @@ public class Debugger_Thread extends Thread {
 	// Update (Tick) Thread
 	public void run() {
 		while (true){
-			System.out.println("Update!");
-	        //loader.update(this.getEntity());
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

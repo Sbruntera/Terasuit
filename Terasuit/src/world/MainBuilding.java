@@ -2,14 +2,15 @@ package world;
 
 public class MainBuilding implements Building {
 
-	private int health;
+	private int health = 5000;
 
 	private int damage;
 	private int range;
 	private int cooldown;
 
+	private int position = 4;
+
 	public MainBuilding() {
-		health = WorldConstants.MAINBUILDINGHEALTH;
 	}
 
 	@Override
@@ -24,7 +25,7 @@ public class MainBuilding implements Building {
 	}
 
 	@Override
-	public void upgrade() { // Main Building can't be upgraded
+	public void upgrade(byte bytes) { //Main Building can not be upgraded
 	}
 
 	@Override
@@ -49,5 +50,16 @@ public class MainBuilding implements Building {
 			cooldown -= 1;
 		}
 		return cooldown <= 0;
+	}
+
+	@Override
+	public int getPosition() {
+		return position;
+	}
+
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
 	}
 }

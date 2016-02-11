@@ -15,7 +15,7 @@ import javax.swing.JButton;
 
 public class SetButtons {
 	
-	LoginRegisterPanel loginRegisterPanel = new LoginRegisterPanel();
+	LoginRegisterPanel loginRegisterPanel;
 	boolean registerOpen = false;
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;
@@ -43,10 +43,9 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
-					loader.connection.init();
 					if (loader.connection.isServerAccess()){
 						loader.switchPanel(loader.Lobbypage);
-					}else{
+					} else {
 						System.out.println("Server konnte nicht gefunden werden. ");
 					}
 				}
@@ -78,12 +77,12 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Schließst das Programm
-
+					loader.connection.close();
 					loader.exit();
 				}
 			});
 			panel.add(btnExit);
-			
+			loginRegisterPanel = new LoginRegisterPanel(loader.connection);
 			JButton btnLogin = new JButton("LOGIN");
 			btnLogin.setBounds(800, 732, 90, 25);
 			btnLogin.setBackground(new Color(255,90,0));
@@ -145,11 +144,9 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-					if (loader.connection.connectGroup()){
-						loader.switchPanel(loader.Grouppage);
-					}else{
-						System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
-					}
+					loader.connection.connectGroup(0, "");
+					//TODO	loader.switchPanel(loader.Grouppage);
+					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
 
 				}
 			});
@@ -164,27 +161,38 @@ public class SetButtons {
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if (loader.connection.createGroup()){
+					loader.connection.createGroup(1, "Testspiel", "");
 						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-						loader.switchPanel(loader.Grouppage_owner);
-					}else{
-						System.out.println("Gruppe konnte nicht erstellt werden!");
-					}
+					//TODO	loader.switchPanel(loader.Grouppage_owner);
+					//TODO	System.out.println("Gruppe konnte nicht erstellt werden!");
 
 				}
 			});
 			panel.add(btnCreateGroup);
 			
+			// Refresh-Button
+			JButton btnRefreshGroup = new JButton("Refresh");
+			btnRefreshGroup.setBounds(510, 680, 85, 30);//links / runter / breite / höhe
+			btnRefreshGroup.setBackground(new Color(255,90,0));
+			btnRefreshGroup.setFont(new Font("Arial", Font.BOLD, 12));
+			btnRefreshGroup.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					loader.connection.refreshServerList(false, "", 0, 4, 0);
+				}
+			});
+			panel.add(btnRefreshGroup);
+			
+			
 			// Back-Button
 			JButton btnBACK = new JButton("BACK");
-			btnBACK.setBounds(510, 710, 85, 30);//links / runter / breite / höhe
+			btnBACK.setBounds(510, 715, 85, 30);//links / runter / breite / höhe
 			btnBACK.setBackground(new Color(255,90,0));
 			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Der Weg zurück
-					loader.connection.close();
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
@@ -206,11 +214,9 @@ public class SetButtons {
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if (loader.connection.returnLobby()){
-						loader.switchPanel(loader.Lobbypage);
-					}else{
-						System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
-					}
+					loader.connection.returnFromLobby();
+					//TODO	loader.switchPanel(loader.Lobbypage);
+					//TODO	System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
 				}
 			});
 			panel.add(btnBACK);
@@ -230,11 +236,9 @@ public class SetButtons {
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if (loader.connection.closeLobby()){
-						loader.switchPanel(loader.Lobbypage);
-					}else{
-						System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
-					}
+					loader.connection.returnFromLobby();
+					//TODO	loader.switchPanel(loader.Lobbypage);
+					//TODO	System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
 				}
 			});
 			panel.add(btnBACK);	
@@ -247,11 +251,9 @@ public class SetButtons {
 			btnBattleStart.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if (loader.connection.startGame()){
-						loader.switchPanel(loader.Gamepage);
-					}else{
-						System.out.println("Spiel kann nicht gestartet werden");
-					}
+					loader.connection.startGame();
+					//TODO	loader.switchPanel(loader.Gamepage);
+					//TODO	System.out.println("Spiel kann nicht gestartet werden");
 				}
 			});
 			panel.add(btnBattleStart);

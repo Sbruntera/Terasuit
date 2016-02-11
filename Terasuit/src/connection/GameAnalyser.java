@@ -7,63 +7,78 @@ import java.nio.IntBuffer;
 import server.GameServer;
 import world.Building;
 
-public class GameAnalyser {
+/**
+ * 
+ * @author Simeon
+ *
+ */
+public class GameAnalyser implements Analyser{
 
 	GameServer server;
-	int id;
+	short id;
 
-	public GameAnalyser(GameServer server, int id) {
+	public GameAnalyser(GameServer server, short id) {
 		this.server = server;
 		this.id = id;
 	}
 
+	/**
+	 * Analysiert die Nachricht als Ingame Nachricht
+	 * 
+	 * @param input
+	 */
 	public void analyse(String input) {
 		byte[] bytes = input.getBytes();
-		switch (bytes[0] & 192) {
-		case (0): // Gebäude (aus)bauen
+		switch (bytes[0]) {
+		case (32): // Gebäude (aus)bauen
 			boolean freeSpace = false;
-			int buildingPlace = bytes[0] >> 3;
+			int buildingPlace = bytes[1];
 			freeSpace = server.hasBuildingAt(id, buildingPlace); // Gebäude an
 																	// position
 																	// vorhanden
-			switch (bytes[0] & 32) {
-			case (0): // Gebäude bauen
-				if (freeSpace) {
-					// TODO: Ausgewähltes Gebäude auslesen, Kapital checken,
-					// Gebäude bauen
-				}
-			case (32): // Gebäude ausbauen
-				if (!freeSpace) {
+			
+			if (freeSpace) {
+				server.build(bytes[2], buildingPlace);
+			} else {
+				if (bytes[2] == 0) {
+					server.destroyBuilding(buildingPlace);
+				} else {
 					Building building = server.getBuildingAt(id, buildingPlace);
 					if (building.hasUpgrade()) {
-						// TODO: Kapital checken, Gebäude bauen
+						building.upgrade(bytes[2]);
 					}
 				}
-				break;
 			}
 			break;
 
-		case (64): // Einheit erstellen/bewegen
+		case (33): // Einheit erstellen/bewegen
 			switch (bytes[0] & 32) {
 			case (0):
 				// TODO: Create Unit
 				break;
 			case (32):
-				server.moveUnits(id, getUnits(bytes), (bytes[0] & 6));
+				server.moveUnits(id, getUnits(bytes), ((bytes[0] & 4) >> 2)
+						* Double.compare(bytes[0] & 2, 0.5));
 				break;
 			}
 			break;
 
-		case (128): // Spiel verlassen
+		case (34): // Spiel verlassen
 			server.disconnect(id);
 			break;
 
-		case (192): // Chat
-			// TODO: Chat erwünscht?
+		case (35): // Chat
+			server.broadcast(input, id);
 			break;
 		}
 	}
 
+	/**
+	 * Entnimmt einer bytefolge die enthaltenen Einheiten
+	 * 
+	 * @param bytes
+	 * @return
+	 */
 	private int[] getUnits(byte[] bytes) {
 		byte[] bytes1 = new byte[bytes.length - 1];
 		for (int i = 2; i <= bytes.length; i++) {

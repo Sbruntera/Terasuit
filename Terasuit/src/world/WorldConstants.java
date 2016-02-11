@@ -1,3 +1,4 @@
+
 package world;
 
 public class WorldConstants {
@@ -7,7 +8,6 @@ public class WorldConstants {
 
 	// MainBuilding
 	public static final int MAINBUILDINGID = 0;
-	public static final int MAINBUILDINGHEALTH = 5000;
 
 	public static Building getBuilding(int id) {
 		switch (id) {

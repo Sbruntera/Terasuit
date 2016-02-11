@@ -7,11 +7,34 @@ public class Buildings {
 	int building_Live = 0;
 	int type = 0;
 	int number = 0;
+	int slotID = 0;
+	int x = 0;
+	int y = 0;
+	boolean attackabel = false;
+	JLabel label = new JLabel("");
 	String description = "";
 	String name = "";
 	String[] spwanableEntity;
+	Buildings primerBuilding = null;
 	
-
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public Buildings getPrimerBuilding() {
+		return primerBuilding;
+	}
+	public void setPrimerBuilding(Buildings primerBuilding) {
+		this.primerBuilding = primerBuilding;
+	}
 	public String[] getSpwanableEntity() {
 		return spwanableEntity;
 	}
@@ -36,9 +59,6 @@ public class Buildings {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	boolean attackabel = false;
-	JLabel label = new JLabel("");
-	
 	public JLabel getLabel() {
 		return label;
 	}
@@ -63,6 +83,10 @@ public class Buildings {
 	public void setType(int type) {
 		this.type = type;
 	}
-
-
+	public int getSlotID() {
+		return slotID;
+	}
+	public void setSlotID(int slotID) {
+		this.slotID = slotID;
+	}
 }
