@@ -108,7 +108,7 @@ public class ActionButton {
 						}
 						int number = (int) (Math.random()*4)+1;
 						String UnitString = "Unit/Air/" + cutHTMLout(((JButton)arg0.getSource()).getText())+ ".png";
-						game.entity(UnitString, number, true);
+						//game.entity(UnitString, number, true);
 					} else if (type.equals("Generation")) {
 						System.out.println("Eine generierung wurde ausgewählt!");
 					} else if (type.equals("Destroy")) {

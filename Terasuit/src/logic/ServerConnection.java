@@ -276,24 +276,12 @@ public class ServerConnection implements Runnable {
 			buildingID = -1;
 			break;
 		}
-		if (analyser.getState() == State.GAME && buildingID != -2) {
-			if (position < 4) {
+		if (position < 4 && analyser.getState() == State.GAME) {
+			if (buildingID != -2) {
 				addMessage(String.valueOf((char) 32) + (char) position
 						+ (char) buildingID);
-			}
-		}
-	}
-
-	/**
-	 * Verbessert ein ausgewähltes Gebäude
-	 *
-	 * @param position
-	 *            Position des Gebäudes
-	 */
-	public void upgradeBuilding(int position) {
-		if (analyser.getState() == State.GAME) {
-			if ((position & 252) == 0) {
-				addMessage(String.valueOf((char) 32) + (char) position);
+			} else {
+				addMessage(String.valueOf((char) 32) + (char) position + (char) -1);
 			}
 		}
 	}
@@ -307,7 +295,7 @@ public class ServerConnection implements Runnable {
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if (position < 4) {
-				addMessage(String.valueOf((char) 32) + (char) position);
+				addMessage(String.valueOf((char) 32) + (char) position + (char) -2);
 			}
 		}
 	}

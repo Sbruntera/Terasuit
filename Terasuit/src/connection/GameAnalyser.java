@@ -33,21 +33,24 @@ public class GameAnalyser implements Analyser {
 		byte[] bytes = input.getBytes();
 		switch (bytes[0]) {
 		case (32): // Gebäude (aus)bauen
-			int buildingPlace = bytes[1];
-			if (!server.hasBuildingAt(id, buildingPlace)) {
-				server.build(position, buildingPlace, bytes[2]);
-			} else {
-				if (bytes[2] == 0) {
-					server.destroyBuilding(buildingPlace, position);
-				} else {
-					Building building = server.getBuildingAt(position, buildingPlace);
-					if (building.hasUpgrade()) {
-						building.upgrade(bytes[2]);
+			if (bytes.length == 3) {
+				int buildingPlace = bytes[1];
+				if (bytes[2] >= 0) {
+					if (!server.hasBuildingAt(id, buildingPlace)) {
+						server.build(position, buildingPlace, bytes[2]);
 					}
+				} else if(bytes[2] == -1) {
+					if (server.hasBuildingAt(id, buildingPlace)) {
+						Building building = server.getBuildingAt(position, buildingPlace);
+						if (building.hasUpgrade()) {
+							building.upgrade();
+						}
+					}
+				} else {
+					server.destroyBuilding(buildingPlace, position);
 				}
 			}
 			break;
-
 		case (33): // Einheit erstellen
 			
 			break;

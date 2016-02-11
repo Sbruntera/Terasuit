@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import connection.Connection;
 import connection.MenuAnalyser;
@@ -27,8 +28,13 @@ public class GameServer implements Runnable {
 	private Building[][] buildings;
 	private int[][] recources;
 	
+	ArrayList<Bullet> bulletsToRemove;
+	ArrayList<Unit> unitsToRemove;
+	
 	private Unit[] farestUnits;
 	private boolean ended;
+	
+	private AtomicBoolean tick = new AtomicBoolean(false);
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
@@ -44,14 +50,16 @@ public class GameServer implements Runnable {
 		recources = new int[connections.length][];
 		// TODO: Startrecourcen festlegen.
 		farestUnits = new Unit[2];
+		bulletsToRemove = new ArrayList<Bullet>();
+		unitsToRemove = new ArrayList<Unit>();
 	}
 
 	@Override
 	public void run() {
-		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-		ArrayList<Unit> unitsToRemove = new ArrayList<Unit>();
 		while (!ended) {
+			System.out.println("tick");
 			//Kugeln bewegen
+			tick.set(true);
 			for (Bullet b : bullets) {
 				if (b.move()) {
 					b.getTarget().dealDamage(b.getDamage());
@@ -65,11 +73,14 @@ public class GameServer implements Runnable {
 				bullets.remove(b);
 			}
 			
+			bulletsToRemove.clear();
+			
 			for (Unit u : unitsToRemove) {
 				units.remove(u.getID());
 				unitIDs.remove(u.getID());
 			}
 			
+			unitsToRemove.clear();
 			
 			// Einheiten bewegen
 			Unit unit;
@@ -100,9 +111,13 @@ public class GameServer implements Runnable {
 			//Gebäude bauen
 			for (Building[] array : buildings) {
 				for (Building b : array) {
-					b.build();
+					if (b != null) {
+						b.build();
+					}
 				}
 			}
+			tick.set(false);
+			
 		}
 	}
 
@@ -199,12 +214,11 @@ public class GameServer implements Runnable {
 	 *            : position des Gebäudes
 	 */
 	public void build(byte position, int buildingPlace, int id) {
-		buildings[position][buildingPlace] = WorldConstants.getBuilding(id);
+		buildings[position][buildingPlace] = WorldConstants.getBuilding(id, buildingPlace);
 	}
 
 	public void destroyBuilding(int buildingPlace, byte position) {
-		// TODO Auto-generated method stub
-
+		buildings[position][buildingPlace] = null;
 	}
 
 	public void disconnect(short id) {

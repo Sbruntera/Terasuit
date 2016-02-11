@@ -204,5 +204,6 @@ public class Server implements Runnable {
 				c.sendStarting(game);
 			}
 		}
+		new Thread(game).start();
 	}
 }

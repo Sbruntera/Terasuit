@@ -2,10 +2,10 @@ package world;
 
 public class Barrack implements Building {
 	
-	public static final int MAXLVL;
-	public static final int BUILDINGTIME;
+	public static final int MAXLVL = 1;
+	public static final int BUILDINGTIME = 100;
 
-	private int lvl;
+	private int lvl = 1;
 	private int buildTime;
 	private int position;
 	

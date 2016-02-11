@@ -1,6 +1,6 @@
 package world;
 
-public class MainBuilding implements Building {
+public class MainBuilding implements Building, Unit {
 
 	private int health = 5000;
 
@@ -13,9 +13,9 @@ public class MainBuilding implements Building {
 	public MainBuilding() {
 	}
 
-	public boolean dealDamage(int value) {
+	@Override
+	public void dealDamage(int value) {
 		health -= value;
-		return health <= 0;
 	}
 
 	public int getHealth() {
@@ -56,8 +56,49 @@ public class MainBuilding implements Building {
 	}
 
 	@Override
-	public void build() {
+	public void build() { // MainBuilding can not be Builded
+	}
+
+	@Override
+	public short getPlayer() {
 		// TODO Auto-generated method stub
-		
+		return 0;
+	}
+
+	@Override
+	public void heal(int value) { // MainBuilding can not be healed
+	}
+
+	@Override
+	public int getShootSpeed() { // MainBuilding can not shoot
+		return 0;
+	}
+
+	@Override
+	public void move() {  // MainBuilding can not move
+	}
+
+	@Override
+	public void setDirection(int direction, boolean running) { // MainBuilding can not move
+	}
+
+	@Override
+	public boolean isRunning() { // MainBuilding can not run
+		return false;
+	}
+
+	@Override
+	public Bullet shoot(Unit farestUnits) { // MainBuilding can not shoot
+		return null;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return health > 0;
+	}
+
+	@Override
+	public short getID() {
+		return WorldConstants.MAINBUILDINGID;
 	}
 }
