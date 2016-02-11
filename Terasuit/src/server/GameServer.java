@@ -46,7 +46,7 @@ public class GameServer implements Runnable {
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
 		for (int i = 0; i < 2; i++) {
-			mainBuildings[i] = new MainBuilding();
+			mainBuildings[i] = new MainBuilding((byte) i);
 		}
 		recources = new int[connections.length][];
 		// TODO: Startrecourcen festlegen.
@@ -60,7 +60,7 @@ public class GameServer implements Runnable {
 
 	@Override
 	public void run() {
-		//Kugeln bewegen
+		// Kugeln bewegen
 		tick.set(true);
 		for (Bullet b : bullets) {
 			if (b.move()) {
@@ -74,21 +74,21 @@ public class GameServer implements Runnable {
 		for (Bullet b : bulletsToRemove) {
 			bullets.remove(b);
 		}
-		
+
 		bulletsToRemove.clear();
-		
+
 		for (Unit u : unitsToRemove) {
 			units.remove(u.getID());
 			unitIDs.remove(u.getID());
 		}
-		
+
 		unitsToRemove.clear();
-		
+
 		// Einheiten bewegen
 		Unit unit;
 		for (Integer i : unitIDs) {
 			unit = units.get(i);
-			
+
 			if (unit.getPlayer() > 2) {
 				if (unit.hasInRange(farestUnits[0]) && !unit.isRunning()) {
 					Bullet b = unit.shoot(farestUnits[0]);
@@ -119,16 +119,24 @@ public class GameServer implements Runnable {
 				}
 			}
 		}
-		
-		//Gebäude bauen
+
+		// Einheit ausbilden
 		for (Building[] array : buildings) {
 			for (Building b : array) {
 				if (b != null) {
-					b.build();
+					Unit u = b.create();
+					if (u != null) {
+						for (Connection c : connections) {
+							if (c != null) {
+								c.sendCreateUnit(b.getPlayer(), b.getSlotID(),
+										b.getUnitType(), b.getUnitID());
+							}
+						}
+					}
 				}
 			}
 		}
-		
+
 		if (!mainBuildings[0].isAlive() && !mainBuildings[1].isAlive()) {
 			for (Connection c : connections) {
 				if (c != null) {
@@ -137,14 +145,14 @@ public class GameServer implements Runnable {
 			}
 		} else if (!mainBuildings[0].isAlive()) {
 			for (int i = 0; i < connections.length; i++) {
-				connections[i].sendGameEnded((connections.length-1)/2 > 1);
+				connections[i].sendGameEnded((connections.length - 1) / 2 > 1);
 			}
 		} else if (!mainBuildings[1].isAlive()) {
 			for (int i = 0; i < connections.length; i++) {
-				connections[i].sendGameEnded((connections.length-1)/2 < 0);
+				connections[i].sendGameEnded((connections.length - 1) / 2 < 0);
 			}
 		}
-		
+
 		tick.set(false);
 	}
 
@@ -243,12 +251,9 @@ public class GameServer implements Runnable {
 	 */
 	public void build(byte position, byte buildingPlace, byte id) {
 		buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
-				buildingPlace);
-		for (Connection c : connections) {
-			if (c != null) {
-				c.sendCreateOrUpgradeBuilding(position, buildingPlace, id);
-			}
-		}
+				buildingPlace, position);
+		connections[position].sendCreateOrUpgradeBuilding(position,
+				buildingPlace, id);
 	}
 
 	public void destroyBuilding(int buildingPlace, byte position) {
@@ -278,21 +283,38 @@ public class GameServer implements Runnable {
 				buildings[position][buildingPlace].upgrade();
 				for (Connection c : connections) {
 					if (c != null) {
-						c.sendCreateOrUpgradeBuilding(position, buildingPlace, (byte) 0);
+						c.sendCreateOrUpgradeBuilding(position, buildingPlace,
+								(byte) 0);
 					}
 				}
 			}
 		}
 		for (Connection c : connections) {
 			if (c != null) {
-				c.sendCreateOrUpgradeBuilding(position, buildingPlace, (byte) 127);
+				c.sendCreateOrUpgradeBuilding(position, buildingPlace,
+						(byte) 127);
 			}
 		}
 	}
 
 	public void createUnit(byte playerPosition, byte id, byte buildingPlace) {
-		if (playerPosition < connections.length && playerPosition > 0 && buildingPlace < WorldConstants.BUILDINGSCOUNT && buildingPlace > 0) {
-			if (buildings[playerPosition][buildingPlace].createUnit(id)) {
+		if (playerPosition < connections.length && playerPosition > 0
+				&& buildingPlace < WorldConstants.BUILDINGSCOUNT
+				&& buildingPlace > 0) {
+			if (buildings[playerPosition][buildingPlace].createUnit(id,
+					unitIDCounter, (short) 0)) { // TODO 0 durch spawnposition
+											// austauschen
+				unitIDCounter++;
+				if (unitIDCounter == 10) {
+					unitIDCounter = 11;
+				} else if (unitIDCounter == 128) {
+					unitIDCounter = 160;
+				}
+				if (unitIDCounter >> 8 == 9) {
+					unitIDCounter = 11 << 8;
+				} else if (unitIDCounter >> 8 == 128) {
+					unitIDCounter = (short) (160 << 8);
+				}
 				connections[playerPosition].sendGenerateUnit(id, buildingPlace);
 			}
 		}

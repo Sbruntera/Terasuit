@@ -6,7 +6,7 @@ public class Marine implements Unit {
 	private static int range;
 	private static int shootSpeed;
 	
-	private short playerID;
+	private byte playerID;
 	private short id;
 	
 	private int health;
@@ -16,13 +16,13 @@ public class Marine implements Unit {
 
 
 
-	public Marine(short playerID, short id) {
+	public Marine(byte playerID, short id) {
 		this.playerID = playerID;
 		this.id = id;
 	}
 	
 	@Override
-	public short getPlayer() {
+	public byte getPlayer() {
 		return playerID;
 	}
 
@@ -101,6 +101,12 @@ public class Marine implements Unit {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public byte getType() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

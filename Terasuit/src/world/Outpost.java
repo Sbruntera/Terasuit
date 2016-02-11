@@ -7,10 +7,12 @@ public class Outpost implements Building {
 
 	private int lvl = 1;
 	private int buildTime;
-	private int position;
+	private byte position;
+	private byte player;
 	
-	public Outpost(int position) {
+	public Outpost(byte position, byte player) {
 		this.position = position;
+		this.player = player;
 	}
 
 	@Override
@@ -25,7 +27,7 @@ public class Outpost implements Building {
 	}
 
 	@Override
-	public int getPosition() {
+	public byte getSlotID() {
 		return position;
 	}
 
@@ -33,10 +35,34 @@ public class Outpost implements Building {
 	public void build() {
 		buildTime--;
 	}
-
+	
 	@Override
-	public boolean createUnit(short id) {
+	public boolean createUnit(byte typeID, short unitID, short position) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public byte getPlayer() {
+		// TODO Auto-generated method stub
+		return player;
+	}
+
+	@Override
+	public Unit create() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public byte getUnitType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public short getUnitID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

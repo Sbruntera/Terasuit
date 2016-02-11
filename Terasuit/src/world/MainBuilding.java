@@ -8,9 +8,12 @@ public class MainBuilding implements Building, Unit {
 	private int range;
 	private int cooldown;
 
-	private int position = 4;
+	private byte position = 4;
+	private byte player;
 
-	public MainBuilding() {
+
+	public MainBuilding(byte player) {
+		this.player = player;
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public int getPosition() {
+	public byte getSlotID() {
 		return position;
 	}
 
@@ -60,9 +63,8 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public short getPlayer() {
-		// TODO Auto-generated method stub
-		return 0;
+	public byte getPlayer() {
+		return player;
 	}
 
 	@Override
@@ -108,7 +110,37 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public boolean createUnit(short id) { //MainBuilding can not create Units
+	public boolean createUnit(byte typeID, short unitID, short position) { //MainBuilding can not create Units
 		return false;
+	}
+
+	@Override
+	public int getPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Unit create() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public byte getUnitType() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public short getUnitID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

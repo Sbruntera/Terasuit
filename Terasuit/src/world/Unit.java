@@ -1,8 +1,8 @@
 package world;
 
 public interface Unit {
-
-	public short getPlayer();
+	
+	public byte getPlayer();
 
 	public void dealDamage(int value);
 
@@ -31,4 +31,6 @@ public interface Unit {
 	public short getID();
 
 	public boolean hasInRange(Unit unit);
+
+	public byte getType();
 }

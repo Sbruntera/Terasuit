@@ -7,10 +7,13 @@ public class Armory implements Building {
 
 	private int lvl = 1;
 	private int buildTime;
-	private int position;
+	private byte position;
+	private Unit unit;
+	private byte player;
 	
-	public Armory(int position) {
+	public Armory(byte position, byte player) {
 		this.position = position;
+		this.player = player;
 	}
 	
 	@Override
@@ -25,7 +28,7 @@ public class Armory implements Building {
 	}
 
 	@Override
-	public int getPosition() {
+	public byte getSlotID() {
 		return position;
 	}
 
@@ -35,9 +38,31 @@ public class Armory implements Building {
 	}
 
 	@Override
-	public boolean createUnit(short id) {
-		// TODO Auto-generated method stub
+	public Unit create() {
+		buildTime--;
+		return unit;
+	}
+	
+
+	@Override
+	public boolean createUnit(byte type, short id, short position) {
+		unit = WorldConstants.getUnit(type, id, position);
 		return false;
+	}
+
+	@Override
+	public byte getPlayer() {
+		return player;
+	}
+
+	@Override
+	public byte getUnitType() {
+		return unit.getType();
+	}
+
+	@Override
+	public short getUnitID() {
+		return unit.getID();
 	}
 
 }
