@@ -147,7 +147,7 @@ public class Game {
 	}
 
 	public void cancel(int primID) {
-		System.out.println("hey i will destroy that for you <3");
+		System.out.println("hey, i will destroy that for you <3");
 	}
 
 	public void replaceJProcessbar(int index) {

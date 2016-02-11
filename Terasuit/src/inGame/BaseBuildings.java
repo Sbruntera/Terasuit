@@ -104,7 +104,7 @@ public class BaseBuildings {
 		ImageIcon pic = new ImageIcon(entityLocation);
 		label = new JLabel("");
 		label.setIcon(pic);
-		label.setBounds(X, Y, pic.getIconWidth(), pic.getIconHeight());
+		label.setBounds(X, (Y-getBestOptimum(buildingName)), pic.getIconWidth(), pic.getIconHeight());
 		building.setNumber(primID);
 		building.setSlotID(slotID);
 		label.addMouseListener(new MouseAdapter() {
@@ -205,5 +205,18 @@ public class BaseBuildings {
 		default:
 			return new String[]{};
 		}
+	}
+	
+	public int getBestOptimum(String buildingName){
+		switch (buildingName){ 
+		case "Armory":
+			return 7;
+		case "Hospital":
+			return 7;
+		case "Outpost":
+			return 2;
+		default:
+			return 0;
+		}	
 	}
 }
