@@ -81,7 +81,7 @@ public class Game {
 	}
 	
 	public void createUserOptions(int slotID, int primID, Buildings[] buildingsArray){
-		btnAction.createUserOptions(console, this, buildingsArray, slotID, primID, loader, func);
+		btnAction.createUserOptions(console, this, buildingsArray, listOfJProgressBar , slotID, primID, loader, func);
 	}
 
 	public void entity(String unitString, int number, boolean b) {
@@ -99,24 +99,59 @@ public class Game {
 		int time = 20;
 		func.destroyUserOptions(console, this);
 		
-//		System.out.println("=>>>>>  " + index);
-//		System.out.println("=>>>>>  " + primID);
-		if (primID == 0){
-			progressbar = new ProgressbarLogic(index);
-		}else{
-			progressbar = new ProgressbarLogic(primID);
-		}
-
-		progressbar.init(20, this);
 		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(20, 700, 100, 5);
-		listOfJProgressBar[index] = progressBar;
-		field.add(listOfJProgressBar[index]);
-		
-		this.BuildingsArray = buildings.createPrimaryBuilding(buildingLocation, X, Y, buildingsArray, "Blubb", buildingName, 1, this, index, primID, field, time);
+		progressBar.setBounds(20, 60, 160, 10);
+		if (primID != 0){
+			progressbar = new ProgressbarLogic(index, X, Y, this, index, primID, time, field, "blubb", buildingName, buildingLocation);
+			System.out.println("===> " + index);
+			this.listOfJProgressBar[index] = progressBar;
+			progressbar.init(time);
+			console.add(listOfJProgressBar[index]);
+		}else{
+			progressbar = new ProgressbarLogic(primID, X, Y, this, index, primID, time, field, "blubb", buildingName, buildingLocation);
+			this.listOfJProgressBar[primID] = progressBar;
+			System.out.println("===> " + primID);
+			progressbar.init(time);
+			console.add(listOfJProgressBar[primID]);
+		}
 	}
 	
-	public void setProgressbar(int iD){
-		System.out.println("ich setzte neu!");
+	/**
+	 * Sucht mit den gegeben Daten nach der aktuellen JProcessbar und aktualisiert sie, wobei bei 100% eine neue Aktion ausgeführt wird
+	 */
+	public void setProgressbar(int ID, int X,  int Y, String buildingLocation, String description, String buildingName, int i, int slotID, int primID, int time){
+		if (listOfJProgressBar[ID] != null){
+			int percent =  listOfJProgressBar[ID].getValue();
+			if (percent != 100){
+				listOfJProgressBar[ID].setValue(percent+10);
+			}else{
+				buildings.createPrimaryBuilding(buildingLocation, X, Y, BuildingsArray, description, buildingName, this, slotID, primID, field, time);
+				listOfJProgressBar[ID].setVisible(false);
+				listOfJProgressBar[ID] = null;
+				func.destroyUserOptions(console, this);
+				setAllJProgressBarVisible(false);
+				field.repaint();
+			}
+		}
+	}
+	
+	/**
+	 * Setzt alle verfügbaren JProcessbars auf sichtbar/nicht sichtbar
+	 */
+	public void setAllJProgressBarVisible(boolean bool){
+		for (int i = 0; i != listOfJProgressBar.length; i++){
+			if (listOfJProgressBar[i] != null){
+				listOfJProgressBar[i].setVisible(bool);
+			}
+		}
+	}
+
+	public void cancel(int primID) {
+		System.out.println("hey i will destroy that for you <3");
+	}
+
+	public void replaceJProcessbar(int index) {
+		listOfJProgressBar[index].setVisible(true);
+		
 	}
 }

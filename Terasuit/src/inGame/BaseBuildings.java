@@ -5,7 +5,6 @@ import grafig.Panel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -93,7 +92,7 @@ public class BaseBuildings {
 		field.repaint();
 	}
 	
-	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, int buildingType, Game game, int slotID, int primID, Panel field, int time){
+	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field, int time){
 		System.out.println("PrimID: " + primID);
 		System.out.println("SlotID: " + slotID);
 		System.out.println(buildingName);

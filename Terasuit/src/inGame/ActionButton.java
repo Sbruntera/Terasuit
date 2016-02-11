@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 import grafig.Loader;
 import grafig.Panel;
@@ -22,6 +23,9 @@ public class ActionButton {
 	JButton btnSpawnSoldir = new JButton("Building");
 	ArrayList<JButton> ContentButtonArray = new ArrayList<JButton>();
 	ArrayList<JButton> jButton = new ArrayList<JButton>();
+	JLabel BuildingNameLbl = new JLabel("");
+	JLabel Description = new JLabel("");
+	boolean preload = false;
 	JButton btn;
 	String [] noName;
 	
@@ -73,17 +77,29 @@ public class ActionButton {
 	}
 	
 	// Gebäudeoptionen
-	public void createUserOptions(Panel console, Game game, Buildings[] buildingsArray, int slotID, int primID, Loader load, Funktions func){
-//		System.out.println(slotID + " SlotID");
-//		System.out.println(primID + " primID");
+	public void createUserOptions(Panel console, Game game, Buildings[] buildingsArray, JProgressBar[] listOfJProgressBar, int slotID, int primID, Loader load, Funktions func){
+		System.out.println("slotID " + slotID);
+		System.out.println("primID " + primID);
 		deselectOptions(console);
+		game.setAllJProgressBarVisible(false);
 		if (primID == 0){
 			noName  = buildingsArray[slotID].getSpwanableEntity();
+			System.out.println("1");
+			if (listOfJProgressBar[slotID] != null){
+				noName = new String[1];
+				noName[0] = "Cancel";
+				game.replaceJProcessbar(slotID);
+			}
 		}else{
 			noName  = buildingsArray[primID].getSpwanableEntity();
+			System.out.println("3");
+			if (listOfJProgressBar[slotID] != null){
+				noName = new String[1];
+				noName[0] = "Cancel";
+				game.replaceJProcessbar(slotID);
+			}
 		}
 		
-//		System.out.println(slotID + " lol");
 		// Generiert alle möglichen Gebäudeoptionen
 		for (int n = 0; n != noName.length; n++){
 			btn = new JButton(wrapLines(noName[n]));
@@ -114,6 +130,9 @@ public class ActionButton {
 					}else if (type.equals("Destroy")){
 						System.out.println("Das gewählte Gebäude wird abgerissen");
 						game.destroyBuilding(primID);
+					}else if (type.equals("Cancel")){
+						System.out.println("Abbruch");
+						game.cancel(primID);
 					}else if (type.equals("null")){
 						System.out.println("Keine Option für dieses Button vorhanden!!");
 					}else{
@@ -124,8 +143,8 @@ public class ActionButton {
 			jButton.add(btn);
 			console.add(btn);
 		}
-		JLabel Description = new JLabel("");
-		console.remove(Description);
+		
+		//console.remove(Description);
 		if (primID == 0){
 			Description.setText(wrapLines(buildingsArray[slotID].getDescription()));
 		}else{
@@ -133,20 +152,24 @@ public class ActionButton {
 		}
 		Description.setForeground(Color.BLACK);
 		Description.setBounds(20, -50, 180, 300);
-		console.add(Description);
+
 		
-		JLabel BuildingNameLbl = new JLabel("");
-		console.remove(BuildingNameLbl);
+		
+		//console.remove(BuildingNameLbl);
+		//BuildingNameLbl.setText("");
 		if (primID == 0){
 			BuildingNameLbl.setText(wrapLines(buildingsArray[slotID].getName()));
 		}else{
 			BuildingNameLbl.setText(wrapLines(buildingsArray[primID].getName()));
 		}
-		
 		BuildingNameLbl.setForeground(Color.BLACK);
 		BuildingNameLbl.setFont(new Font("Arial", Font.PLAIN, 19));
 		BuildingNameLbl.setBounds(20, -20, 180, 100);
-		console.add(BuildingNameLbl);
+		if (preload == false){
+			console.add(BuildingNameLbl);
+			console.add(Description);
+			this.preload = true;
+		}
 
 		console.repaint();
 	}
@@ -164,43 +187,6 @@ public class ActionButton {
 		panel.repaint();
 	}
 
-//	// Ändert einen Zustand eine Entitys
-//	public void Entity(int i, Panel panel, ArrayList<Unit> entity){
-//
-//		panel.remove(btnBuilding);
-//		panel.remove(btnSpawnSoldir);
-//
-//		
-//		// Building-Button
-//		btnForward = new JButton("Forward");
-//		btnCreator.createOne(btnForward, 20, 600, 60, 60, 87);
-//		btnForward.addMouseListener(new MouseAdapter() {
-//			public void mouseReleased(MouseEvent arg0) {
-//
-//			}
-//		});
-//		panel.add(btnForward);
-//		
-//		// Building-Button
-//		btnBackward = new JButton("Backward");
-//		btnCreator.createOne(btnBackward, 90, 600, 60, 60, 87);
-//		btnBackward.addMouseListener(new MouseAdapter() {
-//			public void mouseReleased(MouseEvent arg0) {
-//
-//			}
-//		});
-//		panel.add(btnBackward);	
-//		panel.repaint();
-//	}
-	
-	// Änder die Zustände einer ganzen Gruppe
-	public void GroupEntity(ArrayList<Unit> entity, Panel panel){
-		
-	}
-	
-	public void Barracks(){
-		
-	}
 	
 	public String getEntityAction(String EntityName){
 		File file;
@@ -242,6 +228,8 @@ public class ActionButton {
 			return "Generation";
 		case "Destroy":
 			return "Destroy";
+		case "Cancel":
+			return "Cancel";
 		}
 		return "null";
 	}	
