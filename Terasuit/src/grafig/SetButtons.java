@@ -5,6 +5,7 @@ import inGame.BtnCreator;
 import inGame.Funktions;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -36,10 +38,12 @@ public class SetButtons {
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	JLabel tl;
+	JPanel jp;
 	JScrollBar ts;
 	Panel panel;
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
+	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
 	String[] standartselect;
 	private String s = "Willkommen im Chat";
 	
@@ -156,6 +160,25 @@ public class SetButtons {
 		//#########################################################################
 			
 		} else if (picName.equals("Wallpaper/serverlist.png")){
+			//LobbyList
+			jp = new JPanel();
+			jp.setBounds(142, 92, 789, 800);
+			jp.setOpaque(false);
+			jp.setLayout(null);
+			jp.setPreferredSize(new Dimension(789,0));
+			//TestGen
+			genNEWLobby(1, "Test1", "yes", "Sunrise");
+			genNEWLobby(2, "Test2", "yes", "Sunrise");
+			genNEWLobby(3, "Test3", "yes", "Sunrise");
+			genNEWLobby(4, "Test4", "no", "Sunrise");
+			//TestGen Ende
+			JScrollPane scroller = new JScrollPane(jp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller.setBounds(142, 92, 789, 580);
+			scroller.setOpaque(false);
+			scroller.getViewport().setOpaque(false);
+			panel.add(scroller);
+			
+			
 			// JOIN-Button
 			JButton btnJoin = new JButton("JOIN");
 			btnJoin.setBounds(303, 689, 170, 60);//links / runter / breite / höhe
@@ -485,5 +508,47 @@ public class SetButtons {
 		}
 		updateCombo(test);
 		return test;
+	}
+	
+	//Nicht wirklich flexibel keine möglichkeit zum Nachrutschen usw.
+	public void genNEWLobby(int LobbyNr,String Name,String pw,String Map){
+		JPanel game1 = new JPanel();
+		game1.setBounds(10, 10+(160*(LobbyNr-1)), 755, 150);
+		game1.setLayout(null);
+		game1.setOpaque(true);
+		game1.setBackground(new Color(255,90,0));
+		JLabel map_pic = new JLabel(Map);
+		JLabel pw_en = new JLabel(pw);
+		JLabel lobby_name = new JLabel(Name);
+		JLabel player_count = new JLabel("1/4");
+		map_pic.setBounds(10,10,200,130);
+		pw_en.setBounds(220, 20, 70, 45);
+		lobby_name.setBounds(300, 20, 445, 110);
+		player_count.setBounds(220, 85, 70, 45);
+		lobby_name.setHorizontalAlignment(SwingConstants.CENTER);
+		pw_en.setHorizontalAlignment(SwingConstants.CENTER);
+		player_count.setHorizontalAlignment(SwingConstants.CENTER);
+		//DEMO CODE
+		lobby_name.setFont(new Font("Arial", Font.BOLD, 24));
+		map_pic.setOpaque(true);
+		map_pic.setBackground(Color.BLUE);
+		lobby_name.setBackground(Color.BLUE);
+		player_count.setBackground(Color.BLUE);
+		pw_en.setBackground(Color.BLUE);
+		pw_en.setOpaque(true);
+		player_count.setOpaque(true);
+		lobby_name.setOpaque(true);
+		//DEMO CODE ENDE
+		player_count_list.add(player_count);
+		game1.add(map_pic);
+		game1.add(pw_en);
+		game1.add(lobby_name);
+		game1.add(player_count);
+		jp.add(game1);
+		jp.setPreferredSize(new Dimension(789,10+(160*LobbyNr)));
+	}
+	// newPlayersNR muss noch int werden
+	public void updatePlayer_count(String newPlayersNR, int LobbyNR){
+		player_count_list.get(LobbyNR).setText(newPlayersNR);
 	}
 }
