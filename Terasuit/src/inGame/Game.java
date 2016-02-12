@@ -3,14 +3,22 @@ package inGame;
 import grafig.Loader;
 import grafig.Panel;
 
+
+
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+
+
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -32,6 +40,7 @@ public class Game {
 	Panel console;
 	Loader loader;
 	JLabel tl;
+	JScrollBar ts;
 	int playerID;
 	int counter = 0;
 	private String s = "Willkommen im Chat";
@@ -64,6 +73,11 @@ public class Game {
 		tl.setBounds(756, 11, 255, 134);
 		tl.setForeground(Color.WHITE);
 		tl.setVerticalAlignment(SwingConstants.TOP);
+		JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroller.setBounds(756, 11, 255, 134);
+		scroller.setOpaque(false);
+		scroller.getViewport().setOpaque(false);
+		ts = scroller.getVerticalScrollBar();
 		//666, 350, 320, 364
 		JTextField tf = new JTextField();
 		tf.setBounds(756, 145, 255, 30);
@@ -71,7 +85,7 @@ public class Game {
 			loader.connection.sendChatMessage(tf.getText());
 			tf.setText("");
 		});
-		console.add(tl);
+		console.add(scroller);
 		console.add(tf);
 		console.add(btnBACK);
 		panel.repaint();
@@ -178,5 +192,13 @@ public class Game {
 		s = s + "<br>" + "User: " + text;
 		System.out.println(text);
 		tl.setText("<html>" + s + "</html>");
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
+		ts.setValue(s);
 	}
 }

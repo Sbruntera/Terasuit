@@ -16,6 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -34,6 +36,7 @@ public class SetButtons {
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	JLabel tl;
+	JScrollBar ts;
 	Panel panel;
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
@@ -288,6 +291,10 @@ public class SetButtons {
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
+			JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scroller.setBounds(666, 350, 320, 334);
+			scroller.setOpaque(false);
+			scroller.getViewport().setOpaque(false);
 			//666, 350, 320, 364
 			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
@@ -295,7 +302,7 @@ public class SetButtons {
 				loader.connection.sendLobbyChatMessage(tf.getText());
 				tf.setText("");
 			});
-			panel.add(tl);
+			panel.add(scroller);
 			panel.add(tf);
 			panel.add(btnBACK);
 			
@@ -326,6 +333,11 @@ public class SetButtons {
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
+			JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scroller.setBounds(666, 350, 320, 334);
+			scroller.setOpaque(false);
+			scroller.getViewport().setOpaque(false);
+			ts = scroller.getVerticalScrollBar();
 			//666, 350, 320, 364
 			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
@@ -333,7 +345,7 @@ public class SetButtons {
 				loader.connection.sendLobbyChatMessage(tf.getText());
 				tf.setText("");
 			});
-			panel.add(tl);
+			panel.add(scroller);
 			panel.add(tf);
 			panel.add(btnBACK);	
 			
@@ -417,6 +429,14 @@ public class SetButtons {
 		s = s + "<br>" + "User: " + text;
 		System.out.println(text);
 		tl.setText("<html>" + s + "</html>");
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
+		ts.setValue(s);
 	}
 	public void updateCombo(String[] player){
 		standartselect = player;
