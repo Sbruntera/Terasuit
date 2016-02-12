@@ -137,14 +137,6 @@ public class Funktions {
 		}
 	}
 	
-	public void destroyUserOptions(Panel console, Game game) {
-		if (this.selectedEntitysID.size() != 0){
-			game.btnAction.createUserUnitOptions(console);
-		}else{
-			game.btnAction.destroyUserOptions(console);
-		}
-	}
-	
 	/**
 	 * Sucht im Panel nach Panels und gibt nach Wunsch das richtige zurück
 	 * @return
@@ -159,5 +151,13 @@ public class Funktions {
 		    }
 		}	
 		return null;
+	}
+
+	public void destroyUserOptions(Panel console, Game game) {
+		if (this.selectedEntitysID.size() != 0){
+			game.btnAction.createUserUnitOptions(console);
+		}else{
+			game.btnAction.destroyUserOptions(console);
+		}
 	}
 }

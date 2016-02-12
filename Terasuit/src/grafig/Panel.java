@@ -70,7 +70,7 @@ public class Panel extends JPanel{
 			} catch (Exception e) {
 				System.out.println("<ERROR> Kein Bild für diese Aktion vorhanden!!!");
 			}
-			loader.init(this);
+			loader.setPanel(this);
 			buttons.setbuttons(this, picName, loader, func);
 		}
 	}

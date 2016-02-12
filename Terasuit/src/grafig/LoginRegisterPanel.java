@@ -85,7 +85,6 @@ public class LoginRegisterPanel {
 					password2 += c;
 				}
 				if (password1.equals(password2)) {
-					System.out.println("a");
 					connection.register(userField.getText(),
 							password1, mailField.getText());
 				}

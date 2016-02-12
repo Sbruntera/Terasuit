@@ -15,7 +15,6 @@ public class Loader {
 	Thread connectionThread = new Thread(connection);
 	Funktions func = new Funktions();
 	Game game;
-	Panel panel;
 
 	public final String Mainpage = "Wallpaper/Start_Hintergrund.png";
 	public final String Lobbypage = "Wallpaper/serverlist.png";
@@ -30,6 +29,7 @@ public class Loader {
 	public static int WIGTH = 768;
 
 	JFrame window = new JFrame("Terasuit");
+	private Panel panel;
 	
 	public void print() {
 
@@ -55,11 +55,7 @@ public class Loader {
 	
 	public void init(Panel panel, Panel field, Panel console, Funktions func){
 		game = new Game();
-		game.init(panel, field, console, this, func);
-	}
-	
-	public void init(Panel panel){
-		this.panel = panel;
+		game.init(panel, field, console, this, func, 1);
 	}
 	
 	public void startDebugger(){
@@ -77,9 +73,15 @@ public class Loader {
 	public void mousListernerAction(int minX, int minY, int w, int h){
 		game.searchForEntitysInRectangle(minX, minY, w, h);
 	}
-	
-	public void setText(String text) {
-		panel.buttons.setText(text);
+
+	public void setText(String msg) {
+		panel.buttons.setText(msg);
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPanel(Panel panel) {
+		this.panel = panel;
 	}
 	
 }

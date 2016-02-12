@@ -12,6 +12,7 @@ public class Unit {
 	int EntityFirerange = 0;
 	int EntityFirepower = 0;
 	int EntitySplashDmg = 0;
+	int EntitySpawntimer = 0;
 	int EntityLive = 0;
 	String Entityname = "";
 	boolean flyingEntity = false;
@@ -148,5 +149,12 @@ public class Unit {
 
 	public void setEntityPositionY(int entityPositionY) {
 		EntityPositionY = entityPositionY;
+	}
+	public int getEntitySpawntimer() {
+		return EntitySpawntimer;
+	}
+
+	public void setEntitySpawntimer(int entitySpawntimer) {
+		EntitySpawntimer = entitySpawntimer;
 	}
 }
