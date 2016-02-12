@@ -41,10 +41,12 @@ public class SetButtons {
 	JPanel jp;
 	JScrollBar ts;
 	Panel panel;
+	int markedLobby;
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
 	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
 	String[] standartselect;
+	
 	private String s = "Willkommen im Chat";
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
@@ -206,7 +208,7 @@ public class SetButtons {
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					System.out.println("gahk");
+					System.out.println(markedLobby);
 					loader.connection.createGroup(1, "Testspiel", "");
 						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
 					//TODO	loader.switchPanel(loader.Grouppage_owner);
@@ -517,6 +519,14 @@ public class SetButtons {
 		game1.setLayout(null);
 		game1.setOpaque(true);
 		game1.setBackground(new Color(255,90,0));
+		game1.setFocusable(true);
+		game1.setRequestFocusEnabled(true);
+		game1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				markedLobby = LobbyNr;
+			}
+		});
 		JLabel map_pic = new JLabel(Map);
 		JLabel pw_en = new JLabel(pw);
 		JLabel lobby_name = new JLabel(Name);
