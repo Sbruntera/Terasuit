@@ -83,5 +83,11 @@ public class Loader {
 	public void setPanel(Panel panel) {
 		this.panel = panel;
 	}
+
+	public void setGameText(String msg) {
+		// TODO Auto-generated method stub
+		game.setText(msg);
+		
+	}
 	
 }

@@ -337,7 +337,7 @@ public class ServerConnection implements Runnable {
 	 *            Chatnachricht
 	 */
 	public void sendChatMessage(String message) {
-		if (!message.contains("")) {
+		if (!message.equals("")) {
 			addMessage((char) 36 + message);
 		}
 	}

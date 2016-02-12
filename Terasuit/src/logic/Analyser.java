@@ -166,9 +166,9 @@ public class Analyser {
 			boolean won = bytes[1] > 0;
 			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
 			break;
-		case (40):
+		case (20):
 			String msg = message.substring(3);
-			loader.setText(msg);
+			loader.setGameText(msg);
 			break;
 		}
 	}

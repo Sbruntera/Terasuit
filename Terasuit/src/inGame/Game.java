@@ -3,12 +3,16 @@ package inGame;
 import grafig.Loader;
 import grafig.Panel;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class Game {
 	
@@ -27,8 +31,10 @@ public class Game {
 	Panel field;
 	Panel console;
 	Loader loader;
+	JLabel tl;
 	int playerID;
 	int counter = 0;
+	private String s = "Willkommen im Chat";
 	
 	
 	
@@ -53,6 +59,20 @@ public class Game {
 				loader.switchPanel(loader.Mainpage);
 			}
 		});
+		//Chat
+		tl = new JLabel(s);
+		tl.setBounds(756, 11, 255, 134);
+		tl.setForeground(Color.WHITE);
+		tl.setVerticalAlignment(SwingConstants.TOP);
+		//666, 350, 320, 364
+		JTextField tf = new JTextField();
+		tf.setBounds(756, 145, 255, 30);
+		tf.addActionListener(e -> {
+			loader.connection.sendChatMessage(tf.getText());
+			tf.setText("");
+		});
+		console.add(tl);
+		console.add(tf);
 		console.add(btnBACK);
 		panel.repaint();
 	}
@@ -153,5 +173,10 @@ public class Game {
 	public void replaceJProcessbar(int index) {
 		listOfJProgressBar[index].setVisible(true);
 		
+	}
+	public void setText(String text){
+		s = s + "<br>" + "User: " + text;
+		System.out.println(text);
+		tl.setText("<html>" + s + "</html>");
 	}
 }

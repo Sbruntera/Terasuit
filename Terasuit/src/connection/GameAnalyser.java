@@ -67,7 +67,7 @@ public class GameAnalyser implements Analyser {
 			break;
 
 		case (36): // Chat
-			server.broadcast(input, id);
+			server.broadcast(input.substring(1), id);
 			break;
 		}
 	}
