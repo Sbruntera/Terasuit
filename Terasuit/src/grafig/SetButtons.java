@@ -23,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import logic.Lobby;
+
 /**
  * 
  * @author Alexander, Jan-Philipp, Simeon
@@ -46,8 +48,10 @@ public class SetButtons {
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
 	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
 	String[] standartselect;
+	private JPanel gametemp;
 	
 	private String s = "Willkommen im Chat";
+	private JScrollPane scroller;
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		this.panel = panel;
@@ -73,6 +77,7 @@ public class SetButtons {
 					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
 					if (loader.connection.isServerAccess()){
 						loader.switchPanel(loader.Lobbypage);
+						loader.connection.refreshServerList(false, "", 0, 4, 0);
 					} else {
 						System.out.println("Server konnte nicht gefunden werden. ");
 					}
@@ -169,12 +174,8 @@ public class SetButtons {
 			jp.setLayout(null);
 			jp.setPreferredSize(new Dimension(789,0));
 			//TestGen
-			genNEWLobby(1, "Test1", "yes", "Sunrise");
-			genNEWLobby(2, "Test2", "yes", "Sunrise");
-			genNEWLobby(3, "Test3", "yes", "Sunrise");
-			genNEWLobby(4, "Test4", "no", "Sunrise");
 			//TestGen Ende
-			JScrollPane scroller = new JScrollPane(jp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller = new JScrollPane(jp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.setBounds(142, 92, 789, 580);
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
@@ -191,7 +192,7 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-					loader.connection.connectGroup(0, "");
+					loader.connection.connectGroup(markedLobby, "");
 					//TODO	loader.switchPanel(loader.Grouppage);
 					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
 
@@ -429,7 +430,7 @@ public class SetButtons {
 				panel.add(players);
 				panel.add(jb);
 			}
-			String[] player = { "hey", "test", "bird", "cat"}; //PLS DELETE !!!! LATER
+			String[] player = { "hey", "test", "bird", "cat"}; //TODO:PLS DELETE !!!! LATER
 			updateCombo(player); //ME TOOOOO
 			
 			
@@ -442,8 +443,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.startGame();
-					//TODO	loader.switchPanel(loader.Gamepage);
-					//TODO	System.out.println("Spiel kann nicht gestartet werden");
 				}
 			});
 			panel.add(btnBattleStart);
@@ -513,23 +512,29 @@ public class SetButtons {
 	}
 	
 	//Nicht wirklich flexibel keine möglichkeit zum Nachrutschen usw.
-	public void genNEWLobby(int LobbyNr,String Name,String pw,String Map){
+	public JPanel genNEWLobby(int lobbyNr, Lobby lobby) {
 		JPanel game1 = new JPanel();
-		game1.setBounds(10, 10+(160*(LobbyNr-1)), 755, 150);
+		game1.setBounds(10, 10+(160*(lobbyNr)), 755, 150);
 		game1.setLayout(null);
 		game1.setOpaque(true);
 		game1.setBackground(new Color(255,90,0));
 		game1.setFocusable(true);
 		game1.setRequestFocusEnabled(true);
 		game1.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				markedLobby = LobbyNr;
+				markedLobby = lobby.getID();
+				if(gametemp != null){
+                    gametemp.setBorder(null);    
+                }
+                gametemp = game1;
+                game1.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 			}
 		});
-		JLabel map_pic = new JLabel(Map);
-		JLabel pw_en = new JLabel(pw);
-		JLabel lobby_name = new JLabel(Name);
+		JLabel map_pic = new JLabel(lobby.getMapID()+ "");
+		JLabel pw_en = new JLabel(lobby.hasPassword() + "");
+		JLabel lobby_name = new JLabel(lobby.getName());
 		JLabel player_count = new JLabel("1/4");
 		map_pic.setBounds(10,10,200,130);
 		pw_en.setBounds(220, 20, 70, 45);
@@ -554,11 +559,23 @@ public class SetButtons {
 		game1.add(pw_en);
 		game1.add(lobby_name);
 		game1.add(player_count);
-		jp.add(game1);
-		jp.setPreferredSize(new Dimension(789,10+(160*LobbyNr)));
+		
+		return game1;
 	}
-	// newPlayersNR muss noch int werden
-	public void updatePlayer_count(String newPlayersNR, int LobbyNR){
-		player_count_list.get(LobbyNR).setText(newPlayersNR);
+	public void updateLobbyList(Lobby[] lobbyList) {
+		System.out.println(lobbyList.length);
+		JPanel lobbyPanel = new JPanel();
+		lobbyPanel.setBounds(0, 0, 789, 800);
+		lobbyPanel.setOpaque(false);
+		lobbyPanel.setLayout(null);
+		lobbyPanel.setPreferredSize(new Dimension(789,0));
+		for (int i = 0; i < lobbyList.length; i++) {
+			lobbyPanel.add(genNEWLobby(i, lobbyList[i]));
+		}
+		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*lobbyList.length)));
+		scroller.remove(jp);
+		scroller.add(lobbyPanel);
+		jp = lobbyPanel;
+		scroller.repaint();
 	}
 }

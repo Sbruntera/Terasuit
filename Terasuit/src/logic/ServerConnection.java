@@ -44,7 +44,6 @@ public class ServerConnection implements Runnable {
 		try {
 			while (true) {
 				if (reader.ready()) {
-					System.out.println("jasf");
 					String in = reader.readLine();
 					analyser.analyse(in);
 				}

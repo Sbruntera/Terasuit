@@ -35,7 +35,6 @@ public class GameAnalyser implements Analyser {
 			if (bytes.length == 3) {
 				byte buildingPlace = bytes[1];
 				if (bytes[2] < 126) {
-					System.out.println("af");
 					if (!server.hasBuildingAt(position, buildingPlace)) {
 						server.build(position, buildingPlace, bytes[2]);
 					}

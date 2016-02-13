@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class MainBuilding implements Building, Unit {
 
 	private int health = 5000;
@@ -115,9 +117,8 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public int getPosition() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Point getPosition() {
+		return null;
 	}
 
 	@Override
@@ -128,19 +129,26 @@ public class MainBuilding implements Building, Unit {
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public byte getUnitType() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public short getUnitID() {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int getSplashDamage() { // Can not Attack
+		return 0;
+	}
+
+	@Override
+	public boolean isFlying() {
+		return false;
 	}
 }

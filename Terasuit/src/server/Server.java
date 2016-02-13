@@ -25,7 +25,6 @@ public class Server implements Runnable {
 	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
 
 	public Server(int port) throws IOException {
-		lobbys.add(new Lobby(this, null, "na", null, Map.Nightsun, (byte) 1));
 		server = new ServerSocket(port);
 		db = new DB();
 		idIterator = 0;
@@ -162,6 +161,7 @@ public class Server implements Runnable {
 		Lobby lobby = new Lobby(this, connection, name, password, map,
 				idGenerator);
 		idGenerator++;
+		System.out.println(idGenerator);
 		lobbys.add(lobby);
 		return lobby;
 	}

@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Marine implements Unit {
 	
 	private static int damage;
@@ -10,7 +12,7 @@ public class Marine implements Unit {
 	private short id;
 	
 	private int health;
-	private int position;
+	private Point position;
 	private int direction;
 	private boolean running;
 
@@ -57,13 +59,23 @@ public class Marine implements Unit {
 	}
 
 	@Override
-	public int getPosition() {
+	public int getSplashDamage() {
+		return 0;
+	}
+
+	@Override
+	public Point getPosition() {
 		return position;
 	}
 
 	@Override
+	public boolean isFlying() {
+		return false;
+	}
+
+	@Override
 	public void move() {
-		position += direction;
+		position.x += direction;
 	}
 
 	@Override
@@ -94,9 +106,9 @@ public class Marine implements Unit {
 	@Override
 	public boolean hasInRange(Unit unit) {
 		if (unit != null) {
-			if (playerID < 2 && position + range  >= unit.getPosition()) {
+			if (playerID < 2 && position.x + range  >= unit.getPosition().x) {
 				return true;
-			} else if (playerID > 1 && position - range <= unit.getPosition()) {
+			} else if (playerID > 1 && position.x - range <= unit.getPosition().x) {
 				return true;
 			}
 		}

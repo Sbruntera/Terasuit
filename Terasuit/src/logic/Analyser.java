@@ -51,9 +51,7 @@ public class Analyser {
 							((b[2] & 4) >> 2) == 1, (byte) (b[2] & 3)));
 				}
 			}
-			Lobby[] lobbyList = list.toArray(new Lobby[list.size()]);
-			// TODO: An Feldmann: Hier einen Funktionsaufruf einfügen der diese
-			// Liste anzeigt
+			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
 			break;
 		case (2): // Join Game
 			byte mapID = (byte) bytes[1];
@@ -62,7 +60,6 @@ public class Analyser {
 			short[] iDs = new short[splittedMessage.length];
 			String[] names = new String[splittedMessage.length];
 			for (int i = 0; i < splittedMessage.length; i++) {
-				System.out.println(splittedMessage[i].length());
 				iDs[i] = (short) (splittedMessage[i].getBytes()[0] << 8 + splittedMessage[i]
 						.getBytes()[1]);
 				names[i] = splittedMessage[i].substring(2);
@@ -105,7 +102,6 @@ public class Analyser {
 				// TODO: An Feldmann: Hier funktionsaufruf GUI aktualisieren
 				// (Spieler entfernen)
 			} else {
-				System.out.println("her");
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
 				// TODO: An Feldmann: Hier Funktionsaufruf ins Menü zurückkehren

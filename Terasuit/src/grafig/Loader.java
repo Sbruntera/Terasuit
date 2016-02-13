@@ -6,6 +6,7 @@ import inGame.Game;
 import javax.swing.JFrame;
 
 import logic.Debugger_Thread;
+import logic.Lobby;
 import logic.ServerConnection;
 
 public class Loader {
@@ -88,6 +89,10 @@ public class Loader {
 		// TODO Auto-generated method stub
 		game.setText(msg);
 		
+	}
+
+	public void updateLobbyList(Lobby[] lobbyList) {
+		panel.buttons.updateLobbyList(lobbyList);
 	}
 	
 }

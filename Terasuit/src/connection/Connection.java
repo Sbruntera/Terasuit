@@ -147,7 +147,6 @@ public class Connection implements Runnable {
 					+ (char) (Boolean.compare(l.hasPassword(), false) << 2)
 					+ l.getNumberOfPlayers() + l.getName();
 		}
-		System.out.println(message);
 		addMessage(message);
 	}
 
@@ -158,7 +157,6 @@ public class Connection implements Runnable {
 	 *            : angeforderte Lobby zum beitreten
 	 */
 	public void sendGameJoin(Lobby lobby, boolean host) {
-		System.out.println(lobby);
 		if (lobby != null) {
 			joinLobby(lobby);
 			String message = String.valueOf((char) 2)

@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public interface Unit {
 	
 	public byte getPlayer();
@@ -15,8 +17,12 @@ public interface Unit {
 	public int getRange();
 
 	public int getShootSpeed();
+	
+	public int getSplashDamage();
+	
+	public boolean isFlying();
 
-	public int getPosition();
+	public Point getPosition();
 
 	public void move();
 
