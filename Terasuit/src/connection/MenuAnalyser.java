@@ -109,13 +109,12 @@ public class MenuAnalyser implements Analyser {
 	private Filter getFilter(String input) {
 		byte[] bytes = input.getBytes();
 		boolean noPassword;
-		System.out.println(bytes.length);
 		if (bytes.length > 0) {
 			Map map = null;
 			String name = "";
 			noPassword = (bytes[0] & 16) != 0;
-			int minPlayers = bytes[1] & 243;
-			int maxPlayers = bytes[1] & 252;
+			int minPlayers = bytes[0] & 243;
+			int maxPlayers = bytes[0] & 252;
 			if (bytes.length > 1) {
 				map = getMap(bytes[1]);
 				if (bytes.length > 2) {

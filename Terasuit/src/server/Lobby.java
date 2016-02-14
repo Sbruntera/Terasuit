@@ -30,6 +30,7 @@ public class Lobby {
 	 */
 	public Lobby(Server server, Connection host, String gameName,
 			String password, Map map, byte id) {
+		System.out.println(id + "jgfk" + host.getID());
 		playerList[0] = host;
 		this.host = host;
 		this.server = server;
@@ -71,10 +72,11 @@ public class Lobby {
 			int i = 0;
 			while (!found && i < MAXPLAYERS) {
 				if (playerList[i] != null) {
-					if (playerList[i].getID() != id) {
+					if (playerList[i].getID() != playerID) {
 						playerList[i].sendPlayerLeftGame(playerList[i].getID());
 						found = true;
 					} else {
+						System.out.println("LeftLobby" + i);
 						playerList[i].sendLeftLobby();
 						playerList[i] = null;
 						i++;

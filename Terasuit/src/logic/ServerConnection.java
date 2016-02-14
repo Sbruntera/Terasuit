@@ -95,7 +95,7 @@ public class ServerConnection implements Runnable {
 			int minPlayers, int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
 			addMessage(String.valueOf((char) 2)
-					+ (char) (Boolean.compare(noPassword, false) << 4
+					+ (char) ((Boolean.compare(noPassword, false) << 4)
 							+ (minPlayers << 2) + maxPlayers) + (char) mapID
 					+ name);
 		}
@@ -282,7 +282,8 @@ public class ServerConnection implements Runnable {
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if (position < 4) {
-				addMessage(String.valueOf((char) 32) + (char) position + (char) 126);
+				addMessage(String.valueOf((char) 32) + (char) position
+						+ (char) 126);
 			}
 		}
 	}
@@ -292,11 +293,12 @@ public class ServerConnection implements Runnable {
 	 * 
 	 * @param id
 	 *            ID der Einheit
-	 * @param i 
+	 * @param i
 	 */
 	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 33) + (char) id + (char) buildingPlace);
+			addMessage(String.valueOf((char) 33) + (char) id
+					+ (char) buildingPlace);
 		}
 	}
 

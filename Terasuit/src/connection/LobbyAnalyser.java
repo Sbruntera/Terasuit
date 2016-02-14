@@ -30,6 +30,7 @@ public class LobbyAnalyser implements Analyser {
 			lobby.movePlayer(id, bytes[1]);
 			break;
 		case (17): // Spiel verlassen
+			System.out.println("leave");
 			lobby.removePlayer(id, id);
 			break;
 		case (18): // Spieler kicken

@@ -23,6 +23,7 @@ public class Server implements Runnable {
 	short idIterator;
 	ArrayList<GameServer> games = new ArrayList<GameServer>();
 	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
+	private byte idGenerator;
 
 	public Server(int port) throws IOException {
 		server = new ServerSocket(port);
@@ -124,6 +125,11 @@ public class Server implements Runnable {
 	@SuppressWarnings("unchecked")
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
+		System.out.println(filter.isNoPassword());
+		System.out.println(filter.getNameContains());
+		System.out.println(filter.getMap());
+		System.out.println(filter.getMinPlayers());
+		System.out.println(filter.getMaxPlayers());
 		if (filter != null) {
 			for (Lobby lobby : lobbys) {
 				if ((lobby.getName().contains(filter.getNameContains()))
@@ -157,11 +163,10 @@ public class Server implements Runnable {
 	 */
 	public Lobby createLobby(Connection connection, String name,
 			String password, Map map) {
-		byte idGenerator = 0;
+		idGenerator = 0;
 		Lobby lobby = new Lobby(this, connection, name, password, map,
 				idGenerator);
 		idGenerator++;
-		System.out.println(idGenerator);
 		lobbys.add(lobby);
 		return lobby;
 	}

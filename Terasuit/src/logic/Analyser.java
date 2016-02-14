@@ -59,11 +59,11 @@ public class Analyser {
 			splittedMessage = message.substring(2).split(",");
 			short[] iDs = new short[splittedMessage.length];
 			String[] names = new String[splittedMessage.length];
-			for (int i = 0; i < splittedMessage.length; i++) {
-				iDs[i] = (short) (splittedMessage[i].getBytes()[0] << 8 + splittedMessage[i]
-						.getBytes()[1]);
-				names[i] = splittedMessage[i].substring(2);
-			}
+//			for (int i = 0; i < splittedMessage.length; i++) {
+//				iDs[i] = (short) (splittedMessage[i].getBytes()[0] << 8 + splittedMessage[i]
+//						.getBytes()[1]);
+//				names[i] = splittedMessage[i].substring(2);
+//			}
 			if (host) {
 				state = State.LOBBY;
 				loader.switchPanel(loader.Grouppage_owner);
@@ -104,6 +104,7 @@ public class Analyser {
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
+				loader.connection.refreshServerList(false, "", 0, 4, 0);
 				// TODO: An Feldmann: Hier Funktionsaufruf ins Menü zurückkehren
 				// (Spieler wurde aus dem Spiel entfernt)
 			}
