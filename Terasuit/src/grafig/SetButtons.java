@@ -43,6 +43,7 @@ public class SetButtons {
 	JPanel jp;
 	JScrollBar ts;
 	Panel panel;
+	Loader loader;
 	int markedLobby;
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
@@ -55,6 +56,7 @@ public class SetButtons {
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		this.panel = panel;
+		this.loader = loader;
 		
 		//#########################################################################
 		//
@@ -192,6 +194,11 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
+					JPanel test = needPW();
+					panel.add(test);
+					panel.setComponentZOrder(test, 0);
+					panel.repaint();
+					panel.revalidate();
 					loader.connection.connectGroup(markedLobby, "");
 					//TODO	loader.switchPanel(loader.Grouppage);
 					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
@@ -210,7 +217,11 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					System.out.println(markedLobby);
-					loader.connection.createGroup(1, "Testspiel", "");
+					JPanel test = createInfos();
+					panel.add(test);
+					panel.setComponentZOrder(test, 0);
+					panel.repaint();
+					panel.revalidate();
 						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
 					//TODO	loader.switchPanel(loader.Grouppage_owner);
 					//TODO	System.out.println("Gruppe konnte nicht erstellt werden!");
@@ -577,5 +588,55 @@ public class SetButtons {
 		scroller.add(lobbyPanel);
 		jp = lobbyPanel;
 		scroller.repaint();
+	}
+	public JPanel createInfos(){
+		JPanel en = new JPanel();
+		en.setLayout(null);
+		en.setOpaque(true);
+		en.setBounds(300, 251, 473, 264);
+		en.setBackground(Color.RED);
+		JLabel nl = new JLabel("Lobbyname: ");
+		JLabel pl = new JLabel("Password: ");
+		JButton c = new JButton("Create");
+		JTextField n = new JTextField();
+		JTextField p = new JTextField();
+		nl.setFont(new Font("Arial", Font.BOLD, 12));
+		pl.setFont(new Font("Arial", Font.BOLD, 12));
+		c.setFont(new Font("Arial", Font.BOLD, 12));
+		n.setFont(new Font("Arial", Font.BOLD, 12));
+		p.setFont(new Font("Arial", Font.BOLD, 12));
+		c.setBackground(new Color(255,90,0));
+		nl.setBounds(20, 40, 130, 50);
+		pl.setBounds(20, 130, 130, 50);
+		n.setBounds(150, 40, 230, 50);
+		p.setBounds(150, 130, 230, 50);
+		c.setBounds(186, 200, 100, 60);
+		c.addActionListener(e ->{
+			loader.connection.createGroup(1, n.getText(), p.getText());
+		});
+		en.add(p);
+		en.add(n);
+		en.add(nl);
+		en.add(pl);
+		en.add(c);
+		return en;
+	}
+	public JPanel needPW(){
+		JPanel np = new JPanel();
+		JLabel ep = new JLabel("This Lobby has a Password. Please it");
+		JTextField tp = new JTextField();
+		tp.addActionListener(e ->{
+			loader.connection.connectGroup(markedLobby, ep.getText());
+		});
+		tp.setBounds(30, 80, 305, 50);
+		ep.setBounds(30, 20, 305, 50);
+		ep.setFont(new Font("Arial", Font.BOLD, 12));
+		np.setLayout(null);
+		np.setOpaque(true);
+		np.setBounds(350, 300, 370, 165);
+		np.setBackground(Color.RED);
+		np.add(tp);
+		np.add(ep);
+		return np;
 	}
 }
