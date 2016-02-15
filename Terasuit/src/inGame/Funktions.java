@@ -53,17 +53,19 @@ public class Funktions {
 	
 	
 	// Sucht alle Einheiten in einem Auswahlbereich
-	public void findAllEntitys(int minX, int minY, int w, int h) {
+	public void findAllEntitys(int minX, int minY, int w, int h, int playerID) {
 		selectedEntitysID = selectedUnit.getGroupOfUnits(getEntity(), selectedEntitysID, minX, minY, w, h);
 		for (int id : selectedEntitysID) {
-			String type = entity.get(id-1).getEntityname();
-			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
-			int color = entity.get(id-1).getEntitymembership();
-			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-			Unit unit = new Unit();
-			unit = entity.get(id-1);
-			unit.getLabel().setIcon(pic);
-			entity.set(id-1, unit);
+			if (entity.get(id-1).getEntitymembership() == playerID){
+				String type = entity.get(id-1).getEntityname();
+				boolean directionLeft = entity.get(id-1).isEntityRushLeft();
+				int color = entity.get(id-1).getEntitymembership();
+				ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
+				Unit unit = new Unit();
+				unit = entity.get(id-1);
+				unit.getLabel().setIcon(pic);
+				entity.set(id-1, unit);
+			}
 		}
 	}
 	

@@ -57,9 +57,11 @@ public class CreateUnit {
 		// Bild der Einheite wird geladen
 		BufferedImage img = null;
 		try {
+			System.out.println(Entitytype);
 			img = ImageIO.read(new File(Entitytype));
 			
 		} catch (IOException e) {
+			System.out.println("lol FEHLER");
 		}
 		
 		// Bild wird entsprechen bearbeitet

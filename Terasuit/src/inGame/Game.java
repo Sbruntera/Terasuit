@@ -91,7 +91,7 @@ public class Game {
 
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {	
 		func.deMarkEntittys();
-		func.findAllEntitys(minX, minY, w, h);
+		func.findAllEntitys(minX, minY, w, h, playerID);
 		func.destroyUserOptions(console, this);
 	}
 	
@@ -144,6 +144,7 @@ public class Game {
 			int percent =  listOfJProgressBar[ID].getValue();
 			if (percent != 100){
 				listOfJProgressBar[ID].setValue(percent+10);
+				System.out.println(ID + " kkkdkd");
 			}else{
 				buildings.createPrimaryBuilding(buildingLocation, X, Y, BuildingsArray, description, buildingName, this, slotID, primID, field, time);
 				listOfJProgressBar[ID].setVisible(false);
@@ -166,8 +167,11 @@ public class Game {
 		}
 	}
 
-	public void cancel(int primID) {
-		System.out.println("hey, i will destroy that for you <3");
+	public void cancel(int index) {
+		listOfJProgressBar[index].setVisible(false);
+		func.destroyUserOptions(console, this);
+		listOfJProgressBar[index] = null;
+		
 	}
 
 	public void replaceJProcessbar(int index) {

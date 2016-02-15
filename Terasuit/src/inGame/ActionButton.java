@@ -150,7 +150,11 @@ public class ActionButton {
 						game.destroyBuilding(primID);
 					}else if (type.equals("Cancel")){
 						System.out.println("Abbruch");
-						game.cancel(primID);
+						if (primID == 0){
+							game.cancel(slotID);
+						}else{
+							game.cancel(primID);
+						}
 					}else if (type.equals("null")){
 						System.out.println("Keine Option für dieses Button vorhanden!!");
 					}else{
@@ -161,8 +165,7 @@ public class ActionButton {
 			jButton.add(btn);
 			console.add(btn);
 		}
-		
-		//console.remove(Description);
+
 		if (primID == 0){
 			Description.setText(wrapLines(buildingsArray[slotID].getDescription()));
 		}else{
@@ -171,10 +174,6 @@ public class ActionButton {
 		Description.setForeground(Color.BLACK);
 		Description.setBounds(20, -50, 180, 300);
 
-		
-		
-		//console.remove(BuildingNameLbl);
-		//BuildingNameLbl.setText("");
 		if (primID == 0){
 			BuildingNameLbl.setText(wrapLines(buildingsArray[slotID].getName()));
 		}else{
@@ -188,7 +187,6 @@ public class ActionButton {
 			console.add(Description);
 			this.preload = true;
 		}
-
 		console.repaint();
 	}
 	

@@ -17,8 +17,8 @@ public class UnitPics {
 	String picLocation = "";
 	String picName = "";
 	ImageManipulator imgMani = new ImageManipulator();
-	String [] entityGroundList = {"Marine", "Chronite Tank"};
-	String [] entityAirList = {"Scout"};
+	String [] entityGroundList = {"Marine", "Chronite Tank", "Gröditz"};
+	String [] entityAirList = {"Scout", "Phantom", "Black Queen"};
 	
 	HashMap<String, BufferedImage> UnitPicHash = new HashMap<String, BufferedImage>();
 	

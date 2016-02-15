@@ -21,7 +21,7 @@ public class ProgressbarLogic {
 	String buildingName;
 	String buildingLocation;
 	Game game;
-
+	Timer timer;
 	
 	public ProgressbarLogic(int ID, int x, int y, Game game, int slotID, int primID, int time, JPanel field, String description, String buildingName, String buildingLocation) {
 		this.X = x;
@@ -36,6 +36,10 @@ public class ProgressbarLogic {
 		this.game = game;
 		this.ID = ID;
 	}
+	
+	public void tryCancel(){
+		timer.cancel();
+	}
 
 	
 	public void init(int time){
@@ -46,7 +50,7 @@ public class ProgressbarLogic {
 	
 	public class ReminderBeep {
 		  Toolkit toolkit;
-		  Timer timer;
+
 
 		public ReminderBeep(int time, Timer timer) {
 			toolkit = Toolkit.getDefaultToolkit();

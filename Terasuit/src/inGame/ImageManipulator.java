@@ -127,11 +127,24 @@ public class ImageManipulator {
         	 setxSkalierung(65);
         	 setySkalierung(27);
         	 return;
+         case "Unit/Ground/Gröditz.png":
+        	 setxSkalierung(40);
+        	 setySkalierung(60);
+        	 return;
+         case "Unit/Ground/Black Queen.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(65);
+        	 return;
          case "Unit/Air/Scout.png":
         	 setxSkalierung(60);
         	 setySkalierung(27);
         	 return;
+         case "Unit/Air/Phantom.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(27);
+        	 return;
 	     }
+	     
 	}
 
 	// Spiegel erhaltene ImageIcons
