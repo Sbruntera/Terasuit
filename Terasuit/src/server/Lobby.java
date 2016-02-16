@@ -30,7 +30,6 @@ public class Lobby {
 	 */
 	public Lobby(Server server, Connection host, String gameName,
 			String password, Map map, byte id) {
-		System.out.println(id + "jgfk" + host.getID());
 		playerList[0] = host;
 		this.host = host;
 		this.server = server;
@@ -47,6 +46,7 @@ public class Lobby {
 	 * @param password 
 	 */
 	public void addPlayer(Connection player, String password) {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa");
 		if (password == this.password || !this.hasPassword()) {
 			boolean playerJoined = false;
 			int i = 0;
@@ -213,10 +213,12 @@ public class Lobby {
 	public int getNumberOfPlayers() {
 		int players = 0;
 		for (int i = 0; i < MAXPLAYERS; i++) {
+			//System.out.println("Ich bin i;" + i);
 			if (playerList[i] != null) {
 				players++;
 			}
 		}
+		System.out.println(players + "ist");
 		return players;
 	}
 

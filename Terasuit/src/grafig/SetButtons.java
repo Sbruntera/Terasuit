@@ -194,11 +194,11 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-					JPanel test = needPW();
-					panel.add(test);
-					panel.setComponentZOrder(test, 0);
-					panel.repaint();
-					panel.revalidate();
+//					JPanel test = needPW();
+//					panel.add(test);
+//					panel.setComponentZOrder(test, 0);
+//					panel.repaint();
+//					panel.revalidate();
 					loader.connection.connectGroup(markedLobby, "");
 					//TODO	loader.switchPanel(loader.Grouppage);
 					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
@@ -536,6 +536,7 @@ public class SetButtons {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
+				System.out.println(markedLobby);
 				if(gametemp != null){
                     gametemp.setBorder(null);    
                 }
@@ -546,7 +547,7 @@ public class SetButtons {
 		JLabel map_pic = new JLabel(lobby.getMapID()+ "");
 		JLabel pw_en = new JLabel(lobby.hasPassword() + "");
 		JLabel lobby_name = new JLabel(lobby.getName());
-		JLabel player_count = new JLabel("1/4");
+		JLabel player_count = new JLabel(lobby.getNumberOfPlayers() + "/4");
 		map_pic.setBounds(10,10,200,130);
 		pw_en.setBounds(220, 20, 70, 45);
 		lobby_name.setBounds(300, 20, 445, 110);
@@ -583,11 +584,12 @@ public class SetButtons {
 		for (int i = 0; i < lobbyList.length; i++) {
 			lobbyPanel.add(genNEWLobby(i, lobbyList[i]));
 		}
-		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*lobbyList.length)));
+		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*10)));
 		scroller.remove(jp);
 		scroller.add(lobbyPanel);
 		jp = lobbyPanel;
 		scroller.repaint();
+		scroller.revalidate();
 	}
 	public JPanel createInfos(){
 		JPanel en = new JPanel();

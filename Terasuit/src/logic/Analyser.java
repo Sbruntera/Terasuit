@@ -47,7 +47,7 @@ public class Analyser {
 			for (String s : splittedMessage) {
 				if (s.length() != 0) {
 					byte[] b = s.getBytes();
-					list.add(new Lobby(b[0], s.substring(1), b[1],
+					list.add(new Lobby(b[0], s.substring(3), b[1],
 							((b[2] & 4) >> 2) == 1, (byte) (b[2] & 3)));
 				}
 			}

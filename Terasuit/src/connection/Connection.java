@@ -137,15 +137,19 @@ public class Connection implements Runnable {
 		String message = String.valueOf((char) 1);
 		boolean first = true;
 		for (Lobby l : lobbys) {
+			System.out.println((Boolean.compare(l.hasPassword(), false) << 2
+					+ l.getNumberOfPlayers()));
 			if (!first) {
 				message += ",";
 
 			} else {
 				first = false;
 			}
-			message += (char) l.getID() + (char) l.getMap().getID()
-					+ (char) (Boolean.compare(l.hasPassword(), false) << 2)
-					+ l.getNumberOfPlayers() + l.getName();
+			
+			message += String.valueOf((char) l.getID())
+					+ (char) l.getMap().getID()
+					+ (char) (Boolean.compare(l.hasPassword(), false) << 2
+							+ l.getNumberOfPlayers()) + l.getName();
 		}
 		addMessage(message);
 	}
@@ -160,7 +164,8 @@ public class Connection implements Runnable {
 		if (lobby != null) {
 			joinLobby(lobby);
 			String message = String.valueOf((char) 2)
-					+ (char) lobby.getMap().getID() + (char) Boolean.compare(host, false);
+					+ (char) lobby.getMap().getID()
+					+ (char) Boolean.compare(host, false);
 			Object[] arrays = lobby.getPlayerNamesAndIDs();
 			int[] iDs = (int[]) arrays[0];
 			String[] names = (String[]) arrays[1];
@@ -193,7 +198,8 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPosition(short player, byte position) {
-		addMessage(String.valueOf((char) 16) + (char) position + (char) (player >> 8) + (char) player);
+		addMessage(String.valueOf((char) 16) + (char) position
+				+ (char) (player >> 8) + (char) player);
 	}
 
 	/**
@@ -205,8 +211,8 @@ public class Connection implements Runnable {
 	 *            Name des neuen Spielers
 	 */
 	public void sendPlayerJoined(byte position, short id, String name) {
-		addMessage(String.valueOf((char) 17) + (char) position + (char) (id >> 8) + (char) id
-				+ name);
+		addMessage(String.valueOf((char) 17) + (char) position
+				+ (char) (id >> 8) + (char) id + name);
 	}
 
 	/**
@@ -216,7 +222,8 @@ public class Connection implements Runnable {
 	 *            Der neue Spieler
 	 */
 	public void sendPlayerLeftLobby(short player) {
-		addMessage(String.valueOf((char) 18) + (char) (player >> 8) + (char) player);
+		addMessage(String.valueOf((char) 18) + (char) (player >> 8)
+				+ (char) player);
 	}
 
 	/**
@@ -242,24 +249,28 @@ public class Connection implements Runnable {
 	// /////////////////////////////////////////////////////////////////////////////
 	// Game
 
-	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position, byte id) {
-		addMessage(String.valueOf((char) 32)
-				+ (char) playerNumber + (char) position + (char) id);
+	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
+			byte id) {
+		addMessage(String.valueOf((char) 32) + (char) playerNumber
+				+ (char) position + (char) id);
 	}
 
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {
-		addMessage(String.valueOf((char) 33) + (char) typeID + (char) buildingPlace);
+		addMessage(String.valueOf((char) 33) + (char) typeID
+				+ (char) buildingPlace);
 	}
 
 	public void sendCreateUnit(short playerNumber, short position, byte typeID,
 			short unitID) {
-		addMessage(String.valueOf((char) 34) + (char) (playerNumber >> 8) + (char) playerNumber + (char) (position >> 8)
+		addMessage(String.valueOf((char) 34) + (char) (playerNumber >> 8)
+				+ (char) playerNumber + (char) (position >> 8)
 				+ (char) (position) + (char) typeID + (char) (unitID >> 8)
 				+ (char) unitID);
 	}
 
 	public void sendMoveUnit(short playerNumber, byte direction, short[] unitIDs) {
-		String msg = String.valueOf((char) 35) + (char) (playerNumber >> 8) + (char) playerNumber + (char) direction;
+		String msg = String.valueOf((char) 35) + (char) (playerNumber >> 8)
+				+ (char) playerNumber + (char) direction;
 		for (short s : unitIDs) {
 			msg += (char) (s << 8) + (char) direction;
 		}
@@ -270,7 +281,8 @@ public class Connection implements Runnable {
 		String msg = String.valueOf((char) 36);
 		for (int x = 0; x < units.length; x++) {
 			for (int y = 0; y < units[x].length; y++) {
-				msg += (char) (units[x][y] << 8) + (char) (units[x][y]) + (char) (targets[x][y] << 8) + (char) (targets[x][y]);
+				msg += (char) (units[x][y] << 8) + (char) (units[x][y])
+						+ (char) (targets[x][y] << 8) + (char) (targets[x][y]);
 			}
 			msg += (char) 255;
 		}
@@ -289,7 +301,8 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(short playerID) {
-		addMessage(String.valueOf((char) 38) + (char) (playerID >> 8) + (char) playerID);
+		addMessage(String.valueOf((char) 38) + (char) (playerID >> 8)
+				+ (char) playerID);
 	}
 
 	public void sendGameEnded(boolean won) {
@@ -299,6 +312,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendChatMessage(short id, String message) {
-		addMessage(String.valueOf((char) 20) + (char) (id >> 8) + (char) id + message);
+		addMessage(String.valueOf((char) 20) + (char) (id >> 8) + (char) id
+				+ message);
 	}
 }
