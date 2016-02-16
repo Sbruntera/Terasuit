@@ -117,7 +117,7 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		case (20):
-			loader.setText(game.getPlayerName(bytes[1]) + message.substring(2));
+			loader.setText(game.getPlayerName(bytes[1]) + ": " + message.substring(2));
 			break;
 		}
 	}

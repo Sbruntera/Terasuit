@@ -126,9 +126,19 @@ public class Lobby {
 	 *            : Nummer des Senders
 	 */
 	public void broadcast(String msg, short id) {
+		System.out.println(msg);
+		byte position = 0;
+		for (byte i = 0; i < playerList.length; i++) {
+			if (playerList[i] != null) {
+				if (playerList[i].getID() == id) {
+					position = i;
+				}
+			}
+		}
+		System.out.println(msg + position);
 		for (int i = 0; i < playerList.length; i++) {
 			if (playerList[i] != null) {
-				playerList[i].sendChatMessage(id, msg);
+				playerList[i].sendChatMessage(position, msg);
 			}
 		}
 	}

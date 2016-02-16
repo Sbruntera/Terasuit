@@ -174,9 +174,19 @@ public class GameServer implements Runnable {
 	 *            : ID des Senders
 	 */
 	public void broadcast(String msg, short id) {
+		System.out.println(msg);
+		byte position = 0;
+		for (byte i = 0; i < connections.length; i++) {
+			if (connections[i] != null) {
+				if (connections[i].getID() == id) {
+					position = i;
+				}
+			}
+		}
+		System.out.println(msg + position);
 		for (int i = 0; i < connections.length; i++) {
 			if (connections[i] != null) {
-				connections[i].sendChatMessage(id, msg);
+				connections[i].sendChatMessage(position, msg);
 			}
 		}
 	}

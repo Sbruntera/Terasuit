@@ -471,8 +471,7 @@ public class SetButtons {
 	}
 	
 	public void setText(String text){
-		s = s + "<br>" + "User: " + text;
-		System.out.println(text);
+		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
 		try {
 			Thread.sleep(10);
@@ -504,13 +503,11 @@ public class SetButtons {
 		int[] numbers = new int[2];
 		for (int i = 0; i < standartselect.length; i++) {
 			if (!standartselect[i].equals(combolist.get(i).getSelectedItem().toString())) {
-				System.out.println(i);
 				numbers[0] = i;
 			}
 		}
 		for (int i = 0; i < standartselect.length; i++) {
 			if (standartselect[i].equals(combolist.get(numbers[0]).getSelectedItem().toString())) {
-				System.out.println(i);
 				numbers[1] = i;
 			}
 		}
@@ -532,7 +529,6 @@ public class SetButtons {
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
 				haspassword = lobby.hasPassword();
-				System.out.println(markedLobby);
 				if(gametemp != null){
                     gametemp.setBorder(null);    
                 }
@@ -562,7 +558,7 @@ public class SetButtons {
 		player_count.setHorizontalAlignment(SwingConstants.CENTER);
 		lobby_name.setFont(new Font("Arial", Font.BOLD, 24));
 		player_count.setFont(new Font("Arial", Font.BOLD, 24));
-		//DEMO CODE
+//		DEMO CODE
 //		map_pic.setOpaque(true);
 //		map_pic.setBackground(Color.BLUE);
 //		lobby_name.setBackground(Color.BLUE);

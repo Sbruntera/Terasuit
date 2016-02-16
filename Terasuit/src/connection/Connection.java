@@ -329,8 +329,8 @@ public class Connection implements Runnable {
 				.valueOf((char) (39 + (Boolean.compare(won, false) << 4))));
 	}
 
-	public void sendChatMessage(short id, String message) {
-		addMessage(String.valueOf((char) 20) + (char) (id >> 8) + (char) id
+	public void sendChatMessage(byte id, String message) {
+		addMessage(String.valueOf((char) 20) + (char) id
 				+ message);
 	}
 }
