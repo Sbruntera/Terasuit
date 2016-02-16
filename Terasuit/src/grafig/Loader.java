@@ -95,4 +95,11 @@ public class Loader {
 		panel.buttons.updateLobbyList(lobbyList);
 	}
 	
+	public void updatePlayerList(String[] players, boolean host) {
+		if (host) {
+			panel.buttons.updateCombo(players);
+		} else {
+			panel.buttons.updateLabels(players);
+		}
+	}
 }

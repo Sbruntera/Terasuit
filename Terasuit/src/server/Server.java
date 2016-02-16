@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import connection.Connection;
 import connection.MenuAnalyser;
@@ -18,11 +19,11 @@ public class Server implements Runnable {
 	private final ServerSocket server;
 	private Socket socket;
 	private DB db;
-	ArrayList<Thread> connectionThreads = new ArrayList<Thread>();
-	ArrayList<Connection> connections = new ArrayList<Connection>();
+	HashMap<Integer, Thread> connectionThreads = new HashMap<Integer, Thread>();
+	HashMap<Integer, Connection> connections = new HashMap<Integer, Connection>();
 	short idIterator;
 	ArrayList<GameServer> games = new ArrayList<GameServer>();
-	ArrayList<Lobby> lobbys = new ArrayList<Lobby>();
+	HashMap<Integer, Lobby> lobbys = new HashMap<Integer, Lobby>();
 	private byte idGenerator;
 
 	public Server(int port) throws IOException {
@@ -58,10 +59,10 @@ public class Server implements Runnable {
 	private void createConnection(Socket socket) {
 		Connection connection = new Connection(socket, this, idIterator);
 		connection.setAnalyser(new MenuAnalyser(this, connection, idIterator));
-		idIterator++;
-		connections.add(connection);
+		connections.put((int) idIterator, connection);
 		Thread connectionThread = new Thread(connection);
-		connectionThreads.add(connectionThread);
+		connectionThreads.put(Integer.valueOf(idIterator), connectionThread);
+		idIterator++;
 		connectionThread.start();
 	}
 
@@ -126,7 +127,7 @@ public class Server implements Runnable {
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
 		if (filter != null) {
-			for (Lobby lobby : lobbys) {
+			for (Lobby lobby : lobbys.values()) {
 				if ((lobby.getName().contains(filter.getNameContains()))
 						&& (filter.getMaxPlayers() >= lobby
 								.getNumberOfPlayers() && lobby
@@ -160,8 +161,8 @@ public class Server implements Runnable {
 			String password, Map map) {
 		Lobby lobby = new Lobby(this, connection, name, password, map,
 				idGenerator);
+		lobbys.put((int) idGenerator, lobby);
 		idGenerator++;
-		lobbys.add(lobby);
 		return lobby;
 	}
 
@@ -176,7 +177,7 @@ public class Server implements Runnable {
 	}
 
 	public boolean hasLobby(byte id) {
-		return lobbys.contains(id);
+		return lobbys.containsKey((int) id);
 	}
 
 	/**
@@ -187,8 +188,9 @@ public class Server implements Runnable {
 	 * @return
 	 */
 	public Lobby getLobby(byte id) {
-		if (lobbys.contains(id)) {
-			return lobbys.get(id);
+		System.out.println(id);
+		if (lobbys.containsKey((int) id)) {
+			return lobbys.get(Integer.valueOf(id));
 		} else {
 			return null;
 		}

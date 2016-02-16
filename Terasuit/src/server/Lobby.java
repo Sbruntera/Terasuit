@@ -37,6 +37,7 @@ public class Lobby {
 		this.password = password;
 		this.map = map;
 		this.id = id;
+		host.sendGameJoin(this, true);
 	}
 
 	/**
@@ -45,18 +46,29 @@ public class Lobby {
 	 * @param player
 	 * @param password 
 	 */
-	public void addPlayer(Connection player, String password) {
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaa");
+	public boolean addPlayer(Connection player, String password) {
+		boolean playerJoined = false;
+		int i = 0;
 		if (password == this.password || !this.hasPassword()) {
-			boolean playerJoined = false;
-			int i = 0;
-			while (!playerJoined && i < MAXPLAYERS) {
+			while ((!playerJoined) && i < MAXPLAYERS) {
 				if (playerList[i] == null) {
 					playerList[i] = player;
 					playerJoined = true;
+				} else {
+					i++;
 				}
 			}
 		}
+		for (Connection c : playerList) {
+			if (c != null) {
+				if (c == player) {
+					c.sendGameJoin(this, false);
+				} else {
+					c.sendPlayerJoined((byte) i, player.getName());
+				}
+			}
+		}
+		return playerJoined;
 	}
 
 	/**
@@ -123,16 +135,19 @@ public class Lobby {
 
 	/**
 	 * Verschiebt einen Spieler innnerhalb der Lobby
+	 * @param id 
 	 * 
 	 * @param oldPosition
 	 * @param newPosition
 	 */
-	public void movePlayer(short playerID, int newPosition) {
-		for (int i = 0; i < playerList.length; i++) {
-			if (playerList[i] != null) {
-				if (playerList[i].getID() == playerID
-						&& playerList[newPosition] != null) {
-					playerList[newPosition] = playerList[i];
+	public void switchPlayers(short id, byte player1, byte player2) {
+		if (host.getID() == id) {
+			Connection temp = playerList[player1];
+			playerList[player1] = playerList[player2];
+			playerList[player2] = temp;
+			for (Connection c : playerList) {
+				if (c != null) {
+					c.sendSwitchPlayers(player1, player2);
 				}
 			}
 		}
@@ -191,18 +206,14 @@ public class Lobby {
 	 * @return Namen der Spieler Das erste Object ist die IDliste als int[], die
 	 *         zweite ist die Namensliste als String[]
 	 */
-	public Object[] getPlayerNamesAndIDs() {
-		String[] names = new String[getNumberOfPlayers()];
-		int[] iDs = new int[names.length];
-		int counter = 0;
-		for (Connection p : playerList) {
-			if (p != null) {
-				names[counter] = p.getName();
-				iDs[counter] = p.getID();
-				counter++;
+	public String[] getPlayerNames() {
+		String[] names = new String[playerList.length];
+		for (int i = 0; i < playerList.length; i++) {
+			if (playerList[i] != null) {
+				names[i] = playerList[i].getName();
 			}
 		}
-		return new Object[] { iDs, names };
+		return names;
 	}
 
 	/**

@@ -37,7 +37,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (1): // logout
 			System.out.println("logout");
-			connection.setName(null);
+			connection.loggOut();
 			break;
 		case (2): // Serverliste
 			System.out.println("serverlist");
@@ -46,28 +46,31 @@ public class MenuAnalyser implements Analyser {
 			connection.sendGameList(lobbyList);
 			break;
 		case (3): // Spiel erstellen
-			System.out.println("create");
-			String[] splitted = getSplitString(input, 2);
-			String password = null;
-			if (splitted.length > 1) {
-				password = splitted[1];
+			String[] splitted;
+			String password;
+			if (bytes.length > 3) {
+				System.out.println("create");
+				splitted = getSplitString(input, 2);
+				password = null;
+				if (splitted.length > 1) {
+					password = splitted[1];
+				}
+				server.createLobby(connection, splitted[0],
+						password, getMap(bytes[1]));
 			}
-			connection.sendGameJoin(server.createLobby(connection, splitted[0],
-					password, getMap(bytes[1])), true);
 			break;
 		case (4): // Spiel beitreten
 			System.out.println("join");
 			if (bytes.length > 1) {
-				if (server.hasLobby(bytes[1])) {
-					server.getLobby(bytes[1]).addPlayer(connection,
-							input.substring(2));
+				if (server.getLobby(bytes[1]).addPlayer(connection,
+							input.substring(2))) {
 					connection.sendGameJoin(server.getLobby(bytes[1]), false);
 				}
 			}
 			break;
 		case (5): // Einloggen
 			System.out.println("login");
-			if (connection.getName() == null) {
+			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				password = "";
 				switch (splitted.length) {
@@ -76,7 +79,7 @@ public class MenuAnalyser implements Analyser {
 				case (1):
 					if (server.loginClient(splitted[0], password, id)) {
 						connection.sendLogin();
-						connection.setName(splitted[0]);
+						connection.loggIn(splitted[0]);
 					}
 					break;
 				}
@@ -84,7 +87,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (6): // Registrieren
 			System.out.println("register");
-			if (connection.getName() == null) {
+			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				if (splitted.length == 4) {
 					server.registerClient(splitted[0], splitted[1],

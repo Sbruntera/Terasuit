@@ -8,6 +8,9 @@ public class Analyser {
 
 	private Loader loader;
 	private State state;
+	private GameLobby game;
+	
+	private boolean isHost;
 
 	public Analyser(Loader loader) {
 		state = State.MENU;
@@ -48,29 +51,33 @@ public class Analyser {
 				if (s.length() != 0) {
 					byte[] b = s.getBytes();
 					list.add(new Lobby(b[0], s.substring(3), b[1],
-							((b[2] & 4) >> 2) == 1, (byte) (b[2] & 3)));
+							((b[2] & 4) >> 3) == 1, (byte) (b[2] & 7)));
 				}
 			}
 			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
 			break;
 		case (2): // Join Game
 			byte mapID = (byte) bytes[1];
-			boolean host = bytes[2] > 0;
-			splittedMessage = message.substring(2).split(",");
-			short[] iDs = new short[splittedMessage.length];
+			isHost = bytes[2] > 0;
+			splittedMessage = message.substring(3).split(",");
 			String[] names = new String[splittedMessage.length];
 			for (int i = 0; i < splittedMessage.length; i++) {
-				iDs[i] = (short) (splittedMessage[i].getBytes()[0] << 8 + splittedMessage[i]
-						.getBytes()[1]);
-				names[i] = splittedMessage[i].substring(2);
+				if (splittedMessage[i].length() > 1) {
+					System.out.println((byte) splittedMessage[i].charAt(0) + "§");
+					names[i] = splittedMessage[i];
+				} else {
+					names[i] = "";
+				}
 			}
-			if (host) {
+			if (isHost) {
 				state = State.LOBBY;
 				loader.switchPanel(loader.Grouppage_owner);
 			} else {
 				state = State.LOBBY;
 				loader.switchPanel(loader.Grouppage);
 			}
+			game = new GameLobby(names);
+			loader.updatePlayerList(names, isHost);
 			break;
 		case (3): // Log in
 			System.out.println("success");
@@ -84,28 +91,23 @@ public class Analyser {
 		byte[] bytes = message.getBytes();
 		switch (bytes[0]) {
 		case (16): // Position Wechseln
-			byte position = bytes[1];
-			short playerID = (short) (bytes[2] << 8 + bytes[3]);
-			// TODO: An Feldmann: Hier Funktionsaufruf GUI aktualisieren
-			// (Spieler verschieben)
+			game.switchPlayers(bytes[1], bytes[2]);
+			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (17): // Spieler tritt dem Spiel bei
-			position = (byte) (bytes[0] & 3);
-			playerID = (short) (bytes[1] << 8 + bytes[2]);
-			String name = message.substring(2);
-			// TODO: An Feldmann: Hier Funktionsaufruf GUI aktualisieren
-			// (Spieler hinzufügen)
+			System.out.println("hehehe");
+			game.addPlayer(bytes[1], message.substring(2));
+			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bytes.length != 1) {
-				playerID = (short) (bytes[1] << 8 + bytes[2]);
-				// TODO: An Feldmann: Hier funktionsaufruf GUI aktualisieren
-				// (Spieler entfernen)
+				game.removePlayer(bytes[1]);
+				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
 				loader.connection.refreshServerList(false, "", 0, 4, 0);
-				// TODO: An Feldmann: Hier Funktionsaufruf ins Menü zurückkehren
+				game = null;
 				// (Spieler wurde aus dem Spiel entfernt)
 			}
 			break;
@@ -115,8 +117,7 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		case (20):
-			String msg = message.substring(3);
-			loader.setText(msg);
+			loader.setText(game.getPlayerName(bytes[1]) + message.substring(2));
 			break;
 		}
 	}

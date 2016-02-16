@@ -51,6 +51,12 @@ public class ServerConnection implements Runnable {
 					writer.write(queue.remove().getBytes());
 					writer.write(10);
 				}
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -179,16 +185,16 @@ public class ServerConnection implements Runnable {
 	// Lobby
 
 	/**
-	 * wechselt die Position in der aktuellen Lobby
+	 * wechselt die Positionen zweier Spieler (Benötigt Hostrechte)
 	 * 
-	 * @param newPosition
-	 *            gewünschte Position nur Zahlen 0-3
+	 * @param player1
+	 *            gewünschter Spieler nur Zahlen 0-3
+	 * @param player2
+	 *            gewünschter Spieler nur Zahlen 0-3
 	 */
-	public void switchPosition(int newPosition) {
+	public void switchPlayers(byte player1, byte player2) {
 		if (analyser.getState() == State.LOBBY) {
-			if (newPosition < 4) {
-				addMessage(String.valueOf((char) 16) + (char) newPosition);
-			}
+			addMessage(String.valueOf((char) 16) + (char) (player1 << 2 + player2));
 		}
 	}
 

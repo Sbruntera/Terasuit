@@ -29,6 +29,7 @@ public class Connection implements Runnable {
 	private String name;
 	private short id;
 	private boolean running;
+	private boolean loggedIn;
 
 	/**
 	 * 
@@ -50,6 +51,7 @@ public class Connection implements Runnable {
 		queue = new ConcurrentLinkedQueue<String>();
 		this.id = id;
 		running = true;
+		loggOut();
 	}
 
 	public void setAnalyser(Analyser analyser) {
@@ -60,8 +62,20 @@ public class Connection implements Runnable {
 		queue.add(message);
 	}
 
-	public void setName(String name) {
+	public void loggIn(String name) {
 		this.name = name;
+		loggedIn = true;
+	}
+
+	public void loggOut() {
+		this.name = "Guest" + (int) (Math.random() * 10)
+				+ (int) (Math.random() * 10) + (int) (Math.random() * 10)
+				+ (int) (Math.random() * 10);
+		loggedIn = false;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 
 	public String getName() {
@@ -84,6 +98,12 @@ public class Connection implements Runnable {
 				}
 				if (!queue.isEmpty()) {
 					writer.println(queue.remove());
+				}
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		} catch (IOException e) {
@@ -137,19 +157,17 @@ public class Connection implements Runnable {
 		String message = String.valueOf((char) 1);
 		boolean first = true;
 		for (Lobby l : lobbys) {
-			System.out.println((Boolean.compare(l.hasPassword(), false) << 2
-					+ l.getNumberOfPlayers()));
 			if (!first) {
 				message += ",";
 
 			} else {
 				first = false;
 			}
-			
+
 			message += String.valueOf((char) l.getID())
 					+ (char) l.getMap().getID()
-					+ (char) (Boolean.compare(l.hasPassword(), false) << 2
-							+ l.getNumberOfPlayers()) + l.getName();
+					+ (char) ((Boolean.compare(l.hasPassword(), false) << 3) + l
+							.getNumberOfPlayers()) + l.getName();
 		}
 		addMessage(message);
 	}
@@ -166,14 +184,16 @@ public class Connection implements Runnable {
 			String message = String.valueOf((char) 2)
 					+ (char) lobby.getMap().getID()
 					+ (char) Boolean.compare(host, false);
-			Object[] arrays = lobby.getPlayerNamesAndIDs();
-			int[] iDs = (int[]) arrays[0];
-			String[] names = (String[]) arrays[1];
-			for (int i = 0; i < iDs.length; i++) {
+			String[] names = lobby.getPlayerNames();
+			for (int i = 0; i < names.length; i++) {
 				if (i != 0) {
 					message += ",";
 				}
-				message += (char) (iDs[i] >> 8) + (char) iDs[i] + names[i];
+				if (names[i] != null) {
+					message += names[i];
+				} else {
+					message += (char) 0;
+				}
 			}
 			addMessage(message);
 		}
@@ -197,9 +217,9 @@ public class Connection implements Runnable {
 	 * @param position
 	 *            Position bei der der Spieler landet
 	 */
-	public void sendSwitchPosition(short player, byte position) {
-		addMessage(String.valueOf((char) 16) + (char) position
-				+ (char) (player >> 8) + (char) player);
+	public void sendSwitchPlayers(byte player1, byte player2) {
+		addMessage(String.valueOf((char) 16) + (char) player1
+				+ (char) player2);
 	}
 
 	/**
@@ -210,9 +230,8 @@ public class Connection implements Runnable {
 	 * @param name
 	 *            Name des neuen Spielers
 	 */
-	public void sendPlayerJoined(byte position, short id, String name) {
-		addMessage(String.valueOf((char) 17) + (char) position
-				+ (char) (id >> 8) + (char) id + name);
+	public void sendPlayerJoined(byte position, String name) {
+		addMessage(String.valueOf((char) 17) + (char) position + name);
 	}
 
 	/**
@@ -221,9 +240,8 @@ public class Connection implements Runnable {
 	 * @param player
 	 *            Der neue Spieler
 	 */
-	public void sendPlayerLeftLobby(short player) {
-		addMessage(String.valueOf((char) 18) + (char) (player >> 8)
-				+ (char) player);
+	public void sendPlayerLeftLobby(byte player) {
+		addMessage(String.valueOf((char) 18) + (char) player);
 	}
 
 	/**

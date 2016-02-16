@@ -427,7 +427,8 @@ public class SetButtons {
 				players.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent arg0) {
-						newplayers();
+						int [] i = newplayers();
+						loader.connection.switchPlayers((byte) i[0], (byte) i[1]);
 					}
 				});
 				int x = i;
@@ -460,6 +461,7 @@ public class SetButtons {
 		}
 		
 	}
+	
 	public void setText(String text){
 		s = s + "<br>" + "User: " + text;
 		System.out.println(text);
@@ -473,6 +475,7 @@ public class SetButtons {
 		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
 		ts.setValue(s);
 	}
+	
 	public void updateCombo(String[] player){
 		standartselect = player;
 		for(int i = 0; i <4;i++){
@@ -481,45 +484,60 @@ public class SetButtons {
 		}
 		panel.repaint();
 	}
+	
 	public void updateLabels(String[] player){
 		for(int i = 0; i <4;i++){
 			labellist.get(i).setText(player[i]);
 		}
 		panel.repaint();
 	}
-	public String[] newplayers(){
-		String[] test = new String[4];
-		for (int i =0 ; i <4;i++){
-			test[i] = standartselect[i];
-		}
-		String temp1 = "";
-		String temp2 = "";
-		for(int i = 0; i <4;i++){
-			if(temp2.equals(test[i])){
-				test[i] = temp1;
-				temp1 = test[i];
-				temp2 = test[i];
-			}else if(temp2.equals(temp1)){
-				temp1 = test[i];
-				temp2 = combolist.get(i).getSelectedItem().toString();
-				test[i] = combolist.get(i).getSelectedItem().toString();
-			}else{
-				test[i] = combolist.get(i).getSelectedItem().toString();
+	
+	public int[] newplayers(){
+		int[] numbers = new int[2];
+		for (int i = 0; i < standartselect.length; i++) {
+			if (!standartselect[i].equals(combolist.get(i).getSelectedItem().toString())) {
+				System.out.println(i);
+				numbers[0] = i;
 			}
-			
 		}
-		int counter = 0;
-		for(int i = 0; i <4;i++){
-			if (counter == 0){
-				if (test[i].equals(temp2)){
-					test[i] = temp1;
-					counter = 1;
-				}
+		for (int i = 0; i < standartselect.length; i++) {
+			if (standartselect[i].equals(combolist.get(numbers[0]).getSelectedItem().toString())) {
+				System.out.println(i);
+				numbers[1] = i;
 			}
-			
 		}
-		updateCombo(test);
-		return test;
+//		String[] test = new String[4];
+//		for (int i =0 ; i <4;i++){
+//			test[i] = standartselect[i];
+//		}
+//		String temp1 = "";
+//		String temp2 = "";
+//		for(int i = 0; i < 4;i++){
+//			if(temp2.equals(test[i])){
+//				test[i] = temp1;
+//				temp1 = test[i];
+//				temp2 = test[i];
+//			}else if(temp2.equals(temp1)){
+//				temp1 = test[i];
+//				temp2 = combolist.get(i).getSelectedItem().toString();
+//				test[i] = combolist.get(i).getSelectedItem().toString();
+//			}else{
+//				test[i] = combolist.get(i).getSelectedItem().toString();
+//			}
+//			
+//		}
+//		int counter = 0;
+//		for(int i = 0; i <4;i++){
+//			if (counter == 0){
+//				if (test[i].equals(temp2)){
+//					test[i] = temp1;
+//					counter = 1;
+//				}
+//			}
+//			
+//		}
+//		updateCombo(test);
+		return numbers;
 	}
 	
 	//Nicht wirklich flexibel keine möglichkeit zum Nachrutschen usw.
@@ -584,9 +602,9 @@ public class SetButtons {
 		for (int i = 0; i < lobbyList.length; i++) {
 			lobbyPanel.add(genNEWLobby(i, lobbyList[i]));
 		}
-		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*10)));
+		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*lobbyList.length)));
 		scroller.remove(jp);
-		scroller.add(lobbyPanel);
+		scroller.setViewportView(lobbyPanel);
 		jp = lobbyPanel;
 		scroller.repaint();
 		scroller.revalidate();
