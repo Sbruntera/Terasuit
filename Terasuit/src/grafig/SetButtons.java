@@ -514,37 +514,6 @@ public class SetButtons {
 				numbers[1] = i;
 			}
 		}
-//		String[] test = new String[4];
-//		for (int i =0 ; i <4;i++){
-//			test[i] = standartselect[i];
-//		}
-//		String temp1 = "";
-//		String temp2 = "";
-//		for(int i = 0; i < 4;i++){
-//			if(temp2.equals(test[i])){
-//				test[i] = temp1;
-//				temp1 = test[i];
-//				temp2 = test[i];
-//			}else if(temp2.equals(temp1)){
-//				temp1 = test[i];
-//				temp2 = combolist.get(i).getSelectedItem().toString();
-//				test[i] = combolist.get(i).getSelectedItem().toString();
-//			}else{
-//				test[i] = combolist.get(i).getSelectedItem().toString();
-//			}
-//			
-//		}
-//		int counter = 0;
-//		for(int i = 0; i <4;i++){
-//			if (counter == 0){
-//				if (test[i].equals(temp2)){
-//					test[i] = temp1;
-//					counter = 1;
-//				}
-//			}
-//			
-//		}
-//		updateCombo(test);
 		return numbers;
 	}
 	

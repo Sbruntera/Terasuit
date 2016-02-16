@@ -194,7 +194,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void switchPlayers(byte player1, byte player2) {
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) 16) + (char) (player1 << 2 + player2));
+			addMessage(String.valueOf((char) 16) + (char) ((player1 << 2) + player2));
 		}
 	}
 

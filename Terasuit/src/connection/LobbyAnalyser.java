@@ -27,6 +27,7 @@ public class LobbyAnalyser implements Analyser {
 		byte[] bytes = input.getBytes();
 		switch (bytes[0]) {
 		case (16): // Position wechseln
+			System.out.println(bytes[1]);
 			lobby.switchPlayers(id, (byte) (bytes[1] >> 2), (byte) (bytes[1] & 3));
 			break;
 		case (17): // Spiel verlassen
