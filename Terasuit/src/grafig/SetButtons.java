@@ -37,6 +37,7 @@ public class SetButtons {
 	boolean registerOpen = false;
 	boolean loginOpen = false;
 	boolean serverCreateOpen = false;
+	boolean haspassword;
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
 	JLabel tl;
@@ -48,6 +49,9 @@ public class SetButtons {
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
 	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
+	ImageIcon open = new ImageIcon("Menu_Asstes/Schloss_offen.png");
+	ImageIcon closed = new ImageIcon("Menu_Asstes/Schloss.png");
+	ImageIcon map1 = new ImageIcon("Menu_Asstes/Thumbnail.png");
 	String[] standartselect;
 	private JPanel gametemp;
 	
@@ -191,15 +195,19 @@ public class SetButtons {
 			btnJoin.setFont(new Font("Arial", Font.BOLD, 24));
 			btnJoin.setIcon(new ImageIcon("Wallpaper/Join_Pfeil.png"));
 			btnJoin.addMouseListener(new MouseAdapter() {
+
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-//					JPanel test = needPW();
-//					panel.add(test);
-//					panel.setComponentZOrder(test, 0);
-//					panel.repaint();
-//					panel.revalidate();
-					loader.connection.connectGroup(markedLobby, "");
+					if(haspassword){
+						JPanel test = needPW();
+						panel.add(test);
+						panel.setComponentZOrder(test, 0);
+						panel.repaint();
+						panel.revalidate();
+					} else{
+						loader.connection.connectGroup(markedLobby, "");
+					}
 					//TODO	loader.switchPanel(loader.Grouppage);
 					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
 
@@ -554,6 +562,7 @@ public class SetButtons {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
+				haspassword = lobby.hasPassword();
 				System.out.println(markedLobby);
 				if(gametemp != null){
                     gametemp.setBorder(null);    
@@ -562,10 +571,19 @@ public class SetButtons {
                 game1.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
 			}
 		});
-		JLabel map_pic = new JLabel(lobby.getMapID()+ "");
-		JLabel pw_en = new JLabel(lobby.hasPassword() + "");
+		JLabel map_pic = new JLabel();
+		JLabel pw_en = new JLabel();
 		JLabel lobby_name = new JLabel(lobby.getName());
-		JLabel player_count = new JLabel(lobby.getNumberOfPlayers() + "/4");
+		JLabel player_count = new JLabel("<html>Players:<br>" + lobby.getNumberOfPlayers() + "/4</html>");
+		switch(lobby.getMapID()){
+			case(1):
+				map_pic.setIcon(map1);
+				break;
+		}
+		pw_en.setIcon(open);
+		if(lobby.hasPassword()){
+			pw_en.setIcon(closed);
+		}
 		map_pic.setBounds(10,10,200,130);
 		pw_en.setBounds(220, 20, 70, 45);
 		lobby_name.setBounds(300, 20, 445, 110);
@@ -573,16 +591,17 @@ public class SetButtons {
 		lobby_name.setHorizontalAlignment(SwingConstants.CENTER);
 		pw_en.setHorizontalAlignment(SwingConstants.CENTER);
 		player_count.setHorizontalAlignment(SwingConstants.CENTER);
-		//DEMO CODE
 		lobby_name.setFont(new Font("Arial", Font.BOLD, 24));
-		map_pic.setOpaque(true);
-		map_pic.setBackground(Color.BLUE);
-		lobby_name.setBackground(Color.BLUE);
-		player_count.setBackground(Color.BLUE);
-		pw_en.setBackground(Color.BLUE);
-		pw_en.setOpaque(true);
-		player_count.setOpaque(true);
-		lobby_name.setOpaque(true);
+		player_count.setFont(new Font("Arial", Font.BOLD, 24));
+		//DEMO CODE
+//		map_pic.setOpaque(true);
+//		map_pic.setBackground(Color.BLUE);
+//		lobby_name.setBackground(Color.BLUE);
+//		player_count.setBackground(Color.BLUE);
+//		pw_en.setBackground(Color.BLUE);
+//		pw_en.setOpaque(true);
+//		player_count.setOpaque(true);
+//		lobby_name.setOpaque(true);
 		//DEMO CODE ENDE
 		player_count_list.add(player_count);
 		game1.add(map_pic);
