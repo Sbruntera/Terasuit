@@ -318,8 +318,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(short playerID) {
-		addMessage(String.valueOf((char) 38) + (char) (playerID >> 8)
-				+ (char) playerID);
+		addMessage(String.valueOf((char) 38) + (char) playerID);
 	}
 
 	public void sendGameEnded(boolean won) {

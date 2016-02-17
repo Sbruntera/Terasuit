@@ -83,17 +83,23 @@ public class Lobby {
 	public void removePlayer(short senderID, short playerID) {
 		if (senderID == playerID || senderID == host.getID()) {
 			boolean found = false;
-			int position = 0;
-			for (int i = 0; i < playerList.length; i++) {
+			byte position = 0;
+			for (byte i = 0; i < playerList.length; i++) {
+				if (playerList[i] != null) {
+					if (playerList[i].getID() == playerID) {
+						position = i;
+						found = true;
+					}
+				}
+			}
+			for (byte i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
 					System.out.println("tadada");
 					if (playerList[i].getID() != playerID) {
-						playerList[i].sendPlayerLeftGame(playerList[i].getID());
+						playerList[i].sendPlayerLeftLobby(position);
 					} else {
 						System.out.println("LeftLobby" + i);
 						playerList[i].sendLeftLobby();
-						position = i;
-						found = true;
 					}
 				}
 			}
@@ -112,10 +118,10 @@ public class Lobby {
 						}
 					}
 					if (!playerFound) {
-						System.out.println("sfasdgasdgasdg");
 						closeGame(true);
 					}
 				}
+				playerList[position] = null;
 			}
 		}
 	}

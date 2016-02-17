@@ -99,7 +99,9 @@ public class Analyser {
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (18): // Spieler verlässt das Spiel
-			if (bytes.length != 1) {
+			System.out.println(bytes.length + "akljfla");
+			if (bytes.length == 2) {
+				System.out.println(bytes[1] + "aoifj");
 				game.removePlayer(bytes[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
