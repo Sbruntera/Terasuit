@@ -119,6 +119,8 @@ public class ImageManipulator {
 	 */
 	public void getUnitDeminsionSize(String Entitytype){
 	     switch (Entitytype) {
+	     
+	     // GROUND UNITS
          case "Unit/Ground/Marine.png":
         	 setxSkalierung(15);
         	 setySkalierung(38);
@@ -131,20 +133,69 @@ public class ImageManipulator {
         	 setxSkalierung(40);
         	 setySkalierung(60);
         	 return;
-         case "Unit/Ground/Black Queen.png":
-        	 setxSkalierung(60);
-        	 setySkalierung(65);
+         case "Unit/Ground/Sphinx.png":
+        	 setxSkalierung(80);
+        	 setySkalierung(44);
         	 return;
+         case "Unit/Ground/Meditec.png":
+        	 setxSkalierung(15);
+        	 setySkalierung(38);
+        	 return;
+         case "Unit/Ground/Sakata-MK2.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(50);
+        	 return;
+         case "Unit/Ground/Gladiator.png":
+        	 setxSkalierung(20);
+        	 setySkalierung(38);
+        	 return;
+         case "Unit/Ground/Sniper.png":
+        	 setxSkalierung(30);
+        	 setySkalierung(38);
+        	 return;
+         case "Unit/Ground/A25_Roman.png":
+        	 setxSkalierung(15);
+        	 setySkalierung(38);
+        	 return;
+         case "Unit/Ground/Hover Tank.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(27);
+        	 return;
+        	 
+        // AIR UNITS
          case "Unit/Air/Scout.png":
         	 setxSkalierung(60);
         	 setySkalierung(27);
         	 return;
          case "Unit/Air/Phantom.png":
+        	 setxSkalierung(115);
+        	 setySkalierung(30);
+        	 return;
+        	 
+        // Not correct yet =) Needs to be configer maunally 
+         case "Unit/Ground/Modified_Sakata.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(27);
+        	 return;		 
+         case "Unit/Ground/Sakata Spider.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(27);
+        	 return;		 
+         case "Unit/Ground/Modified Phantom.png":
         	 setxSkalierung(60);
         	 setySkalierung(27);
         	 return;
-	     }
-	     
+         case "Unit/Ground/Black Queen.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(65);
+        	 return; 
+         case "Unit/Ground/Saint.png":
+        	 setxSkalierung(70);
+        	 setySkalierung(38);
+        	 return; 
+        	 
+
+	     }  
 	}
 
 	// Spiegel erhaltene ImageIcons

@@ -177,7 +177,7 @@ public class BaseBuildings {
 		case "Barracks":
 			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Recruit", "Arsenal", "Destroy"};
 		case "Arsenal":
-			return new String[]{"Marine", "Chronite Tank", "Gröditz", "Hover Tank", "Black Queen", "Recruit", "Destroy"};
+			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Hover Tank", "Black Queen", "Recruit", "Destroy"};
 		case "Forge":
 			return new String[]{"A25-Roman", "Scout", "Salvage", "Manufactory", "Destroy"};
 		case "Manufactory":
@@ -219,6 +219,8 @@ public class BaseBuildings {
 			return 2;
 		case "War Sanctum":
 			return 5;
+		case "Treasury":
+			return 20;
 		default:
 			return 0;
 		}	
