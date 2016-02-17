@@ -11,28 +11,34 @@ import org.junit.Test;
 import server.Filter;
 import server.Map;
 import server.Server;
-
+/**
+ * 
+ * @author Rogge
+ *
+ */
 public class Server_test {
 
-	Server s;
-	ServerConnection sc;
+	private Server s;
+	private ServerConnection sc;
+	/**
+	 * Startet einen neuen Server Thread sowie eine ServerConnection
+	 */
 	public Server_test(){
 		try {
 			new Thread(s = new Server(3142)).start();
-			System.out.println("test2");
-			System.out.println("test1");
 			sc = new ServerConnection(null);
-			System.out.println("test");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Der Test erstellt eine Lobby und überprüft ob die LobbyList danach 1 anzeigt
+	 */
 	@Test
 	public void test() {
 		sc.createGroup((byte) 1, "Lobby", "123");
 		s.getLobbylist(new Filter(true, "", Map.Nightsun, 0, 4));
-		//System.out.println(s.getLobbylist(new Filter(true, "", Map.Nightsun, 0, 4)));
 		assertEquals(1,s.getLobbylist(new Filter(true, "", Map.Nightsun, 0, 4)).length );
 	}
 
