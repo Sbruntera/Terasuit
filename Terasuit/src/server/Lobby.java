@@ -49,7 +49,7 @@ public class Lobby {
 	public boolean addPlayer(Connection player, String password) {
 		boolean playerJoined = false;
 		int i = 0;
-		if (password == this.password || !this.hasPassword()) {
+		if (password.equals(this.password) || !this.hasPassword()) {
 			while ((!playerJoined) && i < MAXPLAYERS) {
 				if (playerList[i] == null) {
 					playerList[i] = player;
@@ -59,12 +59,14 @@ public class Lobby {
 				}
 			}
 		}
-		for (Connection c : playerList) {
-			if (c != null) {
-				if (c == player) {
-					c.sendGameJoin(this, false);
-				} else {
-					c.sendPlayerJoined((byte) i, player.getName());
+		if (playerJoined) {
+			for (Connection c : playerList) {
+				if (c != null) {
+					if (c == player) {
+						c.sendGameJoin(this, false);
+					} else {
+						c.sendPlayerJoined((byte) i, player.getName());
+					}
 				}
 			}
 		}
@@ -81,38 +83,39 @@ public class Lobby {
 	public void removePlayer(short senderID, short playerID) {
 		if (senderID == playerID || senderID == host.getID()) {
 			boolean found = false;
-			int i = 0;
-			while (!found && i < MAXPLAYERS) {
+			int position = 0;
+			for (int i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
+					System.out.println("tadada");
 					if (playerList[i].getID() != playerID) {
 						playerList[i].sendPlayerLeftGame(playerList[i].getID());
-						found = true;
 					} else {
 						System.out.println("LeftLobby" + i);
 						playerList[i].sendLeftLobby();
-						playerList[i] = null;
-						i++;
+						position = i;
+						found = true;
 					}
-				} else {
-					i++;
 				}
 			}
 			if (found) {
-				if (playerList[i] == host) { // Der Spieler ist Host
+				if (playerList[position] == host) { // Der Spieler ist Host
 					boolean playerFound = false;
 					int actualPlayer = 0;
 					while (!playerFound && actualPlayer < MAXPLAYERS) {
 						if (playerList[actualPlayer] != null
 								&& playerList[actualPlayer] != host) {
 							playerFound = true;
+							System.out.println(actualPlayer + "<ghpo<uh");
 							host = playerList[actualPlayer];
 						} else {
 							actualPlayer++;
 						}
 					}
+					if (!playerFound) {
+						System.out.println("sfasdgasdgasdg");
+						closeGame(true);
+					}
 				}
-			} else {
-				closeGame(true);
 			}
 		}
 	}
@@ -172,7 +175,7 @@ public class Lobby {
 				p.sendLeftLobby();
 			}
 		}
-		server.removeLobby(this);
+		server.removeLobby(id);
 	}
 
 	/**

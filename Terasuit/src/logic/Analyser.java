@@ -51,13 +51,12 @@ public class Analyser {
 				if (s.length() != 0) {
 					byte[] b = s.getBytes();
 					list.add(new Lobby(b[0], s.substring(3), b[1],
-							((b[2] & 4) >> 3) == 1, (byte) (b[2] & 7)));
+							((b[2] & 8) >> 3) == 1, (byte) (b[2] & 7)));
 				}
 			}
 			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
 			break;
 		case (2): // Join Game
-			byte mapID = (byte) bytes[1];
 			isHost = bytes[2] > 0;
 			splittedMessage = message.substring(3).split(",");
 			String[] names = new String[splittedMessage.length];

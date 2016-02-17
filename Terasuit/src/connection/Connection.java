@@ -163,7 +163,6 @@ public class Connection implements Runnable {
 			} else {
 				first = false;
 			}
-
 			message += String.valueOf((char) l.getID())
 					+ (char) l.getMap().getID()
 					+ (char) ((Boolean.compare(l.hasPassword(), false) << 3) + l

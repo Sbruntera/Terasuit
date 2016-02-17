@@ -134,6 +134,7 @@ public class ServerConnection implements Runnable {
 	 *            Passwort des gewünschten Spiels
 	 */
 	public void connectGroup(int id, String password) {
+		System.out.println(password);
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
 			addMessage(String.valueOf((char) 4) + (char) id + password);

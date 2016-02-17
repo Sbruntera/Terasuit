@@ -49,9 +49,9 @@ public class SetButtons {
 	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
 	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
 	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
-	ImageIcon open = new ImageIcon("Menu_Asstes/Schloss_offen.png");
-	ImageIcon closed = new ImageIcon("Menu_Asstes/Schloss.png");
-	ImageIcon map1 = new ImageIcon("Menu_Asstes/Thumbnail.png");
+	ImageIcon open = new ImageIcon("Menu_Assets/Schloss_offen.png");
+	ImageIcon closed = new ImageIcon("Menu_Assets/Schloss.png");
+	ImageIcon map1 = new ImageIcon("Menu_Assets/Thumbnail.png");
 	String[] standartselect;
 	private JPanel gametemp;
 	
@@ -340,6 +340,7 @@ public class SetButtons {
 			scroller.setBounds(666, 350, 320, 334);
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
+			ts = scroller.getVerticalScrollBar();
 			//666, 350, 320, 364
 			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
@@ -528,6 +529,7 @@ public class SetButtons {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
+				System.out.println(lobby.hasPassword());
 				haspassword = lobby.hasPassword();
 				if(gametemp != null){
                     gametemp.setBorder(null);    
@@ -630,7 +632,7 @@ public class SetButtons {
 		JLabel ep = new JLabel("This Lobby has a Password. Please it");
 		JTextField tp = new JTextField();
 		tp.addActionListener(e ->{
-			loader.connection.connectGroup(markedLobby, ep.getText());
+			loader.connection.connectGroup(markedLobby, tp.getText());
 		});
 		tp.setBounds(30, 80, 305, 50);
 		ep.setBounds(30, 20, 305, 50);

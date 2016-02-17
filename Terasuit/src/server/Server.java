@@ -172,8 +172,9 @@ public class Server implements Runnable {
 	 * @param lobby
 	 *            : zu entfernende Lobby
 	 */
-	public void removeLobby(Lobby lobby) {
-		lobbys.remove(lobby);
+	public void removeLobby(byte id) {
+		System.out.println("aad");
+		lobbys.remove((int)id);
 	}
 
 	public boolean hasLobby(byte id) {
