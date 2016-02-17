@@ -57,6 +57,9 @@ public class SetButtons {
 	
 	private String s = "Willkommen im Chat";
 	private JScrollPane scroller;
+	private JButton btnLogin;
+	private JButton btnRegister;
+	private boolean loggedIN;
 	
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		this.panel = panel;
@@ -122,7 +125,7 @@ public class SetButtons {
 			});
 			panel.add(btnExit);
 			loginRegisterPanel = new LoginRegisterPanel(loader.connection);
-			JButton btnLogin = new JButton("LOGIN");
+			btnLogin = new JButton("LOGIN");
 			btnLogin.setBounds(800, 732, 90, 25);
 			btnLogin.setBackground(new Color(255,90,0));
 			btnLogin.addMouseListener(new MouseAdapter() {
@@ -142,9 +145,8 @@ public class SetButtons {
 					}
 				}
 			});
-			panel.add(btnLogin);
 			
-			JButton btnRegister = new JButton("REGISTER");
+			btnRegister = new JButton("REGISTER");
 			btnRegister.setBounds(920, 732, 90, 25);
 			btnRegister.setBackground(new Color(255,90,0));
 			btnRegister.addMouseListener(new MouseAdapter() {
@@ -163,7 +165,13 @@ public class SetButtons {
 					}
 				}
 			});
-			panel.add(btnRegister);
+			
+			if(!loggedIN){  //TODO Brauch Status von Server
+				panel.add(btnLogin);
+				panel.add(btnRegister);
+			} else{
+				loggedIn();
+			}
 		
 			
 		//#########################################################################
@@ -644,5 +652,26 @@ public class SetButtons {
 		np.add(tp);
 		np.add(ep);
 		return np;
+	}
+	public void loggedIn(){
+		panel.remove(btnLogin);
+		panel.remove(btnRegister);
+		loginRegisterPanel.popupdestroy(panel);
+		JLabel user = new JLabel("Willkommen " + "hier User eintragen!!");
+		user.setBounds(755, 732, 155, 25);
+		JButton btnlogout = new JButton("Logout");
+		btnlogout.setBounds(920, 732, 90, 25);
+		btnlogout.setBackground(new Color(255,90,0));
+		btnlogout.addActionListener(e ->{
+			loader.connection.logout();
+			panel.remove(btnlogout);
+			panel.remove(user);
+			panel.add(btnLogin);
+			panel.add(btnRegister);
+		});
+		panel.add(btnlogout);
+		panel.add(user);
+		panel.repaint();
+		panel.revalidate();
 	}
 }
