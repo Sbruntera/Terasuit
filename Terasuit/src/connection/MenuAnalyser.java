@@ -71,6 +71,7 @@ public class MenuAnalyser implements Analyser {
 		case (5): // Einloggen
 			System.out.println("login");
 			if (!connection.isLoggedIn()) {
+				System.out.println("loginin");
 				splitted = getSplitString(input, 1);
 				password = "";
 				switch (splitted.length) {
@@ -78,7 +79,8 @@ public class MenuAnalyser implements Analyser {
 					password = splitted[1];
 				case (1):
 					if (server.loginClient(splitted[0], password, id)) {
-						connection.sendLogin();
+						System.out.println("logininim");
+						connection.sendLogin(splitted[0]);
 						connection.loggIn(splitted[0]);
 					}
 					break;

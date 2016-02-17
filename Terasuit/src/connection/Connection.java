@@ -200,9 +200,11 @@ public class Connection implements Runnable {
 
 	/**
 	 * Bestätigt die Login Anfrage des Client
+	 * @param splitted 
 	 */
-	public void sendLogin() {
-		addMessage(String.valueOf((char) 192));
+	public void sendLogin(String name) {
+		System.out.println("Allah");
+		addMessage(String.valueOf((char) 3) + name);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////

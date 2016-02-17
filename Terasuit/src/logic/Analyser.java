@@ -80,8 +80,9 @@ public class Analyser {
 			break;
 		case (3): // Log in
 			System.out.println("success");
-			// TODO: An Feldmann: Hier Funktionsaufruf zum Anzeige ändern (Login
-			// disabeln Logout enabeln)
+			loader.connection.setLoggedIn(true);
+			loader.connection.setName(message.substring(1));
+			loader.loggIn(loader.connection.getName());
 			break;
 		}
 	}

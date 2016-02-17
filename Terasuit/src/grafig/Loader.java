@@ -102,4 +102,8 @@ public class Loader {
 			panel.buttons.updateLabels(players);
 		}
 	}
+
+	public void loggIn(String name) {
+		panel.buttons.loggedIn(name);
+	}
 }

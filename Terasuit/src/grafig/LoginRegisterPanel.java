@@ -42,7 +42,6 @@ public class LoginRegisterPanel {
 				}
 				connection.login(userField.getText(),
 						password);
-				panel.buttons.loggedIn();
 			}
 		});
 		panel.add(btnlogin);

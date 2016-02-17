@@ -166,11 +166,11 @@ public class SetButtons {
 				}
 			});
 			
-			if(!loggedIN){  //TODO Brauch Status von Server
+			if(!loader.connection.isLoggedIn()){  //TODO Brauch Status von Server
 				panel.add(btnLogin);
 				panel.add(btnRegister);
 			} else{
-				loggedIn();
+				loggedIn(loader.connection.getName());
 			}
 		
 			
@@ -653,11 +653,11 @@ public class SetButtons {
 		np.add(ep);
 		return np;
 	}
-	public void loggedIn(){
+	public void loggedIn(String name){
 		panel.remove(btnLogin);
 		panel.remove(btnRegister);
 		loginRegisterPanel.popupdestroy(panel);
-		JLabel user = new JLabel("Willkommen " + "hier User eintragen!!");
+		JLabel user = new JLabel("Willkommen " + name);
 		user.setBounds(755, 732, 155, 25);
 		JButton btnlogout = new JButton("Logout");
 		btnlogout.setBounds(920, 732, 90, 25);

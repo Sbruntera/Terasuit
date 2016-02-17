@@ -17,6 +17,9 @@ public class ServerConnection implements Runnable {
 	private OutputStream writer;
 	private BufferedReader reader;
 	private Analyser analyser;
+	
+	private boolean isLoggedIn;
+	private String name;
 
 	public ServerConnection(Loader loader) {
 		Socket socket;
@@ -352,5 +355,33 @@ public class ServerConnection implements Runnable {
 
 	public boolean isServerAccess() {
 		return serverAccess;
+	}
+
+	/**
+	 * @return the isLoggedIn
+	 */
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	/**
+	 * @param isLoggedIn the isLoggedIn to set
+	 */
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }
