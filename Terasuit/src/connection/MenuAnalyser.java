@@ -62,8 +62,10 @@ public class MenuAnalyser implements Analyser {
 		case (4): // Spiel beitreten
 			System.out.println("join");
 			if (bytes.length > 1) {
-				server.getLobby(bytes[1]).addPlayer(connection,
-							input.substring(2));
+				if (server.hasLobby(bytes[1])) {
+					server.getLobby(bytes[1]).addPlayer(connection,
+								input.substring(2));
+				}
 			}
 			break;
 		case (5): // Einloggen

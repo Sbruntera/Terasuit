@@ -21,7 +21,7 @@ public class GameLobby {
 	}
 	
 	public void removePlayer(byte id) {
-		players[id] = null;
+		players[id] = "";
 	}
 	
 	public void switchPlayers(byte id1, byte id2) {

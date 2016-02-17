@@ -255,12 +255,16 @@ public class Connection implements Runnable {
 		addMessage(String.valueOf((char) 18));
 	}
 
+	public void sendGetHost() {
+		addMessage(String.valueOf((char) 19));
+	}
+
 	/**
 	 * Unterrichtet den Client, dass das Spiel gestartet wird
 	 */
 	public void sendStarting(GameServer server) {
 		setAnalyser(new GameAnalyser(server, id, server.getPosition(this)));
-		addMessage(String.valueOf((char) 19));
+		addMessage(String.valueOf((char) 20));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -328,7 +332,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendChatMessage(byte id, String message) {
-		addMessage(String.valueOf((char) 20) + (char) id
+		addMessage(String.valueOf((char) 21) + (char) id
 				+ message);
 	}
 }

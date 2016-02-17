@@ -112,12 +112,17 @@ public class Analyser {
 				// (Spieler wurde aus dem Spiel entfernt)
 			}
 			break;
-		case (19): // Spiel wird gestartet
+		case (19): //Spieler wird Host
+			loader.switchPanel(loader.Grouppage_owner);
+			isHost = true;
+			loader.updatePlayerList(game.getPlayerNames(), isHost);
+			break;
+		case (20): // Spiel wird gestartet
 			switchState(State.GAME);
 			loader.switchPanel(loader.Gamepage);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
-		case (20):
+		case (21):
 			loader.setText(game.getPlayerName(bytes[1]) + ": " + message.substring(2));
 			break;
 		}

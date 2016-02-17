@@ -97,6 +97,10 @@ public class Lobby {
 					System.out.println("tadada");
 					if (playerList[i].getID() != playerID) {
 						playerList[i].sendPlayerLeftLobby(position);
+						if (playerList[position] == host) {
+							host = playerList[i];
+							host.sendGetHost();
+						}
 					} else {
 						System.out.println("LeftLobby" + i);
 						playerList[i].sendLeftLobby();
