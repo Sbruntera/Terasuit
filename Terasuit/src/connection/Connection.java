@@ -238,11 +238,11 @@ public class Connection implements Runnable {
 	/**
 	 * Unterrichtet den Client, dass ein Spieler das Spiel verlassen hat
 	 * 
-	 * @param player
+	 * @param playerNumber
 	 *            Der neue Spieler
 	 */
-	public void sendPlayerLeftLobby(byte player) {
-		addMessage(String.valueOf((char) 18) + (char) player);
+	public void sendPlayerLeftLobby(byte playerNumber) {
+		addMessage(String.valueOf((char) 18) + (char) playerNumber);
 	}
 
 	/**

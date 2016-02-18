@@ -32,10 +32,11 @@ public class LobbyAnalyser implements Analyser {
 			break;
 		case (17): // Spiel verlassen
 			System.out.println("leave");
-			lobby.removePlayer(id, id);
+			lobby.removePlayer(id, lobby.getPosition(id));
 			break;
 		case (18): // Spieler kicken
-			lobby.removePlayer(id, bytes[2]);
+			System.out.println("kick");
+			lobby.removePlayer(id, bytes[1]);
 			break;
 		case (19): // Spiel starten
 			lobby.startGame(id);

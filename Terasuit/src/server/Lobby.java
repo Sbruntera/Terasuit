@@ -44,7 +44,7 @@ public class Lobby {
 	 * Fügt einen Spieler zu der Lobby hinzu
 	 * 
 	 * @param player
-	 * @param password 
+	 * @param password
 	 */
 	public boolean addPlayer(Connection player, String password) {
 		boolean playerJoined = false;
@@ -80,54 +80,47 @@ public class Lobby {
 	 * 
 	 * @param position
 	 */
-	public void removePlayer(short senderID, short playerID) {
-		if (senderID == playerID || senderID == host.getID()) {
-			boolean found = false;
-			byte position = 0;
+	public void removePlayer(short senderID, byte playerNumber) {
+		if ((senderID == playerNumber || senderID == host.getID())
+				&& playerList[playerNumber] != null) {
 			for (byte i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
-					if (playerList[i].getID() == playerID) {
-						position = i;
-						found = true;
-					}
-				}
-			}
-			for (byte i = 0; i < playerList.length; i++) {
-				if (playerList[i] != null) {
-					System.out.println("tadada");
-					if (playerList[i].getID() != playerID) {
-						playerList[i].sendPlayerLeftLobby(position);
-						if (playerList[position] == host) {
-							host = playerList[i];
-							host.sendGetHost();
-						}
+					if (i != playerNumber) {
+						playerList[i].sendPlayerLeftLobby(playerNumber);
 					} else {
-						System.out.println("LeftLobby" + i);
 						playerList[i].sendLeftLobby();
 					}
 				}
 			}
-			if (found) {
-				if (playerList[position] == host) { // Der Spieler ist Host
-					boolean playerFound = false;
-					int actualPlayer = 0;
-					while (!playerFound && actualPlayer < MAXPLAYERS) {
-						if (playerList[actualPlayer] != null
-								&& playerList[actualPlayer] != host) {
-							playerFound = true;
-							System.out.println(actualPlayer + "<ghpo<uh");
-							host = playerList[actualPlayer];
-						} else {
-							actualPlayer++;
-						}
-					}
-					if (!playerFound) {
-						closeGame(true);
+			if (playerList[playerNumber] == host) { // Der Spieler ist Host
+				boolean playerFound = false;
+				int actualPlayer = 0;
+				while (!playerFound && actualPlayer < MAXPLAYERS) {
+					if (playerList[actualPlayer] != null
+							&& playerList[actualPlayer] != host) {
+						playerFound = true;
+						host = playerList[actualPlayer];
+					} else {
+						actualPlayer++;
 					}
 				}
-				playerList[position] = null;
+				if (!playerFound) {
+					closeGame(true);
+				}
+			}
+			playerList[playerNumber] = null;
+		}
+	}
+
+	public byte getPosition(short playerID) {
+		for (byte i = 0; i < playerList.length; i++) {
+			if (playerList[i] != null) {
+				if (playerList[i].getID() == playerID) {
+					return i;
+				}
 			}
 		}
+		return -1;
 	}
 
 	/**
@@ -139,16 +132,7 @@ public class Lobby {
 	 *            : Nummer des Senders
 	 */
 	public void broadcast(String msg, short id) {
-		System.out.println(msg);
-		byte position = 0;
-		for (byte i = 0; i < playerList.length; i++) {
-			if (playerList[i] != null) {
-				if (playerList[i].getID() == id) {
-					position = i;
-				}
-			}
-		}
-		System.out.println(msg + position);
+		byte position = getPosition(id);
 		for (int i = 0; i < playerList.length; i++) {
 			if (playerList[i] != null) {
 				playerList[i].sendChatMessage(position, msg);
@@ -158,7 +142,8 @@ public class Lobby {
 
 	/**
 	 * Verschiebt einen Spieler innnerhalb der Lobby
-	 * @param id 
+	 * 
+	 * @param id
 	 * 
 	 * @param oldPosition
 	 * @param newPosition
@@ -247,7 +232,7 @@ public class Lobby {
 	public int getNumberOfPlayers() {
 		int players = 0;
 		for (int i = 0; i < MAXPLAYERS; i++) {
-			//System.out.println("Ich bin i;" + i);
+			// System.out.println("Ich bin i;" + i);
 			if (playerList[i] != null) {
 				players++;
 			}

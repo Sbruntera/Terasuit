@@ -219,9 +219,9 @@ public class ServerConnection implements Runnable {
 	 *            Die Nummer des Spielers
 	 */
 	public void kickPlayer(int playerNumber) {
+		System.out.println(playerNumber);
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) 18) + playerNumber);
-			// TODO: Playernumber maybe verschieben
+			addMessage(String.valueOf((char) 18) + (char) playerNumber);
 		}
 	}
 
