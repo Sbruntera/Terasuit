@@ -25,7 +25,7 @@ public class UnitData {
 		UnitDataHash.put("Hover_Tank", new UnitObject("Hover_Tank_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 		UnitDataHash.put("Meditec", new UnitObject("Meditec_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 		UnitDataHash.put("Modified_Sakata", new UnitObject("Modified_Sakata_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
-		UnitDataHash.put("Sakata Spider", new UnitObject("Sakata Spide_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
+		UnitDataHash.put("Sakata_Spider", new UnitObject("Sakata Spide_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 		UnitDataHash.put("Sakata-MK2", new UnitObject("Sakata_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 		UnitDataHash.put("Sakata", new UnitObject("Sakata_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 		UnitDataHash.put("Sniper", new UnitObject("Sniper_Description", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));

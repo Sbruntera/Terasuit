@@ -212,7 +212,7 @@ public class BaseBuildings {
 		case "Armory":
 			return 7;
 		case "Hospital":
-			return 7;
+			return 8;
 		case "Outpost":
 			return 2;
 		case "Special Operations":
@@ -220,7 +220,7 @@ public class BaseBuildings {
 		case "War Sanctum":
 			return 5;
 		case "Treasury":
-			return 20;
+			return 25;
 		default:
 			return 0;
 		}	

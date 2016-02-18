@@ -118,6 +118,7 @@ public class ImageManipulator {
 	 * @return int
 	 */
 	public void getUnitDeminsionSize(String Entitytype){
+		System.out.println(Entitytype + "  <====");
 	     switch (Entitytype) {
 	     
 	     // GROUND UNITS
@@ -153,13 +154,13 @@ public class ImageManipulator {
         	 setxSkalierung(30);
         	 setySkalierung(38);
         	 return;
-         case "Unit/Ground/A25_Roman.png":
+         case "Unit/Ground/A25-Roman.png":
         	 setxSkalierung(15);
         	 setySkalierung(38);
         	 return;
          case "Unit/Ground/Hover Tank.png":
-        	 setxSkalierung(60);
-        	 setySkalierung(27);
+        	 setxSkalierung(65);
+        	 setySkalierung(30);
         	 return;
         	 
         // AIR UNITS
@@ -181,17 +182,17 @@ public class ImageManipulator {
         	 setxSkalierung(60);
         	 setySkalierung(27);
         	 return;		 
-         case "Unit/Ground/Modified Phantom.png":
-        	 setxSkalierung(60);
-        	 setySkalierung(27);
+         case "Unit/Air/Modified Phantom.png":
+        	 setxSkalierung(115);
+        	 setySkalierung(30);
         	 return;
-         case "Unit/Ground/Black Queen.png":
-        	 setxSkalierung(60);
+         case "Unit/Air/Black Queen.png":
+        	 setxSkalierung(90);
         	 setySkalierung(65);
         	 return; 
-         case "Unit/Ground/Saint.png":
-        	 setxSkalierung(70);
-        	 setySkalierung(38);
+         case "Unit/Air/Saint.png":
+        	 setxSkalierung(60);
+        	 setySkalierung(35);
         	 return; 
         	 
 

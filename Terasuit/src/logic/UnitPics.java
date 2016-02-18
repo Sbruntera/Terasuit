@@ -17,7 +17,7 @@ public class UnitPics {
 	String picLocation = "";
 	String picName = "";
 	ImageManipulator imgMani = new ImageManipulator();
-	String [] entityGroundList = {"Marine", "Chronite Tank", "Gröditz", "A25-Roman", "Hover Tank", "Meditec", "Modified Sakata", "Sniper", "Sphinx", "Sakata-MK2", "Sakata", "Gladiator"};
+	String [] entityGroundList = {"Marine", "Chronite Tank", "Gröditz", "A25-Roman", "Hover Tank", "Meditec", "Modified Sakata", "Sniper", "Sphinx", "Sakata-MK2", "Sakata", "Gladiator", "Sakata Spider"};
 	String [] entityAirList = {"Scout", "Phantom", "Black Queen", "Saint", "Modified Phantom"};
 	
 	HashMap<String, BufferedImage> UnitPicHash = new HashMap<String, BufferedImage>();
@@ -45,13 +45,14 @@ public class UnitPics {
 
 	    String searchString = splitEntityName[0] + "_" + color;
 		if (left && !mark){
-			searchString = searchString + "_turn";
+			searchString = searchString + "_turn";	
 		}else if (!left && !mark){
 		}else if (left && mark){
 			searchString = searchString + "_mark_turn";
 		}else{
 			searchString = searchString + "_mark";
 		}
+		System.out.println(searchString);
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	
