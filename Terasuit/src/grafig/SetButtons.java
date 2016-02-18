@@ -40,27 +40,34 @@ public class SetButtons {
 	boolean haspassword;
 	BaseBuildings buildings = new BaseBuildings();
 	BtnCreator btnCreator = new BtnCreator();
-	JLabel tl;
-	JPanel jp;
-	JScrollBar ts;
 	Panel panel;
 	Loader loader;
-	int markedLobby;
-	ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
-	ArrayList<JLabel> labellist = new ArrayList<JLabel>();
-	ArrayList<JLabel> player_count_list = new ArrayList<JLabel>();
-	ImageIcon open = new ImageIcon("Menu_Assets/Schloss_offen.png");
-	ImageIcon closed = new ImageIcon("Menu_Assets/Schloss.png");
-	ImageIcon map1 = new ImageIcon("Menu_Assets/Thumbnail.png");
-	String[] standartselect;
-	private JPanel gametemp;
-	
+	private int markedLobby;
+	private ArrayList<JComboBox<String>> combolist = new ArrayList<JComboBox<String>>();
+	private ArrayList<JLabel> labellist = new ArrayList<JLabel>();
+	private ImageIcon open = new ImageIcon("Menu_Assets/Schloss_offen.png");
+	private ImageIcon closed = new ImageIcon("Menu_Assets/Schloss.png");
+	private ImageIcon map1 = new ImageIcon("Menu_Assets/Thumbnail.png");
 	private String s = "Willkommen im Chat";
+	private String[] standartselect;
+	private JLabel tl;
+	private JPanel jp;
+	private JScrollBar ts;
+	private JPanel gametemp;
+	private JPanel create;
 	private JScrollPane scroller;
 	private JButton btnLogin;
 	private JButton btnRegister;
-	private boolean loggedIN;
+	private boolean panelopen = false;
 	
+	/**
+	 * Plaziert alle wichtigen Schaltflächen passend zum Hintergrund
+	 * 
+	 * @param panel ContentPane des Frames
+	 * @param picName Name des Hintergrundbilds des ContentPanes
+	 * @param loader Loader der GUI
+	 * @param func Funktionen der GUI
+	 */
 	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
 		this.panel = panel;
 		this.loader = loader;
@@ -124,6 +131,8 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnExit);
+			
+			//Login-Button
 			loginRegisterPanel = new LoginRegisterPanel(loader.connection);
 			btnLogin = new JButton("LOGIN");
 			btnLogin.setBounds(800, 732, 90, 25);
@@ -146,6 +155,7 @@ public class SetButtons {
 				}
 			});
 			
+			//Register-Button
 			btnRegister = new JButton("REGISTER");
 			btnRegister.setBounds(920, 732, 90, 25);
 			btnRegister.setBackground(new Color(255,90,0));
@@ -166,7 +176,7 @@ public class SetButtons {
 				}
 			});
 			
-			if(!loader.connection.isLoggedIn()){  //TODO Brauch Status von Server
+			if(!loader.connection.isLoggedIn()){ 
 				panel.add(btnLogin);
 				panel.add(btnRegister);
 			} else{
@@ -183,12 +193,6 @@ public class SetButtons {
 		} else if (picName.equals("Wallpaper/serverlist.png")){
 			//LobbyList
 			jp = new JPanel();
-			jp.setBounds(142, 92, 789, 800);
-			jp.setOpaque(false);
-			jp.setLayout(null);
-			jp.setPreferredSize(new Dimension(789,0));
-			//TestGen
-			//TestGen Ende
 			scroller = new JScrollPane(jp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.setBounds(142, 92, 789, 580);
 			scroller.setOpaque(false);
@@ -208,15 +212,20 @@ public class SetButtons {
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
 					if(haspassword){
-						JPanel test = needPW();
-						panel.add(test);
-						panel.setComponentZOrder(test, 0);
+						if(panelopen){
+							panel.remove(create);
+							panel.repaint();
+							panel.revalidate();
+							panelopen = false;
+						}
+						create = needPW();
+						panel.add(create);
+						panel.setComponentZOrder(create, 0);
 						panel.repaint();
 						panel.revalidate();
 					} else{
 						loader.connection.connectGroup(markedLobby, "");
 					}
-					//TODO	loader.switchPanel(loader.Grouppage);
 					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
 
 				}
@@ -232,14 +241,18 @@ public class SetButtons {
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					System.out.println(markedLobby);
-					JPanel test = createInfos();
-					panel.add(test);
-					panel.setComponentZOrder(test, 0);
+					// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
+					if(panelopen){
+						panel.remove(create);
+						panel.repaint();
+						panel.revalidate();
+						panelopen = false;
+					}
+					create = createInfos();
+					panel.add(create);
+					panel.setComponentZOrder(create, 0);
 					panel.repaint();
 					panel.revalidate();
-						// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-					//TODO	loader.switchPanel(loader.Grouppage_owner);
 					//TODO	System.out.println("Gruppe konnte nicht erstellt werden!");
 
 				}
@@ -291,7 +304,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					//TODO	loader.switchPanel(loader.Lobbypage);
 					//TODO	System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
 				}
 			});
@@ -336,8 +348,6 @@ public class SetButtons {
 				labellist.add(players);
 				panel.add(players);
 			}
-			String[] player = { "hey", "test", "bird", ""}; //PLS DELETE !!!! LATER
-			updateLabels(player); //ME TOOOOO
 			
 			//Chat
 			tl = new JLabel(s);
@@ -349,7 +359,6 @@ public class SetButtons {
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
 			ts = scroller.getVerticalScrollBar();
-			//666, 350, 320, 364
 			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
 			tf.addActionListener(e -> {
@@ -376,7 +385,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					//TODO	loader.switchPanel(loader.Lobbypage);
 					//TODO	System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
 				}
 			});
@@ -392,7 +400,6 @@ public class SetButtons {
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
 			ts = scroller.getVerticalScrollBar();
-			//666, 350, 320, 364
 			JTextField tf = new JTextField();
 			tf.setBounds(666, 684, 320, 30);
 			tf.addActionListener(e -> {
@@ -458,10 +465,7 @@ public class SetButtons {
 				combolist.add(players);
 				panel.add(players);
 				panel.add(jb);
-			}
-			String[] player = { "hey", "test", "bird", "cat"}; //TODO:PLS DELETE !!!! LATER
-			updateCombo(player); //ME TOOOOO
-			
+			}			
 			
 			// START-BATTLE-Button
 			JButton btnBattleStart = new JButton("START");
@@ -478,10 +482,15 @@ public class SetButtons {
 		}
 		
 	}
-	
+	/**
+	 * Fügt die eingehende Nachricht dem Chatfeld hinzu
+	 * 
+	 * @param text Eingehende Nachricht
+	 */
 	public void setText(String text){
 		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
+		//Wird benötigt damit der Chat wirklich zum ende Scrollt
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
@@ -491,7 +500,11 @@ public class SetButtons {
 		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
 		ts.setValue(s);
 	}
-	
+	 /**
+	  * Updatet die JComboBoxen des Lobby Hosts mit den namen der neuen Spieler
+	  * 
+	  * @param player Spieler Array mit den Namen aller Spieler die sich in der Lobby befinden
+	  */
 	public void updateCombo(String[] player){
 		standartselect = player;
 		for(int i = 0; i <4;i++){
@@ -501,6 +514,11 @@ public class SetButtons {
 		panel.repaint();
 	}
 	
+	 /**
+	  * Updatet die JLabels der anderen mitspieler der Lobby
+	  * 
+	  * @param player Spieler Array mit den Namen aller Spieler die sich in der Lobby befinden
+	  */
 	public void updateLabels(String[] player){
 		for(int i = 0; i <4;i++){
 			labellist.get(i).setText(player[i]);
@@ -508,6 +526,11 @@ public class SetButtons {
 		panel.repaint();
 	}
 	
+	/**
+	 * Liest die zu tauschenden Spielernummern aus und speichert diese in einem Array
+	 * 
+	 * @return Int Array mit Plätzen der zutauschenden Spieler
+	 */
 	public int[] newplayers(){
 		int[] numbers = new int[2];
 		for (int i = 0; i < standartselect.length; i++) {
@@ -523,7 +546,13 @@ public class SetButtons {
 		return numbers;
 	}
 	
-	//Nicht wirklich flexibel keine möglichkeit zum Nachrutschen usw.
+	/**
+	 * Erstellt ein JPanel anhand der Informationen über die Lobby mit einem ActionListener der die Lobby auswählen lässt
+	 * 
+	 * @param lobbyNr Nummer der Lobby
+	 * @param lobby Das Lobby Objekt mit den nötigen Informationen
+	 * @return JPanel mit Informationen über die Lobby
+	 */
 	public JPanel genNEWLobby(int lobbyNr, Lobby lobby) {
 		JPanel game1 = new JPanel();
 		game1.setBounds(10, 10+(160*(lobbyNr)), 755, 150);
@@ -537,8 +566,13 @@ public class SetButtons {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
-				System.out.println(lobby.hasPassword());
 				haspassword = lobby.hasPassword();
+				if(panelopen){
+					panel.remove(create);
+					panel.repaint();
+					panel.revalidate();
+					panelopen = false;
+				}
 				if(gametemp != null){
                     gametemp.setBorder(null);    
                 }
@@ -568,17 +602,6 @@ public class SetButtons {
 		player_count.setHorizontalAlignment(SwingConstants.CENTER);
 		lobby_name.setFont(new Font("Arial", Font.BOLD, 24));
 		player_count.setFont(new Font("Arial", Font.BOLD, 24));
-//		DEMO CODE
-//		map_pic.setOpaque(true);
-//		map_pic.setBackground(Color.BLUE);
-//		lobby_name.setBackground(Color.BLUE);
-//		player_count.setBackground(Color.BLUE);
-//		pw_en.setBackground(Color.BLUE);
-//		pw_en.setOpaque(true);
-//		player_count.setOpaque(true);
-//		lobby_name.setOpaque(true);
-		//DEMO CODE ENDE
-		player_count_list.add(player_count);
 		game1.add(map_pic);
 		game1.add(pw_en);
 		game1.add(lobby_name);
@@ -586,8 +609,12 @@ public class SetButtons {
 		
 		return game1;
 	}
+	/**
+	 * Erstellt die Lobby Panels und fügt diese einem JPanel hinzu was dann im JScrollPane angezeigt wird
+	 * 
+	 * @param lobbyList Liste aller vorhanden Lobbys
+	 */
 	public void updateLobbyList(Lobby[] lobbyList) {
-		System.out.println(lobbyList.length);
 		JPanel lobbyPanel = new JPanel();
 		lobbyPanel.setBounds(0, 0, 789, 800);
 		lobbyPanel.setOpaque(false);
@@ -603,6 +630,12 @@ public class SetButtons {
 		scroller.repaint();
 		scroller.revalidate();
 	}
+	
+	/**
+	 * JPanel mit zwei Eingabe Feldern für das erstellen einer Lobby
+	 * 
+	 * @return JPanel
+	 */
 	public JPanel createInfos(){
 		JPanel en = new JPanel();
 		en.setLayout(null);
@@ -633,11 +666,17 @@ public class SetButtons {
 		en.add(nl);
 		en.add(pl);
 		en.add(c);
+		panelopen = true;
 		return en;
 	}
+	/**
+	 * Eingabefeld falls Lobby ein Passwort besitzt
+	 * 
+	 * @return JPanel
+	 */
 	public JPanel needPW(){
 		JPanel np = new JPanel();
-		JLabel ep = new JLabel("This Lobby has a Password. Please it");
+		JLabel ep = new JLabel("This Lobby has a Password. Please enter it and press Enter");
 		JTextField tp = new JTextField();
 		tp.addActionListener(e ->{
 			loader.connection.connectGroup(markedLobby, tp.getText());
@@ -651,8 +690,14 @@ public class SetButtons {
 		np.setBackground(Color.RED);
 		np.add(tp);
 		np.add(ep);
+		panelopen = true;
 		return np;
 	}
+	/**
+	 * Ersetzt den Login und Register Button mit einem Logout Button und einem JLabel falls der Nutzer eingeloggt ist
+	 * 
+	 * @param name Name des Nutzers
+	 */
 	public void loggedIn(String name){
 		panel.remove(btnLogin);
 		panel.remove(btnRegister);
@@ -668,6 +713,8 @@ public class SetButtons {
 			panel.remove(user);
 			panel.add(btnLogin);
 			panel.add(btnRegister);
+			panel.repaint();
+			panel.revalidate();
 		});
 		panel.add(btnlogout);
 		panel.add(user);

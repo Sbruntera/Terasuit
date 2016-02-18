@@ -8,7 +8,13 @@ import org.junit.Test;
 
 import server.GameServer;
 import server.Server;
-
+/**
+ * Macht noch absolut garnichts
+ * 
+ * @author Rogge
+ *
+ */
+@SuppressWarnings("unused")
 public class Game_tests {
 
 	public Game_tests(){
@@ -22,7 +28,7 @@ public class Game_tests {
 	}
 	@Test
 	public void place_test() {
-		//Test of Gamefunctions GamerServer.java
+		//TODO Test of Gamefunctions GamerServer.java
 	}
 
 }
