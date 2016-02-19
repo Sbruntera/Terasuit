@@ -49,6 +49,7 @@ public class Game {
 		// Erstellen der Basis
 		buildings.buildBase(field, this, BuildingsArray, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y, true);
 		buildings.buildBase(field, this, BuildingsArray, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y, false);
+
 		
 		// Back-Button
 		JButton btnBACK = new JButton("X");
