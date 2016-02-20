@@ -440,10 +440,10 @@ public class SetButtons {
 				JButton jb = new JButton("KICK");
 				if (i==0 || i==1){
 					players.setBounds(75, 230+(250*i), 200, 50);
-					jb.setBounds(75, 300+(250*i), 200, 60);//links / runter / breite / höhe
+					jb.setBounds(100, 300+(250*i), 150, 40);//links / runter / breite / höhe
 				}else{
 					players.setBounds(425, 230+(250*(i-2)), 200, 50);
-					jb.setBounds(425, 300+(250*(i-2)), 200, 60);//links / runter / breite / höhe
+					jb.setBounds(450, 300+(250*(i-2)), 150, 40);//links / runter / breite / höhe
 				}
 				players.setFont(new Font("Arial", Font.BOLD, 24));
 				jb.setBackground(new Color(255,90,0));

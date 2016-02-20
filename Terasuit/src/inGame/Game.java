@@ -61,7 +61,7 @@ public class Game {
 
 		// Back-Button
 		JButton btnBACK = new JButton("X");
-		btnCreator.createOne(btnBACK, 680, 5, 60, 60, 87);
+		btnCreator.createOne(btnBACK, 673, 114, 60, 60, 87);
 		btnBACK.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.leaveGame();
