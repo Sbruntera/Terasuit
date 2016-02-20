@@ -37,7 +37,7 @@ public class Lobby {
 		this.password = password;
 		this.map = map;
 		this.id = id;
-		host.sendGameJoin(this, true);
+		host.sendGameJoin(this, true, (byte) 0);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Lobby {
 	 */
 	public boolean addPlayer(Connection player, String password) {
 		boolean playerJoined = false;
-		int i = 0;
+		byte i = 0;
 		if (password.equals(this.password) || !this.hasPassword()) {
 			while ((!playerJoined) && i < MAXPLAYERS) {
 				if (playerList[i] == null) {
@@ -63,9 +63,9 @@ public class Lobby {
 			for (Connection c : playerList) {
 				if (c != null) {
 					if (c == player) {
-						c.sendGameJoin(this, false);
+						c.sendGameJoin(this, false, i);
 					} else {
-						c.sendPlayerJoined((byte) i, player.getName());
+						c.sendPlayerJoined(i, player.getName());
 					}
 				}
 			}
@@ -155,7 +155,13 @@ public class Lobby {
 			playerList[player2] = temp;
 			for (Connection c : playerList) {
 				if (c != null) {
-					c.sendSwitchPlayers(player1, player2);
+					if (playerList[player1] == c) {
+						c.sendSwitchPlayers(player1, player2, player1);
+					} else if (playerList[player2] == c) {
+						c.sendSwitchPlayers(player1, player2, player2);
+					} else {
+						c.sendSwitchPlayers(player1, player2);
+					}
 				}
 			}
 		}

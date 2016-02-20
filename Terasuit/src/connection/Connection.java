@@ -178,12 +178,12 @@ public class Connection implements Runnable {
 	 * @param lobby
 	 *            : angeforderte Lobby zum beitreten
 	 */
-	public void sendGameJoin(Lobby lobby, boolean host) {
+	public void sendGameJoin(Lobby lobby, boolean host, byte position) {
 		if (lobby != null) {
 			joinLobby(lobby);
 			String message = String.valueOf((char) 2)
 					+ (char) lobby.getMap().getID()
-					+ (char) Boolean.compare(host, false);
+					+ (char) ((Boolean.compare(host, false) << 2) + position);
 			String[] names = lobby.getPlayerNames();
 			for (int i = 0; i < names.length; i++) {
 				if (i != 0) {
@@ -213,7 +213,19 @@ public class Connection implements Runnable {
 	// Lobby
 
 	/**
-	 * Unterrichtet den Client, dass der Spieler die position gewechselt hat
+	 * Unterrichtet den Client, dass der Spieler die Position gewechselt hat
+	 * 
+	 * @param player
+	 *            Spieler der die Position wechselt
+	 * @param position
+	 *            Position bei der der Spieler landet
+	 */
+	public void sendSwitchPlayers(byte player1, byte player2, byte ownPosition) {
+		addMessage(String.valueOf((char) 16) + (char) player1 + (char) player2 + (char) ownPosition);
+	}
+	
+	/**
+	 * Unterrichtet den Client, dass andere Spieler die Positionen gewechselt hat
 	 * 
 	 * @param player
 	 *            Spieler der die Position wechselt
@@ -337,4 +349,5 @@ public class Connection implements Runnable {
 	public void sendChatMessage(byte id, String message) {
 		addMessage(String.valueOf((char) 21) + (char) id + message);
 	}
+
 }

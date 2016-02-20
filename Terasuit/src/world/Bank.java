@@ -3,7 +3,7 @@ package world;
 public class Bank implements Building {
 	
 	public static final int MAXLVL = 1;
-	public static final int BUILDINGTIME = 100;
+	public static final int BUILDINGTIME = 110;
 
 	private int lvl = 1;
 	private int buildTime;
@@ -32,8 +32,9 @@ public class Bank implements Building {
 	}
 
 	@Override
-	public void build() {
+	public boolean build() {
 		buildTime--;
+		return buildTime < 0;
 	}
 
 	@Override
@@ -58,5 +59,15 @@ public class Bank implements Building {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		return WorldConstants.BANKID;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime < 0;
 	}
 }

@@ -33,11 +33,11 @@ public class GameAnalyser implements Analyser {
 		switch (bytes[0]) {
 		case (32): // Gebäude (aus)bauen
 			if (bytes.length == 3) {
-				byte buildingPlace = bytes[1];
 				if (bytes[2] < 126) {
-					server.build(position, buildingPlace, bytes[2]);
+					System.out.println(bytes[1]);
+					server.build(position, bytes[1], bytes[2]);
 				} else {
-					server.destroyBuilding(buildingPlace, position);
+					server.destroyBuilding(bytes[1], position);
 				}
 			}
 			break;

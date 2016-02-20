@@ -92,13 +92,14 @@ public class BaseBuildings {
 		field.repaint();
 	}
 	
-	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field, int time){
+	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field){
 		System.out.println("PrimID: " + primID);
 		System.out.println("SlotID: " + slotID);
 		System.out.println(buildingName);
 		building = new Buildings();
 		if (buildingsArray[slotID].getPrimerBuilding() != null){
 			field.remove(buildingsArray[primID].getLabel());
+			System.out.println(primID-18 + "a" + slotID);
 			buildingsArray[primID-18].setPrimerBuilding(null);
 		}
 		ImageIcon pic = new ImageIcon(entityLocation);

@@ -108,12 +108,24 @@ public class GameServer implements Runnable {
 		for (Building[] array : buildings) {
 			for (Building b : array) {
 				if (b != null) {
-					Unit u = b.create();
-					if (u != null) {
-						for (Connection c : connections) {
-							if (c != null) {
-								c.sendCreateUnit(u.getPlayer(),
-										u.getPosition(), u.getType(), u.getID());
+					if (!b.isFinished()) {
+						if (b.build()) {
+							for (Connection c : connections) {
+								if (c != null) {
+									if (c != connections[b.getPlayer()]) {
+										c.sendCreateOrUpgradeBuilding(b.getPlayer(), b.getSlotID(), b.getType());
+									}
+								}
+							}
+						}
+					} else {
+						Unit u = b.create();
+						if (u != null) {
+							for (Connection c : connections) {
+								if (c != null) {
+									c.sendCreateUnit(u.getPlayer(),
+											u.getPosition(), u.getType(), u.getID());
+								}
 							}
 						}
 					}
@@ -136,7 +148,6 @@ public class GameServer implements Runnable {
 				connections[i].sendGameEnded((connections.length - 1) / 2 < 0);
 			}
 		}
-
 		tick.set(false);
 	}
 
@@ -258,6 +269,7 @@ public class GameServer implements Runnable {
 	 *            : position des Gebäudes
 	 */
 	public void build(byte position, byte buildingPlace, byte id) {
+		System.out.println(buildings[position][buildingPlace]);
 		if (buildings[position][buildingPlace] == null) {
 			buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
 					buildingPlace, position, true);

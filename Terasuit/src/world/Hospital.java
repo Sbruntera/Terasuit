@@ -5,7 +5,7 @@ public class Hospital implements Building {
 	public static final int MAXLVL = 1;
 	public static final int BUILDINGTIME = 100;
 
-	private int lvl = 1;
+	private int lvl = 0;
 	private int buildTime;
 	private byte position;
 	private byte player;
@@ -32,8 +32,9 @@ public class Hospital implements Building {
 	}
 
 	@Override
-	public void build() {
+	public boolean build() {
 		buildTime--;
+		return buildTime < 0;
 	}
 
 	@Override
@@ -58,5 +59,15 @@ public class Hospital implements Building {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		return (byte) (WorldConstants.HOSPITALID + lvl);
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime < 0;
 	}
 }

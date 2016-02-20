@@ -3,9 +3,9 @@ package world;
 public class Armory implements Building {
 	
 	public static final int MAXLVL = 1;
-	public static final int BUILDINGTIME = 100;
+	public static final int BUILDINGTIME = 110;
 
-	private int lvl = 1;
+	private int lvl = 0;
 	private int buildTime;
 	private byte position;
 	private Unit unit;
@@ -33,8 +33,9 @@ public class Armory implements Building {
 	}
 
 	@Override
-	public void build() {
+	public boolean build() {
 		buildTime--;
+		return buildTime <= 0;
 	}
 
 	@Override
@@ -59,5 +60,15 @@ public class Armory implements Building {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		return WorldConstants.ARMORYID;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime <= 0;
 	}
 }

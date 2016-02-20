@@ -52,7 +52,8 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public void build() { // MainBuilding can not be Builded
+	public boolean build() { // MainBuilding can not be Builded
+		return false;
 	}
 
 	@Override
@@ -146,5 +147,10 @@ public class MainBuilding implements Building, Unit {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return true;
 	}
 }

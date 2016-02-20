@@ -149,6 +149,12 @@ public class Game {
 		}
 	}
 
+	public void createEnemyBuilding(String buildingName, String buildingLocation, int slotID, int primID) {
+		buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[slotID].getX(), BuildingsArray[slotID].getY(),
+				BuildingsArray, "blubb", buildingName, this,
+				slotID, primID, field);
+	}
+
 	/**
 	 * Sucht mit den gegeben Daten nach der aktuellen JProcessbar und
 	 * aktualisiert sie, wobei bei 100% eine neue Aktion ausgeführt wird
@@ -164,7 +170,7 @@ public class Game {
 			} else {
 				buildings.createPrimaryBuilding(buildingLocation, X, Y,
 						BuildingsArray, description, buildingName, this,
-						slotID, primID, field, time);
+						slotID, primID, field);
 				listOfJProgressBar[ID].setVisible(false);
 				listOfJProgressBar[ID] = null;
 				func.destroyUserOptions(console, this);

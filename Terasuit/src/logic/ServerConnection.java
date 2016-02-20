@@ -290,6 +290,9 @@ public class ServerConnection implements Runnable {
 		case ("Outpost"):
 			buildingID = 0;
 			break;
+		case ("Barracks"):
+			buildingID = 1;
+			break;
 		case ("Forge"):
 			buildingID = 8;
 			break;
@@ -309,7 +312,6 @@ public class ServerConnection implements Runnable {
 			buildingID = 48;
 			break;
 		}
-		System.out.println("Bakamana" + position);
 		if (position < 4 && analyser.getState() == State.GAME) {
 			addMessage(String.valueOf((char) 32) + (char) position
 					+ (char) buildingID);

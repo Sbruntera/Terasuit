@@ -3,7 +3,7 @@ package world;
 public class Forge implements Building {
 	
 	public static final int MAXLVL = 1;
-	public static final int BUILDINGTIME = 100;
+	public static final int BUILDINGTIME = 110;
 
 	private int lvl = 1;
 	private int buildTime;
@@ -13,6 +13,7 @@ public class Forge implements Building {
 	public Forge(byte position, byte player) {
 		this.position = position;
 		this.player = player;
+		buildTime = BUILDINGTIME;
 	}
 
 	@Override
@@ -32,8 +33,9 @@ public class Forge implements Building {
 	}
 
 	@Override
-	public void build() {
+	public boolean build() {
 		buildTime--;
+		return buildTime <= 0;
 	}
 
 	@Override
@@ -58,5 +60,15 @@ public class Forge implements Building {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		return WorldConstants.FORGEID;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime <= 0;
 	}
 }

@@ -32,8 +32,9 @@ public class Generator implements Building {
 	}
 
 	@Override
-	public void build() {
+	public boolean build() {
 		buildTime--;
+		return buildTime < 0;
 	}
 
 	@Override
@@ -58,5 +59,15 @@ public class Generator implements Building {
 	public byte getUpgrade() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public byte getType() {
+		return WorldConstants.GENERATORID;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime < 0;
 	}
 }

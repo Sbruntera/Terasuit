@@ -11,6 +11,7 @@ public class Analyser {
 	private GameLobby game;
 	
 	private boolean isHost;
+	private byte position;
 
 	public Analyser(Loader loader) {
 		state = State.MENU;
@@ -57,7 +58,8 @@ public class Analyser {
 			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
 			break;
 		case (2): // Join Game
-			isHost = bytes[2] > 0;
+			isHost = (bytes[2] & 4) > 0;
+			position = (byte) (bytes[2] & 3);
 			splittedMessage = message.substring(3).split(",");
 			String[] names = new String[splittedMessage.length];
 			for (int i = 0; i < splittedMessage.length; i++) {
@@ -91,6 +93,9 @@ public class Analyser {
 		byte[] bytes = message.getBytes();
 		switch (bytes[0]) {
 		case (16): // Position Wechseln
+			if (bytes.length == 4) {
+				position = bytes[3];
+			}
 			game.switchPlayers(bytes[1], bytes[2]);
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
@@ -130,6 +135,7 @@ public class Analyser {
 	}
 
 	private void analyseGameMessage(String message) {
+		System.out.println("Message gained");
 		byte[] bytes = message.getBytes();
 		switch (bytes[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
@@ -137,9 +143,13 @@ public class Analyser {
 			byte buildingPosition = bytes[2];
 			byte id = bytes[3];
 			String buildingName = null;
+			System.out.println(id + "Nananananananananana");
 			switch (id) {
 			case (0):
 				buildingName = "Outpost";
+				break;
+			case (1):
+				buildingName = "Barracks";
 				break;
 			case (8):
 				buildingName = "Forge";
@@ -161,7 +171,11 @@ public class Analyser {
 				break;
 			}
 			if (buildingName != null) {
-				loader.game.createBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 16);
+				if (playerNumber == position) {
+					loader.game.createBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 18);
+				} else {
+					loader.game.createEnemyBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 18);
+				}
 			}
 			break;
 		case (33): // Ein eigenes Gebäude startet eine Produktion
