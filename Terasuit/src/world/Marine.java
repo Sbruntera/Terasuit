@@ -3,26 +3,24 @@ package world;
 import java.awt.Point;
 
 public class Marine implements Unit {
-	
+
 	private static int damage;
 	private static int range;
 	private static int shootSpeed;
-	
+
 	private byte playerID;
 	private short id;
-	
+
 	private int health;
 	private Point position;
 	private int direction;
 	private boolean running;
 
-
-
 	public Marine(byte playerID, short id) {
 		this.playerID = playerID;
 		this.id = id;
 	}
-	
+
 	@Override
 	public byte getPlayer() {
 		return playerID;
@@ -44,22 +42,22 @@ public class Marine implements Unit {
 	}
 
 	@Override
-	public int getDamage() {
+	public int getDamage(boolean ground) {
 		return damage;
 	}
 
 	@Override
-	public int getRange() {
+	public int getRange(boolean ground) {
 		return range;
 	}
 
 	@Override
-	public int getShootSpeed() {
+	public int getShootSpeed(boolean ground) {
 		return shootSpeed;
 	}
 
 	@Override
-	public int getSplashDamage() {
+	public int getSplashDamage(boolean ground) {
 		return 0;
 	}
 
@@ -83,14 +81,27 @@ public class Marine implements Unit {
 		this.direction = direction;
 		this.running = running;
 	}
-	
+
 	public boolean isRunning() {
 		return running;
 	}
 
 	@Override
-	public Bullet shoot(Unit farestUnit) {
-		return new Bullet(this, farestUnit);
+	public Bullet shoot(Unit[] farestUnit) {
+		if (farestUnit[0] == null) {
+			if (farestUnit[1] != null) {
+				return new Bullet(this, farestUnit[1]);
+			} else {
+				return null;
+			}
+		} else if (farestUnit[1] == null) {
+			return new Bullet(this, farestUnit[0]);
+		} else if (Math.abs(farestUnit[1].getPosition().x - getPosition().x) < Math
+				.abs(farestUnit[0].getPosition().x - getPosition().x)) {
+			return new Bullet(this, farestUnit[1]);
+		} else {
+			return new Bullet(this, farestUnit[0]);
+		}
 	}
 
 	@Override
@@ -104,11 +115,14 @@ public class Marine implements Unit {
 	}
 
 	@Override
-	public boolean hasInRange(Unit unit) {
-		if (unit != null) {
-			if (playerID < 2 && position.x + range  >= unit.getPosition().x) {
+	public boolean hasInRange(Unit[] units) {
+		if (units[0] != null && canAttackGround()) {
+			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(true) <= 0) {
 				return true;
-			} else if (playerID > 1 && position.x - range <= unit.getPosition().x) {
+			}
+		}
+		if (units[01] != null && canAttackAir()) {
+			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(false) <= 0) {
 				return true;
 			}
 		}
@@ -119,6 +133,16 @@ public class Marine implements Unit {
 	public byte getType() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public boolean canAttackGround() {
+		return true;
+	}
+
+	@Override
+	public boolean canAttackAir() {
+		return true;
 	}
 
 }

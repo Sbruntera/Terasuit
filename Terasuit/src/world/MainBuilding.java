@@ -36,23 +36,14 @@ public class MainBuilding implements Building, Unit {
 		return false;
 	}
 
-	public int getDamage() {
+	@Override
+	public int getDamage(boolean ground) {
 		return damage;
 	}
 
-	public int getRange() {
+	@Override
+	public int getRange(boolean ground) {
 		return range;
-	}
-
-	public boolean canShoot() {
-		return cooldown <= 0;
-	}
-
-	public boolean coolDown() {
-		if (cooldown > 0) {
-			cooldown -= 1;
-		}
-		return cooldown <= 0;
 	}
 
 	@Override
@@ -74,7 +65,7 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public int getShootSpeed() { // MainBuilding can not shoot
+	public int getShootSpeed(boolean ground) { // MainBuilding can not shoot
 		return 0;
 	}
 
@@ -92,7 +83,7 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public Bullet shoot(Unit farestUnits) { // MainBuilding can not shoot
+	public Bullet shoot(Unit[] farestUnits) { // MainBuilding can not shoot
 		return null;
 	}
 
@@ -107,7 +98,7 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public boolean hasInRange(Unit unit) { // MainBuilding can not shoot
+	public boolean hasInRange(Unit[] units) { // MainBuilding can not shoot
 		return false;
 	}
 
@@ -123,7 +114,6 @@ public class MainBuilding implements Building, Unit {
 
 	@Override
 	public byte getType() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -133,12 +123,22 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public int getSplashDamage() { // Can not Attack
+	public int getSplashDamage(boolean ground) { // Can not Attack
 		return 0;
 	}
 
 	@Override
 	public boolean isFlying() {
+		return false;
+	}
+
+	@Override
+	public boolean canAttackGround() {
+		return false;
+	}
+
+	@Override
+	public boolean canAttackAir() {
 		return false;
 	}
 }

@@ -3,7 +3,7 @@ package world;
 import java.awt.Point;
 
 public interface Unit {
-	
+
 	public byte getPlayer();
 
 	public void dealDamage(int value);
@@ -12,14 +12,18 @@ public interface Unit {
 
 	public int getHealth();
 
-	public int getDamage();
+	public boolean canAttackGround();
 
-	public int getRange();
+	public boolean canAttackAir();
 
-	public int getShootSpeed();
-	
-	public int getSplashDamage();
-	
+	public int getDamage(boolean ground);
+
+	public int getRange(boolean ground);
+
+	public int getShootSpeed(boolean ground);
+
+	public int getSplashDamage(boolean ground);
+
 	public boolean isFlying();
 
 	public Point getPosition();
@@ -30,13 +34,13 @@ public interface Unit {
 
 	public boolean isRunning();
 
-	public Bullet shoot(Unit farestUnits);
+	public Bullet shoot(Unit[] farestUnits);
 
 	public boolean isAlive();
 
 	public short getID();
 
-	public boolean hasInRange(Unit unit);
+	public boolean hasInRange(Unit[] nearesUnits);
 
 	public byte getType();
 }

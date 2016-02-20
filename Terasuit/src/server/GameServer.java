@@ -32,7 +32,6 @@ public class GameServer implements Runnable {
 	ArrayList<Unit> unitsToRemove;
 
 	private short unitIDCounter;
-	private Unit[] farestUnits;
 	private AtomicBoolean ended = new AtomicBoolean(false);
 
 	private AtomicBoolean tick = new AtomicBoolean(false);
@@ -50,7 +49,6 @@ public class GameServer implements Runnable {
 		}
 		recources = new int[connections.length][];
 		// TODO: Startrecourcen festlegen.
-		farestUnits = new Unit[2];
 		bulletsToRemove = new ArrayList<Bullet>();
 		unitsToRemove = new ArrayList<Unit>();
 		Controller controller = new Controller(this);
@@ -88,35 +86,19 @@ public class GameServer implements Runnable {
 		Unit unit;
 		for (Integer i : unitIDs) {
 			unit = units.get(i);
-
-			if (unit.getPlayer() > 2) {
-				if (unit.hasInRange(farestUnits[0]) && !unit.isRunning()) {
-					Bullet b = unit.shoot(farestUnits[0]);
-					if (b != null) {
-						bullets.add(b);
-					}
-				} else if (unit.hasInRange(mainBuildings[0])) {
-					Bullet b = unit.shoot(mainBuildings[0]);
-					if (b != null) {
-						bullets.add(b);
-					}
-				} else {
-					unit.move();
+			Unit[] nearesUnits = getNearestUnit((unit.getPlayer() >> 1));
+			if (unit.hasInRange(nearesUnits) && !unit.isRunning()) {
+				Bullet b = unit.shoot(nearesUnits);
+				if (b != null) {
+					bullets.add(b);
+				}
+			} else if (unit.hasInRange(new Unit[] {mainBuildings[unit.getPlayer() >> 1], null})) {
+				Bullet b = unit.shoot(new Unit[] {mainBuildings[unit.getPlayer() >> 1], null});
+				if (b != null) {
+					bullets.add(b);
 				}
 			} else {
-				if (unit.hasInRange(farestUnits[1]) && !unit.isRunning()) {
-					Bullet b = unit.shoot(farestUnits[1]);
-					if (b != null) {
-						bullets.add(b);
-					}
-				} else if (unit.hasInRange(mainBuildings[1])) {
-					Bullet b = unit.shoot(mainBuildings[1]);
-					if (b != null) {
-						bullets.add(b);
-					}
-				} else {
-					unit.move();
-				}
+				unit.move();
 			}
 		}
 
@@ -154,6 +136,18 @@ public class GameServer implements Runnable {
 		}
 
 		tick.set(false);
+	}
+
+	private Unit[] getNearestUnit(int i) {
+		Unit[] nearestUnits = new Unit[2];
+		int[] difference = new int[] {-32768, -32768};
+		for (Unit u : units.values()) {
+			if (Math.abs(u.getPosition().x - i) < difference[Boolean.compare(u.isFlying(), false)]) {
+				nearestUnits[Boolean.compare(u.isFlying(), false)] = u;
+				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u.getPosition().x - i);
+			}
+		}
+		return nearestUnits;
 	}
 
 	public byte getPosition(Connection connection) {
