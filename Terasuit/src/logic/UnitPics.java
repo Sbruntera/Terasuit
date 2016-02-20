@@ -17,8 +17,8 @@ public class UnitPics {
 	String picLocation = "";
 	String picName = "";
 	ImageManipulator imgMani = new ImageManipulator();
-	String [] entityGroundList = {"Marine", "Chronite Tank"};
-	String [] entityAirList = {"Scout"};
+	String [] entityGroundList = {"Marine", "Chronite Tank", "Gröditz", "A25-Roman", "Hover Tank", "Meditec", "Modified Sakata", "Sniper", "Sphinx", "Sakata-MK2", "Sakata", "Gladiator", "Sakata Spider"};
+	String [] entityAirList = {"Scout", "Phantom", "Black Queen", "Saint", "Modified Phantom"};
 	
 	HashMap<String, BufferedImage> UnitPicHash = new HashMap<String, BufferedImage>();
 	
@@ -26,11 +26,13 @@ public class UnitPics {
 		for (int i = 0; i != entityGroundList.length; i++){
 			picLocation = "Unit/Ground/" + entityGroundList[i] + ".png";
 			picName = entityGroundList[i];
+			System.out.println(picLocation);
 			this.generate(UnitPicHash);
 		}
 		for (int i = 0; i != entityAirList.length; i++){
 			picLocation = "Unit/Air/" + entityAirList[i] + ".png";
 			picName = entityAirList[i];
+			System.out.println(picLocation);
 			this.generate(UnitPicHash);
 		}
 	}
@@ -41,16 +43,16 @@ public class UnitPics {
 		String EnityName2 = splitEntityName[2];
 		splitEntityName = EnityName2.split("\\.");
 
-
 	    String searchString = splitEntityName[0] + "_" + color;
 		if (left && !mark){
-			searchString = searchString + "_turn";
+			searchString = searchString + "_turn";	
 		}else if (!left && !mark){
 		}else if (left && mark){
 			searchString = searchString + "_mark_turn";
 		}else{
 			searchString = searchString + "_mark";
 		}
+		System.out.println(searchString);
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	

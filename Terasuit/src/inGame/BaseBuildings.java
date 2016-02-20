@@ -173,11 +173,11 @@ public class BaseBuildings {
 		case "Slot":
 			return new String[]{"Outpost", "Forge", "Hospital", "Bank", "Armory", "Generator", "Special Operations"};
 		case "Outpost":
-			return new String[]{"Marine", "Chronite Tank", "Scout", "Barracks", "Destroy"};
+			return new String[]{"Marine", "Chronite Tank", "Recruit", "Barracks", "Destroy"};
 		case "Barracks":
 			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Recruit", "Arsenal", "Destroy"};
 		case "Arsenal":
-			return new String[]{"Marine", "Chronite Tank", "Gröditz", "Hover Tank", "Black Queen", "Recruit", "Destroy"};
+			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Hover Tank", "Black Queen", "Recruit", "Destroy"};
 		case "Forge":
 			return new String[]{"A25-Roman", "Scout", "Salvage", "Manufactory", "Destroy"};
 		case "Manufactory":
@@ -212,9 +212,15 @@ public class BaseBuildings {
 		case "Armory":
 			return 7;
 		case "Hospital":
-			return 7;
+			return 8;
 		case "Outpost":
 			return 2;
+		case "Special Operations":
+			return 2;
+		case "War Sanctum":
+			return 5;
+		case "Treasury":
+			return 25;
 		default:
 			return 0;
 		}	

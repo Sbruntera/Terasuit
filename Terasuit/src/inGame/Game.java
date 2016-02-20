@@ -3,22 +3,14 @@ package inGame;
 import grafig.Loader;
 import grafig.Panel;
 
-
-
-
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-
-
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -40,7 +32,6 @@ public class Game {
 	Panel console;
 	Loader loader;
 	JLabel tl;
-	JScrollBar ts;
 	int playerID;
 	int counter = 0;
 	private String s = "Willkommen im Chat";
@@ -58,6 +49,7 @@ public class Game {
 		// Erstellen der Basis
 		buildings.buildBase(field, this, BuildingsArray, loader, func, buildings.red, buildings.blue, buildings.default_position_Leftside_x, buildings.default_position_Leftside_y, true);
 		buildings.buildBase(field, this, BuildingsArray, loader, func, buildings.grun, buildings.gelb, buildings.default_position_Rightside_x, buildings.default_position_Rightside_y, false);
+
 		
 		// Back-Button
 		JButton btnBACK = new JButton("X");
@@ -73,11 +65,6 @@ public class Game {
 		tl.setBounds(756, 11, 255, 134);
 		tl.setForeground(Color.WHITE);
 		tl.setVerticalAlignment(SwingConstants.TOP);
-		JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroller.setBounds(756, 11, 255, 134);
-		scroller.setOpaque(false);
-		scroller.getViewport().setOpaque(false);
-		ts = scroller.getVerticalScrollBar();
 		//666, 350, 320, 364
 		JTextField tf = new JTextField();
 		tf.setBounds(756, 145, 255, 30);
@@ -85,7 +72,7 @@ public class Game {
 			loader.connection.sendChatMessage(tf.getText());
 			tf.setText("");
 		});
-		console.add(scroller);
+		console.add(tl);
 		console.add(tf);
 		console.add(btnBACK);
 		panel.repaint();
@@ -105,7 +92,7 @@ public class Game {
 
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {	
 		func.deMarkEntittys();
-		func.findAllEntitys(minX, minY, w, h);
+		func.findAllEntitys(minX, minY, w, h, playerID);
 		func.destroyUserOptions(console, this);
 	}
 	
@@ -158,6 +145,7 @@ public class Game {
 			int percent =  listOfJProgressBar[ID].getValue();
 			if (percent != 100){
 				listOfJProgressBar[ID].setValue(percent+10);
+				System.out.println(ID + " kkkdkd");
 			}else{
 				buildings.createPrimaryBuilding(buildingLocation, X, Y, BuildingsArray, description, buildingName, this, slotID, primID, field, time);
 				listOfJProgressBar[ID].setVisible(false);
@@ -180,8 +168,11 @@ public class Game {
 		}
 	}
 
-	public void cancel(int primID) {
-		System.out.println("hey, i will destroy that for you <3");
+	public void cancel(int index) {
+		listOfJProgressBar[index].setVisible(false);
+		func.destroyUserOptions(console, this);
+		listOfJProgressBar[index] = null;
+		
 	}
 
 	public void replaceJProcessbar(int index) {
@@ -192,13 +183,5 @@ public class Game {
 		s = s + "<br>" + "User: " + text;
 		System.out.println(text);
 		tl.setText("<html>" + s + "</html>");
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
-		ts.setValue(s);
 	}
 }

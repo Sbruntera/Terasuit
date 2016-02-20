@@ -26,8 +26,10 @@ public class CreateUnit {
 	ImageManipulator imgManipulator = new ImageManipulator();
 	UnitData UnitTable = new UnitData();
 	int default_spawn_left = 300;
-	int default_spawn_leftside_Ground = 350;
-	int default_spawn_leftside_Air = 150;
+	int default_spawn_right = 1200;
+	int default_spawn_Ground = 350;
+	int default_spawn_Air = 150;
+	boolean direction_to_leftside = true;
 	
 	public CreateUnit(){
 		UnitTable.createUnitData();
@@ -44,11 +46,25 @@ public class CreateUnit {
 		int unit_Y_Position = 0;
 		
 		if (airUnit) {
-			unit_X_Position = default_spawn_left + random(70);
-			unit_Y_Position = default_spawn_leftside_Air + random(150);
+			if (color == 1 || color == 2){
+				unit_X_Position = default_spawn_left + random(70);
+				unit_Y_Position = default_spawn_Air + random(150);
+				direction_to_leftside = false;
+			}else{
+				unit_X_Position = default_spawn_right + random(70);
+				unit_Y_Position = default_spawn_Air + random(150);
+				direction_to_leftside = true;
+			}
 		}else{
-			unit_X_Position = default_spawn_left + random(70);
-			unit_Y_Position = default_spawn_leftside_Ground + random(150);
+			if (color == 1 || color == 2){
+				unit_X_Position = default_spawn_left + random(70);
+				unit_Y_Position = default_spawn_Ground + random(150);
+				direction_to_leftside = false;
+			}else{
+				unit_X_Position = default_spawn_right + random(70);
+				unit_Y_Position = default_spawn_Ground + random(150);
+				direction_to_leftside = true;
+			}
 		}
 		
 		unit.setEntityPositionX(unit_X_Position);
@@ -57,18 +73,24 @@ public class CreateUnit {
 		// Bild der Einheite wird geladen
 		BufferedImage img = null;
 		try {
+			System.out.println(Entitytype);
 			img = ImageIO.read(new File(Entitytype));
 			
 		} catch (IOException e) {
+			System.out.println("Fehlendes Bild!");
+			System.out.println("");
 		}
 		
 		// Bild wird entsprechen bearbeitet
 		img = imgManipulator.setnewColors(img, color);
 		Image img2 = imgManipulator.setnewDimension(img, Entitytype);
 		img = this.toBufferedImage(img2);
-		img = imgManipulator.setSelection(img);
+		//img = imgManipulator.setSelection(img);
 		
-		img = imgManipulator.rotate(img);
+		if (direction_to_leftside){
+			img = imgManipulator.rotate(img);
+		}
+
 		
 		// Setzen des Bildes
 		ImageIcon pic = new ImageIcon(img);
@@ -90,7 +112,7 @@ public class CreateUnit {
 		
 		// Hülle wird mit Attributen belegt
 		unit.setFlyingEntity(airUnit);
-		unit.setEntityRushLeft(true);	
+		unit.setEntityRushLeft(direction_to_leftside);	
 		unit.setEntitymembership(color);
 		unit.setLabel(label);
 		unit.setEntityname(Entitytype);
