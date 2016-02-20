@@ -54,15 +54,4 @@ public class Armory implements Building {
 	public byte getPlayer() {
 		return player;
 	}
-
-	@Override
-	public byte getUnitType() {
-		return unit.getType();
-	}
-
-	@Override
-	public short getUnitID() {
-		return unit.getID();
-	}
-
 }

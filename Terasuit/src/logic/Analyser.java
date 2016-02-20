@@ -136,7 +136,33 @@ public class Analyser {
 			byte playerNumber = bytes[1];
 			byte buildingPosition = bytes[2];
 			byte id = bytes[3];
-			// TODO: An Feldmann: Hier Funktionsaufruf Gebäude bauen (id127 ist upgrade)
+			if (id != 127) {
+				String buildingName;
+				switch (id) {
+				case (0):
+					buildingName = "Outpost";
+					break;
+				case (8):
+					buildingName = "Forge";
+					break;
+				case (16):
+					buildingName = "Hospital";
+					break;
+				case (24):
+					buildingName = "Bank";
+					break;
+				case (32):
+					buildingName = "Armory";
+					break;
+				case (40):
+					buildingName = "Generator";
+					break;
+				case (48):
+					buildingName = "Special Operations";
+					break;
+				}
+				// TODO: An Feldmann: createBuilding irgendwie umschreiben. BuildingsArray für Connection unerreichbar
+			}
 			break;
 		case (33): // Ein eigenes Gebäude startet eine Produktion
 			id = bytes[1];

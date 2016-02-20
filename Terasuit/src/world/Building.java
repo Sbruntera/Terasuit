@@ -14,10 +14,6 @@ public interface Building {
 
 	public boolean createUnit(byte typeID, short unitID, short position);
 
-	public byte getUnitType();
-
-	public short getUnitID();
-
 	void build();
 
 }

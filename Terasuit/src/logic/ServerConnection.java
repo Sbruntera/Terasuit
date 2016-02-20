@@ -71,6 +71,38 @@ public class ServerConnection implements Runnable {
 		queue.add(message);
 	}
 
+	public boolean isServerAccess() {
+		return serverAccess;
+	}
+
+	/**
+	 * @return the isLoggedIn
+	 */
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	/**
+	 * @param isLoggedIn the isLoggedIn to set
+	 */
+	public void setLoggedIn(boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	// #################################################################
 	// Menü
 
@@ -351,37 +383,5 @@ public class ServerConnection implements Runnable {
 		if (!message.equals("")) {
 			addMessage((char) 36 + message);
 		}
-	}
-
-	public boolean isServerAccess() {
-		return serverAccess;
-	}
-
-	/**
-	 * @return the isLoggedIn
-	 */
-	public boolean isLoggedIn() {
-		return isLoggedIn;
-	}
-
-	/**
-	 * @param isLoggedIn the isLoggedIn to set
-	 */
-	public void setLoggedIn(boolean isLoggedIn) {
-		this.isLoggedIn = isLoggedIn;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 }

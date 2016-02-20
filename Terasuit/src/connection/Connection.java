@@ -1,5 +1,6 @@
 package connection;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -200,7 +201,8 @@ public class Connection implements Runnable {
 
 	/**
 	 * Bestätigt die Login Anfrage des Client
-	 * @param splitted 
+	 * 
+	 * @param splitted
 	 */
 	public void sendLogin(String name) {
 		System.out.println("Allah");
@@ -219,8 +221,7 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPlayers(byte player1, byte player2) {
-		addMessage(String.valueOf((char) 16) + (char) player1
-				+ (char) player2);
+		addMessage(String.valueOf((char) 16) + (char) player1 + (char) player2);
 	}
 
 	/**
@@ -283,19 +284,19 @@ public class Connection implements Runnable {
 				+ (char) buildingPlace);
 	}
 
-	public void sendCreateUnit(short playerNumber, short position, byte typeID,
+	public void sendCreateUnit(short playerNumber, Point position, byte typeID,
 			short unitID) {
-		addMessage(String.valueOf((char) 34) + (char) (playerNumber >> 8)
-				+ (char) playerNumber + (char) (position >> 8)
-				+ (char) (position) + (char) typeID + (char) (unitID >> 8)
-				+ (char) unitID);
+		addMessage(String.valueOf((char) 34) + (char) playerNumber
+				+ (char) (position.x >> 8) + (char) position.x
+				+ (char) (position.y >> 8) + (char) position.y + (char) typeID
+				+ (char) (unitID >> 8) + (char) unitID);
 	}
 
-	public void sendMoveUnit(short playerNumber, byte direction, short[] unitIDs) {
-		String msg = String.valueOf((char) 35) + (char) (playerNumber >> 8)
-				+ (char) playerNumber + (char) direction;
+	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {
+		String msg = String.valueOf((char) 35) + (char) playerNumber
+				+ (char) direction;
 		for (short s : unitIDs) {
-			msg += (char) (s << 8) + (char) direction;
+			msg += (char) (s >> 8) + (char) s + (char) direction;
 		}
 		addMessage(msg);
 	}
@@ -334,7 +335,6 @@ public class Connection implements Runnable {
 	}
 
 	public void sendChatMessage(byte id, String message) {
-		addMessage(String.valueOf((char) 21) + (char) id
-				+ message);
+		addMessage(String.valueOf((char) 21) + (char) id + message);
 	}
 }

@@ -128,8 +128,8 @@ public class GameServer implements Runnable {
 					if (u != null) {
 						for (Connection c : connections) {
 							if (c != null) {
-								c.sendCreateUnit(b.getPlayer(), b.getSlotID(),
-										b.getUnitType(), b.getUnitID());
+								c.sendCreateUnit(u.getPlayer(),
+										u.getPosition(), u.getType(), u.getID());
 							}
 						}
 					}
@@ -313,7 +313,7 @@ public class GameServer implements Runnable {
 				&& buildingPlace > 0) {
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
 					unitIDCounter, (short) 0)) { // TODO 0 durch spawnposition
-											// austauschen
+				// austauschen
 				unitIDCounter++;
 				if (unitIDCounter == 10) {
 					unitIDCounter = 11;

@@ -53,16 +53,4 @@ public class Generator implements Building {
 		// TODO Auto-generated method stub
 		return player;
 	}
-
-	@Override
-	public byte getUnitType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public short getUnitID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

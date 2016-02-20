@@ -13,12 +13,12 @@ public class Outpost implements Building {
 	public Outpost(byte position, byte player) {
 		this.position = position;
 		this.player = player;
+		this. buildTime = BUILDINGTIME;
 	}
 
 	@Override
 	public void upgrade() {
-		// TODO Auto-generated method stub
-
+		this. buildTime = BUILDINGTIME;
 	}
 
 	@Override
@@ -52,17 +52,5 @@ public class Outpost implements Building {
 	public Unit create() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public byte getUnitType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public short getUnitID() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

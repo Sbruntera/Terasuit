@@ -15,7 +15,7 @@ public class Loader {
 	public ServerConnection connection = new ServerConnection(this);
 	Thread connectionThread = new Thread(connection);
 	Funktions func = new Funktions();
-	Game game;
+	public Game game;
 
 	public final String Mainpage = "Wallpaper/Start_Hintergrund.png";
 	public final String Lobbypage = "Wallpaper/serverlist.png";

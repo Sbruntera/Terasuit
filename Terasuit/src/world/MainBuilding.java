@@ -133,16 +133,6 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public byte getUnitType() {
-		return 0;
-	}
-
-	@Override
-	public short getUnitID() {
-		return 0;
-	}
-
-	@Override
 	public int getSplashDamage() { // Can not Attack
 		return 0;
 	}
