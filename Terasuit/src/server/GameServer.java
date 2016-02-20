@@ -35,6 +35,7 @@ public class GameServer implements Runnable {
 	private AtomicBoolean ended = new AtomicBoolean(false);
 
 	private AtomicBoolean tick = new AtomicBoolean(false);
+	private boolean found;
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
@@ -285,6 +286,7 @@ public class GameServer implements Runnable {
 	}
 
 	public void disconnect(short id) {
+		found = false;
 		for (Connection c : connections) {
 			if (c != null) {
 				if (c.getID() == id) {
@@ -292,8 +294,12 @@ public class GameServer implements Runnable {
 					c = null;
 				} else {
 					c.sendPlayerLeftGame(id);
+					found = true;
 				}
 			}
+		}
+		if(!found){
+			ended.set(true);
 		}
 	}
 
