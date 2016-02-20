@@ -3,9 +3,9 @@ package world;
 public class SpecialOperations implements Building {
 	
 	public static final int MAXLVL = 1;
-	public static final int BUILDINGTIME = 100;
+	public static final int BUILDINGTIME = 110;
 
-	private int lvl = 1;
+	private int lvl = 0;
 	private int buildTime;
 	private byte position;
 	private byte player;
@@ -16,14 +16,13 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
-	public void upgrade() {
-		// TODO Auto-generated method stub
-
+	public byte getType() {
+		return WorldConstants.SPECIALOPERATIONSID;
 	}
 
 	@Override
-	public boolean hasUpgrade() {
-		return lvl < MAXLVL;
+	public byte getPlayer() {
+		return player;
 	}
 
 	@Override
@@ -32,9 +31,27 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
+	public boolean hasUpgrade() {
+		return lvl < MAXLVL;
+	}
+
+	@Override
+	public byte getUpgrade() {
+		return -128;
+	}
+
+	@Override
+	public boolean isFinished() {
+		return buildTime == 0;
+	}
+
+	@Override
+	public void upgrade() {}
+
+	@Override
 	public boolean build() {
 		buildTime--;
-		return buildTime < 0;
+		return buildTime == 0;
 	}
 
 	@Override
@@ -44,31 +61,8 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
-	public byte getPlayer() {
-		// TODO Auto-generated method stub
-		return player;
-	}
-
-	@Override
 	public Unit create() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public byte getUpgrade() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public byte getType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean isFinished() {
-		return buildTime < 0;
 	}
 }

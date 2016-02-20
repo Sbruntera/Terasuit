@@ -123,6 +123,7 @@ public class Game {
 
 	public void createBuilding(String buildingName, String buildingLocation,
 			int index, int primID) {
+		System.out.println(index + "adfad");
 		int X = BuildingsArray[index].getX();
 		int Y = BuildingsArray[index].getY();
 		int time = 20;

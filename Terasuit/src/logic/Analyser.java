@@ -151,30 +151,48 @@ public class Analyser {
 			case (1):
 				buildingName = "Barracks";
 				break;
-			case (8):
+			case (2):
+				buildingName = "Arsenal";
+				break;
+			case (3):
 				buildingName = "Forge";
 				break;
-			case (16):
+			case (4):
+				buildingName = "Manufactory";
+				break;
+			case (5):
+				buildingName = "Mechanics Terminal";
+				break;
+			case (6):
 				buildingName = "Hospital";
 				break;
-			case (24):
+			case (7):
+				buildingName = "War Sanctum";
+				break;
+			case (8):
 				buildingName = "Bank";
 				break;
-			case (32):
+			case (9):
+				buildingName = "Treasury";
+				break;
+			case (10):
 				buildingName = "Armory";
 				break;
-			case (40):
+			case (11):
 				buildingName = "Generator";
 				break;
-			case (48):
+			case (12):
+				buildingName = "Solar Grid";
+				break;
+			case (13):
 				buildingName = "Special Operations";
 				break;
 			}
 			if (buildingName != null) {
 				if (playerNumber == position) {
-					loader.game.createBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 18);
+					loader.game.createBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 19);
 				} else {
-					loader.game.createEnemyBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 18);
+					loader.game.createEnemyBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 19);
 				}
 			}
 			break;

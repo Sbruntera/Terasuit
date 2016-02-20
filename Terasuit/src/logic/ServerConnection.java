@@ -286,6 +286,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createBuilding(int position, String buildingType) {
 		byte buildingID = 127;
+		System.out.println(buildingType);
 		switch (buildingType) {
 		case ("Outpost"):
 			buildingID = 0;
@@ -293,23 +294,41 @@ public class ServerConnection implements Runnable {
 		case ("Barracks"):
 			buildingID = 1;
 			break;
+		case ("Arsenal"):
+			buildingID = 2;
+			break;
 		case ("Forge"):
-			buildingID = 8;
+			buildingID = 3;
+			break;
+		case ("Manufactory"):
+			buildingID = 4;
+			break;
+		case ("Mechanics Terminal"):
+			buildingID = 5;
 			break;
 		case ("Hospital"):
-			buildingID = 16;
+			buildingID = 6;
+			break;
+		case ("War Sanctum"):
+			buildingID = 7;
 			break;
 		case ("Bank"):
-			buildingID = 24;
+			buildingID = 8;
+			break;
+		case ("Treasury"):
+			buildingID = 9;
 			break;
 		case ("Armory"):
-			buildingID = 32;
+			buildingID = 10;
 			break;
 		case ("Generator"):
-			buildingID = 40;
+			buildingID = 11;
+			break;
+		case ("Solar Grid"):
+			buildingID = 12;
 			break;
 		case ("Special Operations"):
-			buildingID = 48;
+			buildingID = 13;
 			break;
 		}
 		if (position < 4 && analyser.getState() == State.GAME) {

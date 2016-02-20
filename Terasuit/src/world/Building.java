@@ -1,26 +1,25 @@
 package world;
 
 public interface Building {
-	
+
 	public byte getType();
-	
+
 	public byte getPlayer();
 
-	public void upgrade();
+	public byte getSlotID();
 
 	public boolean hasUpgrade();
 
-	public byte getSlotID();
+	public byte getUpgrade();
+
+	public boolean isFinished();
+
+	public void upgrade();
+
+	boolean build();
 
 	public Unit create();
 
 	public boolean createUnit(byte typeID, short unitID, short position);
-	
-	public boolean isFinished();
-
-	boolean build();
-
-	public byte getUpgrade();
-
 
 }
