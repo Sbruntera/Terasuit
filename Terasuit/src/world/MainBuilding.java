@@ -141,4 +141,10 @@ public class MainBuilding implements Building, Unit {
 	public boolean canAttackAir() {
 		return false;
 	}
+
+	@Override
+	public byte getUpgrade() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

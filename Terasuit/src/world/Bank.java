@@ -53,4 +53,10 @@ public class Bank implements Building {
 		// TODO Auto-generated method stub
 		return player;
 	}
+
+	@Override
+	public byte getUpgrade() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

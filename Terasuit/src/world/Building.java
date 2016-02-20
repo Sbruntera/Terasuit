@@ -16,4 +16,6 @@ public interface Building {
 
 	void build();
 
+	public byte getUpgrade();
+
 }

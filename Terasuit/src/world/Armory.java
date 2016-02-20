@@ -54,4 +54,10 @@ public class Armory implements Building {
 	public byte getPlayer() {
 		return player;
 	}
+
+	@Override
+	public byte getUpgrade() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

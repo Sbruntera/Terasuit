@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 public class SelectedUnits {
 	
-	ActionButton actionBtn = new ActionButton();
-
 	public ArrayList<Integer> getUnit(ArrayList<Unit> entity, ArrayList<Integer> selectedEntitysID, MouseEvent objUnit){
 		for (int i = 0; i < entity.size(); i++) {
 			if (entity.get(i).getLabel() == objUnit.getSource()){

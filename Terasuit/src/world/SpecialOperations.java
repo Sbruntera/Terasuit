@@ -53,4 +53,10 @@ public class SpecialOperations implements Building {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public byte getUpgrade() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

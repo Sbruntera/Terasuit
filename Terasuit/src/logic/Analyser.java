@@ -136,32 +136,32 @@ public class Analyser {
 			byte playerNumber = bytes[1];
 			byte buildingPosition = bytes[2];
 			byte id = bytes[3];
-			if (id != 127) {
-				String buildingName;
-				switch (id) {
-				case (0):
-					buildingName = "Outpost";
-					break;
-				case (8):
-					buildingName = "Forge";
-					break;
-				case (16):
-					buildingName = "Hospital";
-					break;
-				case (24):
-					buildingName = "Bank";
-					break;
-				case (32):
-					buildingName = "Armory";
-					break;
-				case (40):
-					buildingName = "Generator";
-					break;
-				case (48):
-					buildingName = "Special Operations";
-					break;
-				}
-				// TODO: An Feldmann: createBuilding irgendwie umschreiben. BuildingsArray für Connection unerreichbar
+			String buildingName = null;
+			switch (id) {
+			case (0):
+				buildingName = "Outpost";
+				break;
+			case (8):
+				buildingName = "Forge";
+				break;
+			case (16):
+				buildingName = "Hospital";
+				break;
+			case (24):
+				buildingName = "Bank";
+				break;
+			case (32):
+				buildingName = "Armory";
+				break;
+			case (40):
+				buildingName = "Generator";
+				break;
+			case (48):
+				buildingName = "Special Operations";
+				break;
+			}
+			if (buildingName != null) {
+				loader.game.createBuilding(buildingName, "Buildings/" + buildingName + ".png", (playerNumber << 2) + buildingPosition + 1, (playerNumber << 2) + buildingPosition + 16);
 			}
 			break;
 		case (33): // Ein eigenes Gebäude startet eine Produktion

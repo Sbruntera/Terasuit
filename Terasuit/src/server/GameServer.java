@@ -92,8 +92,10 @@ public class GameServer implements Runnable {
 				if (b != null) {
 					bullets.add(b);
 				}
-			} else if (unit.hasInRange(new Unit[] {mainBuildings[unit.getPlayer() >> 1], null})) {
-				Bullet b = unit.shoot(new Unit[] {mainBuildings[unit.getPlayer() >> 1], null});
+			} else if (unit.hasInRange(new Unit[] {
+					mainBuildings[unit.getPlayer() >> 1], null })) {
+				Bullet b = unit.shoot(new Unit[] {
+						mainBuildings[unit.getPlayer() >> 1], null });
 				if (b != null) {
 					bullets.add(b);
 				}
@@ -140,11 +142,13 @@ public class GameServer implements Runnable {
 
 	private Unit[] getNearestUnit(int i) {
 		Unit[] nearestUnits = new Unit[2];
-		int[] difference = new int[] {-32768, -32768};
+		int[] difference = new int[] { -32768, -32768 };
 		for (Unit u : units.values()) {
-			if (Math.abs(u.getPosition().x - i) < difference[Boolean.compare(u.isFlying(), false)]) {
+			if (Math.abs(u.getPosition().x - i) < difference[Boolean.compare(
+					u.isFlying(), false)]) {
 				nearestUnits[Boolean.compare(u.isFlying(), false)] = u;
-				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u.getPosition().x - i);
+				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u
+						.getPosition().x - i);
 			}
 		}
 		return nearestUnits;
@@ -254,8 +258,14 @@ public class GameServer implements Runnable {
 	 *            : position des Gebäudes
 	 */
 	public void build(byte position, byte buildingPlace, byte id) {
-		buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
-				buildingPlace, position);
+		if (buildings[position][buildingPlace] == null) {
+			buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
+					buildingPlace, position, true);
+		} else if (buildings[position][buildingPlace].getUpgrade() == id) {
+			buildings[position][buildingPlace].upgrade();
+		} else {
+			return;
+		}
 		connections[position].sendCreateOrUpgradeBuilding(position,
 				buildingPlace, id);
 	}

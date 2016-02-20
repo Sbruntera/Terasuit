@@ -16,7 +16,7 @@ public class WorldConstants {
 	public static final int GENERATORID = 48;
 	public static final int SPECIALOPERATIONSID = 52;
 
-	public static Building getBuilding(int id, byte position, byte player) {
+	public static Building getBuilding(int id, byte position, byte player, boolean primaryBuilding) {
 		switch (id) {
 		case MAINBUILDINGID:
 			return new MainBuilding(player);
