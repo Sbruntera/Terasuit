@@ -69,7 +69,7 @@ public class Hospital implements Building {
 	@Override
 	public boolean build() {
 		buildTime--;
-		return buildTime < 0;
+		return buildTime == 0;
 	}
 
 	@Override

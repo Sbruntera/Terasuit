@@ -175,16 +175,16 @@ public class Analyser {
 			case (9):
 				buildingName = "Treasury";
 				break;
-			case (10):
+			case (11):
 				buildingName = "Armory";
 				break;
-			case (11):
+			case (12):
 				buildingName = "Generator";
 				break;
-			case (12):
+			case (14):
 				buildingName = "Solar Grid";
 				break;
-			case (13):
+			case (15):
 				buildingName = "Special Operations";
 				break;
 			}
@@ -229,9 +229,8 @@ public class Analyser {
 			boolean won = bytes[1] > 0;
 			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
 			break;
-		case (20):
-			String msg = message.substring(3);
-			loader.setGameText(msg);
+		case (21):
+			loader.setGameText(game.getPlayerName(bytes[1]) + ": " + message.substring(2));
 			break;
 		}
 	}

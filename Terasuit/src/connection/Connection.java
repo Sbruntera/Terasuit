@@ -142,6 +142,10 @@ public class Connection implements Runnable {
 		queue.clear();
 	}
 
+	public void sendChatMessage(byte id, String message) {
+		addMessage(String.valueOf((char) 21) + (char) id + message);
+	}
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// Menü
 
@@ -344,10 +348,6 @@ public class Connection implements Runnable {
 		switchToMenu();
 		addMessage(String
 				.valueOf((char) (39 + (Boolean.compare(won, false) << 4))));
-	}
-
-	public void sendChatMessage(byte id, String message) {
-		addMessage(String.valueOf((char) 21) + (char) id + message);
 	}
 
 }

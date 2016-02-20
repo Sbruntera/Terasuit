@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -35,6 +37,7 @@ public class Game {
 	int playerID;
 	int counter = 0;
 	private String s = "Willkommen im Chat";
+	private JScrollBar ts;
 
 	public void init(Panel panel, Panel field, Panel console, Loader loader,
 			Funktions func, int playerID) {
@@ -67,20 +70,27 @@ public class Game {
 		});
 		// Chat
 		tl = new JLabel(s);
-		tl.setBounds(756, 11, 255, 134);
-		tl.setForeground(Color.WHITE);
-		tl.setVerticalAlignment(SwingConstants.TOP);
-		// 666, 350, 320, 364
-		JTextField tf = new JTextField();
-		tf.setBounds(756, 145, 255, 30);
-		tf.addActionListener(e -> {
-			loader.connection.sendChatMessage(tf.getText());
-			tf.setText("");
-		});
-		console.add(tl);
-		console.add(tf);
-		console.add(btnBACK);
-		panel.repaint();
+        tl.setBounds(756, 11, 255, 134);
+        tl.setForeground(Color.WHITE);
+        tl.setVerticalAlignment(SwingConstants.TOP);
+        JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroller.setBounds(756, 11, 255, 134);
+        scroller.setOpaque(false);
+        scroller.getViewport().setOpaque(false);
+        ts = scroller.getVerticalScrollBar();
+        // 666, 350, 320, 364
+        JTextField tf = new JTextField();
+        tf.setBounds(756, 145, 255, 30);
+        tf.addActionListener(e -> {
+            loader.connection.sendChatMessage(tf.getText());
+            tf.setText("");
+        });
+        console.add(scroller);
+        console.add(tf);
+        console.add(btnBACK);
+        console.repaint();
+        console.revalidate();
+        panel.repaint();
 	}
 
 	public void updateBuilding() {
@@ -201,12 +211,18 @@ public class Game {
 
 	public void replaceJProcessbar(int index) {
 		listOfJProgressBar[index].setVisible(true);
-
 	}
 
 	public void setText(String text) {
-		s = s + "<br>" + "User: " + text;
-		System.out.println(text);
+		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
+		try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
+        ts.setValue(s);
 	}
 }

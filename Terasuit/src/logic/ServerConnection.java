@@ -319,16 +319,16 @@ public class ServerConnection implements Runnable {
 			buildingID = 9;
 			break;
 		case ("Armory"):
-			buildingID = 10;
-			break;
-		case ("Generator"):
 			buildingID = 11;
 			break;
-		case ("Solar Grid"):
+		case ("Generator"):
 			buildingID = 12;
 			break;
+		case ("Solar Grid"):
+			buildingID = 14;
+			break;
 		case ("Special Operations"):
-			buildingID = 13;
+			buildingID = 15;
 			break;
 		}
 		if (position < 4 && analyser.getState() == State.GAME) {

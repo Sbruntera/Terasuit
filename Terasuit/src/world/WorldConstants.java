@@ -18,10 +18,10 @@ public class WorldConstants {
 	public static final byte WARSANCTUMID = 7;
 	public static final byte BANKID = 8;
 	public static final byte TREASURYID = 9;
-	public static final byte ARMORYID = 10;
-	public static final byte GENERATORID = 11;
-	public static final byte SOLARGRIDID = 12;
-	public static final byte SPECIALOPERATIONSID = 13;
+	public static final byte ARMORYID = 11;
+	public static final byte GENERATORID = 12;
+	public static final byte SOLARGRIDID = 14;
+	public static final byte SPECIALOPERATIONSID = 15;
 
 
 	public static Building getBuilding(int id, byte position, byte player, boolean primaryBuilding) {

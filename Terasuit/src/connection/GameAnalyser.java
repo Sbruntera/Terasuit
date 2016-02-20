@@ -32,6 +32,7 @@ public class GameAnalyser implements Analyser {
 		byte[] bytes = input.getBytes();
 		switch (bytes[0]) {
 		case (32): // Gebäude (aus)bauen
+			System.out.println(bytes.length);
 			if (bytes.length == 3) {
 				if (bytes[2] < 127) {
 					System.out.println(bytes[2]);

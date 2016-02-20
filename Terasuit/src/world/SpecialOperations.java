@@ -2,7 +2,7 @@ package world;
 
 public class SpecialOperations implements Building {
 	
-	public static final int MAXLVL = 1;
+	public static final int MAXLVL = 0;
 	public static final int BUILDINGTIME = 110;
 
 	private int lvl = 0;
@@ -13,6 +13,7 @@ public class SpecialOperations implements Building {
 	public SpecialOperations(byte position, byte player) {
 		this.position = position;
 		this.player = player;
+		buildTime = BUILDINGTIME;
 	}
 
 	@Override
