@@ -272,6 +272,7 @@ public class Lobby {
 	public void startGame(short id) {
 		if (host.getID() == id) {
 			server.createGame(this);
+			server.removeLobby(this.id);
 		}
 	}
 
