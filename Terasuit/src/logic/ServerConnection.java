@@ -2,22 +2,22 @@ package logic;
 
 import grafig.Loader;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ServerConnection implements Runnable {
 
 	private boolean serverAccess = false;
-	private ConcurrentLinkedQueue<String> queue;
+	private ConcurrentLinkedQueue<byte[]> queue;
 	private OutputStream writer;
-	private BufferedReader reader;
+	private BufferedInputStream reader;
 	private Analyser analyser;
-	
+
 	private boolean isLoggedIn;
 	private String name;
 
@@ -25,8 +25,7 @@ public class ServerConnection implements Runnable {
 		Socket socket;
 		try {
 			socket = new Socket("localhost", 3142);
-			this.reader = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
+			this.reader = new BufferedInputStream(socket.getInputStream());
 			this.writer = socket.getOutputStream();
 			serverAccess = true;
 		} catch (ConnectException e) {
@@ -37,7 +36,7 @@ public class ServerConnection implements Runnable {
 			e.printStackTrace();
 		}
 
-		queue = new ConcurrentLinkedQueue<String>();
+		queue = new ConcurrentLinkedQueue<byte[]>();
 
 		analyser = new Analyser(loader);
 	}
@@ -46,13 +45,25 @@ public class ServerConnection implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				if (reader.ready()) {
-					String in = reader.readLine();
-					analyser.analyse(in);
+				int ended = 0;
+				if (reader.available() != 0) {
+					ArrayList<Byte> bytes = new ArrayList<Byte>();
+					while (!(ended == 2)) {
+						int i = reader.read();
+						if (i == 0) {
+							ended++;
+						} else if (ended != 0) {
+							bytes.add((byte) 0);
+							ended = 0;
+						}
+						bytes.add((byte) i);
+					}
+					analyser.analyse(toPrimal(bytes.toArray(new Byte[bytes.size()])));
 				}
 				if (!queue.isEmpty()) {
-					writer.write(queue.remove().getBytes());
-					writer.write(10);
+					writer.write(queue.remove());
+					writer.write(0);
+					writer.write(0);
 				}
 				try {
 					Thread.sleep(20);
@@ -67,7 +78,7 @@ public class ServerConnection implements Runnable {
 		}
 	}
 
-	private void addMessage(String message) {
+	private void addMessage(byte[] message) {
 		queue.add(message);
 	}
 
@@ -83,7 +94,8 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * @param isLoggedIn the isLoggedIn to set
+	 * @param isLoggedIn
+	 *            the isLoggedIn to set
 	 */
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
@@ -97,10 +109,19 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	private byte[] toPrimal(Byte[] array) {
+		byte[] bytes = new byte[array.length];
+		for (int i = 0; i < array.length; i++) {
+			bytes[i] = array[i];
+		}
+		return bytes;
 	}
 
 	// #################################################################
@@ -111,7 +132,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void logout() {
 		if (analyser.getState() == State.MENU) {
-			addMessage(String.valueOf((char) 1));
+			addMessage(new byte[] { 1 });
 		}
 	}
 
@@ -135,10 +156,15 @@ public class ServerConnection implements Runnable {
 	public void refreshServerList(boolean noPassword, String name,
 			int minPlayers, int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
-			addMessage(String.valueOf((char) 2)
-					+ (char) ((Boolean.compare(noPassword, false) << 4)
-							+ (minPlayers << 2) + maxPlayers) + (char) mapID
-					+ name);
+			byte[] array = new byte[3 + name.length()];
+			array[0] = 2;
+			array[1] = (byte) ((Boolean.compare(noPassword, false) << 6)
+					+ (minPlayers << 3) + maxPlayers);
+			array[2] = (byte) mapID;
+			for (int i = 0; i < name.length(); i++) {
+				array[i + 3] = (byte) name.charAt(i);
+			}
+			addMessage(array);
 		}
 	}
 
@@ -155,8 +181,17 @@ public class ServerConnection implements Runnable {
 	public void createGroup(int mapID, String name, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage(String.valueOf((char) 3) + (char) mapID + name + ","
-					+ password);
+			ArrayList<Byte> array = new ArrayList<Byte>();
+			array.add((byte) 3);
+			array.add((byte) mapID);
+			for (char c : name.toCharArray()) {
+				array.add((byte) c);
+			}
+			array.add((byte) 1);
+			for (char c : password.toCharArray()) {
+				array.add((byte) c);
+			}
+			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
 	}
 
@@ -169,10 +204,15 @@ public class ServerConnection implements Runnable {
 	 *            Passwort des gewünschten Spiels
 	 */
 	public void connectGroup(int id, String password) {
-		System.out.println(password);
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			addMessage(String.valueOf((char) 4) + (char) id + password);
+			byte[] array = new byte[password.length() + 2];
+			array[0] = 4;
+			array[1] = (byte) id;
+			for (int i = 0; i < password.length(); i++) {
+				array[i + 2] = (byte) password.charAt(i);
+			}
+			addMessage(array);
 		}
 	}
 
@@ -186,7 +226,16 @@ public class ServerConnection implements Runnable {
 	 */
 	public void login(String user, String password) {
 		if (analyser.getState() == State.MENU) {
-			addMessage((char) 5 + user + "," + password.toString());
+			ArrayList<Byte> array = new ArrayList<Byte>();
+			array.add((byte) 5);
+			for (char c : user.toCharArray()) {
+				array.add((byte) c);
+			}
+			array.add((byte) 1);
+			for (char c : password.toCharArray()) {
+				array.add((byte) c);
+			}
+			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
 	}
 
@@ -200,10 +249,22 @@ public class ServerConnection implements Runnable {
 	 * @param mail
 	 *            E-Mail Addresse des Accounts
 	 */
-	public void register(String user, String password1, String mail) {
+	public void register(String user, String password, String mail) {
 		if (analyser.getState() == State.MENU) {
-			addMessage((char) 6 + user + "," + password1 + "," + mail
-					+ ",Admin");
+			ArrayList<Byte> array = new ArrayList<Byte>();
+			array.add((byte) 6);
+			for (char c : user.toCharArray()) {
+				array.add((byte) c);
+			}
+			array.add((byte) 1);
+			for (char c : password.toCharArray()) {
+				array.add((byte) c);
+			}
+			array.add((byte) 1);
+			for (char c : mail.toCharArray()) {
+				array.add((byte) c);
+			}
+			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
 	}
 
@@ -214,7 +275,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void close() {
 		queue.clear();
-		addMessage(String.valueOf((char) 7));
+		addMessage(new byte[] { 7 });
 	}
 
 	// #################################################################
@@ -230,7 +291,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void switchPlayers(byte player1, byte player2) {
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) 16) + (char) ((player1 << 2) + player2));
+			addMessage(new byte[] { 16, (byte) ((player1 << 2) + player2) });
 		}
 	}
 
@@ -240,7 +301,7 @@ public class ServerConnection implements Runnable {
 	public void returnFromLobby() {
 		if (analyser.getState() == State.LOBBY) {
 			queue.clear();
-			addMessage(String.valueOf((char) 17));
+			addMessage(new byte[] { 17 });
 		}
 	}
 
@@ -251,9 +312,8 @@ public class ServerConnection implements Runnable {
 	 *            Die Nummer des Spielers
 	 */
 	public void kickPlayer(int playerNumber) {
-		System.out.println(playerNumber);
 		if (analyser.getState() == State.LOBBY) {
-			addMessage(String.valueOf((char) 18) + (char) playerNumber);
+			addMessage(new byte[] { 18, (byte) playerNumber });
 		}
 	}
 
@@ -263,13 +323,21 @@ public class ServerConnection implements Runnable {
 	public void startGame() {
 		if (analyser.getState() == State.LOBBY) {
 			queue.clear();
-			addMessage(String.valueOf((char) 19));
+			addMessage(new byte[] { 19 });
 		}
 	}
 
 	public void sendLobbyChatMessage(String msg) {
 		if (!msg.equals("")) {
-			addMessage((char) 20 + msg);
+			if (analyser.getState() == State.MENU) {
+				queue.clear();
+				byte[] array = new byte[msg.length() + 1];
+				array[0] = 20;
+				for (int i = 0; i < msg.length(); i++) {
+					array[i + 2] = (byte) msg.charAt(i);
+				}
+				addMessage(array);
+			}
 		}
 	}
 
@@ -319,21 +387,20 @@ public class ServerConnection implements Runnable {
 			buildingID = 9;
 			break;
 		case ("Armory"):
-			buildingID = 11;
+			buildingID = 10;
 			break;
 		case ("Generator"):
-			buildingID = 12;
+			buildingID = 11;
 			break;
 		case ("Solar Grid"):
-			buildingID = 14;
+			buildingID = 12;
 			break;
 		case ("Special Operations"):
-			buildingID = 15;
+			buildingID = 13;
 			break;
 		}
 		if (position < 4 && analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 32) + (char) position
-					+ (char) buildingID);
+			addMessage(new byte[] { 32, (byte) position, buildingID });
 		}
 	}
 
@@ -346,10 +413,17 @@ public class ServerConnection implements Runnable {
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
 			if (position < 4) {
-				addMessage(String.valueOf((char) 32) + (char) position
-						+ (char) 126);
+				addMessage(new byte[] { 32, (byte) position, 126 });
 			}
 		}
+	}
+
+	/**
+	 * Bricht den Bau ab
+	 */
+	public void cancelBuilding(int id) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -361,8 +435,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 33) + (char) id
-					+ (char) buildingPlace);
+			addMessage(new byte[] { 33, (byte) id, (byte) buildingPlace });
 		}
 	}
 
@@ -378,9 +451,15 @@ public class ServerConnection implements Runnable {
 	 */
 	public void moveUnit(int[] unitID, boolean right, boolean walking) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(String.valueOf((char) 34)
-					+ (char) (Boolean.compare(false, right) << 1 + Boolean
-							.compare(false, walking)) + unitID);
+			byte[] array = new byte[unitID.length * 2 + 2];
+			array[0] = 34;
+			array[1] = (byte) (Boolean.compare(false, right) << 1 + Boolean
+					.compare(false, walking));
+			for (int i = 0; i < unitID.length; i++) {
+				array[i * 2 + 2] = (byte) (unitID[i] >> 8);
+				array[i * 2 + 3] = (byte) unitID[i];
+			}
+			addMessage(array);
 		}
 	}
 
@@ -389,9 +468,9 @@ public class ServerConnection implements Runnable {
 	 */
 	public void leaveGame() {
 		if (analyser.getState() == State.GAME) {
-			queue.clear();
-			addMessage(String.valueOf((char) 35));
 			analyser.switchState(State.MENU);
+			queue.clear();
+			addMessage(new byte[] { 35 });
 		}
 	}
 
@@ -403,7 +482,15 @@ public class ServerConnection implements Runnable {
 	 */
 	public void sendChatMessage(String message) {
 		if (!message.equals("")) {
-			addMessage((char) 36 + message);
+			if (analyser.getState() == State.MENU) {
+				queue.clear();
+				byte[] array = new byte[message.length() + 1];
+				array[0] = 20;
+				for (int i = 0; i < message.length(); i++) {
+					array[i + 2] = (byte) message.charAt(i);
+				}
+				addMessage(array);
+			}
 		}
 	}
 }

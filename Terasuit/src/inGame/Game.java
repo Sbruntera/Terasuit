@@ -123,8 +123,8 @@ public class Game {
 				listOfJProgressBar, slotID, primID, func);
 	}
 
-	public void entity(String unitString, int number, boolean b, short unitID, Point position) {
-		func.createEntity(field, unitString, number, b, this, unitID, position);
+	public void entity(String unitString, int playerNumber, boolean air, short unitID, Point position) {
+		func.createEntity(field, unitString, playerNumber, air, this, unitID, position);
 	}
 
 	public void destroyBuilding(int i) {

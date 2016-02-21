@@ -23,12 +23,11 @@ public class LobbyAnalyser implements Analyser {
 	 * @param input
 	 */
 	@Override
-	public void analyse(String input) {
-		byte[] bytes = input.getBytes();
-		switch (bytes[0]) {
+	public void analyse(byte[] input) {
+		switch (input[0]) {
 		case (16): // Position wechseln
-			System.out.println(bytes[1]);
-			lobby.switchPlayers(id, (byte) (bytes[1] >> 2), (byte) (bytes[1] & 3));
+			System.out.println(input[1]);
+			lobby.switchPlayers(id, (byte) (input[1] >> 2), (byte) (input[1] & 3));
 			break;
 		case (17): // Spiel verlassen
 			System.out.println("leave");
@@ -36,15 +35,22 @@ public class LobbyAnalyser implements Analyser {
 			break;
 		case (18): // Spieler kicken
 			System.out.println("kick");
-			lobby.removePlayer(id, bytes[1]);
+			lobby.removePlayer(id, input[1]);
 			break;
 		case (19): // Spiel starten
 			lobby.startGame(id);
 			break;
 		case (20):
-			lobby.broadcast(input.substring(1), id);
+			lobby.broadcast(castToString(input).substring(1), id);
 			break;
 		}
 	}
 
+	private String castToString(byte[] input) {
+		String s = "";
+		for (byte i : input) {
+			s += (char) i;
+		}
+		return s;
+	}
 }

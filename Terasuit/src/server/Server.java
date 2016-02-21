@@ -123,7 +123,6 @@ public class Server implements Runnable {
 	 *            : Filter nach dem die Lobbys gefiltert werden sollen
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
 		if (filter != null) {
@@ -139,7 +138,9 @@ public class Server implements Runnable {
 				}
 			}
 		} else {
-			filteredList = (ArrayList<Lobby>) lobbys.clone();
+			for (Lobby lobby : lobbys.values()) {
+				filteredList.add(lobby);
+			}
 		}
 		Lobby[] filteredArray = filteredList.toArray(new Lobby[filteredList.size()]);
 		return filteredArray;

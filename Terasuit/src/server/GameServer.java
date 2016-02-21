@@ -36,10 +36,10 @@ public class GameServer implements Runnable {
 	private AtomicBoolean ended = new AtomicBoolean(false);
 
 	private AtomicBoolean tick = new AtomicBoolean(false);
-	private int defaultSpawnLeft;
-	private int defaultSpawnAir;
-	private int defaultSpawnRight;
-	private int defaultSpawnGround;
+	private int defaultSpawnLeft = 300;
+	private int defaultSpawnRight = 1200;
+	private int defaultSpawnGround = 350;
+	private int defaultSpawnAir = 150;
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
@@ -294,13 +294,13 @@ public class GameServer implements Runnable {
 
 	public void disconnect(short id) {
 		boolean found = false;
-		for (Connection c : connections) {
-			if (c != null) {
-				if (c.getID() == id) {
-					c.setAnalyser(new MenuAnalyser(server, c, id));
-					c = null;
+		for (byte i = 0; i < connections.length; i++) {
+			if (connections[i] != null) {
+				if (connections[i].getID() == id) {
+					connections[i].setAnalyser(new MenuAnalyser(server, connections[i], id));
+					connections[i] = null;
 				} else {
-					c.sendPlayerLeftGame(id);
+					connections[i].sendPlayerLeftGame(i);
 					found = true;
 				}
 			}
@@ -335,9 +335,9 @@ public class GameServer implements Runnable {
 	}
 
 	public void createUnit(byte playerPosition, byte id, byte buildingPlace) {
-		if (playerPosition < connections.length && playerPosition > 0
+		if (playerPosition < connections.length && playerPosition >= 0
 				&& buildingPlace < WorldConstants.BUILDINGSCOUNT
-				&& buildingPlace > 0) {
+				&& buildingPlace >= 0) {
 			int xPosition;
 			int yPosition;
 			if (WorldConstants.isFlying(id)) {
@@ -349,7 +349,7 @@ public class GameServer implements Runnable {
 					yPosition = defaultSpawnAir + (int) (Math.random() * 150) + 1;
 				}
 			} else {
-				if ((playerPosition & 2) == 2) {
+				if ((playerPosition & 2) == 0) {
 					xPosition = defaultSpawnLeft + (int) (Math.random() * 70) + 1;
 					yPosition = defaultSpawnGround + (int) (Math.random() * 150) + 1;
 				} else {
@@ -362,11 +362,15 @@ public class GameServer implements Runnable {
 				unitIDCounter++;
 				if (unitIDCounter == 10) {
 					unitIDCounter = 11;
+				} else if (unitIDCounter == 13) {
+					unitIDCounter = 14;
 				} else if (unitIDCounter == 128) {
 					unitIDCounter = 160;
 				}
-				if (unitIDCounter >> 8 == 9) {
+				if (unitIDCounter >> 8 == 10) {
 					unitIDCounter = 11 << 8;
+				} else if (unitIDCounter >> 8 == 13) {
+					unitIDCounter = 14 << 8;
 				} else if (unitIDCounter >> 8 == 128) {
 					unitIDCounter = (short) (160 << 8);
 				}

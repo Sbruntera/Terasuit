@@ -93,7 +93,7 @@ public class SetButtons {
 					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
 					if (loader.connection.isServerAccess()){
 						loader.switchPanel(loader.Lobbypage);
-						loader.connection.refreshServerList(false, "", 0, 4, 0);
+						loader.connection.refreshServerList(false, "", 0, 4, 255);
 					} else {
 						System.out.println("Server konnte nicht gefunden werden. ");
 					}
@@ -267,7 +267,7 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.connection.refreshServerList(false, "", 0, 4, 0);
+					loader.connection.refreshServerList(false, "", 0, 4, 255);
 				}
 			});
 			panel.add(btnRefreshGroup);

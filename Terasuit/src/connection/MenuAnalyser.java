@@ -1,5 +1,7 @@
 package connection;
 
+import java.util.ArrayList;
+
 import server.Filter;
 import server.Lobby;
 import server.Map;
@@ -28,9 +30,8 @@ public class MenuAnalyser implements Analyser {
 	 * @param input
 	 */
 	@Override
-	public void analyse(String input) {
-		byte[] bytes = input.getBytes();
-		switch (bytes[0]) {
+	public void analyse(byte[] input) {
+		switch (input[0]) {
 		case (0): // Stats
 			System.out.println("stats");
 			// TODO: Get Stats
@@ -41,30 +42,31 @@ public class MenuAnalyser implements Analyser {
 			break;
 		case (2): // Serverliste
 			System.out.println("serverlist");
-			Lobby[] lobbyList = server.getLobbylist(getFilter(input
-					.substring(1)));
+			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
 		case (3): // Spiel erstellen
-			String[] splitted;
+			Byte[][] splitted;
 			String password;
-			if (bytes.length > 3) {
+			if (input.length > 3) {
 				System.out.println("create");
-				splitted = getSplitString(input, 2);
+				splitted = getSplitString(input, 1);
+				System.out.println(castToString(toPrimal(splitted[0])) + " " + splitted[0].length);
+				System.out.println(castToString(toPrimal(splitted[0])) + " " + splitted[0].length);
 				password = null;
 				if (splitted.length > 1) {
-					password = splitted[1];
+					password = castToString(toPrimal(splitted[1]));
 				}
-				server.createLobby(connection, splitted[0],
-						password, getMap(bytes[1]));
+				server.createLobby(connection, castToString(toPrimal(splitted[0])),
+						password, getMap(input[1]));
 			}
 			break;
 		case (4): // Spiel beitreten
 			System.out.println("join");
-			if (bytes.length > 1) {
-				if (server.hasLobby(bytes[1])) {
-					server.getLobby(bytes[1]).addPlayer(connection,
-								input.substring(2));
+			if (input.length > 1) {
+				if (server.hasLobby(input[1])) {
+					server.getLobby(input[1]).addPlayer(connection,
+							castToString(input).substring(2));
 				}
 			}
 			break;
@@ -76,12 +78,12 @@ public class MenuAnalyser implements Analyser {
 				password = "";
 				switch (splitted.length) {
 				case (2):
-					password = splitted[1];
+					password = castToString(toPrimal(splitted[1]));
 				case (1):
-					if (server.loginClient(splitted[0], password, id)) {
-						System.out.println("logininim");
-						connection.sendLogin(splitted[0]);
-						connection.loggIn(splitted[0]);
+					if (server.loginClient(castToString(toPrimal(splitted[0])), password,
+							id)) {
+						connection.sendLogin(castToString(toPrimal(splitted[0])));
+						connection.loggIn(castToString(toPrimal(splitted[0])));
 					}
 					break;
 				}
@@ -92,8 +94,10 @@ public class MenuAnalyser implements Analyser {
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				if (splitted.length == 4) {
-					server.registerClient(splitted[0], splitted[1],
-							splitted[2], splitted[3], id);
+					server.registerClient(castToString(toPrimal(splitted[0])),
+							castToString(toPrimal(splitted[1])),
+							castToString(toPrimal(splitted[2])),
+							castToString(toPrimal(splitted[3])), id);
 				}
 			}
 			break;
@@ -103,6 +107,14 @@ public class MenuAnalyser implements Analyser {
 			break;
 		}
 	}
+	
+	private byte[] toPrimal(Byte[] splitted) {
+		byte[] bytes = new byte[splitted.length];
+		for (int i = 0; i < splitted.length; i++) {
+			bytes[i] = splitted[i];
+		}
+		return bytes;
+	}
 
 	/**
 	 * Entnimmt der Bytefolge den Filter
@@ -111,19 +123,18 @@ public class MenuAnalyser implements Analyser {
 	 *            : byte[]
 	 * @return: Filter
 	 */
-	private Filter getFilter(String input) {
-		byte[] bytes = input.getBytes();
+	private Filter getFilter(byte[] input) {
 		boolean noPassword;
-		if (bytes.length > 0) {
+		if (input.length > 1) {
 			Map map = null;
 			String name = "";
-			noPassword = (bytes[0] & 16) != 0;
-			int minPlayers = bytes[0] & 243;
-			int maxPlayers = bytes[0] & 252;
-			if (bytes.length > 1) {
-				map = getMap(bytes[1]);
-				if (bytes.length > 2) {
-					name = input.substring(2);
+			noPassword = (input[1] & 64) != 0;
+			int minPlayers = input[1] & 56;
+			int maxPlayers = input[1] & 7;
+			if (input.length > 2) {
+				map = getMap(input[2]);
+				if (input.length > 3) {
+					name = input.toString().substring(3);
 				}
 			}
 			return new Filter(noPassword, name, map, minPlayers, maxPlayers);
@@ -138,6 +149,7 @@ public class MenuAnalyser implements Analyser {
 	 * @return
 	 */
 	private Map getMap(byte b) {
+		System.out.println(b + "afoljuf");
 		Map map = null;
 		switch (b) {
 		case (1):
@@ -150,10 +162,29 @@ public class MenuAnalyser implements Analyser {
 	/**
 	 * Schneidet aus einem String die ersten beiden Char ab und trennt nach ","
 	 * 
-	 * @param string
+	 * @param input
 	 * @return
 	 */
-	private String[] getSplitString(String string, int bytesToCut) {
-		return string.substring(bytesToCut, string.length()).split(",");
+	private Byte[][] getSplitString(byte[] input, int bytesToCut) {
+		ArrayList<Byte[]> outerArray = new ArrayList<Byte[]>();
+		ArrayList<Byte> array = new ArrayList<Byte>();
+		for (int i = bytesToCut; i < input.length; i++) {
+			if (input[i] == 1) {
+				outerArray.add(array.toArray(new Byte[array.size()]));
+				array.clear();
+			} else {
+				array.add(input[i]);
+			}
+		}
+		outerArray.add(array.toArray(new Byte[array.size()]));
+		return outerArray.toArray(new Byte[outerArray.size()][]);
+	}
+
+	private String castToString(byte[] input) {
+		String s = "";
+		for (byte i : input) {
+			s += (char) i;
+		}
+		return s;
 	}
 }

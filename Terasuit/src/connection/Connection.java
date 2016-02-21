@@ -1,11 +1,11 @@
 package connection;
 
 import java.awt.Point;
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import server.GameServer;
@@ -22,10 +22,10 @@ public class Connection implements Runnable {
 	private Socket socket;
 	private Server server;
 
-	private BufferedReader reader;
-	private PrintStream writer;
+	private BufferedInputStream reader;
+	private OutputStream writer;
 	private Analyser analyser;
-	private ConcurrentLinkedQueue<String> queue;
+	private ConcurrentLinkedQueue<byte[]> queue;
 
 	private String name;
 	private short id;
@@ -42,14 +42,13 @@ public class Connection implements Runnable {
 		this.socket = socket;
 		this.server = server;
 		try {
-			reader = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
-			this.writer = new PrintStream(socket.getOutputStream(), true);
+			reader = new BufferedInputStream(socket.getInputStream());
+			this.writer = socket.getOutputStream();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		queue = new ConcurrentLinkedQueue<String>();
+		queue = new ConcurrentLinkedQueue<byte[]>();
 		this.id = id;
 		running = true;
 		loggOut();
@@ -59,12 +58,12 @@ public class Connection implements Runnable {
 		this.analyser = analyser;
 	}
 
-	private void addMessage(String message) {
+	private void addMessage(byte[] message) {
 		queue.add(message);
 	}
 
-	public void loggIn(String name) {
-		this.name = name;
+	public void loggIn(String string) {
+		this.name = string;
 		loggedIn = true;
 	}
 
@@ -91,14 +90,26 @@ public class Connection implements Runnable {
 	public void run() {
 		try {
 			while (running) {
-				if (reader.ready()) {
-					String in = reader.readLine();
-					if (in.length() != 0) {
-						analyser.analyse(in);
+				int ended = 0;
+				if (reader.available() != 0) {
+					ArrayList<Integer> bytes = new ArrayList<Integer>();
+					while (!(ended == 2)) {
+						int i = reader.read();
+						if (i == 0) {
+							ended++;
+						} else if (ended != 0) {
+							bytes.add(0);
+							ended = 0;
+						}
+						bytes.add(i);
+						System.out.println(i);
 					}
+					analyser.analyse(toPrimal(bytes.toArray(new Integer[bytes.size()])));
 				}
 				if (!queue.isEmpty()) {
-					writer.println(queue.remove());
+					writer.write(queue.remove());
+					writer.write(0);
+					writer.write(0);
 				}
 				try {
 					Thread.sleep(20);
@@ -143,14 +154,35 @@ public class Connection implements Runnable {
 	}
 
 	public void sendChatMessage(byte id, String message) {
-		addMessage(String.valueOf((char) 21) + (char) id + message);
+		byte[] msg = new byte[message.length() + 1];
+		msg[0] = id;
+		for (int i = 0; i < message.length(); i++) {
+			msg[i + 1] = (byte) message.charAt(i);
+		}
+		addMessage(msg);
+	}
+
+	private byte[] toPrimal(Integer[] array) {
+		byte[] bytes = new byte[array.length];
+		for (int i = 0; i < array.length; i++) {
+			bytes[i] = array[i].byteValue();
+		}
+		return bytes;
+	}
+
+	private byte[] toPrimal(Byte[] array) {
+		byte[] bytes = new byte[array.length];
+		for (int i = 0; i < array.length; i++) {
+			bytes[i] = array[i];
+		}
+		return bytes;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// Menü
 
 	public void sendStats() {
-		addMessage("");
+		addMessage(new byte[] {});
 	}
 
 	/**
@@ -159,21 +191,24 @@ public class Connection implements Runnable {
 	 * @param lobbys
 	 */
 	public void sendGameList(Lobby[] lobbys) {
-		String message = String.valueOf((char) 1);
+		ArrayList<Byte> array = new ArrayList<Byte>();
+		array.add((byte) 1);
 		boolean first = true;
 		for (Lobby l : lobbys) {
 			if (!first) {
-				message += ",";
-
+				array.add((byte) 1);
 			} else {
 				first = false;
 			}
-			message += String.valueOf((char) l.getID())
-					+ (char) l.getMap().getID()
-					+ (char) ((Boolean.compare(l.hasPassword(), false) << 3) + l
-							.getNumberOfPlayers()) + l.getName();
+			array.add(l.getID());
+			array.add(l.getMap().getID());
+			array.add((byte) ((Boolean.compare(l.hasPassword(), false) << 3) + l
+					.getNumberOfPlayers()));
+			for (char c : l.getName().toCharArray()) {
+				array.add((byte) c);
+			}
 		}
-		addMessage(message);
+		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 	}
 
 	/**
@@ -184,22 +219,23 @@ public class Connection implements Runnable {
 	 */
 	public void sendGameJoin(Lobby lobby, boolean host, byte position) {
 		if (lobby != null) {
+			ArrayList<Byte> array = new ArrayList<Byte>();
 			joinLobby(lobby);
-			String message = String.valueOf((char) 2)
-					+ (char) lobby.getMap().getID()
-					+ (char) ((Boolean.compare(host, false) << 2) + position);
+			array.add((byte) 2);
+			array.add(lobby.getMap().getID());
+			array.add((byte) ((Boolean.compare(host, false) << 2) + position));
 			String[] names = lobby.getPlayerNames();
 			for (int i = 0; i < names.length; i++) {
 				if (i != 0) {
-					message += ",";
+					array.add((byte) 1);
 				}
 				if (names[i] != null) {
-					message += names[i];
-				} else {
-					message += (char) 0;
+					for (char c : names[i].toCharArray()) {
+						array.add((byte) c);
+					}
 				}
 			}
-			addMessage(message);
+			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
 	}
 
@@ -209,8 +245,12 @@ public class Connection implements Runnable {
 	 * @param splitted
 	 */
 	public void sendLogin(String name) {
-		System.out.println("Allah");
-		addMessage(String.valueOf((char) 3) + name);
+		byte[] array = new byte[name.length() + 1];
+		array[0] = 3;
+		for (int i = 0; i < name.length(); i++) {
+			array[i + 1] = (byte) name.charAt(i);
+		}
+		addMessage(array);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -225,11 +265,12 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPlayers(byte player1, byte player2, byte ownPosition) {
-		addMessage(String.valueOf((char) 16) + (char) player1 + (char) player2 + (char) ownPosition);
+		addMessage(new byte[] { 16, player1, player2, ownPosition });
 	}
-	
+
 	/**
-	 * Unterrichtet den Client, dass andere Spieler die Positionen gewechselt hat
+	 * Unterrichtet den Client, dass andere Spieler die Positionen gewechselt
+	 * hat
 	 * 
 	 * @param player
 	 *            Spieler der die Position wechselt
@@ -237,7 +278,7 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPlayers(byte player1, byte player2) {
-		addMessage(String.valueOf((char) 16) + (char) player1 + (char) player2);
+		addMessage(new byte[] { 16, player1, player2 });
 	}
 
 	/**
@@ -249,7 +290,13 @@ public class Connection implements Runnable {
 	 *            Name des neuen Spielers
 	 */
 	public void sendPlayerJoined(byte position, String name) {
-		addMessage(String.valueOf((char) 17) + (char) position + name);
+		byte[] array = new byte[name.length() + 2];
+		array[0] = 17;
+		array[1] = position;
+		for (int i = 0; i < name.length(); i++) {
+			array[i + 2] = (byte) name.charAt(i);
+		}
+		addMessage(array);
 	}
 
 	/**
@@ -259,7 +306,7 @@ public class Connection implements Runnable {
 	 *            Der neue Spieler
 	 */
 	public void sendPlayerLeftLobby(byte playerNumber) {
-		addMessage(String.valueOf((char) 18) + (char) playerNumber);
+		addMessage(new byte[] { 18, playerNumber });
 	}
 
 	/**
@@ -271,11 +318,11 @@ public class Connection implements Runnable {
 	 */
 	public void sendLeftLobby() {
 		switchToMenu();
-		addMessage(String.valueOf((char) 18));
+		addMessage(new byte[] { 18 });
 	}
 
 	public void sendGetHost() {
-		addMessage(String.valueOf((char) 19));
+		addMessage(new byte[] { 19 });
 	}
 
 	/**
@@ -283,7 +330,7 @@ public class Connection implements Runnable {
 	 */
 	public void sendStarting(GameServer server) {
 		setAnalyser(new GameAnalyser(server, id, server.getPosition(this)));
-		addMessage(String.valueOf((char) 20));
+		addMessage(new byte[] { 20 });
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -291,63 +338,68 @@ public class Connection implements Runnable {
 
 	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
 			byte id) {
-		addMessage(String.valueOf((char) 32) + (char) playerNumber
-				+ (char) position + (char) id);
+		addMessage(new byte[] { 32, playerNumber, position, id });
 	}
 
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {
-		addMessage(String.valueOf((char) 33) + (char) typeID
-				+ (char) buildingPlace);
+		addMessage(new byte[] { 33, typeID, buildingPlace });
 	}
 
 	public void sendCreateUnit(short playerNumber, Point position, byte typeID,
 			short unitID) {
-		addMessage(String.valueOf((char) 34) + (char) playerNumber
-				+ (char) (position.x >> 8) + (char) position.x
-				+ (char) (position.y >> 8) + (char) position.y + (char) typeID
-				+ (char) (unitID >> 8) + (char) unitID);
+		addMessage(new byte[] { 34, (byte) playerNumber,
+				(byte) (position.x >> 8), (byte) position.x,
+				(byte) (position.y >> 8), (byte) position.y, typeID,
+				(byte) (unitID >> 8), (byte) unitID });
 	}
 
 	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {
-		String msg = String.valueOf((char) 35) + (char) playerNumber
-				+ (char) direction;
-		for (short s : unitIDs) {
-			msg += (char) (s >> 8) + (char) s + (char) direction;
+		byte[] array = new byte[unitIDs.length * 2 + 3];
+		array[0] = 35;
+		array[1] = playerNumber;
+		array[2] = direction;
+		for (int i = 0; i < unitIDs.length; i++) {
+			array[i*2 + 3] = (byte) (unitIDs[i] >> 8);
+			array[i*2 + 4] = (byte) (unitIDs[i]);
 		}
-		addMessage(msg);
+		addMessage(array);
 	}
 
 	public void sendUnitStartsShooting(short[][] units, short[][] targets) {
-		String msg = String.valueOf((char) 36);
+		ArrayList<Byte> array = new ArrayList<Byte>();
+		array.add((byte) 36);
 		for (int x = 0; x < units.length; x++) {
 			for (int y = 0; y < units[x].length; y++) {
-				msg += (char) (units[x][y] << 8) + (char) (units[x][y])
-						+ (char) (targets[x][y] << 8) + (char) (targets[x][y]);
+				array.add((byte) (units[x][y] << 8));
+				array.add((byte) (units[x][y]));
+				array.add((byte) (targets[x][y] << 8));
+				array.add((byte) (targets[x][y]));
 			}
-			msg += (char) 255;
+			array.add((byte) 1);
 		}
-		addMessage(msg);
+		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 	}
 
 	public void sendUnitDied(short[][] units) {
-		String msg = String.valueOf((char) 37);
+		ArrayList<Byte> array = new ArrayList<Byte>();
+		array.add((byte) 37);
 		for (short[] sA : units) {
 			for (short s : sA) {
-				msg += (char) (s << 8) + (char) s;
+				array.add((byte) (s << 8));
+				array.add((byte) s);
 			}
-			msg += (char) 255;
+			array.add((byte) 1);
 		}
-		addMessage(msg);
+		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 	}
 
-	public void sendPlayerLeftGame(short playerID) {
-		addMessage(String.valueOf((char) 38) + (char) playerID);
+	public void sendPlayerLeftGame(byte playerID) {
+		addMessage(new byte[] {38, playerID});
 	}
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
-		addMessage(String
-				.valueOf((char) (39 + (Boolean.compare(won, false) << 4))));
+		addMessage(new byte[] {(byte) (39 + (Boolean.compare(won, false) << 4))});
 	}
 
 }

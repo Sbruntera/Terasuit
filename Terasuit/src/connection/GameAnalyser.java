@@ -28,32 +28,33 @@ public class GameAnalyser implements Analyser {
 	 * 
 	 * @param input
 	 */
-	public void analyse(String input) {
-		byte[] bytes = input.getBytes();
-		switch (bytes[0]) {
+	public void analyse(byte[] input) {
+		switch (input[0]) {
 		case (32): // Gebäude (aus)bauen
-			System.out.println(bytes.length);
-			if (bytes.length == 3) {
-				if (bytes[2] < 127) {
-					System.out.println(bytes[2]);
-					server.build(position, bytes[1], bytes[2]);
+			System.out.println(input.length);
+			if (input.length == 3) {
+				System.out.println(input[1] +"aja");
+				if (input[2] < 127) {
+					System.out.println(input[2]);
+					server.build(position, input[1], input[2]);
 				} else {
-					server.destroyBuilding(bytes[1], position);
+					server.destroyBuilding(input[1], position);
 				}
 			}
 			break;
 		case (33): // Einheit erstellen
-			if (bytes.length == 3) {
-				byte unitID = bytes[1];
-				byte buildingPlace = bytes[2];
+			if (input.length == 3) {
+				System.out.println("Me Smash" + input[1] + " " + input[2]);
+				byte unitID = input[1];
+				byte buildingPlace = input[2];
 				server.createUnit(position, unitID, buildingPlace);
 			}
 			break;
 		case (34): // Einheit bewegen
-			if (bytes.length > 2) {
-				server.moveUnits(id, getUnits(bytes), ((bytes[2] & 2) >> 1)
-						* Double.compare(bytes[1] & 2, 0.5),
-						(bytes[2] & 1) == 1);
+			if (input.length > 2) {
+				server.moveUnits(id, getUnits(input), ((input[2] & 2) >> 1)
+						* Double.compare(input[1] & 2, 0.5),
+						(input[2] & 1) == 1);
 			}
 			break;
 		case (35): // Spiel verlassen
@@ -62,7 +63,7 @@ public class GameAnalyser implements Analyser {
 			break;
 
 		case (36): // Chat
-			server.broadcast(input.substring(1), id);
+			server.broadcast(castToString(input).substring(1), id);
 			break;
 		}
 	}
@@ -70,17 +71,25 @@ public class GameAnalyser implements Analyser {
 	/**
 	 * Entnimmt einer bytefolge die enthaltenen Einheiten
 	 * 
-	 * @param bytes
+	 * @param input
 	 * @return
 	 */
-	private int[] getUnits(byte[] bytes) {
-		byte[] bytes1 = new byte[bytes.length - 1];
-		for (int i = 2; i <= bytes.length; i++) {
-			bytes1[i - 2] = bytes[i];
+	private int[] getUnits(byte[] input) {
+		byte[] bytes1 = new byte[input.length - 1];
+		for (int i = 2; i <= input.length; i++) {
+			bytes1[i - 2] = input[i];
 		}
 		IntBuffer intBuffer = ByteBuffer.wrap(bytes1)
 				.order(ByteOrder.BIG_ENDIAN).asIntBuffer();
 		int[] array = new int[intBuffer.remaining()];
 		return intBuffer.get(array).array();
+	}
+
+	private String castToString(byte[] input) {
+		String s = "";
+		for (byte i : input) {
+			s += (char) i;
+		}
+		return s;
 	}
 }

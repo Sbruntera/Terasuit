@@ -11,5 +11,5 @@ public interface Analyser {
 	 * Analysiert eine Nachricht für den Server 
 	 * @param input: Nachricht
 	 */
-	public void analyse(String input);
+	public void analyse(byte[] bs);
 }

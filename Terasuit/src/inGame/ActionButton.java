@@ -117,28 +117,24 @@ public class ActionButton {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")) {
 						System.out.println("Ein Gebäude wurde ausgewählt!");
-						loader.connection.createBuilding(slotID - 1 & 3,
+						loader.connection.createBuilding((slotID
+								- (9 * (slotID / 10) + 1) & 3),
 								cutHTMLout(((JButton) arg0.getSource())
 										.getText()));
-//						String buildingName = cutHTMLout(((JButton) arg0
-//								.getSource()).getText());
-//						String buildingLocation = "Buildings/" + buildingName
-//								+ ".png";
-//						System.out.println(primID + " = " + slotID + " +18");
-//						int primID = slotID + 18;
-//						game.createBuilding(buildingName, buildingLocation,
-//								slotID, primID);
 					} else if (type.equals("Ground")) {
-						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
+						System.out
+								.println("Eine Bodeneinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							loader.connection.createUnit(0, slotID);
+							loader.connection.createUnit(0, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							loader.connection.createUnit(1, slotID);
+							loader.connection.createUnit(1, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						}
 
@@ -149,14 +145,15 @@ public class ActionButton {
 								.getText())) {
 						case ("Scout"):
 							System.out.println("Scout");
-							loader.connection.createUnit(3, slotID);
+							loader.connection.createUnit(3, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						}
 						int number = (int) (Math.random() * 4) + 1;
 						String UnitString = "Unit/Air/"
 								+ cutHTMLout(((JButton) arg0.getSource())
 										.getText()) + ".png";
-						//game.entity(UnitString, number, true);
+						// game.entity(UnitString, number, true);
 					} else if (type.equals("Generation")) {
 						System.out
 								.println("Eine generierung wurde ausgewählt!");
@@ -167,7 +164,9 @@ public class ActionButton {
 						game.destroyBuilding(primID);
 					} else if (type.equals("Cancel")) {
 						System.out.println("Abbruch");
+
 						if (primID == 0) {
+							loader.connection.cancelBuilding(slotID);
 							game.cancel(slotID);
 						} else {
 							game.cancel(primID);
