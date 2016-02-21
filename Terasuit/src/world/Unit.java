@@ -43,4 +43,6 @@ public interface Unit {
 	public boolean hasInRange(Unit[] nearesUnits);
 
 	public byte getType();
+
+	public int getBuildTime();
 }

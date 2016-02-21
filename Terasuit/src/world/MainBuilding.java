@@ -104,7 +104,7 @@ public class MainBuilding implements Building, Unit {
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) { //MainBuilding can not create Units
+	public boolean createUnit(byte typeID, short unitID, Point position) { //MainBuilding can not create Units
 		return false;
 	}
 
@@ -152,5 +152,11 @@ public class MainBuilding implements Building, Unit {
 	@Override
 	public boolean isFinished() {
 		return true;
+	}
+
+	@Override
+	public int getBuildTime() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

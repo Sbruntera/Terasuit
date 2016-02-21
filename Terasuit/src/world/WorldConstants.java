@@ -1,6 +1,8 @@
 
 package world;
 
+import java.awt.Point;
+
 public class WorldConstants {
 
 	// World
@@ -23,8 +25,11 @@ public class WorldConstants {
 	public static final byte SOLARGRIDID = 14;
 	public static final byte SPECIALOPERATIONSID = 15;
 
+	public static final byte MARINEID = 0;
+	public static final byte HOVERTANKID = 0;
 
-	public static Building getBuilding(int id, byte position, byte player, boolean primaryBuilding) {
+
+	public static Building getBuilding(int id, byte position, byte player) {
 		switch (id) {
 		case MAINBUILDINGID:
 			return new MainBuilding(player);
@@ -42,12 +47,26 @@ public class WorldConstants {
 			return new Generator(position, player);
 		case SPECIALOPERATIONSID:
 			return new SpecialOperations(position, player);
+		default:
+			return null;
 		}
-		return null;
 	}
 
-	public static Unit getUnit(byte type, short id, short position) {
-		// TODO Auto-generated method stub
-		return null;
+	public static Unit getUnit(byte type, short id, Point position, byte player) {
+		switch (type) {
+		case MARINEID:
+			return new Marine(id, position, player);
+		default:
+			return null;
+		}
+	}
+
+	public static boolean isFlying(byte id) {
+		switch (id) {
+		case MARINEID:
+			return Marine.FLYING;
+		default:
+			return false;
+		}
 	}
 }

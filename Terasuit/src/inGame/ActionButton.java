@@ -129,24 +129,19 @@ public class ActionButton {
 //						game.createBuilding(buildingName, buildingLocation,
 //								slotID, primID);
 					} else if (type.equals("Ground")) {
-						System.out
-								.println("Eine Bodeneinheit wurde ausgewählt!");
+						System.out.println("Eine Bodeneinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							loader.connection.createUnit(1, slotID);
+							loader.connection.createUnit(0, slotID);
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							loader.connection.createUnit(2, slotID);
+							loader.connection.createUnit(1, slotID);
 							break;
 						}
-						int number = (int) (Math.random() * 4) + 1;
-						String UnitString = "Unit/Ground/"
-								+ cutHTMLout(((JButton) arg0.getSource())
-										.getText()) + ".png";
-						game.entity(UnitString, number, false);
+
 					} else if (type.equals("Air")) {
 						System.out
 								.println("Eine Lufteinheit wurde ausgewählt!");
@@ -161,7 +156,7 @@ public class ActionButton {
 						String UnitString = "Unit/Air/"
 								+ cutHTMLout(((JButton) arg0.getSource())
 										.getText()) + ".png";
-						game.entity(UnitString, number, true);
+						//game.entity(UnitString, number, true);
 					} else if (type.equals("Generation")) {
 						System.out
 								.println("Eine generierung wurde ausgewählt!");

@@ -3,6 +3,7 @@ package inGame;
 import grafig.Panel;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -32,8 +33,8 @@ public class Funktions {
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
-	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game){
-		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this);
+	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game, short unitID, Point position){
+		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this, unitID, position);
 	}
 	
 	public void findEntity(MouseEvent objUnit) {

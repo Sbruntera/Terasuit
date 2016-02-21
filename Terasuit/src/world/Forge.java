@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Forge implements Building {
 	
 	public static final int MAXLVL = 2;
@@ -7,8 +9,11 @@ public class Forge implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
 	private byte player;
+	
+	private Unit unit;
 	
 	public Forge(byte position, byte player) {
 		this.position = position;
@@ -77,7 +82,7 @@ public class Forge implements Building {
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) {
+	public boolean createUnit(byte typeID, short unitID, Point position) {
 		// TODO Auto-generated method stub
 		return false;
 	}

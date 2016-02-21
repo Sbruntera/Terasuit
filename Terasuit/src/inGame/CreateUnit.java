@@ -4,6 +4,7 @@ import grafig.Panel;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -35,40 +36,15 @@ public class CreateUnit {
 		UnitTable.createUnitData();
 	}
 	
-	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions) {
+	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions, short unitID, Point position) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
-		unit.setEntityNummer(entity.size() + 1);
+		unit.setEntityNummer(unitID);
 		
-		// Position wird random festgelegt
-		int unit_X_Position = 0;
-		int unit_Y_Position = 0;
-		
-		if (airUnit) {
-			if (color == 1 || color == 2){
-				unit_X_Position = default_spawn_left + random(70);
-				unit_Y_Position = default_spawn_Air + random(150);
-				direction_to_leftside = false;
-			}else{
-				unit_X_Position = default_spawn_right + random(70);
-				unit_Y_Position = default_spawn_Air + random(150);
-				direction_to_leftside = true;
-			}
-		}else{
-			if (color == 1 || color == 2){
-				unit_X_Position = default_spawn_left + random(70);
-				unit_Y_Position = default_spawn_Ground + random(150);
-				direction_to_leftside = false;
-			}else{
-				unit_X_Position = default_spawn_right + random(70);
-				unit_Y_Position = default_spawn_Ground + random(150);
-				direction_to_leftside = true;
-			}
-		}
-		
-		unit.setEntityPositionX(unit_X_Position);
-		unit.setEntityPositionY(unit_Y_Position);
+		// Position wird festgelegt
+		unit.setEntityPositionX(position.x);
+		unit.setEntityPositionY(position.y);
 		
 		// Bild der Einheite wird geladen
 		BufferedImage img = null;
@@ -98,7 +74,7 @@ public class CreateUnit {
 		label.setIcon(pic);
 		
 		// Aktionlisener
-		label.setBounds(unit_X_Position, unit_Y_Position, pic.getIconWidth(), pic.getIconHeight());
+		label.setBounds(position.x, position.y, pic.getIconWidth(), pic.getIconHeight());
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent objUnit) {

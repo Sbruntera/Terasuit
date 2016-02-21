@@ -2,14 +2,17 @@ package logic;
 
 import grafig.Loader;
 
+import java.awt.Point;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
 
 public class Analyser {
 
 	private Loader loader;
 	private State state;
 	private GameLobby game;
-	
+
 	private boolean isHost;
 	private byte position;
 
@@ -64,7 +67,8 @@ public class Analyser {
 			String[] names = new String[splittedMessage.length];
 			for (int i = 0; i < splittedMessage.length; i++) {
 				if (splittedMessage[i].length() > 1) {
-					System.out.println((byte) splittedMessage[i].charAt(0) + "§");
+					System.out.println((byte) splittedMessage[i].charAt(0)
+							+ "§");
 					names[i] = splittedMessage[i];
 				} else {
 					names[i] = "";
@@ -118,7 +122,7 @@ public class Analyser {
 				// (Spieler wurde aus dem Spiel entfernt)
 			}
 			break;
-		case (19): //Spieler wird Host
+		case (19): // Spieler wird Host
 			loader.switchPanel(loader.Grouppage_owner);
 			isHost = true;
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
@@ -129,7 +133,8 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		case (21):
-			loader.setText(game.getPlayerName(bytes[1]) + ": " + message.substring(2));
+			loader.setText(game.getPlayerName(bytes[1]) + ": "
+					+ message.substring(2));
 			break;
 		}
 	}
@@ -202,11 +207,16 @@ public class Analyser {
 			//TODO: An Feldmann: Hier Einheitenproduktion starten
 			break;
 		case (34): // Spieler erstellt eine Einheit
-			playerNumber = bytes[1];
-			short unitPosition = (short) (bytes[2] << 8 + bytes[3]);
-			id = bytes[4];
-			short unitID = (short) (bytes[5] << 8 + bytes[6]);
-			// TODO: An Feldmann: Hier Funktionsaufruf Einheit erstellen
+			Point position = new Point((bytes[2] << 8) + bytes[3], (bytes[4] << 8) + bytes[5]);
+			short unitID = (short) (bytes[6] << 8 + bytes[7]);
+			String name = "";
+			boolean flying = false;
+			switch (bytes[4]) {
+			case(0):
+				name = "Marine";
+				flying = false;
+			}
+			loader.game.entity("Unit/Ground/" + name + ".png", bytes[1], flying, unitID, position);
 			break;
 		case (35): // Spieler bewegt eine Einheit
 			playerNumber = bytes[1];

@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Bank implements Building {
 	
 	public static final int MAXLVL = 1;
@@ -7,8 +9,11 @@ public class Bank implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
 	private byte player;
+	
+	private Unit unit;
 	
 	public Bank(byte position, byte player) {
 		this.position = position;
@@ -68,19 +73,27 @@ public class Bank implements Building {
 
 	@Override
 	public boolean build() {
-		buildTime--;
+		if (buildTime >= 0) {
+			buildTime--;
+		}
 		return buildTime == 0;
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) {
+	public boolean createUnit(byte typeID, short unitID, Point position) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
-		return null;
+		if (createTime >= 0) {
+			createTime--;
+		}
+		if (createTime == 0) {
+			return unit;
+		} else {
+			return null;
+		}
 	}
 }

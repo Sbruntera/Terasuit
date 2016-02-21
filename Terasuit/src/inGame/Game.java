@@ -4,6 +4,7 @@ import grafig.Loader;
 import grafig.Panel;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -122,8 +123,8 @@ public class Game {
 				listOfJProgressBar, slotID, primID, func);
 	}
 
-	public void entity(String unitString, int number, boolean b) {
-		func.createEntity(field, unitString, number, b, this);
+	public void entity(String unitString, int number, boolean b, short unitID, Point position) {
+		func.createEntity(field, unitString, number, b, this, unitID, position);
 	}
 
 	public void destroyBuilding(int i) {

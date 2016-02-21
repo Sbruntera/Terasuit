@@ -4,6 +4,8 @@ import java.awt.Point;
 
 public class Marine implements Unit {
 
+	private static final int BUILDTIME = 1;
+	public static final boolean FLYING = false;
 	private static int damage;
 	private static int range;
 	private static int shootSpeed;
@@ -15,10 +17,11 @@ public class Marine implements Unit {
 	private Point position;
 	private int direction;
 	private boolean running;
-
-	public Marine(byte playerID, short id) {
-		this.playerID = playerID;
+	
+	public Marine(short id, Point position, byte player) {
 		this.id = id;
+		this.position = position;
+		this.playerID = player;
 	}
 
 	@Override
@@ -66,9 +69,8 @@ public class Marine implements Unit {
 		return position;
 	}
 
-	@Override
 	public boolean isFlying() {
-		return false;
+		return FLYING;
 	}
 
 	@Override
@@ -131,8 +133,7 @@ public class Marine implements Unit {
 
 	@Override
 	public byte getType() {
-		// TODO Auto-generated method stub
-		return 0;
+		return WorldConstants.MARINEID;
 	}
 
 	@Override
@@ -143,6 +144,11 @@ public class Marine implements Unit {
 	@Override
 	public boolean canAttackAir() {
 		return true;
+	}
+
+	@Override
+	public int getBuildTime() {
+		return BUILDTIME;
 	}
 
 }

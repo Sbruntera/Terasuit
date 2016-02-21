@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public interface Building {
 
 	public byte getType();
@@ -20,6 +22,6 @@ public interface Building {
 
 	public Unit create();
 
-	public boolean createUnit(byte typeID, short unitID, short position);
-
+	public boolean createUnit(byte typeID, short unitID, Point position);
+	
 }

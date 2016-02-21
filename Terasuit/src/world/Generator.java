@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Generator implements Building {
 
 	public static final int MAXLVL = 1;
@@ -7,8 +9,11 @@ public class Generator implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
 	private byte player;
+	
+	private Unit unit;
 
 	public Generator(byte position, byte player) {
 		this.position = position;
@@ -73,7 +78,7 @@ public class Generator implements Building {
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) {
+	public boolean createUnit(byte typeID, short unitID, Point position) {
 		// TODO Auto-generated method stub
 		return false;
 	}

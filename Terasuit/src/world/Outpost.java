@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Outpost implements Building {
 
 	public static final int MAXLVL = 2;
@@ -7,9 +9,15 @@ public class Outpost implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
 	private byte player;
+	
+	private Unit unit;
 
+	private static final byte[] unitIDs = {0,1,2,3,4,5};
+	private static final int[] numberOfUnits = {2,4,6};
+	
 	public Outpost(byte position, byte player) {
 		this.position = position;
 		this.player = player;
@@ -72,19 +80,39 @@ public class Outpost implements Building {
 
 	@Override
 	public boolean build() {
-		buildTime--;
+		if (buildTime != 0) {
+			buildTime--;
+		}
 		return buildTime == 0;
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) {
-		// TODO Auto-generated method stub
+	public boolean createUnit(byte typeID, short unitID, Point position) {
+		if (createTime <= 0) {
+			boolean contains = false;
+			for (int i = 0; i < numberOfUnits[lvl]; i++) {
+				if (unitIDs[i] == typeID) {
+					contains = true;
+				}
+			}
+			if (contains) {
+				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				createTime = unit.getBuildTime();
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
-		return null;
+		if (createTime >= 0) {
+			createTime--;
+		}
+		if (createTime == 0) {
+			return unit;
+		} else {
+			return null;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,7 +15,7 @@ import world.WorldConstants;
 
 /**
  * 
- * @author Simeon, Jan-Philipp
+ * @author Simeon, Jan-Philipp, Alexander Feldmann
  *
  */
 public class GameServer implements Runnable {
@@ -35,6 +36,10 @@ public class GameServer implements Runnable {
 	private AtomicBoolean ended = new AtomicBoolean(false);
 
 	private AtomicBoolean tick = new AtomicBoolean(false);
+	private int defaultSpawnLeft;
+	private int defaultSpawnAir;
+	private int defaultSpawnRight;
+	private int defaultSpawnGround;
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
@@ -113,7 +118,9 @@ public class GameServer implements Runnable {
 							for (Connection c : connections) {
 								if (c != null) {
 									if (c != connections[b.getPlayer()]) {
-										c.sendCreateOrUpgradeBuilding(b.getPlayer(), b.getSlotID(), b.getType());
+										c.sendCreateOrUpgradeBuilding(
+												b.getPlayer(), b.getSlotID(),
+												b.getType());
 									}
 								}
 							}
@@ -124,7 +131,8 @@ public class GameServer implements Runnable {
 							for (Connection c : connections) {
 								if (c != null) {
 									c.sendCreateUnit(u.getPlayer(),
-											u.getPosition(), u.getType(), u.getID());
+											u.getPosition(), u.getType(),
+											u.getID());
 								}
 							}
 						}
@@ -270,7 +278,7 @@ public class GameServer implements Runnable {
 		System.out.println(buildings[position][buildingPlace]);
 		if (buildings[position][buildingPlace] == null) {
 			buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
-					buildingPlace, position, true);
+					buildingPlace, position);
 		} else if (buildings[position][buildingPlace].getUpgrade() == id) {
 			buildings[position][buildingPlace].upgrade();
 		} else {
@@ -325,9 +333,27 @@ public class GameServer implements Runnable {
 		if (playerPosition < connections.length && playerPosition > 0
 				&& buildingPlace < WorldConstants.BUILDINGSCOUNT
 				&& buildingPlace > 0) {
+			int xPosition;
+			int yPosition;
+			if (WorldConstants.isFlying(id)) {
+				if ((playerPosition & 2) == 0) {
+					xPosition = defaultSpawnLeft + (int) (Math.random() * 70) + 1;
+					yPosition = defaultSpawnAir + (int) (Math.random() * 150) + 1;
+				} else {
+					xPosition = defaultSpawnRight + (int) (Math.random() * 70) + 1;
+					yPosition = defaultSpawnAir + (int) (Math.random() * 150) + 1;
+				}
+			} else {
+				if ((playerPosition & 2) == 2) {
+					xPosition = defaultSpawnLeft + (int) (Math.random() * 70) + 1;
+					yPosition = defaultSpawnGround + (int) (Math.random() * 150) + 1;
+				} else {
+					xPosition = defaultSpawnRight + (int) (Math.random() * 70) + 1;
+					yPosition = defaultSpawnGround + (int) (Math.random() * 150) + 1;
+				}
+			}
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
-					unitIDCounter, (short) 0)) { // TODO 0 durch spawnposition
-				// austauschen
+					unitIDCounter, new Point(xPosition, yPosition))) {
 				unitIDCounter++;
 				if (unitIDCounter == 10) {
 					unitIDCounter = 11;

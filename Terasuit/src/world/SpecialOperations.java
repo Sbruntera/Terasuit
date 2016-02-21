@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class SpecialOperations implements Building {
 	
 	public static final int MAXLVL = 0;
@@ -7,8 +9,11 @@ public class SpecialOperations implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
 	private byte player;
+	
+	private Unit unit;
 	
 	public SpecialOperations(byte position, byte player) {
 		this.position = position;
@@ -56,7 +61,7 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
-	public boolean createUnit(byte typeID, short unitID, short position) {
+	public boolean createUnit(byte typeID, short unitID, Point position) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -1,5 +1,7 @@
 package world;
 
+import java.awt.Point;
+
 public class Armory implements Building {
 	
 	public static final int MAXLVL = 0;
@@ -7,9 +9,11 @@ public class Armory implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
+	private int createTime;
 	private byte position;
-	private Unit unit;
 	private byte player;
+
+	private Unit unit;
 	
 	public Armory(byte position, byte player) {
 		this.position = position;
@@ -52,19 +56,26 @@ public class Armory implements Building {
 
 	@Override
 	public boolean build() {
-		buildTime--;
+		if (buildTime >= 0) {
+			buildTime--;
+		}
 		return buildTime == 0;
 	}
 
 	@Override
-	public boolean createUnit(byte type, short id, short position) {
-		unit = WorldConstants.getUnit(type, id, position);
+	public boolean createUnit(byte type, short id, Point position) {
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		buildTime--;
-		return unit;
+		if (createTime >= 0) {
+			createTime--;
+		}
+		if (createTime == 0) {
+			return unit;
+		} else {
+			return null;
+		}
 	}
 }
