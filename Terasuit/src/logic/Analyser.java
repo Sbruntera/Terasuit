@@ -50,8 +50,7 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					System.out.println((byte) castToString(s).charAt(0)
-							+ (byte) castToString(s).charAt(1) + "are");
+					System.out.println(s.length + " " + message.length);
 					list.add(new Lobby(s[0], castToString(s).substring(3),
 							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
@@ -207,9 +206,11 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Einheitenproduktion starten
 			break;
 		case (34): // Spieler erstellt eine Einheit
-			Point position = new Point((bs[2] << 8) + bs[3], (bs[4] << 8)
-					+ bs[5]);
-			short unitID = (short) (bs[7] << 8 + bs[8]);
+			Point position = new Point(
+					(((int) (Byte.toUnsignedLong(bs[2])) << 8) + Byte.toUnsignedInt(bs[3])),
+					((int) (Byte.toUnsignedLong(bs[4])) << 8) + Byte.toUnsignedInt(bs[5]));
+			System.out.println(bs[3]);
+			short unitID = (short) ((short) (Byte.toUnsignedLong(bs[7]) << 8) + Byte.toUnsignedInt(bs[8]));
 			String name = "";
 			boolean flying = false;
 			switch (bs[6]) {
@@ -225,7 +226,7 @@ public class Analyser {
 			byte direction = bs[2];
 			short[] unitIDs = new short[(bs.length - 2) / 2];
 			for (int i = 3; i < bs.length; i += 2) {
-				unitIDs[(i - 2) / 2] = (short) (bs[i] << 8 + bs[i + 1]);
+				unitIDs[(i - 2) / 2] = (short) ((short) (Byte.toUnsignedLong(bs[i]) << 8) + Byte.toUnsignedInt(bs[i+1]));
 			}
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;

@@ -152,7 +152,7 @@ public class MenuAnalyser implements Analyser {
 		System.out.println(b + "afoljuf");
 		Map map = null;
 		switch (b) {
-		case (1):
+		case (2):
 			map = Map.Nightsun;
 			break;
 		}

@@ -4,14 +4,15 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Random;
 
-import connection.Connection;
-import connection.MenuAnalyser;
 import world.Building;
 import world.Bullet;
 import world.MainBuilding;
 import world.Unit;
 import world.WorldConstants;
+import connection.Connection;
+import connection.MenuAnalyser;
 
 /**
  * 
@@ -336,6 +337,7 @@ public class GameServer implements Runnable {
 	}
 
 	public void createUnit(byte playerPosition, byte id, byte buildingPlace) {
+		Random generator = new Random();
 		if (playerPosition < connections.length && playerPosition >= 0
 				&& buildingPlace < WorldConstants.BUILDINGSCOUNT
 				&& buildingPlace >= 0) {
@@ -346,29 +348,30 @@ public class GameServer implements Runnable {
 				System.out.println("fliegt");
 				if ((playerPosition & 2) == 0) {
 					System.out.println("links");
-					xPosition = defaultSpawnLeft + (int) (Math.random() * 70);
-					yPosition = defaultSpawnAir + (int) (Math.random() * 150);
+					xPosition = defaultSpawnLeft + generator.nextInt(70);
+					yPosition = defaultSpawnAir + generator.nextInt(150);
 				} else {
 					System.out.println("rechts");
-					xPosition = defaultSpawnRight + (int) (Math.random() * 70);
-					yPosition = defaultSpawnAir + (int) (Math.random() * 150);
+					xPosition = defaultSpawnRight + generator.nextInt(70);
+					yPosition = defaultSpawnAir + generator.nextInt(150);
 				}
 			} else {
 				System.out.println("läuft");
 				if ((playerPosition & 2) == 0) {
 					System.out.println("links");
-					xPosition = defaultSpawnLeft + (int) (Math.random() * 70);
-					yPosition = defaultSpawnGround + (int) (Math.random() * 150);
+					xPosition = defaultSpawnLeft + generator.nextInt(70);
+					yPosition = defaultSpawnGround + generator.nextInt(150);
 				} else {
 					System.out.println("rechts");
-					xPosition = defaultSpawnRight + (int) (Math.random() * 70);
-					yPosition = defaultSpawnGround + (int) (Math.random() * 150);
+					xPosition = defaultSpawnRight + generator.nextInt(70);
+					yPosition = defaultSpawnGround + generator.nextInt(150);
 				}
 			}
 			System.out.println(xPosition + " " + yPosition);
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
 					unitIDCounter, new Point(xPosition, yPosition))) {
 				unitIDCounter++;
+				
 				connections[playerPosition].sendGenerateUnit(id, buildingPlace);
 			}
 		}

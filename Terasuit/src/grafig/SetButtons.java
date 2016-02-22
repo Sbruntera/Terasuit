@@ -659,7 +659,7 @@ public class SetButtons {
 		p.setBounds(150, 130, 230, 50);
 		c.setBounds(186, 200, 100, 60);
 		c.addActionListener(e ->{
-			loader.connection.createGroup(1, n.getText(), p.getText());
+			loader.connection.createGroup(2, n.getText(), p.getText());
 		});
 		en.add(p);
 		en.add(n);

@@ -34,7 +34,6 @@ public class ImageManipulator {
 	}
 
 	public BufferedImage setnewColors(BufferedImage img, int color) {
-		System.out.println("Image Manipulationg");
 		for (int y = 0; y < img.getHeight(); y++) {
 			for (int x = 0; x < img.getWidth(); x++) {
 				Color imageColor = new Color(img.getRGB(x, y));
