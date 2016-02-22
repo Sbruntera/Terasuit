@@ -12,12 +12,12 @@ public class Outpost implements Building {
 	private int createTime;
 	private byte position;
 	private byte player;
-	
+
 	private Unit unit;
 
-	private static final byte[] unitIDs = {0,1,2,3,4,5};
-	private static final int[] numberOfUnits = {2,4,6};
-	
+	private static final byte[] unitIDs = { 1, 2, 3, 4, 5, 6 };
+	private static final int[] numberOfUnits = { 2, 4, 6 };
+
 	public Outpost(byte position, byte player) {
 		this.position = position;
 		this.player = player;

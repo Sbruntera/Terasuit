@@ -38,7 +38,6 @@ public class Lobby {
 		this.map = map;
 		this.id = id;
 		host.sendGameJoin(this, true, (byte) 0);
-		System.out.println(gameName);
 	}
 
 	/**
@@ -84,7 +83,6 @@ public class Lobby {
 	public void removePlayer(short senderID, byte playerNumber) {
 		if ((getPosition(senderID) == playerNumber || senderID == host.getID())
 				&& playerList[playerNumber] != null) {
-			System.out.println("success");
 			for (byte i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
 					if (i != playerNumber) {
@@ -240,12 +238,10 @@ public class Lobby {
 	public int getNumberOfPlayers() {
 		int players = 0;
 		for (int i = 0; i < MAXPLAYERS; i++) {
-			// System.out.println("Ich bin i;" + i);
 			if (playerList[i] != null) {
 				players++;
 			}
 		}
-		System.out.println(players + "ist");
 		return players;
 	}
 

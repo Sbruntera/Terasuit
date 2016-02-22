@@ -136,6 +136,21 @@ public class ActionButton {
 							loader.connection.createUnit(2, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
 							break;
+						case ("Sniper"):
+							System.out.println("Sniper");
+							loader.connection.createUnit(3, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Gröditz"):
+							System.out.println("Gröditz");
+							loader.connection.createUnit(4, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Hover Tank"):
+							System.out.println("Hover Tank");
+							loader.connection.createUnit(5, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
 						}
 
 					} else if (type.equals("Air")) {
@@ -143,17 +158,12 @@ public class ActionButton {
 								.println("Eine Lufteinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
-						case ("Scout"):
-							System.out.println("Scout");
-							loader.connection.createUnit(3, (slotID
+						case ("Black Queen"):
+							System.out.println("Black Queen");
+							loader.connection.createUnit(6, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						}
-						int number = (int) (Math.random() * 4) + 1;
-						String UnitString = "Unit/Air/"
-								+ cutHTMLout(((JButton) arg0.getSource())
-										.getText()) + ".png";
-						// game.entity(UnitString, number, true);
 					} else if (type.equals("Generation")) {
 						System.out
 								.println("Eine generierung wurde ausgewählt!");

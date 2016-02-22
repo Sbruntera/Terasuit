@@ -50,11 +50,6 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					System.out.println(s[0]);
-					System.out.println(s[1]);
-					System.out.println(s[2]);
-					System.out.println(s[3]);
-					System.out.println(s[4]);
 					list.add(new Lobby(s[0], castToString(s).substring(3),
 							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
@@ -84,7 +79,6 @@ public class Analyser {
 			loader.updatePlayerList(names, isHost);
 			break;
 		case (3): // Log in
-			System.out.println("success");
 			loader.connection.setLoggedIn(true);
 			loader.connection.setName(castToString(message).substring(1));
 			loader.loggIn(loader.connection.getName());
@@ -102,7 +96,6 @@ public class Analyser {
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (17): // Spieler tritt dem Spiel bei
-			System.out.println("hehehe");
 			game.addPlayer(bs[1], castToString(bs).substring(2));
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
@@ -135,7 +128,6 @@ public class Analyser {
 	}
 
 	private void analyseGameMessage(byte[] bs) {
-		System.out.println();
 		switch (bs[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
 			byte playerNumber = bs[1];
@@ -211,7 +203,6 @@ public class Analyser {
 			Point position = new Point(
 					(((int) (Byte.toUnsignedLong(bs[2])) << 8) + Byte.toUnsignedInt(bs[3])),
 					((int) (Byte.toUnsignedLong(bs[4])) << 8) + Byte.toUnsignedInt(bs[5]));
-			System.out.println(bs[3]);
 			short unitID = (short) ((short) (Byte.toUnsignedLong(bs[7]) << 8) + Byte.toUnsignedInt(bs[8]));
 			String name = "";
 			boolean flying = false;
@@ -219,6 +210,27 @@ public class Analyser {
 			case (1):
 				name = "Marine";
 				flying = false;
+				break;
+			case (2):
+				name = "Chronite Tank";
+				flying = false;
+				break;
+			case (3):
+				name = "Sniper";
+				flying = false;
+				break;
+			case (4):
+				name = "Gröditz";
+				flying = false;
+				break;
+			case (5):
+				name = "Hover Tank";
+				flying = false;
+				break;
+			case (6):
+				name = "Black Queen";
+				flying = true;
+				break;
 			}
 			loader.game.entity("Unit/Ground/" + name + ".png", bs[1] + 1,
 					flying, unitID, position);

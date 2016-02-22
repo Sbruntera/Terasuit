@@ -165,10 +165,11 @@ public class Connection implements Runnable {
 	}
 
 	public void sendChatMessage(byte id, String message) {
-		byte[] msg = new byte[message.length() + 1];
-		msg[0] = id;
+		byte[] msg = new byte[message.length() + 2];
+		msg[0] = 21;
+		msg[1] = id;
 		for (int i = 0; i < message.length(); i++) {
-			msg[i + 1] = (byte) message.charAt(i);
+			msg[i + 2] = (byte) message.charAt(i);
 		}
 		addMessage(msg);
 	}

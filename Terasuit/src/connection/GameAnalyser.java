@@ -31,10 +31,8 @@ public class GameAnalyser implements Analyser {
 	public void analyse(byte[] input) {
 		switch (input[0]) {
 		case (32): // Gebäude (aus)bauen
-			System.out.println(input[0] + " " + input[1] + " " + input[2]);
 			if (input.length == 3) {
 				if (input[2] < 127) {
-					System.out.println(input[2]);
 					server.build(position, input[1], input[2]);
 				} else {
 					server.destroyBuilding(input[1], position);
@@ -43,7 +41,6 @@ public class GameAnalyser implements Analyser {
 			break;
 		case (33): // Einheit erstellen
 			if (input.length == 3) {
-				System.out.println("Me Smash" + input[1] + " " + input[2]);
 				byte unitID = input[1];
 				byte buildingPlace = (byte) (input[2]-1);
 				server.createUnit(position, unitID, buildingPlace);
@@ -57,11 +54,10 @@ public class GameAnalyser implements Analyser {
 			}
 			break;
 		case (35): // Spiel verlassen
-			System.out.println("leave");
 			server.disconnect(id);
 			break;
 
-		case (36): // Chat
+		case (20): // Chat
 			server.broadcast(castToString(input).substring(1), id);
 			break;
 		}

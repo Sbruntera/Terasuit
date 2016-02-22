@@ -60,7 +60,6 @@ public class ServerConnection implements Runnable {
 					analyser.analyse(splitBreak(toPrimal(bytes.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
-					System.out.println("writing");
 					writer.write(queue.remove());
 				}
 				try {
@@ -365,7 +364,6 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createBuilding(int position, String buildingType) {
 		byte buildingID = 127;
-		System.out.println(buildingType);
 		switch (buildingType) {
 		case ("Outpost"):
 			buildingID = 1;
@@ -492,16 +490,14 @@ public class ServerConnection implements Runnable {
 	 *            Chatnachricht
 	 */
 	public void sendChatMessage(String message) {
-		if (!message.equals("")) {
-			if (analyser.getState() == State.MENU) {
-				queue.clear();
-				byte[] array = new byte[message.length() + 1];
-				array[0] = 20;
-				for (int i = 0; i < message.length(); i++) {
-					array[i + 2] = (byte) message.charAt(i);
-				}
-				addMessage(array);
+		if (!message.equals("") && analyser.getState() == State.GAME) {
+			queue.clear();
+			byte[] array = new byte[message.length() + 2];
+			array[0] = 20;
+			for (int i = 0; i < message.length(); i++) {
+				array[i + 2] = (byte) message.charAt(i);
 			}
+			addMessage(array);
 		}
 	}
 }

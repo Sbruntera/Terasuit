@@ -277,7 +277,6 @@ public class GameServer implements Runnable {
 	 *            : position des Gebäudes
 	 */
 	public void build(byte position, byte buildingPlace, byte id) {
-		System.out.println(buildings[position][buildingPlace]);
 		if (buildings[position][buildingPlace] == null) {
 			buildings[position][buildingPlace] = WorldConstants.getBuilding(id,
 					buildingPlace, position);
@@ -343,31 +342,23 @@ public class GameServer implements Runnable {
 				&& buildingPlace >= 0) {
 			int xPosition;
 			int yPosition;
-			System.out.println(playerPosition);
 			if (WorldConstants.isFlying(id)) {
-				System.out.println("fliegt");
 				if ((playerPosition & 2) == 0) {
-					System.out.println("links");
 					xPosition = defaultSpawnLeft + generator.nextInt(70);
 					yPosition = defaultSpawnAir + generator.nextInt(150);
 				} else {
-					System.out.println("rechts");
 					xPosition = defaultSpawnRight + generator.nextInt(70);
 					yPosition = defaultSpawnAir + generator.nextInt(150);
 				}
 			} else {
-				System.out.println("läuft");
 				if ((playerPosition & 2) == 0) {
-					System.out.println("links");
 					xPosition = defaultSpawnLeft + generator.nextInt(70);
 					yPosition = defaultSpawnGround + generator.nextInt(150);
 				} else {
-					System.out.println("rechts");
 					xPosition = defaultSpawnRight + generator.nextInt(70);
 					yPosition = defaultSpawnGround + generator.nextInt(150);
 				}
 			}
-			System.out.println(xPosition + " " + yPosition);
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
 					unitIDCounter, new Point(xPosition, yPosition))) {
 				unitIDCounter++;

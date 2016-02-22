@@ -26,7 +26,11 @@ public class WorldConstants {
 	public static final byte SPECIALOPERATIONSID = 14;
 
 	public static final byte MARINEID = 1;
-	public static final byte HOVERTANKID = 2;
+	public static final byte CHRONITETANKID = 2;
+	public static final byte SNIPERID = 3;
+	public static final byte GRÖDITZID = 4;
+	public static final byte HOVERTANKID = 5;
+	public static final byte BLACKQUEENID = 6;
 
 
 	public static Building getBuilding(int id, byte position, byte player) {
@@ -56,6 +60,16 @@ public class WorldConstants {
 		switch (type) {
 		case MARINEID:
 			return new Marine(id, position, player);
+		case CHRONITETANKID:
+			return new ChroniteTank(id, position, player);
+		case SNIPERID:
+			return new Sniper(id, position, player);
+		case GRÖDITZID:
+			return new Gröditz(id, position, player);
+		case HOVERTANKID:
+			return new HoverTank(id, position, player);
+		case BLACKQUEENID:
+			return new BlackQueen(id, position, player);
 		default:
 			return null;
 		}
@@ -65,6 +79,16 @@ public class WorldConstants {
 		switch (id) {
 		case MARINEID:
 			return Marine.FLYING;
+		case CHRONITETANKID:
+			return ChroniteTank.FLYING;
+		case SNIPERID:
+			return Sniper.FLYING;
+		case GRÖDITZID:
+			return Gröditz.FLYING;
+		case HOVERTANKID:
+			return HoverTank.FLYING;
+		case BLACKQUEENID:
+			return BlackQueen.FLYING;
 		default:
 			return false;
 		}

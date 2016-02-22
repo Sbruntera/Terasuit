@@ -190,7 +190,6 @@ public class Server implements Runnable {
 	 * @return
 	 */
 	public Lobby getLobby(byte id) {
-		System.out.println(id);
 		if (lobbys.containsKey((int) id)) {
 			return lobbys.get(Integer.valueOf(id));
 		} else {

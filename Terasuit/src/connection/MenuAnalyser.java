@@ -71,7 +71,6 @@ public class MenuAnalyser implements Analyser {
 		case (5): // Einloggen
 			System.out.println("login");
 			if (!connection.isLoggedIn()) {
-				System.out.println("loginin");
 				splitted = getSplitString(input, 1);
 				password = "";
 				switch (splitted.length) {
@@ -147,7 +146,6 @@ public class MenuAnalyser implements Analyser {
 	 * @return
 	 */
 	private Map getMap(byte b) {
-		System.out.println(b + "afoljuf");
 		Map map = null;
 		switch (b) {
 		case (2):
