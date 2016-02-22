@@ -59,7 +59,14 @@ public class Connection implements Runnable {
 	}
 
 	private void addMessage(byte[] message) {
-		queue.add(message);
+		byte[] msg = new byte[message.length + 3];
+		for (int i = 0; i < message.length; i++) {
+			msg[i] = message[i];
+			msg[msg.length-3] = 0;
+			msg[msg.length-2] = 0;
+			msg[msg.length-1] = 0;
+		}
+		queue.add(msg);
 	}
 
 	public void loggIn(String string) {
@@ -92,7 +99,6 @@ public class Connection implements Runnable {
 			while (running) {
 				int ended = 0;
 				if (reader.available() != 0) {
-					System.out.println("asd");
 					ArrayList<Byte> bytes = new ArrayList<Byte>();
 					while (!(ended == 3)) {
 						int i = reader.read();
@@ -107,9 +113,6 @@ public class Connection implements Runnable {
 				}
 				if (!queue.isEmpty()) {
 					writer.write(queue.remove());
-					writer.write(0);
-					writer.write(0);
-					writer.write(0);
 				}
 				try {
 					Thread.sleep(20);
@@ -202,7 +205,7 @@ public class Connection implements Runnable {
 			}
 			array.add(l.getID());
 			array.add(l.getMap().getID());
-			array.add((byte) ((Boolean.compare(l.hasPassword(), false) << 3) + l
+			array.add((byte) (128 + (Boolean.compare(l.hasPassword(), false) << 3) + l
 					.getNumberOfPlayers()));
 			for (char c : l.getName().toCharArray()) {
 				array.add((byte) c);
@@ -306,7 +309,7 @@ public class Connection implements Runnable {
 	 *            Der neue Spieler
 	 */
 	public void sendPlayerLeftLobby(byte playerNumber) {
-		addMessage(new byte[] { 18, playerNumber });
+		addMessage(new byte[] { 18, (byte) (128 + playerNumber) });
 	}
 
 	/**

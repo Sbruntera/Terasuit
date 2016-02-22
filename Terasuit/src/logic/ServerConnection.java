@@ -60,10 +60,8 @@ public class ServerConnection implements Runnable {
 					analyser.analyse(splitBreak(toPrimal(bytes.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
+					System.out.println("writing");
 					writer.write(queue.remove());
-					writer.write(0);
-					writer.write(0);
-					writer.write(0);
 				}
 				try {
 					Thread.sleep(20);
@@ -87,7 +85,14 @@ public class ServerConnection implements Runnable {
 	}
 
 	private void addMessage(byte[] message) {
-		queue.add(message);
+		byte[] msg = new byte[message.length + 3];
+		for (int i = 0; i < message.length; i++) {
+			msg[i] = message[i];
+		}
+		msg[msg.length-3] = 0;
+		msg[msg.length-2] = 0;
+		msg[msg.length-1] = 0;
+		queue.add(msg);
 	}
 
 	public boolean isServerAccess() {
@@ -158,7 +163,7 @@ public class ServerConnection implements Runnable {
 	 * @param maxPlayers
 	 *            Maximale Anzahl an Spielern
 	 * @param mapID
-	 *            Die ID der gewünschten Map; 0 wenn keine spezielle Map
+	 *            Die ID der gewünschten Map; 255 wenn keine spezielle Map
 	 *            gewünscht
 	 */
 	public void refreshServerList(boolean noPassword, String name,
@@ -336,16 +341,14 @@ public class ServerConnection implements Runnable {
 	}
 
 	public void sendLobbyChatMessage(String msg) {
-		if (!msg.equals("")) {
-			if (analyser.getState() == State.MENU) {
-				queue.clear();
-				byte[] array = new byte[msg.length() + 1];
-				array[0] = 20;
-				for (int i = 0; i < msg.length(); i++) {
-					array[i + 2] = (byte) msg.charAt(i);
-				}
-				addMessage(array);
+		if (!msg.equals("") && analyser.getState() == State.LOBBY) {
+			queue.clear();
+			byte[] array = new byte[msg.length() + 1];
+			array[0] = 20;
+			for (int i = 0; i < msg.length(); i++) {
+				array[i + 1] = (byte) msg.charAt(i);
 			}
+			addMessage(array);
 		}
 	}
 

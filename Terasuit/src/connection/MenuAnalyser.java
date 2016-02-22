@@ -50,10 +50,8 @@ public class MenuAnalyser implements Analyser {
 			String password;
 			if (input.length > 3) {
 				System.out.println("create");
-				splitted = getSplitString(input, 1);
-				System.out.println(castToString(toPrimal(splitted[0])) + " " + splitted[0].length);
-				System.out.println(castToString(toPrimal(splitted[0])) + " " + splitted[0].length);
-				password = null;
+				splitted = getSplitString(input, 2);
+				password = "";
 				if (splitted.length > 1) {
 					password = castToString(toPrimal(splitted[1]));
 				}

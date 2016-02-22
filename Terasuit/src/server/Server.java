@@ -29,7 +29,8 @@ public class Server implements Runnable {
 	public Server(int port) throws IOException {
 		server = new ServerSocket(port);
 		db = new DB();
-		idIterator = 0;
+		idIterator = 2;
+		idGenerator = 2;
 	}
 
 	@Override
@@ -174,7 +175,6 @@ public class Server implements Runnable {
 	 *            : zu entfernende Lobby
 	 */
 	public void removeLobby(byte id) {
-		System.out.println("aad");
 		lobbys.remove((int)id);
 	}
 

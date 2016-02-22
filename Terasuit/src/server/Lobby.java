@@ -38,6 +38,7 @@ public class Lobby {
 		this.map = map;
 		this.id = id;
 		host.sendGameJoin(this, true, (byte) 0);
+		System.out.println(gameName);
 	}
 
 	/**
@@ -81,8 +82,9 @@ public class Lobby {
 	 * @param position
 	 */
 	public void removePlayer(short senderID, byte playerNumber) {
-		if ((senderID == playerNumber || senderID == host.getID())
+		if ((getPosition(senderID) == playerNumber || senderID == host.getID())
 				&& playerList[playerNumber] != null) {
+			System.out.println("success");
 			for (byte i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
 					if (i != playerNumber) {
@@ -208,7 +210,7 @@ public class Lobby {
 	 * @return true: Passwort vorhanden
 	 */
 	public boolean hasPassword() {
-		if (password == null) {
+		if (password.equals("")) {
 			return false;
 		}
 		return true;

@@ -585,7 +585,7 @@ public class SetButtons {
 		JLabel lobby_name = new JLabel(lobby.getName());
 		JLabel player_count = new JLabel("<html>Players:<br>" + lobby.getNumberOfPlayers() + "/4</html>");
 		switch(lobby.getMapID()){
-			case(1):
+			case(2):
 				map_pic.setIcon(map1);
 				break;
 		}

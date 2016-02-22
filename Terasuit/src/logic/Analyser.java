@@ -50,7 +50,11 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					System.out.println(s.length + " " + message.length);
+					System.out.println(s[0]);
+					System.out.println(s[1]);
+					System.out.println(s[2]);
+					System.out.println(s[3]);
+					System.out.println(s[4]);
 					list.add(new Lobby(s[0], castToString(s).substring(3),
 							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
@@ -103,16 +107,14 @@ public class Analyser {
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (18): // Spieler verlässt das Spiel
-			System.out.println(bs.length + "akljfla");
 			if (bs.length == 2) {
-				game.removePlayer(bs[1]);
+				game.removePlayer((byte) (bs[1] - 128));
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
 				loader.connection.refreshServerList(false, "", 0, 4, 255);
 				game = null;
-				// (Spieler wurde aus dem Spiel entfernt)
 			}
 			break;
 		case (19): // Spieler wird Host

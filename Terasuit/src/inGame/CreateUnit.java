@@ -62,7 +62,7 @@ public class CreateUnit {
 		
 		// Hülle wird mit Attributen belegt
 		unit.setFlyingEntity(airUnit);
-		unit.setEntityRushLeft((color-1&2)==1);	
+		unit.setEntityRushLeft(false);	
 		unit.setEntitymembership(color);
 		unit.setLabel(label);
 		unit.setEntityname(Entitytype);
