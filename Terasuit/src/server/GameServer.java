@@ -56,6 +56,7 @@ public class GameServer implements Runnable {
 		// TODO: Startrecourcen festlegen.
 		bulletsToRemove = new ArrayList<Bullet>();
 		unitsToRemove = new ArrayList<Unit>();
+		unitIDCounter = 1;
 		Controller controller = new Controller(this);
 		Thread controlThread = new Thread(controller);
 		controlThread.start();
@@ -340,40 +341,34 @@ public class GameServer implements Runnable {
 				&& buildingPlace >= 0) {
 			int xPosition;
 			int yPosition;
+			System.out.println(playerPosition);
 			if (WorldConstants.isFlying(id)) {
+				System.out.println("fliegt");
 				if ((playerPosition & 2) == 0) {
-					xPosition = defaultSpawnLeft + (int) (Math.random() * 70) + 1;
-					yPosition = defaultSpawnAir + (int) (Math.random() * 150) + 1;
+					System.out.println("links");
+					xPosition = defaultSpawnLeft + (int) (Math.random() * 70);
+					yPosition = defaultSpawnAir + (int) (Math.random() * 150);
 				} else {
-					xPosition = defaultSpawnRight + (int) (Math.random() * 70) + 1;
-					yPosition = defaultSpawnAir + (int) (Math.random() * 150) + 1;
+					System.out.println("rechts");
+					xPosition = defaultSpawnRight + (int) (Math.random() * 70);
+					yPosition = defaultSpawnAir + (int) (Math.random() * 150);
 				}
 			} else {
+				System.out.println("läuft");
 				if ((playerPosition & 2) == 0) {
-					xPosition = defaultSpawnLeft + (int) (Math.random() * 70) + 1;
-					yPosition = defaultSpawnGround + (int) (Math.random() * 150) + 1;
+					System.out.println("links");
+					xPosition = defaultSpawnLeft + (int) (Math.random() * 70);
+					yPosition = defaultSpawnGround + (int) (Math.random() * 150);
 				} else {
-					xPosition = defaultSpawnRight + (int) (Math.random() * 70) + 1;
-					yPosition = defaultSpawnGround + (int) (Math.random() * 150) + 1;
+					System.out.println("rechts");
+					xPosition = defaultSpawnRight + (int) (Math.random() * 70);
+					yPosition = defaultSpawnGround + (int) (Math.random() * 150);
 				}
 			}
+			System.out.println(xPosition + " " + yPosition);
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
 					unitIDCounter, new Point(xPosition, yPosition))) {
 				unitIDCounter++;
-				if (unitIDCounter == 10) {
-					unitIDCounter = 11;
-				} else if (unitIDCounter == 13) {
-					unitIDCounter = 14;
-				} else if (unitIDCounter == 128) {
-					unitIDCounter = 160;
-				}
-				if (unitIDCounter >> 8 == 10) {
-					unitIDCounter = 11 << 8;
-				} else if (unitIDCounter >> 8 == 13) {
-					unitIDCounter = 14 << 8;
-				} else if (unitIDCounter >> 8 == 128) {
-					unitIDCounter = (short) (160 << 8);
-				}
 				connections[playerPosition].sendGenerateUnit(id, buildingPlace);
 			}
 		}

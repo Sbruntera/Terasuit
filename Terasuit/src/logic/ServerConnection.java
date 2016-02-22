@@ -48,20 +48,20 @@ public class ServerConnection implements Runnable {
 				int ended = 0;
 				if (reader.available() != 0) {
 					ArrayList<Byte> bytes = new ArrayList<Byte>();
-					while (!(ended == 2)) {
+					while (!(ended == 3)) {
 						int i = reader.read();
 						if (i == 0) {
 							ended++;
 						} else if (ended != 0) {
-							bytes.add((byte) 0);
 							ended = 0;
 						}
 						bytes.add((byte) i);
 					}
-					analyser.analyse(toPrimal(bytes.toArray(new Byte[bytes.size()])));
+					analyser.analyse(splitBreak(toPrimal(bytes.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
 					writer.write(queue.remove());
+					writer.write(0);
 					writer.write(0);
 					writer.write(0);
 				}
@@ -76,6 +76,14 @@ public class ServerConnection implements Runnable {
 			e.printStackTrace();
 			serverAccess = false;
 		}
+	}
+
+	private byte[] splitBreak(byte[] primal) {
+		byte[] array = new byte[primal.length-3];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = primal[i];
+		}
+		return array;
 	}
 
 	private void addMessage(byte[] message) {
@@ -357,46 +365,46 @@ public class ServerConnection implements Runnable {
 		System.out.println(buildingType);
 		switch (buildingType) {
 		case ("Outpost"):
-			buildingID = 0;
-			break;
-		case ("Barracks"):
 			buildingID = 1;
 			break;
-		case ("Arsenal"):
+		case ("Barracks"):
 			buildingID = 2;
 			break;
-		case ("Forge"):
+		case ("Arsenal"):
 			buildingID = 3;
 			break;
-		case ("Manufactory"):
+		case ("Forge"):
 			buildingID = 4;
 			break;
-		case ("Mechanics Terminal"):
+		case ("Manufactory"):
 			buildingID = 5;
 			break;
-		case ("Hospital"):
+		case ("Mechanics Terminal"):
 			buildingID = 6;
 			break;
-		case ("War Sanctum"):
+		case ("Hospital"):
 			buildingID = 7;
 			break;
-		case ("Bank"):
+		case ("War Sanctum"):
 			buildingID = 8;
 			break;
-		case ("Treasury"):
+		case ("Bank"):
 			buildingID = 9;
 			break;
-		case ("Armory"):
+		case ("Treasury"):
 			buildingID = 10;
 			break;
-		case ("Generator"):
+		case ("Armory"):
 			buildingID = 11;
 			break;
-		case ("Solar Grid"):
+		case ("Generator"):
 			buildingID = 12;
 			break;
-		case ("Special Operations"):
+		case ("Solar Grid"):
 			buildingID = 13;
+			break;
+		case ("Special Operations"):
+			buildingID = 14;
 			break;
 		}
 		if (position < 4 && analyser.getState() == State.GAME) {
@@ -435,7 +443,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(new byte[] { 33, (byte) id, (byte) buildingPlace });
+			addMessage(new byte[] { 33, (byte) id, (byte) (buildingPlace + 1) });
 		}
 	}
 

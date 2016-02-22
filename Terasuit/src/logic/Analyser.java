@@ -50,8 +50,10 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					list.add(new Lobby(s[0], castToString(s).substring(3), s[1],
-							((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
+					System.out.println((byte) castToString(s).charAt(0)
+							+ (byte) castToString(s).charAt(1) + "are");
+					list.add(new Lobby(s[0], castToString(s).substring(3),
+							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
 			}
 			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
@@ -132,54 +134,54 @@ public class Analyser {
 	}
 
 	private void analyseGameMessage(byte[] bs) {
-		System.out.println("Message gained");
+		System.out.println();
 		switch (bs[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
 			byte playerNumber = bs[1];
-			byte buildingPosition = bs[2];
+			byte buildingPosition = (byte) (bs[2] - 1);
 			byte id = bs[3];
 			String buildingName = null;
 			switch (id) {
-			case (0):
+			case (1):
 				buildingName = "Outpost";
 				break;
-			case (1):
+			case (2):
 				buildingName = "Barracks";
 				break;
-			case (2):
+			case (3):
 				buildingName = "Arsenal";
 				break;
-			case (3):
+			case (4):
 				buildingName = "Forge";
 				break;
-			case (4):
+			case (5):
 				buildingName = "Manufactory";
 				break;
-			case (5):
+			case (6):
 				buildingName = "Mechanics Terminal";
 				break;
-			case (6):
+			case (7):
 				buildingName = "Hospital";
 				break;
-			case (7):
+			case (8):
 				buildingName = "War Sanctum";
 				break;
-			case (8):
+			case (9):
 				buildingName = "Bank";
 				break;
-			case (9):
+			case (10):
 				buildingName = "Treasury";
 				break;
-			case (10):
+			case (11):
 				buildingName = "Armory";
 				break;
-			case (11):
+			case (12):
 				buildingName = "Generator";
 				break;
-			case (12):
+			case (13):
 				buildingName = "Solar Grid";
 				break;
-			case (13):
+			case (14):
 				buildingName = "Special Operations";
 				break;
 			}
@@ -205,13 +207,13 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Einheitenproduktion starten
 			break;
 		case (34): // Spieler erstellt eine Einheit
-			Point position = new Point((bs[2] << 8) + bs[3],
-					(bs[4] << 8) + bs[5]);
+			Point position = new Point((bs[2] << 8) + bs[3], (bs[4] << 8)
+					+ bs[5]);
 			short unitID = (short) (bs[7] << 8 + bs[8]);
 			String name = "";
 			boolean flying = false;
 			switch (bs[6]) {
-			case (0):
+			case (1):
 				name = "Marine";
 				flying = false;
 			}
@@ -253,7 +255,7 @@ public class Analyser {
 		}
 		return s;
 	}
-	
+
 	private byte[][] getSplitString(byte[] input, int bytesToCut) {
 		ArrayList<byte[]> outerArray = new ArrayList<byte[]>();
 		ArrayList<Byte> array = new ArrayList<Byte>();
@@ -268,7 +270,7 @@ public class Analyser {
 		outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
 		return outerArray.toArray(new byte[outerArray.size()][]);
 	}
-	
+
 	private byte[] toPrimal(Byte[] splitted) {
 		byte[] bytes = new byte[splitted.length];
 		for (int i = 0; i < splitted.length; i++) {

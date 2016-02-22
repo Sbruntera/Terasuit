@@ -128,12 +128,12 @@ public class ActionButton {
 								.getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							loader.connection.createUnit(0, (slotID
+							loader.connection.createUnit(1, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							loader.connection.createUnit(1, (slotID
+							loader.connection.createUnit(2, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						}

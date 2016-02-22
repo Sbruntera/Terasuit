@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 
 import logic.UnitData;
 import logic.UnitObject;
+import logic.UnitPics;
 
 public class CreateUnit {
 
@@ -36,7 +37,7 @@ public class CreateUnit {
 		UnitTable.createUnitData();
 	}
 	
-	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions, short unitID, Point position) {
+	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions, short unitID, Point position, UnitPics pics) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
@@ -46,30 +47,30 @@ public class CreateUnit {
 		unit.setEntityPositionX(position.x);
 		unit.setEntityPositionY(position.y);
 		
-		// Bild der Einheite wird geladen
-		BufferedImage img = null;
-		try {
-			System.out.println(Entitytype);
-			img = ImageIO.read(new File(Entitytype));
-			
-		} catch (IOException e) {
-			System.out.println("Fehlendes Bild!");
-			System.out.println("");
-		}
-		
-		// Bild wird entsprechen bearbeitet
-		img = imgManipulator.setnewColors(img, color);
-		Image img2 = imgManipulator.setnewDimension(img, Entitytype);
-		img = this.toBufferedImage(img2);
-		//img = imgManipulator.setSelection(img);
-		
-		if (direction_to_leftside){
-			img = imgManipulator.rotate(img);
-		}
+//		// Bild der Einheite wird geladen
+//		BufferedImage img = null;
+//		try {
+//			System.out.println(Entitytype);
+//			img = ImageIO.read(new File(Entitytype));
+//			
+//		} catch (IOException e) {
+//			System.out.println("Fehlendes Bild!");
+//			System.out.println("");
+//		}
+//		
+//		// Bild wird entsprechen bearbeitet
+//		img = imgManipulator.setnewColors(img, color);
+//		Image img2 = imgManipulator.setnewDimension(img, Entitytype);
+//		img = this.toBufferedImage(img2);
+//		//img = imgManipulator.setSelection(img);
+//		
+//		if (direction_to_leftside){
+//			img = imgManipulator.rotate(img);
+//		}
 
 		
 		// Setzen des Bildes
-		ImageIcon pic = new ImageIcon(img);
+		ImageIcon pic = pics.getEntityPic(Entitytype, color, (color-1&2)==1, false);
 		label = new JLabel("");
 		label.setIcon(pic);
 		

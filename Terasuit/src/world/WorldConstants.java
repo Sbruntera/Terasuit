@@ -10,23 +10,23 @@ public class WorldConstants {
 
 	// MainBuilding
 	public static final byte MAINBUILDINGID = 127;
-	public static final byte OUTPOSTID = 0;
-	public static final byte BARRACKSID = 1;
-	public static final byte ARSENALID = 2;
-	public static final byte FORGEID = 3;
-	public static final byte MANUFACTORYID = 4;
-	public static final byte MECHANICSTERMINALID = 5;
-	public static final byte HOSPITALID = 6;
-	public static final byte WARSANCTUMID = 7;
-	public static final byte BANKID = 8;
-	public static final byte TREASURYID = 9;
-	public static final byte ARMORYID = 10;
-	public static final byte GENERATORID = 11;
-	public static final byte SOLARGRIDID = 12;
-	public static final byte SPECIALOPERATIONSID = 13;
+	public static final byte OUTPOSTID = 1;
+	public static final byte BARRACKSID = 2;
+	public static final byte ARSENALID = 3;
+	public static final byte FORGEID = 4;
+	public static final byte MANUFACTORYID = 5;
+	public static final byte MECHANICSTERMINALID = 6;
+	public static final byte HOSPITALID = 7;
+	public static final byte WARSANCTUMID = 8;
+	public static final byte BANKID = 9;
+	public static final byte TREASURYID = 10;
+	public static final byte ARMORYID = 11;
+	public static final byte GENERATORID = 12;
+	public static final byte SOLARGRIDID = 13;
+	public static final byte SPECIALOPERATIONSID = 14;
 
-	public static final byte MARINEID = 0;
-	public static final byte HOVERTANKID = 0;
+	public static final byte MARINEID = 1;
+	public static final byte HOVERTANKID = 2;
 
 
 	public static Building getBuilding(int id, byte position, byte player) {

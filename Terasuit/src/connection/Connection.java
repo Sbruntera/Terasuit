@@ -92,22 +92,22 @@ public class Connection implements Runnable {
 			while (running) {
 				int ended = 0;
 				if (reader.available() != 0) {
-					ArrayList<Integer> bytes = new ArrayList<Integer>();
-					while (!(ended == 2)) {
+					System.out.println("asd");
+					ArrayList<Byte> bytes = new ArrayList<Byte>();
+					while (!(ended == 3)) {
 						int i = reader.read();
 						if (i == 0) {
 							ended++;
 						} else if (ended != 0) {
-							bytes.add(0);
 							ended = 0;
 						}
-						bytes.add(i);
-						System.out.println(i);
+						bytes.add((byte) i);
 					}
-					analyser.analyse(toPrimal(bytes.toArray(new Integer[bytes.size()])));
+					analyser.analyse(splitBreak(toPrimal(bytes.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
 					writer.write(queue.remove());
+					writer.write(0);
 					writer.write(0);
 					writer.write(0);
 				}
@@ -121,6 +121,14 @@ public class Connection implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private byte[] splitBreak(byte[] primal) {
+		byte[] array = new byte[primal.length-3];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = primal[i];
+		}
+		return array;
 	}
 
 	public void close() {
@@ -160,14 +168,6 @@ public class Connection implements Runnable {
 			msg[i + 1] = (byte) message.charAt(i);
 		}
 		addMessage(msg);
-	}
-
-	private byte[] toPrimal(Integer[] array) {
-		byte[] bytes = new byte[array.length];
-		for (int i = 0; i < array.length; i++) {
-			bytes[i] = array[i].byteValue();
-		}
-		return bytes;
 	}
 
 	private byte[] toPrimal(Byte[] array) {
@@ -338,7 +338,7 @@ public class Connection implements Runnable {
 
 	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
 			byte id) {
-		addMessage(new byte[] { 32, playerNumber, position, id });
+		addMessage(new byte[] { 32, playerNumber, (byte) (position +1), id });
 	}
 
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {

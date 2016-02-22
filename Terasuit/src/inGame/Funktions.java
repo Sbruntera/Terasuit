@@ -34,7 +34,7 @@ public class Funktions {
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game, short unitID, Point position){
-		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this, unitID, position);
+		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this, unitID, position, pics);
 	}
 	
 	public void findEntity(MouseEvent objUnit) {
