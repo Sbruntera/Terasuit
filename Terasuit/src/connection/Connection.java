@@ -340,9 +340,18 @@ public class Connection implements Runnable {
 	// /////////////////////////////////////////////////////////////////////////////
 	// Game
 
-	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
+	public void sendStartCreateOrUpgradeBuilding(byte playerNumber, byte position,
 			byte id) {
 		addMessage(new byte[] { 32, playerNumber, (byte) (position +1), id });
+	}
+	
+	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
+			byte id) {
+		addMessage(new byte[] { 32, playerNumber, (byte) (position +1), (byte) (128 + id) });
+	}
+	
+	public void sendDestroyBuilding(byte playerNumber, byte position) {
+		addMessage(new byte[] { 32, playerNumber, (byte) (position + 1) });
 	}
 
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {
@@ -398,12 +407,12 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(byte playerID) {
-		addMessage(new byte[] {38, playerID});
+		addMessage(new byte[] {38, (byte) (playerID+1)});
 	}
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
-		addMessage(new byte[] {(byte) (39 + (Boolean.compare(won, false) << 4))});
+		addMessage(new byte[] { 39, (byte) (Boolean.compare(won, false) + 1)});
 	}
 
 }

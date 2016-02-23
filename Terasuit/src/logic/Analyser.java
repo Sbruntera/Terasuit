@@ -118,6 +118,7 @@ public class Analyser {
 		case (20): // Spiel wird gestartet
 			switchState(State.GAME);
 			loader.switchPanel(loader.Gamepage);
+			loader.game.setPlayerID(position + 1);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		case (21):
@@ -132,66 +133,78 @@ public class Analyser {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
 			byte playerNumber = bs[1];
 			byte buildingPosition = (byte) (bs[2] - 1);
-			byte id = bs[3];
-			String buildingName = null;
-			switch (id) {
-			case (1):
-				buildingName = "Outpost";
-				break;
-			case (2):
-				buildingName = "Barracks";
-				break;
-			case (3):
-				buildingName = "Arsenal";
-				break;
-			case (4):
-				buildingName = "Forge";
-				break;
-			case (5):
-				buildingName = "Manufactory";
-				break;
-			case (6):
-				buildingName = "Mechanics Terminal";
-				break;
-			case (7):
-				buildingName = "Hospital";
-				break;
-			case (8):
-				buildingName = "War Sanctum";
-				break;
-			case (9):
-				buildingName = "Bank";
-				break;
-			case (10):
-				buildingName = "Treasury";
-				break;
-			case (11):
-				buildingName = "Armory";
-				break;
-			case (12):
-				buildingName = "Generator";
-				break;
-			case (13):
-				buildingName = "Solar Grid";
-				break;
-			case (14):
-				buildingName = "Special Operations";
-				break;
-			}
-			if (buildingName != null) {
-				if (playerNumber == position) {
-					loader.game.createBuilding(buildingName, "Buildings/"
-							+ buildingName + ".png", (playerNumber << 2)
-							+ (playerNumber >> 1) + buildingPosition + 1,
-							(playerNumber << 2) + (playerNumber >> 1)
-									+ buildingPosition + 19);
+			byte id;
+			if (bs.length == 4) {
+				boolean startBuild = false;
+				System.out.println(bs[3]);
+				if (bs[3]  < 0) {
+					id = (byte) (bs[3] + 128);
 				} else {
-					loader.game.createEnemyBuilding(buildingName, "Buildings/"
-							+ buildingName + ".png", (playerNumber << 2)
-							+ (playerNumber >> 1) + buildingPosition + 1,
-							(playerNumber << 2) + (playerNumber >> 1)
-									+ buildingPosition + 19);
+					id = bs[3];
+					startBuild = true;
 				}
+				String buildingName = null;
+				switch (id) {
+				case (1):
+					buildingName = "Outpost";
+					break;
+				case (2):
+					buildingName = "Barracks";
+					break;
+				case (3):
+					buildingName = "Arsenal";
+					break;
+				case (4):
+					buildingName = "Forge";
+					break;
+				case (5):
+					buildingName = "Manufactory";
+					break;
+				case (6):
+					buildingName = "Mechanics Terminal";
+					break;
+				case (7):
+					buildingName = "Hospital";
+					break;
+				case (8):
+					buildingName = "War Sanctum";
+					break;
+				case (9):
+					buildingName = "Bank";
+					break;
+				case (10):
+					buildingName = "Treasury";
+					break;
+				case (11):
+					buildingName = "Armory";
+					break;
+				case (12):
+					buildingName = "Generator";
+					break;
+				case (13):
+					buildingName = "Solar Grid";
+					break;
+				case (14):
+					buildingName = "Special Operations";
+					break;
+				}
+				if (buildingName != null) {
+					if (startBuild) {
+						loader.game.createBuilding(buildingName, "Buildings/"
+								+ buildingName + ".png", (playerNumber << 2)
+								+ (playerNumber >> 1) + buildingPosition + 1,
+								(playerNumber << 2) + (playerNumber >> 1)
+										+ buildingPosition + 19);
+					} else {
+						loader.game.createEnemyBuilding(buildingName, "Buildings/"
+								+ buildingName + ".png", (playerNumber << 2)
+								+ (playerNumber >> 1) + buildingPosition + 1,
+								(playerNumber << 2) + (playerNumber >> 1)
+										+ buildingPosition + 19);
+					}
+				}
+			} else {
+				loader.game.destroyBuilding(buildingPosition + (playerNumber*4) + (playerNumber >> 1) + 19);
 			}
 			break;
 		case (33): // Ein eigenes Gebäude startet eine Produktion
@@ -249,11 +262,12 @@ public class Analyser {
 		case (37): // Einheit stirbt
 			break;
 		case (38): // Spieler verlässt das Spiel
-			playerNumber = bs[1];
+			playerNumber = (byte) (bs[1]-1);
+			game.removePlayer(playerNumber);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;
 		case (39): // Spiel gewonnen/verloren
-			boolean won = bs[1] > 0;
+			boolean won = bs[1] > 1;
 			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
 			break;
 		case (21):

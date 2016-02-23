@@ -170,8 +170,9 @@ public class ActionButton {
 					} else if (type.equals("Destroy")) {
 						System.out
 								.println("Das gewählte Gebäude wird abgerissen");
-						loader.connection.destroyBuilding(slotID);
-						game.destroyBuilding(primID);
+						System.out.println(primID + "jalla");
+						loader.connection.destroyBuilding((slotID
+								- (9 * (slotID / 10) + 1) & 3));
 					} else if (type.equals("Cancel")) {
 						System.out.println("Abbruch");
 
@@ -220,6 +221,14 @@ public class ActionButton {
 			this.preload = true;
 		}
 		console.repaint();
+	}
+	
+	public void changeDescription(String description){
+		Description.setText(wrapLines(description));
+	}
+	
+	public void changeBuildingName(String type){
+		BuildingNameLbl.setText(wrapLines(type));
 	}
 
 	public void deselectOptions(Panel panel) {

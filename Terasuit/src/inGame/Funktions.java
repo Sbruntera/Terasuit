@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import logic.UnitData;
+import logic.UnitObject;
 import logic.UnitPics;
 
 public class Funktions {
@@ -19,9 +21,11 @@ public class Funktions {
 	CreateUnit cunit = new CreateUnit();
 	SelectedUnits selectedUnit = new SelectedUnits();
 	UnitPics pics = new UnitPics();
+	private UnitData data = new UnitData();
 	
 	public Funktions(){
 		pics.generateAllEntityPictures();
+		this.data .createUnitData();
 	}
 	
 	public ArrayList<Unit> getEntity() {
@@ -37,7 +41,7 @@ public class Funktions {
 		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this, unitID, position, pics);
 	}
 	
-	public void findEntity(MouseEvent objUnit) {
+	public void findEntity(MouseEvent objUnit, Game game) {
 		deMarkEntittys();
 		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
 		for (int id : selectedEntitysID) {
@@ -49,6 +53,10 @@ public class Funktions {
 			unit2 = entity.get(id-1);
 			unit2.getLabel().setIcon(pic);
 			entity.set(id-1, unit2);
+			type = splitUp(entity.get(id-1).getEntityname());
+			UnitObject unit = data.returnUnitData(type);
+			String description = unit.getDescription();
+			setInformationInGame(game, type, description);
 		}
 	}
 	
@@ -162,5 +170,16 @@ public class Funktions {
 		}else{
 			game.btnAction.destroyUserOptions(console);
 		}
+	}
+	
+	private void setInformationInGame(Game game, String type, String description){
+		game.changeInformation(type, description);
+	}
+
+	public String splitUp(String Unitname){
+		String[] parts = Unitname.split("/");
+		Unitname = parts[2];
+		Unitname = Unitname.substring(0, Unitname.length()-4);	
+		return Unitname;
 	}
 }

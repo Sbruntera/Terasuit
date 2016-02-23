@@ -45,14 +45,7 @@ public class UnitData {
 	 */
 	public UnitObject returnUnitData(String Unitname){
 	    Unitname = replaceBlancs(Unitname);
-		for(Entry<String, UnitObject> entry : UnitDataHash.entrySet()) {
-		    String key = entry.getKey();
-		    UnitObject unitObject = entry.getValue();
-		    if (key.equals(Unitname)){
-		    	return unitObject;
-		    }
-		}
-		return null;
+		return UnitDataHash.get(Unitname);
 	}
 	
 	private String replaceBlancs(String Unitname){

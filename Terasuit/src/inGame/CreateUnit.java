@@ -43,7 +43,7 @@ public class CreateUnit {
 		unit.setEntityPositionY(position.y);
 		
 		// Setzen des Bildes
-		ImageIcon pic = pics.getEntityPic(Entitytype, color, (color-1&2)==1, false);
+		ImageIcon pic = pics.getEntityPic(Entitytype, color, ((color-1)>>1)==1, false);
 		label = new JLabel("");
 		label.setIcon(pic);
 		

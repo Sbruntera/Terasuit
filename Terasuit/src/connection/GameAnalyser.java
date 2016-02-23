@@ -30,33 +30,38 @@ public class GameAnalyser implements Analyser {
 	 */
 	public void analyse(byte[] input) {
 		switch (input[0]) {
-		case (32): // Gebäude (aus)bauen
+		case (32): // Gebäude (aus)bauen/zerstören
 			if (input.length == 3) {
 				if (input[2] < 127) {
 					server.build(position, input[1], input[2]);
 				} else {
-					server.destroyBuilding(input[1], position);
+					System.out.println("Allahu akbar");
+					server.destroyBuilding((byte) (input[1]-1), position);
 				}
 			}
 			break;
-		case (33): // Einheit erstellen
+		case (33):
+			if (input.length == 2) {
+				server.cancelBuilding(position, input[1]);
+			}
+			break;
+		case (34): // Einheit erstellen
 			if (input.length == 3) {
 				byte unitID = input[1];
 				byte buildingPlace = (byte) (input[2]-1);
 				server.createUnit(position, unitID, buildingPlace);
 			}
 			break;
-		case (34): // Einheit bewegen
+		case (35): // Einheit bewegen
 			if (input.length > 2) {
 				server.moveUnits(id, getUnits(input), ((input[2] & 2) >> 1)
 						* Double.compare(input[1] & 2, 0.5),
 						(input[2] & 1) == 1);
 			}
 			break;
-		case (35): // Spiel verlassen
+		case (36): // Spiel verlassen
 			server.disconnect(id);
 			break;
-
 		case (20): // Chat
 			server.broadcast(castToString(input).substring(1), id);
 			break;

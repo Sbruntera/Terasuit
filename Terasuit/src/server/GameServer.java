@@ -119,11 +119,9 @@ public class GameServer implements Runnable {
 						if (b.build()) {
 							for (Connection c : connections) {
 								if (c != null) {
-									if (c != connections[b.getPlayer()]) {
-										c.sendCreateOrUpgradeBuilding(
-												b.getPlayer(), b.getSlotID(),
-												b.getType());
-									}
+									c.sendCreateOrUpgradeBuilding(
+											b.getPlayer(), b.getSlotID(),
+											b.getType());
 								}
 							}
 						}
@@ -285,12 +283,17 @@ public class GameServer implements Runnable {
 		} else {
 			return;
 		}
-		connections[position].sendCreateOrUpgradeBuilding(position,
+		connections[position].sendStartCreateOrUpgradeBuilding(position,
 				buildingPlace, id);
 	}
 
-	public void destroyBuilding(int buildingPlace, byte position) {
+	public void destroyBuilding(byte buildingPlace, byte position) {
 		buildings[position][buildingPlace] = null;
+		for	(Connection c : connections) {
+			if (c != null) {
+				c.sendDestroyBuilding(position, buildingPlace);
+			}
+		}
 	}
 
 	public void disconnect(short id) {
@@ -332,6 +335,12 @@ public class GameServer implements Runnable {
 				c.sendCreateOrUpgradeBuilding(position, buildingPlace,
 						(byte) 127);
 			}
+		}
+	}
+
+	public void cancelBuilding(byte player, byte position) {
+		if (buildings[player][position] != null) {
+			//TODO: Cancel
 		}
 	}
 

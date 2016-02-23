@@ -421,9 +421,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
-			if (position < 4) {
-				addMessage(new byte[] { 32, (byte) position, 126 });
-			}
+			addMessage(new byte[] { 32, (byte) (position + 1), 127 });
 		}
 	}
 
@@ -431,8 +429,7 @@ public class ServerConnection implements Runnable {
 	 * Bricht den Bau ab
 	 */
 	public void cancelBuilding(int id) {
-		// TODO Auto-generated method stub
-
+		addMessage(new byte[] {33, (byte) id});
 	}
 
 	/**
@@ -444,7 +441,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(new byte[] { 33, (byte) id, (byte) (buildingPlace + 1) });
+			addMessage(new byte[] { 34, (byte) id, (byte) (buildingPlace + 1) });
 		}
 	}
 
@@ -461,7 +458,7 @@ public class ServerConnection implements Runnable {
 	public void moveUnit(int[] unitID, boolean right, boolean walking) {
 		if (analyser.getState() == State.GAME) {
 			byte[] array = new byte[unitID.length * 2 + 2];
-			array[0] = 34;
+			array[0] = 35;
 			array[1] = (byte) (Boolean.compare(false, right) << 1 + Boolean
 					.compare(false, walking));
 			for (int i = 0; i < unitID.length; i++) {
@@ -479,7 +476,7 @@ public class ServerConnection implements Runnable {
 		if (analyser.getState() == State.GAME) {
 			analyser.switchState(State.MENU);
 			queue.clear();
-			addMessage(new byte[] { 35 });
+			addMessage(new byte[] { 36 });
 		}
 	}
 

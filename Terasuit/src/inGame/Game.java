@@ -113,14 +113,17 @@ public class Game {
 	}
 
 	public void selectSingleEntity(MouseEvent objUnit) {
-		func.findEntity(objUnit);
+		func.findEntity(objUnit, this);
 		func.destroyUserOptions(console, this);
 	}
 
 	public void createUserOptions(int slotID, int primID,
 			Buildings[] buildingsArray) {
-		btnAction.createUserOptions(console, this, buildingsArray,
-				listOfJProgressBar, slotID, primID, func);
+		if ((slotID > (playerID-1 >> 1) + (playerID-1)*4 && slotID < (playerID-1 >> 1) + (playerID)*4 + 1) || slotID == (((playerID-1)>>1)+1)*9){
+			func.deMarkEntittys();
+			btnAction.createUserOptions(console, this, buildingsArray,
+					listOfJProgressBar, slotID, primID, func);
+		}
 	}
 
 	public void entity(String unitString, int playerNumber, boolean air, short unitID, Point position) {
@@ -166,6 +169,11 @@ public class Game {
 				BuildingsArray, "blubb", buildingName, this,
 				slotID, primID, field);
 	}
+	
+	public void changeInformation(String type, String description){
+		btnAction.changeDescription(description);
+		btnAction.changeBuildingName(type);
+	}
 
 	/**
 	 * Sucht mit den gegeben Daten nach der aktuellen JProcessbar und
@@ -180,9 +188,6 @@ public class Game {
 				listOfJProgressBar[ID].setValue(percent + 10);
 				System.out.println(ID + " kkkdkd");
 			} else {
-				buildings.createPrimaryBuilding(buildingLocation, X, Y,
-						BuildingsArray, description, buildingName, this,
-						slotID, primID, field);
 				listOfJProgressBar[ID].setVisible(false);
 				listOfJProgressBar[ID] = null;
 				func.destroyUserOptions(console, this);
@@ -225,5 +230,9 @@ public class Game {
         }
         int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
         ts.setValue(s);
+	}
+	
+	public void setPlayerID(int id) {
+		playerID = id;
 	}
 }

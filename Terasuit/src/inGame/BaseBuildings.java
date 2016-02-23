@@ -146,7 +146,7 @@ public class BaseBuildings {
 	}
 	
 	public void destroyPrimaryBuilding( Buildings[] buildingsArray, int i, Panel field, int time){
-		System.out.println(i);
+		System.out.println(i + "jallala");
 		if (i >= 18){
 			field.remove(buildingsArray[i].getLabel());
 			buildingsArray[i] = null;
