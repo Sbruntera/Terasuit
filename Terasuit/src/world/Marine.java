@@ -2,25 +2,19 @@ package world;
 
 import java.awt.Point;
 
-public class Marine implements Unit {
+public class Marine extends Unit {
 
 	private static final int BUILDTIME = 1;
 	public static final boolean FLYING = false;
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = true;
+	public static final int[] PRICE = new int[] {0, 0, 0, 0};
 
-	private byte playerID;
-	private short id;
-
-	private int health;
-	private Point position;
-	private int direction;
-	private boolean running;
-	private int splashDamage;
-	
+	private static int speed;
 	private static int damage;
 	private static int range;
 	private static int shootSpeed;
+	private int splashDamage;
 	
 	public Marine(short id, Point position, byte player) {
 		this.id = id;
@@ -29,23 +23,33 @@ public class Marine implements Unit {
 	}
 
 	@Override
-	public byte getPlayer() {
-		return playerID;
+	public byte getType() {
+		return WorldConstants.MARINEID;
 	}
 
 	@Override
-	public void dealDamage(int value) {
-		health -= value;
+	public boolean isFlying() {
+		return FLYING;
 	}
 
 	@Override
-	public void heal(int value) {
-		health += value;
+	public int getBuildTime() {
+		return BUILDTIME;
 	}
 
 	@Override
-	public int getHealth() {
-		return health;
+	public int[] getPrice() {
+		return PRICE;
+	}
+
+	@Override
+	public boolean canAttackGround() {
+		return CANATTACKGROUND;
+	}
+
+	@Override
+	public boolean canAttackAir() {
+		return CANATTACKAIR;
 	}
 
 	@Override
@@ -69,90 +73,13 @@ public class Marine implements Unit {
 	}
 
 	@Override
-	public Point getPosition() {
-		return position;
-	}
-
-	public boolean isFlying() {
-		return FLYING;
+	public Bullet shoot(Attackable[] farestUnits) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void move() {
-		position.x += direction;
+	public int getSpeed() {
+		return speed;
 	}
-
-	@Override
-	public void setDirection(int direction, boolean running) {
-		this.direction = direction;
-		this.running = running;
-	}
-
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public Bullet shoot(Unit[] farestUnit) {
-		if (farestUnit[0] == null) {
-			if (farestUnit[1] != null) {
-				return new Bullet(this, farestUnit[1]);
-			} else {
-				return null;
-			}
-		} else if (farestUnit[1] == null) {
-			return new Bullet(this, farestUnit[0]);
-		} else if (Math.abs(farestUnit[1].getPosition().x - getPosition().x) < Math
-				.abs(farestUnit[0].getPosition().x - getPosition().x)) {
-			return new Bullet(this, farestUnit[1]);
-		} else {
-			return new Bullet(this, farestUnit[0]);
-		}
-	}
-
-	@Override
-	public boolean isAlive() {
-		return health > 0;
-	}
-
-	@Override
-	public short getID() {
-		return id;
-	}
-
-	@Override
-	public boolean hasInRange(Unit[] units) {
-		if (units[0] != null && canAttackGround()) {
-			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(true) <= 0) {
-				return true;
-			}
-		}
-		if (units[01] != null && canAttackAir()) {
-			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(false) <= 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public byte getType() {
-		return WorldConstants.MARINEID;
-	}
-
-	@Override
-	public boolean canAttackGround() {
-		return CANATTACKGROUND;
-	}
-
-	@Override
-	public boolean canAttackAir() {
-		return CANATTACKAIR;
-	}
-
-	@Override
-	public int getBuildTime() {
-		return BUILDTIME;
-	}
-
 }

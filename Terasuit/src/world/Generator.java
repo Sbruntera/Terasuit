@@ -15,6 +15,9 @@ public class Generator implements Building {
 	
 	private Unit unit;
 
+	private static final byte[] unitIDs = { 17 };
+	private static final int[] numberOfUnits = { 0, 1 };
+	
 	public Generator(byte position, byte player) {
 		this.position = position;
 		this.player = player;
@@ -79,13 +82,31 @@ public class Generator implements Building {
 
 	@Override
 	public boolean createUnit(byte typeID, short unitID, Point position) {
-		// TODO Auto-generated method stub
+		if (createTime <= 0 && buildTime <= 0) {
+			boolean contains = false;
+			for (int i = 0; i < numberOfUnits[lvl]; i++) {
+				if (unitIDs[i] == typeID) {
+					contains = true;
+				}
+			}
+			if (contains) {
+				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				createTime = unit.getBuildTime();
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
-		return null;
+		if (createTime >= 0) {
+			createTime--;
+		}
+		if (createTime == 0) {
+			return unit;
+		} else {
+			return null;
+		}
 	}
 }

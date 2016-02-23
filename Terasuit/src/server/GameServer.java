@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Random;
 
+import world.Attackable;
 import world.Building;
 import world.Bullet;
 import world.MainBuilding;
@@ -72,7 +73,9 @@ public class GameServer implements Runnable {
 				b.getTarget().dealDamage(b.getDamage());
 				bulletsToRemove.add(b);
 				if (!b.getTarget().isAlive()) {
-					unitsToRemove.add(b.getTarget());
+					if (b.getTarget() instanceof Unit) {
+						unitsToRemove.add((Unit) b.getTarget());
+					}
 				}
 			}
 		}
@@ -99,9 +102,9 @@ public class GameServer implements Runnable {
 				if (b != null) {
 					bullets.add(b);
 				}
-			} else if (unit.hasInRange(new Unit[] {
+			} else if (unit.hasInRange(new Attackable[] {
 					mainBuildings[unit.getPlayer() >> 1], null })) {
-				Bullet b = unit.shoot(new Unit[] {
+				Bullet b = unit.shoot(new Attackable[] {
 						mainBuildings[unit.getPlayer() >> 1], null });
 				if (b != null) {
 					bullets.add(b);

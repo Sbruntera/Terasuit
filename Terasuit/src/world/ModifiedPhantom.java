@@ -2,7 +2,7 @@ package world;
 
 import java.awt.Point;
 
-public class BlackQueen extends Unit {
+public class ModifiedPhantom extends Unit {
 
 	private static final int BUILDTIME = 1;
 	public static final boolean FLYING = true;
@@ -16,7 +16,7 @@ public class BlackQueen extends Unit {
 	private static int shootSpeed;
 	private int splashDamage;
 	
-	public BlackQueen(short id, Point position, byte player) {
+	public ModifiedPhantom(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
@@ -24,7 +24,7 @@ public class BlackQueen extends Unit {
 
 	@Override
 	public byte getType() {
-		return WorldConstants.BLACKQUEENID;
+		return WorldConstants.MODIFIEDPHANTOMID;
 	}
 
 	@Override

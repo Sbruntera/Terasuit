@@ -14,6 +14,9 @@ public class Forge implements Building {
 	private byte player;
 	
 	private Unit unit;
+
+	private static final byte[] unitIDs = { 7, 8, 9, 10, 11, 12 };
+	private static final int[] numberOfUnits = { 2, 4, 6 };
 	
 	public Forge(byte position, byte player) {
 		this.position = position;
@@ -83,13 +86,31 @@ public class Forge implements Building {
 
 	@Override
 	public boolean createUnit(byte typeID, short unitID, Point position) {
-		// TODO Auto-generated method stub
+		if (createTime <= 0 && buildTime <= 0) {
+			boolean contains = false;
+			for (int i = 0; i < numberOfUnits[lvl]; i++) {
+				if (unitIDs[i] == typeID) {
+					contains = true;
+				}
+			}
+			if (contains) {
+				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				createTime = unit.getBuildTime();
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
-		return null;
+		if (createTime >= 0) {
+			createTime--;
+		}
+		if (createTime == 0) {
+			return unit;
+		} else {
+			return null;
+		}
 	}
 }

@@ -244,6 +244,50 @@ public class Analyser {
 				name = "Black Queen";
 				flying = true;
 				break;
+			case (7):
+				name = "A25-Roman";
+				flying = false;
+				break;
+			case (8):
+				name = "Scout";
+				flying = true;
+				break;
+			case (9):
+				name = "Phantom";
+				flying = true;
+				break;
+			case (10):
+				name = "Sakata-MK2";
+				flying = false;
+				break;
+			case (11):
+				name = "Sakata Spider";
+				flying = false;
+				break;
+			case (12):
+				name = "Gladiator";
+				flying = false;
+				break;
+			case (13):
+				name = "Meditec";
+				flying = false;
+				break;
+			case (14):
+				name = "Saint";
+				flying = true;
+				break;
+			case (15):
+				name = "Sphinx";
+				flying = false;
+				break;
+			case (16):
+				name = "Modified Phantom";
+				flying = false;
+				break;
+			case (17):
+				name = "Modified Sakata";
+				flying = true;
+				break;
 			}
 			loader.game.entity("Unit/Ground/" + name + ".png", bs[1] + 1,
 					flying, unitID, position);

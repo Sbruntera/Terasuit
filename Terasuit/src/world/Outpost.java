@@ -88,7 +88,7 @@ public class Outpost implements Building {
 
 	@Override
 	public boolean createUnit(byte typeID, short unitID, Point position) {
-		if (createTime <= 0) {
+		if (createTime <= 0 && buildTime <= 0) {
 			boolean contains = false;
 			for (int i = 0; i < numberOfUnits[lvl]; i++) {
 				if (unitIDs[i] == typeID) {

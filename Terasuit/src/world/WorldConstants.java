@@ -31,6 +31,17 @@ public class WorldConstants {
 	public static final byte GRÖDITZID = 4;
 	public static final byte HOVERTANKID = 5;
 	public static final byte BLACKQUEENID = 6;
+	public static final byte A25ROMANID = 7;
+	public static final byte SCOUTID = 8;
+	public static final byte PHANTOMID = 9;
+	public static final byte SAKATAMK2ID = 10;
+	public static final byte SAKATASPIDERID = 11;
+	public static final byte GLADIATORID = 12;
+	public static final byte MEDITECID = 13;
+	public static final byte SAINTID = 14;
+	public static final byte SPHINXID = 15;
+	public static final byte MODIFIEDPHANTOMID = 16;
+	public static final byte MODIFIEDSAKATAID = 17;
 
 
 	public static Building getBuilding(int id, byte position, byte player) {
@@ -70,6 +81,26 @@ public class WorldConstants {
 			return new HoverTank(id, position, player);
 		case BLACKQUEENID:
 			return new BlackQueen(id, position, player);
+		case A25ROMANID:
+			return new A25Roman(id, position, player);
+		case SCOUTID:
+			return new Scout(id, position, player);
+		case PHANTOMID:
+			return new Phantom(id, position, player);
+		case SAKATAMK2ID:
+			return new SakataMK2(id, position, player);
+		case SAKATASPIDERID:
+			return new SakataSpider(id, position, player);
+		case MEDITECID:
+			return new Meditec(id, position, player);
+		case SAINTID:
+			return new Saint(id, position, player);
+		case SPHINXID:
+			return new Sphinx(id, position, player);
+		case MODIFIEDPHANTOMID:
+			return new ModifiedPhantom(id, position, player);
+		case MODIFIEDSAKATAID:
+			return new ModifiedSakata(id, position, player);
 		default:
 			return null;
 		}
@@ -89,6 +120,28 @@ public class WorldConstants {
 			return HoverTank.FLYING;
 		case BLACKQUEENID:
 			return BlackQueen.FLYING;
+		case A25ROMANID:
+			return A25Roman.FLYING;
+		case SCOUTID:
+			return Scout.FLYING;
+		case PHANTOMID:
+			return Phantom.FLYING;
+		case SAKATAMK2ID:
+			return SakataMK2.FLYING;
+		case SAKATASPIDERID:
+			return SakataSpider.FLYING;
+		case GLADIATORID:
+			return Gladiator.FLYING;
+		case MEDITECID:
+			return Meditec.FLYING;
+		case SAINTID:
+			return Saint.FLYING;
+		case SPHINXID:
+			return Sphinx.FLYING;
+		case MODIFIEDPHANTOMID:
+			return ModifiedPhantom.FLYING;
+		case MODIFIEDSAKATAID:
+			return ModifiedSakata.FLYING;
 		default:
 			return false;
 		}

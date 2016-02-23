@@ -2,47 +2,97 @@ package world;
 
 import java.awt.Point;
 
-public interface Unit {
+public abstract class Unit implements Attackable {
+	
+	protected short id;
+	protected byte playerID;
 
-	public byte getPlayer();
+	protected Point position;
+	protected int direction;
+	protected boolean running;
+	protected int health;
 
-	public void dealDamage(int value);
+	public abstract byte getType();
+	
+	public short getID() {
+		return id;
+	}
 
-	public void heal(int value);
+	public byte getPlayer() {
+		return playerID;
+	}
 
-	public int getHealth();
+	public abstract boolean isFlying();
 
-	public boolean canAttackGround();
+	public abstract int getBuildTime();
+	
+	public abstract int[] getPrice();
 
-	public boolean canAttackAir();
+	public abstract boolean canAttackGround();
 
-	public int getDamage(boolean ground);
+	public abstract boolean canAttackAir();
 
-	public int getRange(boolean ground);
+	public abstract int getDamage(boolean ground);
 
-	public int getShootSpeed(boolean ground);
+	public abstract int getRange(boolean ground);
 
-	public int getSplashDamage(boolean ground);
+	public abstract int getShootSpeed(boolean ground);
 
-	public boolean isFlying();
+	public abstract int getSplashDamage(boolean ground);
 
-	public Point getPosition();
+	public boolean hasInRange(Attackable[] attackables) {
+		if (attackables[0] != null && canAttackGround()) {
+			if (Math.abs(getPosition().x - attackables[0].getPosition().x) - getRange(true) <= 0) {
+				return true;
+			}
+		}
+		if (attackables[01] != null && canAttackAir()) {
+			if (Math.abs(getPosition().x - attackables[0].getPosition().x) - getRange(false) <= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public abstract Bullet shoot(Attackable[] attackables);
 
-	public void move();
+	@Override
+	public int getHealth() {
+		return health;
+	}
 
-	public void setDirection(int direction, boolean running);
+	@Override
+	public boolean isAlive() {
+		return health > 0;
+	}
 
-	public boolean isRunning();
+	@Override
+	public void dealDamage(int value) {
+		health -= value;
+	}
 
-	public Bullet shoot(Unit[] farestUnits);
+	@Override
+	public void heal(int value) {
+		health += value;
+	}
+	
+	public abstract int getSpeed();
 
-	public boolean isAlive();
+	@Override
+	public Point getPosition() {
+		return position;
+	}
 
-	public short getID();
+	public boolean isRunning() {
+		return running;
+	}
 
-	public boolean hasInRange(Unit[] nearesUnits);
+	public void setDirection(int direction, boolean running) {
+		this.direction = direction;
+		this.running = running;
+	}
 
-	public byte getType();
-
-	public int getBuildTime();
+	public void move() {
+		position.setLocation(position.x + getSpeed() * direction, position.y);
+	}
 }

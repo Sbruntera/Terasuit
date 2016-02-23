@@ -151,6 +151,41 @@ public class ActionButton {
 							loader.connection.createUnit(5, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
 							break;
+						case ("A25-Roman"):
+							System.out.println("A25-Roman");
+							loader.connection.createUnit(7, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Sakata-MK2"):
+							System.out.println("Sakata-Mk2");
+							loader.connection.createUnit(10, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Sakata Spider"):
+							System.out.println("Sakata Spider");
+							loader.connection.createUnit(11, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Gladiator"):
+							System.out.println("Gladiator");
+							loader.connection.createUnit(12, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Meditec"):
+							System.out.println("Meditec");
+							loader.connection.createUnit(13, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Sphinx"):
+							System.out.println("Sphinx");
+							loader.connection.createUnit(15, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Modified Sakata"):
+							System.out.println("Modified Sakata");
+							loader.connection.createUnit(17, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
 						}
 
 					} else if (type.equals("Air")) {
@@ -162,6 +197,26 @@ public class ActionButton {
 							System.out.println("Black Queen");
 							loader.connection.createUnit(6, (slotID
 									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Scout"):
+							System.out.println("Scout");
+							loader.connection.createUnit(8, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Phantom"):
+							System.out.println("Phantom");
+							loader.connection.createUnit(9, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Saint"):
+							System.out.println("Saint");
+							loader.connection.createUnit(14, (slotID
+									- (9 * (slotID / 10) + 1) & 3));
+							break;
+						case ("Modified Phantom"):
+							System.out.println("Modified Phantom");
+							loader.connection.createUnit(9, (slotID
+									- (9 * (slotID / 16) + 1) & 3));
 							break;
 						}
 					} else if (type.equals("Generation")) {

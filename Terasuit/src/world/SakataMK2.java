@@ -2,11 +2,11 @@ package world;
 
 import java.awt.Point;
 
-public class BlackQueen extends Unit {
+public class SakataMK2 extends Unit {
 
 	private static final int BUILDTIME = 1;
-	public static final boolean FLYING = true;
-	private static final boolean CANATTACKGROUND = true;
+	public static final boolean FLYING = false;
+	private static final boolean CANATTACKGROUND = false;
 	private static final boolean CANATTACKAIR = true;
 	public static final int[] PRICE = new int[] {0, 0, 0, 0};
 
@@ -16,7 +16,7 @@ public class BlackQueen extends Unit {
 	private static int shootSpeed;
 	private int splashDamage;
 	
-	public BlackQueen(short id, Point position, byte player) {
+	public SakataMK2(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
@@ -24,7 +24,7 @@ public class BlackQueen extends Unit {
 
 	@Override
 	public byte getType() {
-		return WorldConstants.BLACKQUEENID;
+		return WorldConstants.SAKATAMK2ID;
 	}
 
 	@Override

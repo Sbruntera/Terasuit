@@ -2,9 +2,9 @@ package world;
 
 public class Bullet {
 
-	private Unit target;
+	private Attackable target;
 
-	public Bullet(Unit marine, Unit target) {
+	public Bullet(Attackable marine, Attackable target) {
 		this.target = target;
 	}
 
@@ -16,7 +16,7 @@ public class Bullet {
 		return 0;
 	}
 
-	public Unit getTarget() {
+	public Attackable getTarget() {
 		return target;
 	}
 }

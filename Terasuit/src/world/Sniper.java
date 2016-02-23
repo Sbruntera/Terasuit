@@ -2,20 +2,20 @@ package world;
 
 import java.awt.Point;
 
-public class Sniper implements Unit {
+public class Sniper extends Unit {
 
 	private static final int BUILDTIME = 1;
 	public static final boolean FLYING = false;
-	public static final boolean CANATTACKGROUND = true;
-	public static final boolean CANATTACKAIR = true;
-	private short id;
-	private byte playerID;
+	private static final boolean CANATTACKGROUND = true;
+	private static final boolean CANATTACKAIR = true;
+	public static final int[] PRICE = new int[] {0, 0, 0, 0};
 
-	private int health;
-	private Point position;
-	private int direction;
-	private boolean running;
-
+	private static int speed;
+	private static int damage;
+	private static int range;
+	private static int shootSpeed;
+	private int splashDamage;
+	
 	public Sniper(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
@@ -23,23 +23,23 @@ public class Sniper implements Unit {
 	}
 
 	@Override
-	public byte getPlayer() {
-		return playerID;
+	public byte getType() {
+		return WorldConstants.SNIPERID;
 	}
 
 	@Override
-	public void dealDamage(int value) {
-		health -= value;
+	public boolean isFlying() {
+		return FLYING;
 	}
 
 	@Override
-	public void heal(int value) {
-		health += value;
+	public int getBuildTime() {
+		return BUILDTIME;
 	}
 
 	@Override
-	public int getHealth() {
-		return health;
+	public int[] getPrice() {
+		return PRICE;
 	}
 
 	@Override
@@ -54,94 +54,32 @@ public class Sniper implements Unit {
 
 	@Override
 	public int getDamage(boolean ground) {
-		// TODO Auto-generated method stub
-		return 0;
+		return damage;
 	}
 
 	@Override
 	public int getRange(boolean ground) {
-		// TODO Auto-generated method stub
-		return 0;
+		return range;
 	}
 
 	@Override
 	public int getShootSpeed(boolean ground) {
-		// TODO Auto-generated method stub
-		return 0;
+		return shootSpeed;
 	}
 
 	@Override
 	public int getSplashDamage(boolean ground) {
-		// TODO Auto-generated method stub
-		return 0;
+		return splashDamage;
 	}
 
 	@Override
-	public boolean isFlying() {
-		return FLYING;
-	}
-
-	@Override
-	public Point getPosition() {
-		return position;
-	}
-
-	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setDirection(int direction, boolean running) {
-		this.direction = direction;
-		this.running = running;
-	}
-
-	@Override
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public Bullet shoot(Unit[] farestUnits) {
+	public Bullet shoot(Attackable[] farestUnits) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isAlive() {
-		return health > 0;
+	public int getSpeed() {
+		return speed;
 	}
-
-	@Override
-	public short getID() {
-		return id;
-	}
-
-	@Override
-	public boolean hasInRange(Unit[] units) {
-		if (units[0] != null && canAttackGround()) {
-			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(true) <= 0) {
-				return true;
-			}
-		}
-		if (units[01] != null && canAttackAir()) {
-			if (Math.abs(getPosition().x - units[0].getPosition().x) - getRange(false) <= 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public byte getType() {
-		return WorldConstants.SNIPERID;
-	}
-
-	@Override
-	public int getBuildTime() {
-		return BUILDTIME;
-	}
-
 }
