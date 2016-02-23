@@ -312,20 +312,20 @@ public class SetButtons {
 			for(int i = 0; i <4;i++){
 				JLabel color = new JLabel();
 				if(i==0){
-					color.setText("RED");
-					color.setForeground(Color.RED);
-					color.setBounds(75, 150, 200, 50);
-				} else if(i ==1){
 					color.setText("BLUE");
 					color.setForeground(Color.BLUE);
+					color.setBounds(75, 150, 200, 50);
+				} else if(i ==1){
+					color.setText("RED");
+					color.setForeground(Color.RED);
 					color.setBounds(75, 400, 200, 50);
 				} else if(i ==2){
-					color.setText("GREEN");
-					color.setForeground(Color.GREEN);
-					color.setBounds(425, 150, 200, 50);
-				} else{
 					color.setText("YELLOW");
 					color.setForeground(Color.YELLOW);
+					color.setBounds(425, 150, 200, 50);
+				} else{
+					color.setText("GREEN");
+					color.setForeground(Color.GREEN);
 					color.setBounds(425, 400, 200, 50);
 				}
 				color.setHorizontalAlignment(SwingConstants.CENTER);
@@ -414,20 +414,20 @@ public class SetButtons {
 			for(int i = 0; i <4;i++){
 				JLabel color = new JLabel();
 				if(i==0){
-					color.setText("RED");
-					color.setForeground(Color.RED);
-					color.setBounds(75, 150, 200, 50);
-				} else if(i ==1){
 					color.setText("BLUE");
 					color.setForeground(Color.BLUE);
+					color.setBounds(75, 150, 200, 50);
+				} else if(i ==1){
+					color.setText("RED");
+					color.setForeground(Color.RED);
 					color.setBounds(75, 400, 200, 50);
 				} else if(i ==2){
-					color.setText("GREEN");
-					color.setForeground(Color.GREEN);
-					color.setBounds(425, 150, 200, 50);
-				} else{
 					color.setText("YELLOW");
 					color.setForeground(Color.YELLOW);
+					color.setBounds(425, 150, 200, 50);
+				} else{
+					color.setText("GREEN");
+					color.setForeground(Color.GREEN);
 					color.setBounds(425, 400, 200, 50);
 				}
 				color.setHorizontalAlignment(SwingConstants.CENTER);
