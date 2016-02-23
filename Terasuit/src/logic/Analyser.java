@@ -282,7 +282,7 @@ public class Analyser {
 				break;
 			case (16):
 				name = "Modified Phantom";
-				flying = false;
+				flying = true;
 				break;
 			case (17):
 				name = "Modified Sakata";

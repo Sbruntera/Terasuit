@@ -215,7 +215,7 @@ public class ActionButton {
 							break;
 						case ("Modified Phantom"):
 							System.out.println("Modified Phantom");
-							loader.connection.createUnit(9, (slotID
+							loader.connection.createUnit(16, (slotID
 									- (9 * (slotID / 16) + 1) & 3));
 							break;
 						}
