@@ -41,7 +41,7 @@ public class GameServer implements Runnable {
 	private int defaultSpawnLeft = 300;
 	private int defaultSpawnRight = 1200;
 	private int defaultSpawnGround = 350;
-	private int defaultSpawnAir = 150;
+	private int defaultSpawnAir = 120;
 
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
@@ -210,33 +210,6 @@ public class GameServer implements Runnable {
 	}
 
 	/**
-	 * Gibt zurück ob der gewählte Nutzer ein Gebäude an einer gewählten
-	 * position hat
-	 * 
-	 * @param id
-	 *            : Nutzer der geprüft werden soll
-	 * @param pos
-	 *            : Position des Gebäudes
-	 * @return
-	 */
-	public boolean hasBuildingAt(int id, int pos) {
-		return buildings[id][pos] != null;
-	}
-
-	/**
-	 * Gibt das Gebäude zurück das an einer bestimmten position existiert
-	 * 
-	 * @param id
-	 *            : ID des Nutzers
-	 * @param pos
-	 *            : Position des Gebäudes
-	 * @return
-	 */
-	public Building getBuildingAt(int id, int pos) {
-		return buildings[id][pos];
-	}
-
-	/**
 	 * Gibt die aktuelle Menge einer bestimmten Recource zurück
 	 * 
 	 * @param id
@@ -270,6 +243,20 @@ public class GameServer implements Runnable {
 	}
 
 	/**
+	 * Gibt zurück ob der gewählte Nutzer ein Gebäude an einer gewählten
+	 * position hat
+	 * 
+	 * @param id
+	 *            : Nutzer der geprüft werden soll
+	 * @param pos
+	 *            : Position des Gebäudes
+	 * @return
+	 */
+	public boolean hasBuildingAt(int id, int pos) {
+		return buildings[id][pos] != null;
+	}
+
+	/**
 	 * Erstellt ein Gebäude an einer bestimmten position
 	 * 
 	 * @param b
@@ -286,8 +273,12 @@ public class GameServer implements Runnable {
 		} else {
 			return;
 		}
-		connections[position].sendStartCreateOrUpgradeBuilding(position,
-				buildingPlace, id);
+		for (Connection c : connections) {
+			if (c != null) {
+				c.sendStartCreateOrUpgradeBuilding(position,
+						buildingPlace, id);
+			}
+		}
 	}
 
 	public void destroyBuilding(byte buildingPlace, byte position) {
@@ -297,28 +288,6 @@ public class GameServer implements Runnable {
 				c.sendDestroyBuilding(position, buildingPlace);
 			}
 		}
-	}
-
-	public void disconnect(short id) {
-		boolean found = false;
-		for (byte i = 0; i < connections.length; i++) {
-			if (connections[i] != null) {
-				if (connections[i].getID() == id) {
-					connections[i].setAnalyser(new MenuAnalyser(server, connections[i], id));
-					connections[i] = null;
-				} else {
-					connections[i].sendPlayerLeftGame(i);
-					found = true;
-				}
-			}
-		}
-		if(!found){
-			ended.set(true);
-		}
-	}
-
-	public boolean ended() {
-		return ended.get();
 	}
 
 	public void upgradeBuilding(byte position, byte buildingPlace) {
@@ -333,17 +302,21 @@ public class GameServer implements Runnable {
 				}
 			}
 		}
-		for (Connection c : connections) {
-			if (c != null) {
-				c.sendCreateOrUpgradeBuilding(position, buildingPlace,
-						(byte) 127);
-			}
-		}
 	}
 
 	public void cancelBuilding(byte player, byte position) {
+		System.out.println(player + " " + position);
 		if (buildings[player][position] != null) {
-			//TODO: Cancel
+			System.out.println("lvl2");
+			if (!buildings[player][position].isFinished()) {
+				System.out.println("lvl3");
+				buildings[player][position] = null;
+				for (Connection c : connections) {
+					if (c != null) {
+						c.sendCancel(player, position);
+					}
+				}
+			}
 		}
 	}
 
@@ -378,5 +351,27 @@ public class GameServer implements Runnable {
 				connections[playerPosition].sendGenerateUnit(id, buildingPlace);
 			}
 		}
+	}
+
+	public void disconnect(short id) {
+		boolean found = false;
+		for (byte i = 0; i < connections.length; i++) {
+			if (connections[i] != null) {
+				if (connections[i].getID() == id) {
+					connections[i].setAnalyser(new MenuAnalyser(server, connections[i], id));
+					connections[i] = null;
+				} else {
+					connections[i].sendPlayerLeftGame(i);
+					found = true;
+				}
+			}
+		}
+		if(!found){
+			ended.set(true);
+		}
+	}
+
+	public boolean ended() {
+		return ended.get();
 	}
 }

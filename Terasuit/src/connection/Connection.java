@@ -354,13 +354,17 @@ public class Connection implements Runnable {
 		addMessage(new byte[] { 32, playerNumber, (byte) (position + 1) });
 	}
 
+	public void sendCancel(byte player, byte position) {
+		addMessage(new byte[] { 33, player, (byte) (position + 1) });
+	}
+
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {
-		addMessage(new byte[] { 33, typeID, buildingPlace });
+		addMessage(new byte[] { 34, typeID, buildingPlace });
 	}
 
 	public void sendCreateUnit(short playerNumber, Point position, byte typeID,
 			short unitID) {
-		addMessage(new byte[] { 34, (byte) playerNumber,
+		addMessage(new byte[] { 35, (byte) playerNumber,
 				(byte) (position.x >> 8), (byte) position.x,
 				(byte) (position.y >> 8), (byte) position.y, typeID,
 				(byte) (unitID >> 8), (byte) unitID });
@@ -368,7 +372,7 @@ public class Connection implements Runnable {
 
 	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {
 		byte[] array = new byte[unitIDs.length * 2 + 3];
-		array[0] = 35;
+		array[0] = 36;
 		array[1] = playerNumber;
 		array[2] = direction;
 		for (int i = 0; i < unitIDs.length; i++) {
@@ -380,7 +384,7 @@ public class Connection implements Runnable {
 
 	public void sendUnitStartsShooting(short[][] units, short[][] targets) {
 		ArrayList<Byte> array = new ArrayList<Byte>();
-		array.add((byte) 36);
+		array.add((byte) 37);
 		for (int x = 0; x < units.length; x++) {
 			for (int y = 0; y < units[x].length; y++) {
 				array.add((byte) (units[x][y] << 8));
@@ -395,7 +399,7 @@ public class Connection implements Runnable {
 
 	public void sendUnitDied(short[][] units) {
 		ArrayList<Byte> array = new ArrayList<Byte>();
-		array.add((byte) 37);
+		array.add((byte) 38);
 		for (short[] sA : units) {
 			for (short s : sA) {
 				array.add((byte) (s << 8));
@@ -407,12 +411,12 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(byte playerID) {
-		addMessage(new byte[] {38, (byte) (playerID+1)});
+		addMessage(new byte[] {39, (byte) (playerID+1)});
 	}
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
-		addMessage(new byte[] { 39, (byte) (Boolean.compare(won, false) + 1)});
+		addMessage(new byte[] { 40, (byte) (Boolean.compare(won, false) + 1)});
 	}
 
 }

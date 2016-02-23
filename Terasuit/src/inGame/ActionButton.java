@@ -230,13 +230,7 @@ public class ActionButton {
 								- (9 * (slotID / 10) + 1) & 3));
 					} else if (type.equals("Cancel")) {
 						System.out.println("Abbruch");
-
-						if (primID == 0) {
-							loader.connection.cancelBuilding(slotID);
-							game.cancel(slotID);
-						} else {
-							game.cancel(primID);
-						}
+						loader.connection.cancelBuilding(slotID);
 					} else if (type.equals("null")) {
 						System.out
 								.println("Keine Option für dieses Button vorhanden!!");

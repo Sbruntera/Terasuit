@@ -40,9 +40,9 @@ public class GameAnalyser implements Analyser {
 				}
 			}
 			break;
-		case (33):
+		case (33): // Abbrechen
 			if (input.length == 2) {
-				server.cancelBuilding(position, input[1]);
+				server.cancelBuilding(position, (byte) (input[1]-1));
 			}
 			break;
 		case (34): // Einheit erstellen

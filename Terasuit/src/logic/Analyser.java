@@ -136,8 +136,7 @@ public class Analyser {
 			byte id;
 			if (bs.length == 4) {
 				boolean startBuild = false;
-				System.out.println(bs[3]);
-				if (bs[3]  < 0) {
+				if (bs[3] < 0) {
 					id = (byte) (bs[3] + 128);
 				} else {
 					id = bs[3];
@@ -190,33 +189,50 @@ public class Analyser {
 				}
 				if (buildingName != null) {
 					if (startBuild) {
-						loader.game.createBuilding(buildingName, "Buildings/"
-								+ buildingName + ".png", (playerNumber << 2)
-								+ (playerNumber >> 1) + buildingPosition + 1,
-								(playerNumber << 2) + (playerNumber >> 1)
-										+ buildingPosition + 19);
+						if (playerNumber == position) {
+							loader.game.createBuilding(buildingName,
+									"Buildings/" + buildingName + ".png",
+									(playerNumber << 2) + (playerNumber >> 1)
+											+ buildingPosition + 1,
+									(playerNumber << 2) + (playerNumber >> 1)
+											+ buildingPosition + 19);
+						} else {
+							// Anzeige anderer Spieler Baut
+						}
 					} else {
-						loader.game.createEnemyBuilding(buildingName, "Buildings/"
-								+ buildingName + ".png", (playerNumber << 2)
-								+ (playerNumber >> 1) + buildingPosition + 1,
+						loader.game.createEnemyBuilding(buildingName,
+								"Buildings/" + buildingName + ".png",
+								(playerNumber << 2) + (playerNumber >> 1)
+										+ buildingPosition + 1,
 								(playerNumber << 2) + (playerNumber >> 1)
 										+ buildingPosition + 19);
 					}
 				}
 			} else {
-				loader.game.destroyBuilding(buildingPosition + (playerNumber*4) + (playerNumber >> 1) + 19);
+				loader.game.destroyBuilding(buildingPosition
+						+ (playerNumber * 4) + (playerNumber >> 1) + 19);
 			}
 			break;
-		case (33): // Ein eigenes Gebäude startet eine Produktion
+		case (33): // bricht eine Produktion ab
+			if (bs[1] == position) {
+				System.out.println(bs[1] + " " + bs[2]);
+				System.out.println((bs[1] << 2) + (bs[1] >> 1) + bs[2] + 1);
+				loader.game.cancel((bs[1] << 2) + (bs[1] >> 1) + bs[2]);
+			}
+			break;
+		case (34): // Ein eigenes Gebäude startet eine Produktion
 			id = bs[1];
 			buildingPosition = bs[2];
 			// TODO: An Feldmann: Hier Einheitenproduktion starten
 			break;
-		case (34): // Spieler erstellt eine Einheit
+		case (35): // Spieler erstellt eine Einheit
 			Point position = new Point(
-					(((int) (Byte.toUnsignedLong(bs[2])) << 8) + Byte.toUnsignedInt(bs[3])),
-					((int) (Byte.toUnsignedLong(bs[4])) << 8) + Byte.toUnsignedInt(bs[5]));
-			short unitID = (short) ((short) (Byte.toUnsignedLong(bs[7]) << 8) + Byte.toUnsignedInt(bs[8]));
+					(((int) (Byte.toUnsignedLong(bs[2])) << 8) + Byte
+							.toUnsignedInt(bs[3])),
+					((int) (Byte.toUnsignedLong(bs[4])) << 8)
+							+ Byte.toUnsignedInt(bs[5]));
+			short unitID = (short) ((short) (Byte.toUnsignedLong(bs[7]) << 8) + Byte
+					.toUnsignedInt(bs[8]));
 			String name = "";
 			boolean flying = false;
 			switch (bs[6]) {
@@ -286,31 +302,33 @@ public class Analyser {
 				break;
 			case (17):
 				name = "Modified Sakata";
-				flying = true;
+				flying = false;
 				break;
 			}
 			loader.game.entity("Unit/Ground/" + name + ".png", bs[1] + 1,
 					flying, unitID, position);
 			break;
-		case (35): // Spieler bewegt eine Einheit
+		case (36): // Spieler bewegt eine Einheit
 			playerNumber = bs[1];
 			byte direction = bs[2];
 			short[] unitIDs = new short[(bs.length - 2) / 2];
 			for (int i = 3; i < bs.length; i += 2) {
-				unitIDs[(i - 2) / 2] = (short) ((short) (Byte.toUnsignedLong(bs[i]) << 8) + Byte.toUnsignedInt(bs[i+1]));
+				unitIDs[(i - 2) / 2] = (short) ((short) (Byte
+						.toUnsignedLong(bs[i]) << 8) + Byte
+						.toUnsignedInt(bs[i + 1]));
 			}
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
-		case (36): // Einheit beginnt schießen
+		case (37): // Einheit beginnt schießen
 			break;
-		case (37): // Einheit stirbt
+		case (38): // Einheit stirbt
 			break;
-		case (38): // Spieler verlässt das Spiel
-			playerNumber = (byte) (bs[1]-1);
+		case (39): // Spieler verlässt das Spiel
+			playerNumber = (byte) (bs[1] - 1);
 			game.removePlayer(playerNumber);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;
-		case (39): // Spiel gewonnen/verloren
+		case (40): // Spiel gewonnen/verloren
 			boolean won = bs[1] > 1;
 			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
 			break;

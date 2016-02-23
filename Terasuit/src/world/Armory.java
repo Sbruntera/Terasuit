@@ -16,7 +16,7 @@ public class Armory implements Building {
 	private Unit unit;
 
 	private static final byte[] unitIDs = { 16 };
-	private static final int[] numberOfUnits = { 0, 1 };
+	private static final int[] numberOfUnits = { 1 };
 	
 	public Armory(byte position, byte player) {
 		this.position = position;
