@@ -1,0 +1,46 @@
+    //#########################################################################
+			//
+			//								Statspage
+			//
+			//#########################################################################	
+		else if(picName.equals("Wallpaper/statspage.png")) {
+			// Back-Button
+			JButton btnBack = new JButton("Back");
+			btnBack.setBounds(471, 689, 170, 60);//links / runter / breite / höhe
+			btnBack.setBackground(new Color(255,90,0));
+			btnBack.setFont(new Font("Arial", Font.BOLD, 24));
+			btnBack.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					loader.switchPanel(loader.Mainpage);
+				}
+			});
+			panel.add(btnBack);
+			
+			//TODO Give me list of all Stats Server pls
+			JLabel welcome = new JLabel("Stats for " + loader.connection.getName());
+			welcome.setBounds(150, 95, 500, 40);
+			welcome.setFont(new Font("Arial", Font.BOLD, 24));
+			welcome.setForeground(Color.RED);
+			panel.add(welcome);
+			
+			
+			for(int i =0; i<16;i++){
+				JLabel Stat = new JLabel("Buildingkills");
+				JLabel Statnumber = new JLabel("1");
+				Stat.setBounds(200+i%4*170, 150+125*(i>>2), 150, 40);
+				Statnumber.setBounds(200+i%4*170, 200+125*(i>>2), 150, 40);
+				Stat.setForeground(Color.RED);
+				Statnumber.setForeground(Color.RED);	
+				Stat.setHorizontalAlignment(SwingConstants.CENTER);
+				Statnumber.setHorizontalAlignment(SwingConstants.CENTER);
+				Stat.setFont(new Font("Arial", Font.BOLD, 24));
+				Statnumber.setFont(new Font("Arial", Font.BOLD, 24));
+				panel.add(Stat);
+				panel.add(Statnumber);
+			}
+		}
+		
+		_____________________________________________________________
+		
+		else if(newPage == Statspage) window.setContentPane(new Panel(Statspage, func, HEIGHT, WIGTH, this));
