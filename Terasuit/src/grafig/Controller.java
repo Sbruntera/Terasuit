@@ -20,7 +20,6 @@ public class Controller implements Runnable {
 		}
 		if (thread.isAlive()) {
 			thread.interrupt();
-			// TODO: Show Connection Error
 		}
 	}
 }

@@ -41,7 +41,6 @@ public class MenuAnalyser implements Analyser {
 			connection.loggOut();
 			break;
 		case (2): // Serverliste
-			System.out.println("serverlist");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
@@ -49,7 +48,6 @@ public class MenuAnalyser implements Analyser {
 			Byte[][] splitted;
 			String password;
 			if (input.length > 3) {
-				System.out.println("create");
 				splitted = getSplitString(input, 2);
 				password = "";
 				if (splitted.length > 1) {
@@ -60,7 +58,6 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (4): // Spiel beitreten
-			System.out.println("join");
 			if (input.length > 1) {
 				if (server.hasLobby(input[1])) {
 					server.getLobby(input[1]).addPlayer(connection,
@@ -99,7 +96,6 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (7):
-			System.out.println("disconnect");
 			server.diconnect(id);
 			break;
 		}

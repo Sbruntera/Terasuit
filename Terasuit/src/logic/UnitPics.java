@@ -47,14 +47,11 @@ public class UnitPics {
 		if (left && !mark){
 			searchString = searchString + "_turn";	
 		}else if (!left && !mark){
-			System.out.println(searchString);
-			System.out.println("Heyho ");
 		}else if (left && mark){
 			searchString = searchString + "_mark_turn";
 		}else{
 			searchString = searchString + "_mark";
 		}
-		System.out.println(searchString);
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	

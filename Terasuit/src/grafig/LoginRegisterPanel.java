@@ -40,8 +40,7 @@ public class LoginRegisterPanel {
 				for (char c : passwordField.getPassword()) {
 					password += c;
 				}
-				connection.login(userField.getText(),
-						password);
+				connection.login(userField.getText(), password);
 			}
 		});
 		panel.add(btnlogin);
@@ -85,8 +84,8 @@ public class LoginRegisterPanel {
 					password2 += c;
 				}
 				if (password1.equals(password2)) {
-					connection.register(userField.getText(),
-							password1, mailField.getText());
+					connection.register(userField.getText(), password1,
+							mailField.getText());
 				}
 			}
 		});
@@ -137,8 +136,7 @@ public class LoginRegisterPanel {
 	private void createpopup(Panel panel) {
 		registerPanel = new JLabel("");
 		registerPanel.setIcon(new ImageIcon("Wallpaper/LoginBackground.png"));
-		registerPanel.setBounds(770, 335, 500, 500); // links / runter / wbreite
-														// / höhe
+		registerPanel.setBounds(770, 335, 500, 500);
 		panel.add(registerPanel);
 	}
 

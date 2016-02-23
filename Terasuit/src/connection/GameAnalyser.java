@@ -35,7 +35,6 @@ public class GameAnalyser implements Analyser {
 				if (input[2] < 127) {
 					server.build(position, input[1], input[2]);
 				} else {
-					System.out.println("Allahu akbar");
 					server.destroyBuilding((byte) (input[1]-1), position);
 				}
 			}

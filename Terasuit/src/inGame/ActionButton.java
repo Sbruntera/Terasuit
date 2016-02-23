@@ -85,13 +85,10 @@ public class ActionButton {
 	public void createUserOptions(Panel console, Game game,
 			Buildings[] buildingsArray, JProgressBar[] listOfJProgressBar,
 			int slotID, int primID, Funktions func) {
-		System.out.println("slotID " + slotID);
-		System.out.println("primID " + primID);
 		deselectOptions(console);
 		game.setAllJProgressBarVisible(false);
 		if (primID == 0) {
 			noName = buildingsArray[slotID].getSpwanableEntity();
-			System.out.println("1");
 			if (listOfJProgressBar[slotID] != null) {
 				noName = new String[1];
 				noName[0] = "Cancel";
@@ -99,7 +96,6 @@ public class ActionButton {
 			}
 		} else {
 			noName = buildingsArray[primID].getSpwanableEntity();
-			System.out.println("3");
 			if (listOfJProgressBar[slotID] != null) {
 				noName = new String[1];
 				noName[0] = "Cancel";
@@ -225,7 +221,6 @@ public class ActionButton {
 					} else if (type.equals("Destroy")) {
 						System.out
 								.println("Das gewählte Gebäude wird abgerissen");
-						System.out.println(primID + "jalla");
 						loader.connection.destroyBuilding((slotID
 								- (9 * (slotID / 10) + 1) & 3));
 					} else if (type.equals("Cancel")) {

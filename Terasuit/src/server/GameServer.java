@@ -305,11 +305,8 @@ public class GameServer implements Runnable {
 	}
 
 	public void cancelBuilding(byte player, byte position) {
-		System.out.println(player + " " + position);
 		if (buildings[player][position] != null) {
-			System.out.println("lvl2");
 			if (!buildings[player][position].isFinished()) {
-				System.out.println("lvl3");
 				buildings[player][position] = null;
 				for (Connection c : connections) {
 					if (c != null) {

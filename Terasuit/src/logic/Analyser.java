@@ -215,8 +215,6 @@ public class Analyser {
 			break;
 		case (33): // bricht eine Produktion ab
 			if (bs[1] == position) {
-				System.out.println(bs[1] + " " + bs[2]);
-				System.out.println((bs[1] << 2) + (bs[1] >> 1) + bs[2] + 1);
 				loader.game.cancel((bs[1] << 2) + (bs[1] >> 1) + bs[2]);
 			}
 			break;

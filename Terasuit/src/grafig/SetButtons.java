@@ -32,7 +32,7 @@ import logic.Lobby;
  */
 
 public class SetButtons {
-	
+
 	LoginRegisterPanel loginRegisterPanel;
 	boolean registerOpen = false;
 	boolean loginOpen = false;
@@ -59,68 +59,81 @@ public class SetButtons {
 	private JButton btnLogin;
 	private JButton btnRegister;
 	private boolean panelopen = false;
-	
+
 	/**
 	 * Plaziert alle wichtigen Schaltflächen passend zum Hintergrund
 	 * 
-	 * @param panel ContentPane des Frames
-	 * @param picName Name des Hintergrundbilds des ContentPanes
-	 * @param loader Loader der GUI
-	 * @param func Funktionen der GUI
+	 * @param panel
+	 *            ContentPane des Frames
+	 * @param picName
+	 *            Name des Hintergrundbilds des ContentPanes
+	 * @param loader
+	 *            Loader der GUI
+	 * @param func
+	 *            Funktionen der GUI
 	 */
-	public void setbuttons(Panel panel, String picName, Loader loader, Funktions func){
+	public void setbuttons(Panel panel, String picName, Loader loader,
+			Funktions func) {
 		this.panel = panel;
 		this.loader = loader;
-		
-		//#########################################################################
+
+		// #########################################################################
 		//
-		//								MAINPANEL
+		// MAINPANEL
 		//
-		//#########################################################################
-		
-		// Buttons für das Startpanel werden gesetzt und mit Aktionlisener versetzt
-		if (picName.equals("Wallpaper/Start_Hintergrund.png")){
-			
+		// #########################################################################
+
+		// Buttons für das Startpanel werden gesetzt und mit Aktionlisener
+		// versetzt
+		if (picName.equals("Wallpaper/Start_Hintergrund.png")) {
+
 			// Start-Button
 			JButton btnStart = new JButton("Start");
 			btnStart.setBounds(168, 290, 245, 65);
-			btnStart.setBackground(new Color(255,50,0));
-			btnStart.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1, Color.red));
+			btnStart.setBackground(new Color(255, 50, 0));
+			btnStart.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1,
+					Color.red));
 			btnStart.setFont(new Font("ArialB", Font.BOLD, 24));
 			btnStart.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Beim klick auf dem "Start"-Buttons gelangt man in die Lobby
-					if (loader.connection.isServerAccess()){
+					// Beim klick auf dem "Start"-Buttons gelangt man in die
+					// Lobby
+					if (loader.connection.isServerAccess()) {
 						loader.switchPanel(loader.Lobbypage);
-						loader.connection.refreshServerList(false, "", 0, 4, 255);
+						loader.connection.refreshServerList(false, "", 0, 4,
+								255);
 					} else {
-						System.out.println("Server konnte nicht gefunden werden. ");
+						System.out
+								.println("Server konnte nicht gefunden werden. ");
 					}
 				}
 			});
 			panel.add(btnStart);
-			
+
 			// Option-Button
-			JButton btnOption = new JButton("Option");
+			JButton btnOption = new JButton("Stats");
 			btnOption.setBounds(138, 383, 245, 65);
-			btnOption.setBackground(new Color(255,70,0));
-			btnOption.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1, Color.red));
+			btnOption.setBackground(new Color(255, 70, 0));
+			btnOption.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1,
+					Color.red));
 			btnOption.setFont(new Font("Arial", Font.BOLD, 24));
 			btnOption.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Beim klick auf dem "Options"-Buttons gelangt man in die Optionen
-					loader.switchPanel(loader.Lobbypage);
+					// Beim klick auf dem "Options"-Buttons gelangt man in die
+					// Optionen
+					loader.switchPanel(loader.Statspage);
 				}
 			});
 			panel.add(btnOption);
-			
+
 			// Exit-Button
 			JButton btnExit = new JButton("Exit");
 			btnExit.setBounds(183, 480, 245, 65);
-			btnExit.setBackground(new Color(255,90,0));
-			btnExit.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1, Color.red));
+			btnExit.setBackground(new Color(255, 90, 0));
+			btnExit.setBorder(BorderFactory.createMatteBorder(1, 3, 7, 1,
+					Color.red));
 			btnExit.setFont(new Font("Arial", Font.BOLD, 24));
 			btnExit.addMouseListener(new MouseAdapter() {
 				@Override
@@ -131,18 +144,18 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnExit);
-			
-			//Login-Button
+
+			// Login-Button
 			loginRegisterPanel = new LoginRegisterPanel(loader.connection);
 			btnLogin = new JButton("LOGIN");
 			btnLogin.setBounds(800, 732, 90, 25);
-			btnLogin.setBackground(new Color(255,90,0));
+			btnLogin.setBackground(new Color(255, 90, 0));
 			btnLogin.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					
-					if (loginOpen == false){
-						if (registerOpen == true){
+
+					if (loginOpen == false) {
+						if (registerOpen == true) {
 							loginRegisterPanel.popupdestroy(panel);
 						}
 						loginRegisterPanel.popupLogin(panel);
@@ -154,16 +167,16 @@ public class SetButtons {
 					}
 				}
 			});
-			
-			//Register-Button
+
+			// Register-Button
 			btnRegister = new JButton("REGISTER");
 			btnRegister.setBounds(920, 732, 90, 25);
-			btnRegister.setBackground(new Color(255,90,0));
+			btnRegister.setBackground(new Color(255, 90, 0));
 			btnRegister.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					if (registerOpen == false){
-						if (loginOpen == true){
+					if (registerOpen == false) {
+						if (loginOpen == true) {
 							loginRegisterPanel.popupdestroy(panel);
 						}
 						loginRegisterPanel.popupRegister(panel);
@@ -175,44 +188,45 @@ public class SetButtons {
 					}
 				}
 			});
-			
-			if(!loader.connection.isLoggedIn()){ 
+
+			if (!loader.connection.isLoggedIn()) {
 				panel.add(btnLogin);
 				panel.add(btnRegister);
-			} else{
+			} else {
 				loggedIn(loader.connection.getName());
 			}
-		
-			
-		//#########################################################################
-		//
-		//								SERVERLIST
-		//
-		//#########################################################################
-			
-		} else if (picName.equals("Wallpaper/serverlist.png")){
-			//LobbyList
+
+			// #########################################################################
+			//
+			// SERVERLIST
+			//
+			// #########################################################################
+
+		} else if (picName.equals("Wallpaper/serverlist.png")) {
+			// LobbyList
 			jp = new JPanel();
-			scroller = new JScrollPane(jp, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scroller = new JScrollPane(jp,
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scroller.setBounds(142, 92, 789, 580);
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
 			panel.add(scroller);
-			
-			
+
 			// JOIN-Button
 			JButton btnJoin = new JButton("JOIN");
-			btnJoin.setBounds(303, 689, 170, 60);//links / runter / breite / höhe
-			btnJoin.setBackground(new Color(255,90,0));
+			btnJoin.setBounds(303, 689, 170, 60);
+			btnJoin.setBackground(new Color(255, 90, 0));
 			btnJoin.setFont(new Font("Arial", Font.BOLD, 24));
 			btnJoin.setIcon(new ImageIcon("Wallpaper/Join_Pfeil.png"));
 			btnJoin.addMouseListener(new MouseAdapter() {
 
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Beim klick auf dem "Join"-Buttons gelangt man in eine Spielgruppe
-					if(haspassword){
-						if(panelopen){
+					// Beim klick auf dem "Join"-Buttons gelangt man in eine
+					// Spielgruppe
+					if (haspassword) {
+						if (panelopen) {
 							panel.remove(create);
 							panel.repaint();
 							panel.revalidate();
@@ -223,26 +237,27 @@ public class SetButtons {
 						panel.setComponentZOrder(create, 0);
 						panel.repaint();
 						panel.revalidate();
-					} else{
+					} else {
 						loader.connection.connectGroup(markedLobby, "");
 					}
-					//TODO	System.out.println("Gruppe voll oder ein fehler ist aufgetretten");
+					// TODO Fehler falls Gruppe voll
 
 				}
 			});
 			panel.add(btnJoin);
-			
+
 			// Create-Button
 			JButton btnCreateGroup = new JButton("CREATE");
-			btnCreateGroup.setBounds(626, 689, 170, 60);//links / runter / breite / höhe
-			btnCreateGroup.setBackground(new Color(255,90,0));
+			btnCreateGroup.setBounds(626, 689, 170, 60);
+			btnCreateGroup.setBackground(new Color(255, 90, 0));
 			btnCreateGroup.setFont(new Font("Arial", Font.BOLD, 24));
 			btnCreateGroup.setIcon(new ImageIcon("Wallpaper/Create_Pfeil.png"));
 			btnCreateGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					// Beim klick auf dem "Create"-Buttons gelangt man in eine Spielgruppe, als Besitzer
-					if(panelopen){
+					// Beim klick auf dem "Create"-Buttons gelangt man in eine
+					// Spielgruppe, als Besitzer
+					if (panelopen) {
 						panel.remove(create);
 						panel.repaint();
 						panel.revalidate();
@@ -253,16 +268,16 @@ public class SetButtons {
 					panel.setComponentZOrder(create, 0);
 					panel.repaint();
 					panel.revalidate();
-					//TODO	System.out.println("Gruppe konnte nicht erstellt werden!");
+					// TODO Fehler Gruppe kann nicht erstellt werden
 
 				}
 			});
 			panel.add(btnCreateGroup);
-			
+
 			// Refresh-Button
 			JButton btnRefreshGroup = new JButton("Refresh");
-			btnRefreshGroup.setBounds(510, 680, 85, 30);//links / runter / breite / höhe
-			btnRefreshGroup.setBackground(new Color(255,90,0));
+			btnRefreshGroup.setBounds(510, 680, 85, 30);
+			btnRefreshGroup.setBackground(new Color(255, 90, 0));
 			btnRefreshGroup.setFont(new Font("Arial", Font.BOLD, 12));
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
@@ -271,12 +286,11 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnRefreshGroup);
-			
-			
+
 			// Back-Button
 			JButton btnBACK = new JButton("BACK");
-			btnBACK.setBounds(510, 715, 85, 30);//links / runter / breite / höhe
-			btnBACK.setBackground(new Color(255,90,0));
+			btnBACK.setBounds(510, 715, 85, 30);
+			btnBACK.setBackground(new Color(255, 90, 0));
 			btnBACK.setFont(new Font("Arial", Font.BOLD, 12));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
@@ -285,45 +299,45 @@ public class SetButtons {
 					loader.switchPanel(loader.Mainpage);
 				}
 			});
-			panel.add(btnBACK);	
-		
-		//#########################################################################
-		//
-		//								LOBBY
-		//
-		//#########################################################################	
-			
-		} else if (picName.equals("Wallpaper/Lobby.png")){
-			
+			panel.add(btnBACK);
+
+			// #########################################################################
+			//
+			// LOBBY
+			//
+			// #########################################################################
+
+		} else if (picName.equals("Wallpaper/Lobby.png")) {
+
 			// Back-Button
 			JButton btnBACK = new JButton("RETURN");
-			btnBACK.setBounds(430, 695, 170, 60);//links / runter / breite / höhe
-			btnBACK.setBackground(new Color(255,90,0));
+			btnBACK.setBounds(430, 695, 170, 60);
+			btnBACK.setBackground(new Color(255, 90, 0));
 			btnBACK.setFont(new Font("Arial", Font.BOLD, 24));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					//TODO	System.out.println("Verbindung zur Gruppe konnte nicht geschlossen werden!");
+					// TODO Gruppe konnte nicht verlassen werden
 				}
 			});
-			
-			//Team bezeichungen
-			for(int i = 0; i <4;i++){
+
+			// Team bezeichungen
+			for (int i = 0; i < 4; i++) {
 				JLabel color = new JLabel();
-				if(i==0){
+				if (i == 0) {
 					color.setText("BLUE");
 					color.setForeground(Color.BLUE);
 					color.setBounds(75, 150, 200, 50);
-				} else if(i ==1){
+				} else if (i == 1) {
 					color.setText("RED");
 					color.setForeground(Color.RED);
 					color.setBounds(75, 400, 200, 50);
-				} else if(i ==2){
+				} else if (i == 2) {
 					color.setText("YELLOW");
 					color.setForeground(Color.YELLOW);
 					color.setBounds(425, 150, 200, 50);
-				} else{
+				} else {
 					color.setText("GREEN");
 					color.setForeground(Color.GREEN);
 					color.setBounds(425, 400, 200, 50);
@@ -332,29 +346,31 @@ public class SetButtons {
 				color.setFont(new Font("Arial", Font.BOLD, 24));
 				panel.add(color);
 			}
-			
-			//Lobbby Player Showcase
-			for(int i = 0; i <4;i++){
+
+			// Lobbby Player Showcase
+			for (int i = 0; i < 4; i++) {
 				JLabel players = new JLabel();
-				if (i==0 || i==1){
-					players.setBounds(75, 230+(250*i), 200, 50);
-				}else{
-					players.setBounds(425, 230+(250*(i-2)), 200, 50);
+				if (i == 0 || i == 1) {
+					players.setBounds(75, 230 + (250 * i), 200, 50);
+				} else {
+					players.setBounds(425, 230 + (250 * (i - 2)), 200, 50);
 				}
 				players.setHorizontalAlignment(SwingConstants.CENTER);
-				players.setBackground(new Color(255,90,0));
+				players.setBackground(new Color(255, 90, 0));
 				players.setFont(new Font("Arial", Font.BOLD, 24));
 				players.setOpaque(true);
 				labellist.add(players);
 				panel.add(players);
 			}
-			
-			//Chat
+
+			// Chat
 			tl = new JLabel(s);
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
-			JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			JScrollPane scroller = new JScrollPane(tl,
+					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+					JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			scroller.setBounds(666, 350, 320, 334);
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
@@ -368,34 +384,36 @@ public class SetButtons {
 			panel.add(scroller);
 			panel.add(tf);
 			panel.add(btnBACK);
-			
-		//#########################################################################
-		//
-		//								LOBBY_Besitzer
-		//
-		//#########################################################################	
-			
-		} else if (picName.equals("Wallpaper/Lobby_BESITZER.png")){
+
+			// #########################################################################
+			//
+			// LOBBY_Besitzer
+			//
+			// #########################################################################
+
+		} else if (picName.equals("Wallpaper/Lobby_BESITZER.png")) {
 			// Back-Button
 			JButton btnBACK = new JButton("RETURN");
-			btnBACK.setBounds(430, 695, 170, 60);//links / runter / breite / höhe
-			btnBACK.setBackground(new Color(255,90,0));
+			btnBACK.setBounds(430, 695, 170, 60);
+			btnBACK.setBackground(new Color(255, 90, 0));
 			btnBACK.setFont(new Font("Arial", Font.BOLD, 24));
 			btnBACK.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					//TODO	System.out.println("Gruppenlobby konnte nicht geschlossen werden!!!");
+					// TODO Fehlermeldung: Lobby leitung konnte nicht weitergegeben werden Lobby nicht gelöscht
 				}
 			});
-			panel.add(btnBACK);	
-			
-			//Chat
+			panel.add(btnBACK);
+
+			// Chat
 			tl = new JLabel(s);
 			tl.setBounds(668, 350, 318, 334);
 			tl.setForeground(Color.WHITE);
 			tl.setVerticalAlignment(SwingConstants.TOP);
-			JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			JScrollPane scroller = new JScrollPane(tl,
+					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+					JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			scroller.setBounds(666, 350, 320, 334);
 			scroller.setOpaque(false);
 			scroller.getViewport().setOpaque(false);
@@ -408,24 +426,24 @@ public class SetButtons {
 			});
 			panel.add(scroller);
 			panel.add(tf);
-			panel.add(btnBACK);	
-			
-			//Team bezeichungen
-			for(int i = 0; i <4;i++){
+			panel.add(btnBACK);
+
+			// Team bezeichungen
+			for (int i = 0; i < 4; i++) {
 				JLabel color = new JLabel();
-				if(i==0){
+				if (i == 0) {
 					color.setText("BLUE");
 					color.setForeground(Color.BLUE);
 					color.setBounds(75, 150, 200, 50);
-				} else if(i ==1){
+				} else if (i == 1) {
 					color.setText("RED");
 					color.setForeground(Color.RED);
 					color.setBounds(75, 400, 200, 50);
-				} else if(i ==2){
+				} else if (i == 2) {
 					color.setText("YELLOW");
 					color.setForeground(Color.YELLOW);
 					color.setBounds(425, 150, 200, 50);
-				} else{
+				} else {
 					color.setText("GREEN");
 					color.setForeground(Color.GREEN);
 					color.setBounds(425, 400, 200, 50);
@@ -434,25 +452,26 @@ public class SetButtons {
 				color.setFont(new Font("Arial", Font.BOLD, 24));
 				panel.add(color);
 			}
-			//Lobby Host Player movement
-			for(int i = 0; i <4;i++){
+			// Lobby Host Player movement
+			for (int i = 0; i < 4; i++) {
 				JComboBox<String> players = new JComboBox<String>();
 				JButton jb = new JButton("KICK");
-				if (i==0 || i==1){
-					players.setBounds(75, 230+(250*i), 200, 50);
-					jb.setBounds(100, 300+(250*i), 150, 40);//links / runter / breite / höhe
-				}else{
-					players.setBounds(425, 230+(250*(i-2)), 200, 50);
-					jb.setBounds(450, 300+(250*(i-2)), 150, 40);//links / runter / breite / höhe
+				if (i == 0 || i == 1) {
+					players.setBounds(75, 230 + (250 * i), 200, 50);
+					jb.setBounds(100, 300 + (250 * i), 150, 40);
+				} else {
+					players.setBounds(425, 230 + (250 * (i - 2)), 200, 50);
+					jb.setBounds(450, 300 + (250 * (i - 2)), 150, 40);
 				}
 				players.setFont(new Font("Arial", Font.BOLD, 24));
-				jb.setBackground(new Color(255,90,0));
+				jb.setBackground(new Color(255, 90, 0));
 				jb.setFont(new Font("Arial", Font.BOLD, 24));
 				players.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent arg0) {
-						int [] i = newplayers();
-						loader.connection.switchPlayers((byte) i[0], (byte) i[1]);
+						int[] i = newplayers();
+						loader.connection.switchPlayers((byte) i[0],
+								(byte) i[1]);
 					}
 				});
 				int x = i;
@@ -465,12 +484,12 @@ public class SetButtons {
 				combolist.add(players);
 				panel.add(players);
 				panel.add(jb);
-			}			
-			
+			}
+
 			// START-BATTLE-Button
 			JButton btnBattleStart = new JButton("START");
-			btnBattleStart.setBounds(135, 695, 170, 60);//links / runter / breite / höhe
-			btnBattleStart.setBackground(new Color(255,90,0));
+			btnBattleStart.setBounds(135, 695, 170, 60);
+			btnBattleStart.setBackground(new Color(255, 90, 0));
 			btnBattleStart.setFont(new Font("Arial", Font.BOLD, 24));
 			btnBattleStart.addMouseListener(new MouseAdapter() {
 				@Override
@@ -480,85 +499,140 @@ public class SetButtons {
 			});
 			panel.add(btnBattleStart);
 		}
-		
+		// #########################################################################
+		//
+		// Statspage
+		//
+		// #########################################################################
+		else if (picName.equals("Wallpaper/statspage.png")) {
+			// Back-Button
+			JButton btnBack = new JButton("Back");
+			btnBack.setBounds(471, 689, 170, 60);
+			btnBack.setBackground(new Color(255, 90, 0));
+			btnBack.setFont(new Font("Arial", Font.BOLD, 24));
+			btnBack.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					loader.switchPanel(loader.Mainpage);
+				}
+			});
+			panel.add(btnBack);
+
+			// TODO Give me list of all Stats Server pls
+			JLabel welcome = new JLabel("Stats for "
+					+ loader.connection.getName());
+			welcome.setBounds(150, 95, 500, 40);
+			welcome.setFont(new Font("Arial", Font.BOLD, 24));
+			welcome.setForeground(Color.RED);
+			panel.add(welcome);
+
+			for (int i = 0; i < 16; i++) {
+				JLabel Stat = new JLabel("Buildingkills");
+				JLabel Statnumber = new JLabel("1");
+				Stat.setBounds(200 + i % 4 * 170, 150 + 125 * (i >> 2), 150, 40);
+				Statnumber.setBounds(200 + i % 4 * 170, 200 + 125 * (i >> 2),
+						150, 40);
+				Stat.setForeground(Color.RED);
+				Statnumber.setForeground(Color.RED);
+				Stat.setHorizontalAlignment(SwingConstants.CENTER);
+				Statnumber.setHorizontalAlignment(SwingConstants.CENTER);
+				Stat.setFont(new Font("Arial", Font.BOLD, 24));
+				Statnumber.setFont(new Font("Arial", Font.BOLD, 24));
+				panel.add(Stat);
+				panel.add(Statnumber);
+			}
+		}
 	}
+
 	/**
 	 * Fügt die eingehende Nachricht dem Chatfeld hinzu
 	 * 
-	 * @param text Eingehende Nachricht
+	 * @param text
+	 *            Eingehende Nachricht
 	 */
-	public void setText(String text){
+	public void setText(String text) {
 		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
-		//Wird benötigt damit der Chat wirklich zum ende Scrollt
+		// Wird benötigt damit der Chat wirklich zum ende Scrollt
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
+		int s = ts.getModel().getMaximum() + ts.getModel().getExtent();
 		ts.setValue(s);
 	}
-	 /**
-	  * Updatet die JComboBoxen des Lobby Hosts mit den namen der neuen Spieler
-	  * 
-	  * @param player Spieler Array mit den Namen aller Spieler die sich in der Lobby befinden
-	  */
-	public void updateCombo(String[] player){
+
+	/**
+	 * Updatet die JComboBoxen des Lobby Hosts mit den namen der neuen Spieler
+	 * 
+	 * @param player
+	 *            Spieler Array mit den Namen aller Spieler die sich in der
+	 *            Lobby befinden
+	 */
+	public void updateCombo(String[] player) {
 		standartselect = player;
-		for(int i = 0; i <4;i++){
+		for (int i = 0; i < 4; i++) {
 			combolist.get(i).setModel(new DefaultComboBoxModel<String>(player));
 			combolist.get(i).setSelectedIndex(i);
 		}
 		panel.repaint();
 	}
-	
-	 /**
-	  * Updatet die JLabels der anderen mitspieler der Lobby
-	  * 
-	  * @param player Spieler Array mit den Namen aller Spieler die sich in der Lobby befinden
-	  */
-	public void updateLabels(String[] player){
-		for(int i = 0; i <4;i++){
+
+	/**
+	 * Updatet die JLabels der anderen mitspieler der Lobby
+	 * 
+	 * @param player
+	 *            Spieler Array mit den Namen aller Spieler die sich in der
+	 *            Lobby befinden
+	 */
+	public void updateLabels(String[] player) {
+		for (int i = 0; i < 4; i++) {
 			labellist.get(i).setText(player[i]);
 		}
 		panel.repaint();
 	}
-	
+
 	/**
-	 * Liest die zu tauschenden Spielernummern aus und speichert diese in einem Array
+	 * Liest die zu tauschenden Spielernummern aus und speichert diese in einem
+	 * Array
 	 * 
 	 * @return Int Array mit Plätzen der zutauschenden Spieler
 	 */
-	public int[] newplayers(){
+	public int[] newplayers() {
 		int[] numbers = new int[2];
 		for (int i = 0; i < standartselect.length; i++) {
-			if (!standartselect[i].equals(combolist.get(i).getSelectedItem().toString())) {
+			if (!standartselect[i].equals(combolist.get(i).getSelectedItem()
+					.toString())) {
 				numbers[0] = i;
 			}
 		}
 		for (int i = 0; i < standartselect.length; i++) {
-			if (standartselect[i].equals(combolist.get(numbers[0]).getSelectedItem().toString())) {
+			if (standartselect[i].equals(combolist.get(numbers[0])
+					.getSelectedItem().toString())) {
 				numbers[1] = i;
 			}
 		}
 		return numbers;
 	}
-	
+
 	/**
-	 * Erstellt ein JPanel anhand der Informationen über die Lobby mit einem ActionListener der die Lobby auswählen lässt
+	 * Erstellt ein JPanel anhand der Informationen über die Lobby mit einem
+	 * ActionListener der die Lobby auswählen lässt
 	 * 
-	 * @param lobbyNr Nummer der Lobby
-	 * @param lobby Das Lobby Objekt mit den nötigen Informationen
+	 * @param lobbyNr
+	 *            Nummer der Lobby
+	 * @param lobby
+	 *            Das Lobby Objekt mit den nötigen Informationen
 	 * @return JPanel mit Informationen über die Lobby
 	 */
 	public JPanel genNEWLobby(int lobbyNr, Lobby lobby) {
 		JPanel game1 = new JPanel();
-		game1.setBounds(10, 10+(160*(lobbyNr)), 755, 150);
+		game1.setBounds(10, 10 + (160 * (lobbyNr)), 755, 150);
 		game1.setLayout(null);
 		game1.setOpaque(true);
-		game1.setBackground(new Color(255,90,0));
+		game1.setBackground(new Color(255, 90, 0));
 		game1.setFocusable(true);
 		game1.setRequestFocusEnabled(true);
 		game1.addMouseListener(new MouseAdapter() {
@@ -567,33 +641,35 @@ public class SetButtons {
 			public void mouseClicked(MouseEvent arg0) {
 				markedLobby = lobby.getID();
 				haspassword = lobby.hasPassword();
-				if(panelopen){
+				if (panelopen) {
 					panel.remove(create);
 					panel.repaint();
 					panel.revalidate();
 					panelopen = false;
 				}
-				if(gametemp != null){
-                    gametemp.setBorder(null);    
-                }
-                gametemp = game1;
-                game1.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+				if (gametemp != null) {
+					gametemp.setBorder(null);
+				}
+				gametemp = game1;
+				game1.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5,
+						Color.BLACK));
 			}
 		});
 		JLabel map_pic = new JLabel();
 		JLabel pw_en = new JLabel();
 		JLabel lobby_name = new JLabel(lobby.getName());
-		JLabel player_count = new JLabel("<html>Players:<br>" + lobby.getNumberOfPlayers() + "/4</html>");
-		switch(lobby.getMapID()){
-			case(2):
-				map_pic.setIcon(map1);
-				break;
+		JLabel player_count = new JLabel("<html>Players:<br>"
+				+ lobby.getNumberOfPlayers() + "/4</html>");
+		switch (lobby.getMapID()) {
+		case (2):
+			map_pic.setIcon(map1);
+			break;
 		}
 		pw_en.setIcon(open);
-		if(lobby.hasPassword()){
+		if (lobby.hasPassword()) {
 			pw_en.setIcon(closed);
 		}
-		map_pic.setBounds(10,10,200,130);
+		map_pic.setBounds(10, 10, 200, 130);
 		pw_en.setBounds(220, 20, 70, 45);
 		lobby_name.setBounds(300, 20, 445, 110);
 		player_count.setBounds(220, 85, 70, 45);
@@ -606,37 +682,41 @@ public class SetButtons {
 		game1.add(pw_en);
 		game1.add(lobby_name);
 		game1.add(player_count);
-		
+
 		return game1;
 	}
+
 	/**
-	 * Erstellt die Lobby Panels und fügt diese einem JPanel hinzu was dann im JScrollPane angezeigt wird
+	 * Erstellt die Lobby Panels und fügt diese einem JPanel hinzu was dann im
+	 * JScrollPane angezeigt wird
 	 * 
-	 * @param lobbyList Liste aller vorhanden Lobbys
+	 * @param lobbyList
+	 *            Liste aller vorhanden Lobbys
 	 */
 	public void updateLobbyList(Lobby[] lobbyList) {
 		JPanel lobbyPanel = new JPanel();
 		lobbyPanel.setBounds(0, 0, 789, 800);
 		lobbyPanel.setOpaque(false);
 		lobbyPanel.setLayout(null);
-		lobbyPanel.setPreferredSize(new Dimension(789,0));
+		lobbyPanel.setPreferredSize(new Dimension(789, 0));
 		for (int i = 0; i < lobbyList.length; i++) {
 			lobbyPanel.add(genNEWLobby(i, lobbyList[i]));
 		}
-		lobbyPanel.setPreferredSize(new Dimension(789,10+(160*lobbyList.length)));
+		lobbyPanel.setPreferredSize(new Dimension(789,
+				10 + (160 * lobbyList.length)));
 		scroller.remove(jp);
 		scroller.setViewportView(lobbyPanel);
 		jp = lobbyPanel;
 		scroller.repaint();
 		scroller.revalidate();
 	}
-	
+
 	/**
 	 * JPanel mit zwei Eingabe Feldern für das erstellen einer Lobby
 	 * 
 	 * @return JPanel
 	 */
-	public JPanel createInfos(){
+	public JPanel createInfos() {
 		JPanel en = new JPanel();
 		en.setLayout(null);
 		en.setOpaque(true);
@@ -652,13 +732,13 @@ public class SetButtons {
 		c.setFont(new Font("Arial", Font.BOLD, 12));
 		n.setFont(new Font("Arial", Font.BOLD, 12));
 		p.setFont(new Font("Arial", Font.BOLD, 12));
-		c.setBackground(new Color(255,90,0));
+		c.setBackground(new Color(255, 90, 0));
 		nl.setBounds(20, 40, 130, 50);
 		pl.setBounds(20, 130, 130, 50);
 		n.setBounds(150, 40, 230, 50);
 		p.setBounds(150, 130, 230, 50);
 		c.setBounds(186, 200, 100, 60);
-		c.addActionListener(e ->{
+		c.addActionListener(e -> {
 			loader.connection.createGroup(2, n.getText(), p.getText());
 		});
 		en.add(p);
@@ -669,16 +749,18 @@ public class SetButtons {
 		panelopen = true;
 		return en;
 	}
+
 	/**
 	 * Eingabefeld falls Lobby ein Passwort besitzt
 	 * 
 	 * @return JPanel
 	 */
-	public JPanel needPW(){
+	public JPanel needPW() {
 		JPanel np = new JPanel();
-		JLabel ep = new JLabel("This Lobby has a Password. Please enter it and press Enter");
+		JLabel ep = new JLabel(
+				"This Lobby has a Password. Please enter it and press Enter");
 		JTextField tp = new JTextField();
-		tp.addActionListener(e ->{
+		tp.addActionListener(e -> {
 			loader.connection.connectGroup(markedLobby, tp.getText());
 		});
 		tp.setBounds(30, 80, 305, 50);
@@ -693,12 +775,15 @@ public class SetButtons {
 		panelopen = true;
 		return np;
 	}
+
 	/**
-	 * Ersetzt den Login und Register Button mit einem Logout Button und einem JLabel falls der Nutzer eingeloggt ist
+	 * Ersetzt den Login und Register Button mit einem Logout Button und einem
+	 * JLabel falls der Nutzer eingeloggt ist
 	 * 
-	 * @param name Name des Nutzers
+	 * @param name
+	 *            Name des Nutzers
 	 */
-	public void loggedIn(String name){
+	public void loggedIn(String name) {
 		panel.remove(btnLogin);
 		panel.remove(btnRegister);
 		loginRegisterPanel.popupdestroy(panel);
@@ -706,8 +791,8 @@ public class SetButtons {
 		user.setBounds(755, 732, 155, 25);
 		JButton btnlogout = new JButton("Logout");
 		btnlogout.setBounds(920, 732, 90, 25);
-		btnlogout.setBackground(new Color(255,90,0));
-		btnlogout.addActionListener(e ->{
+		btnlogout.setBackground(new Color(255, 90, 0));
+		btnlogout.addActionListener(e -> {
 			loader.connection.logout();
 			panel.remove(btnlogout);
 			panel.remove(user);

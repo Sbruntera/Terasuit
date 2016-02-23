@@ -81,25 +81,19 @@ public class BaseBuildings {
 		if (leftSide){
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
-			System.out.println(ID + " X");
 		}else{
 			ID = ID + 9;
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
-			System.out.println(ID);
 		}
 		field.add(label);
 		field.repaint();
 	}
 	
 	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field){
-		System.out.println("PrimID: " + primID);
-		System.out.println("SlotID: " + slotID);
-		System.out.println(buildingName);
 		building = new Buildings();
 		if (buildingsArray[slotID].getPrimerBuilding() != null){
 			field.remove(buildingsArray[primID].getLabel());
-			System.out.println(primID-18 + "a" + slotID);
 			buildingsArray[primID-18].setPrimerBuilding(null);
 		}
 		ImageIcon pic = new ImageIcon(entityLocation);
@@ -112,9 +106,9 @@ public class BaseBuildings {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < buildingsArray.length; i++) {
 					if (buildingsArray[i] == null){
-						System.out.println(i + ") " + null);
+						//System.out.println(i + ") " + null);
 					}else{
-						System.out.println(i + ") " + buildingsArray[i].getName());
+						//System.out.println(i + ") " + buildingsArray[i].getName());
 					}
 					if (buildingsArray[i] != null){
 						if (buildingsArray[i].getLabel() == objUnit.getSource()){
@@ -146,7 +140,6 @@ public class BaseBuildings {
 	}
 	
 	public void destroyPrimaryBuilding( Buildings[] buildingsArray, int i, Panel field, int time){
-		System.out.println(i + "jallala");
 		if (i >= 18){
 			field.remove(buildingsArray[i].getLabel());
 			buildingsArray[i] = null;

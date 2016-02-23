@@ -137,7 +137,6 @@ public class Game {
 
 	public void createBuilding(String buildingName, String buildingLocation,
 			int index, int primID) {
-		System.out.println(index + "adfad");
 		int X = BuildingsArray[index].getX();
 		int Y = BuildingsArray[index].getY();
 		int time = 20;
@@ -149,7 +148,6 @@ public class Game {
 			progressbar = new ProgressbarLogic(index, X, Y, this, index,
 					primID, time, field, "blubb", buildingName,
 					buildingLocation);
-			System.out.println("===> " + index);
 			this.listOfJProgressBar[index] = progressBar;
 			progressbar.init(time);
 			console.add(listOfJProgressBar[index]);
@@ -158,7 +156,6 @@ public class Game {
 					primID, time, field, "blubb", buildingName,
 					buildingLocation);
 			this.listOfJProgressBar[primID] = progressBar;
-			System.out.println("===> " + primID);
 			progressbar.init(time);
 			console.add(listOfJProgressBar[primID]);
 		}
@@ -186,7 +183,6 @@ public class Game {
 			int percent = listOfJProgressBar[ID].getValue();
 			if (percent != 100) {
 				listOfJProgressBar[ID].setValue(percent + 10);
-				System.out.println(ID + " kkkdkd");
 			} else {
 				listOfJProgressBar[ID].setVisible(false);
 				listOfJProgressBar[ID] = null;
