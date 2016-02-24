@@ -44,6 +44,7 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (0 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
+				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, false);
 				System.out.println("Forward! MY FIRENDS ATACKKKKKK!!!");
 			}
 		});
@@ -54,6 +55,7 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (1 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
+				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, true);
 				System.out.println("NOW! ATTACK THE BASE!");
 			}
 		});
@@ -64,6 +66,7 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (2 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
+				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, false, false);
 				System.out.println("Stop guys. Let them come!");
 			}
 		});
@@ -74,6 +77,7 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (3 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
+				loader.connection.moveUnit(loader.game.getSelectedUnits(), false, true, false);
 				System.out.println("Reverse of Forward!!");
 			}
 		});

@@ -8,6 +8,7 @@ public class Unit {
 	int EntityNummer = 0;
 	int EntityPositionX = 0;
 	int EntityPositionY = 0;
+	int EntitySpeed = 0;
 	int Entitymembership = 0;
 	int EntityFirerange = 0;
 	int EntityFirepower = 0;
@@ -18,6 +19,7 @@ public class Unit {
 	boolean flyingEntity = false;
 	boolean newEntity = false;
 	boolean EntityMove = false;
+	boolean EntityRun = false;
 	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
@@ -37,6 +39,14 @@ public class Unit {
 
 	public void setEntityMove(boolean entityMove) {
 		EntityMove = entityMove;
+	}
+
+	public boolean isEntityRunning() {
+		return EntityRun;
+	}
+
+	public void setEntityRun(boolean entityRunning) {
+		EntityRun = entityRunning;
 	}
 
 	public boolean isEntityRushLeft() {
@@ -89,6 +99,7 @@ public class Unit {
 
 	public void setEntityPositionX(int entityPositionX) {
 		EntityPositionX = entityPositionX;
+		label.setLocation(EntityPositionX, EntityPositionY);
 	}
 
 	public int getEntitymembership() {
@@ -156,5 +167,13 @@ public class Unit {
 
 	public void setEntitySpawntimer(int entitySpawntimer) {
 		EntitySpawntimer = entitySpawntimer;
+	}
+
+	public void setEntitySpeed(int entitySpeed) {
+		this.EntitySpeed = entitySpeed;
+	}
+
+	public int getEntitySpeed() {
+		return EntitySpeed;
 	}
 }

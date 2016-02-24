@@ -13,6 +13,11 @@ public class MainBuilding implements Building, Attackable {
 
 	public MainBuilding(byte player) {
 		this.player = player;
+		if ((player&2)==2) {
+			position = new Point(1474, 414);
+		} else {
+			position = new Point(164, 414);
+		}
 	}
 
 	@Override

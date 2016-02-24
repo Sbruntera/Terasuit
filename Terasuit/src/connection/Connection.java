@@ -62,9 +62,9 @@ public class Connection implements Runnable {
 		byte[] msg = new byte[message.length + 3];
 		for (int i = 0; i < message.length; i++) {
 			msg[i] = message[i];
-			msg[msg.length-3] = 0;
-			msg[msg.length-2] = 0;
-			msg[msg.length-1] = 0;
+			msg[msg.length-3] = (byte) 255;
+			msg[msg.length-2] = (byte) 255;
+			msg[msg.length-1] = (byte) 255;
 		}
 		queue.add(msg);
 	}
@@ -102,7 +102,8 @@ public class Connection implements Runnable {
 					ArrayList<Byte> bytes = new ArrayList<Byte>();
 					while (!(ended == 3)) {
 						int i = reader.read();
-						if (i == 0) {
+						System.out.println(i);
+						if (i == 255) {
 							ended++;
 						} else if (ended != 0) {
 							ended = 0;
@@ -282,7 +283,7 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPlayers(byte player1, byte player2) {
-		addMessage(new byte[] { 16, player1, player2 });
+		addMessage(new byte[] { 16, (byte) (player1 + 1), (byte) (player2 + 1) });
 	}
 
 	/**
@@ -310,7 +311,7 @@ public class Connection implements Runnable {
 	 *            Der neue Spieler
 	 */
 	public void sendPlayerLeftLobby(byte playerNumber) {
-		addMessage(new byte[] { 18, (byte) (128 + playerNumber) });
+		addMessage(new byte[] { 18, playerNumber });
 	}
 
 	/**
@@ -371,13 +372,12 @@ public class Connection implements Runnable {
 	}
 
 	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {
-		byte[] array = new byte[unitIDs.length * 2 + 3];
+		byte[] array = new byte[unitIDs.length * 2 + 2];
 		array[0] = 36;
-		array[1] = playerNumber;
-		array[2] = direction;
+		array[1] = direction;
 		for (int i = 0; i < unitIDs.length; i++) {
-			array[i*2 + 3] = (byte) (unitIDs[i] >> 8);
-			array[i*2 + 4] = (byte) (unitIDs[i]);
+			array[i*2 + 2] = (byte) (unitIDs[i] >> 8);
+			array[i*2 + 3] = (byte) (unitIDs[i]);
 		}
 		addMessage(array);
 	}

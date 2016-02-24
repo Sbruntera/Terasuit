@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -14,46 +15,44 @@ import logic.UnitData;
 import logic.UnitObject;
 import logic.UnitPics;
 
-public class Funktions {
+public class Funktions implements Runnable{
 	
-	ArrayList<Unit> entity = new ArrayList<Unit>();
-	ArrayList<Integer> selectedEntitysID = new ArrayList<Integer>();
-	CreateUnit cunit = new CreateUnit();
-	SelectedUnits selectedUnit = new SelectedUnits();
+	HashMap<Integer, Unit> entity;
+	ArrayList<Integer> selectedEntitysID;
+	CreateUnit cunit;
+	SelectedUnits selectedUnit;
 	UnitPics pics = new UnitPics();
 	private UnitData data = new UnitData();
+	private Thread cThread;
 	
 	public Funktions(){
 		pics.generateAllEntityPictures();
 		this.data .createUnitData();
 	}
 	
-	public ArrayList<Unit> getEntity() {
+	public HashMap<Integer, Unit> getEntity() {
 		return entity;
 	}
 
-	public void setEntity(ArrayList<Unit> entity) {
+	public void setEntity(HashMap<Integer, Unit> entity) {
 		this.entity = entity;
 	}
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game, short unitID, Point position){
-		entity = cunit.createEntity(field, game, Entitytype, entity, color, airUnit, this, unitID, position, pics);
+		entity.put((int) unitID, cunit.createEntity(field, game, Entitytype, color, airUnit, this, unitID, position, pics));
 	}
 	
 	public void findEntity(MouseEvent objUnit, Game game) {
 		deMarkEntittys();
 		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
 		for (int id : selectedEntitysID) {
-			String type = entity.get(id-1).getEntityname();
-			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
-			int color = entity.get(id-1).getEntitymembership();
+			String type = entity.get(id).getEntityname();
+			boolean directionLeft = entity.get(id).isEntityRushLeft();
+			int color = entity.get(id).getEntitymembership();
 			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-			Unit unit2 = new Unit();
-			unit2 = entity.get(id-1);
-			unit2.getLabel().setIcon(pic);
-			entity.set(id-1, unit2);
-			type = splitUp(entity.get(id-1).getEntityname());
+			entity.get(id).getLabel().setIcon(pic);
+			type = splitUp(entity.get(id).getEntityname());
 			UnitObject unit = data.returnUnitData(type);
 			String description = unit.getDescription();
 			setInformationInGame(game, type, description);
@@ -65,15 +64,12 @@ public class Funktions {
 	public void findAllEntitys(int minX, int minY, int w, int h, int playerID) {
 		selectedEntitysID = selectedUnit.getGroupOfUnits(getEntity(), selectedEntitysID, minX, minY, w, h);
 		for (int id : selectedEntitysID) {
-			if (entity.get(id-1).getEntitymembership() == playerID){
-				String type = entity.get(id-1).getEntityname();
-				boolean directionLeft = entity.get(id-1).isEntityRushLeft();
-				int color = entity.get(id-1).getEntitymembership();
+			if (entity.get(id).getEntitymembership() == playerID){
+				String type = entity.get(id).getEntityname();
+				boolean directionLeft = entity.get(id).isEntityRushLeft();
+				int color = entity.get(id).getEntitymembership();
 				ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-				Unit unit = new Unit();
-				unit = entity.get(id-1);
-				unit.getLabel().setIcon(pic);
-				entity.set(id-1, unit);
+				entity.get(id).getLabel().setIcon(pic);
 			}
 		}
 	}
@@ -81,14 +77,11 @@ public class Funktions {
 	// Iteriert über eine Liste mit IDs von Einheiten in der Entity List und verändert ihre Helligkeit zu dunkel
 	public void deMarkEntittys(){
 		for (int id : selectedEntitysID) {
-			String type = entity.get(id-1).getEntityname();
-			boolean directionLeft = entity.get(id-1).isEntityRushLeft();
-			int color = entity.get(id-1).getEntitymembership();
+			String type = entity.get(id).getEntityname();
+			boolean directionLeft = entity.get(id).isEntityRushLeft();
+			int color = entity.get(id).getEntitymembership();
 			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, false);
-			Unit unit = new Unit();
-			unit = entity.get(id-1);
-			unit.getLabel().setIcon(pic);
-			entity.set(id-1, unit);
+			entity.get(id).getLabel().setIcon(pic);
 		}
 		selectedEntitysID.clear();
 	}
@@ -184,11 +177,37 @@ public class Funktions {
 	}
 	
 	public void reset() {
-		entity = new ArrayList<Unit>();
+		entity = new HashMap<Integer, Unit>();
 		selectedEntitysID = new ArrayList<Integer>();
 		cunit = new CreateUnit();
 		selectedUnit = new SelectedUnits();
-		data = new UnitData();
-		this.data .createUnitData();
+		Controller controller = new Controller(this);
+		cThread = new Thread(controller);
+		cThread.start();
+	}
+
+	@Override
+	public void run() {
+		moveUnits();
+	}
+
+	private void moveUnits() {
+		for (Unit e : entity.values()) {
+			if (e.isEntityMove()) {
+				if (e.isEntityRushLeft()) {
+					e.setEntityPositionX(e.getEntityPositionX() - e.getEntitySpeed());
+				} else {
+					e.setEntityPositionX(e.getEntityPositionX() + e.getEntitySpeed());
+				}
+			}
+		}
+	}
+
+	public boolean ended() {
+		return false;
+	}
+
+	public Unit getEntity(int i) {
+		return entity.get(i);
 	}
 }

@@ -94,18 +94,6 @@ public class Game {
         panel.repaint();
 	}
 
-	public void updateBuilding() {
-
-	}
-
-	public void updateUnit() {
-
-	}
-
-	public void run() {
-
-	}
-
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {
 		func.deMarkEntittys();
 		func.findAllEntitys(minX, minY, w, h, playerID);
@@ -230,5 +218,25 @@ public class Game {
 	
 	public void setPlayerID(int id) {
 		playerID = id;
+	}
+
+	public void moveUnit(boolean moving, boolean running, boolean right, int[] units) {
+		for (int i : units) {
+			Unit u = func.getEntity(i);
+			System.out.println(u.getEntitymembership());
+			u.setEntityRun(running);
+			u.setEntityMove(moving);
+			if (!running) {
+				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
+				u.setEntityRushLeft(!right);
+			} else {
+				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
+				u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
+			}
+		}
+	}
+
+	public Integer[] getSelectedUnits() {
+		return func.selectedEntitysID.toArray(new Integer[func.selectedEntitysID.size()]);
 	}
 }

@@ -12,7 +12,7 @@ public class Analyser {
 	private GameLobby game;
 
 	private boolean isHost;
-	private byte position;
+	byte position;
 
 	public Analyser(Loader loader) {
 		state = State.MENU;
@@ -46,6 +46,7 @@ public class Analyser {
 		case (0): // Stats
 			break;
 		case (1): // Get GameList
+			System.out.println("Hier");
 			ArrayList<Lobby> list = new ArrayList<Lobby>();
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
@@ -92,7 +93,7 @@ public class Analyser {
 			if (bs.length == 4) {
 				position = bs[3];
 			}
-			game.switchPlayers(bs[1], bs[2]);
+			game.switchPlayers(bs[1], (byte) (bs[2]));
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (17): // Spieler tritt dem Spiel bei
@@ -101,7 +102,7 @@ public class Analyser {
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bs.length == 2) {
-				game.removePlayer((byte) (bs[1] - 128));
+				game.removePlayer(bs[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
 				switchState(State.MENU);
@@ -132,7 +133,7 @@ public class Analyser {
 		switch (bs[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
 			byte playerNumber = bs[1];
-			byte buildingPosition = (byte) (bs[2] - 1);
+			byte buildingPosition = (byte) (bs[2]);
 			byte id;
 			if (bs.length == 4) {
 				boolean startBuild = false;
@@ -225,11 +226,11 @@ public class Analyser {
 			break;
 		case (35): // Spieler erstellt eine Einheit
 			Point position = new Point(
-					(((int) (Byte.toUnsignedLong(bs[2])) << 8) + Byte
+					(((int) (Byte.toUnsignedInt(bs[2])) << 8) + Byte
 							.toUnsignedInt(bs[3])),
 					((int) (Byte.toUnsignedLong(bs[4])) << 8)
 							+ Byte.toUnsignedInt(bs[5]));
-			short unitID = (short) ((short) (Byte.toUnsignedLong(bs[7]) << 8) + Byte
+			short unitID = (short) ((short) (Byte.toUnsignedInt(bs[7]) << 8) + Byte
 					.toUnsignedInt(bs[8]));
 			String name = "";
 			boolean flying = false;
@@ -307,14 +308,7 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			playerNumber = bs[1];
-			byte direction = bs[2];
-			short[] unitIDs = new short[(bs.length - 2) / 2];
-			for (int i = 3; i < bs.length; i += 2) {
-				unitIDs[(i - 2) / 2] = (short) ((short) (Byte
-						.toUnsignedLong(bs[i]) << 8) + Byte
-						.toUnsignedInt(bs[i + 1]));
-			}
+			loader.game.moveUnit(bs[1]-1 != 0, bs[1]-1 == 3, bs[1]-1 >= 0,  getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
 		case (37): // Einheit beginnt schießen
@@ -366,5 +360,17 @@ public class Analyser {
 			bytes[i] = splitted[i];
 		}
 		return bytes;
+	}
+	
+	private int[] getUnits(byte[] input) {
+		int[] array = null;
+		if (input.length >= 4 && input.length % 2 == 0) {
+			array = new int[(input.length - 2) / 2];
+			for (int i = 0; i < input.length - 2; i += 2) {
+				array[i] = (Byte.toUnsignedInt(input[i + 2]) << 8) + Byte
+						.toUnsignedInt(input[i + 3]);
+			}
+		}
+		return array;
 	}
 }

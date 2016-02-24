@@ -10,7 +10,7 @@ public class Marine extends Unit {
 	private static final boolean CANATTACKAIR = true;
 	public static final int[] PRICE = new int[] {0, 0, 0, 0};
 
-	private static int speed;
+	private static int speed = 2;
 	private static int damage;
 	private static int range;
 	private static int shootSpeed;

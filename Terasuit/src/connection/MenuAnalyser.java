@@ -41,6 +41,7 @@ public class MenuAnalyser implements Analyser {
 			connection.loggOut();
 			break;
 		case (2): // Serverliste
+			System.out.println("Hier");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;

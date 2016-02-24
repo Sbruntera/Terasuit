@@ -32,7 +32,7 @@ public class CreateUnit {
 		UnitTable.createUnitData();
 	}
 	
-	public ArrayList<Unit> createEntity(Panel field, Game game, String Entitytype, ArrayList<Unit> entity, int color, boolean airUnit, Funktions funktions, short unitID, Point position, UnitPics pics) {
+	public Unit createEntity(Panel field, Game game, String Entitytype, int color, boolean airUnit, Funktions funktions, short unitID, Point position, UnitPics pics) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
@@ -71,10 +71,10 @@ public class CreateUnit {
 		unit.setEntityFirerange(unitData.getRange());
 		unit.setEntityLive(unitData.getLive());
 		unit.setEntitySplashDmg(unitData.getSplashDamage());
-		entity.add(unit);
+		unit.setEntitySpeed(unitData.getSpeed());
 		field.add(label);
 		field.repaint();
-		return entity;
+		return unit;
 	}
 	
 	public BufferedImage mark(String Entitytype, boolean directionLeft, int color, boolean deMark){

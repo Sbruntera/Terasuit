@@ -87,12 +87,13 @@ public abstract class Unit implements Attackable {
 		return running;
 	}
 
-	public void setDirection(int direction, boolean running) {
-		this.direction = direction;
-		this.running = running;
+	public void setDirection(int direction) {
+		this.direction = direction - direction/3 - 1;
+		running = (direction == 3);
 	}
 
 	public void move() {
+		System.out.println(position);
 		position.setLocation(position.x + getSpeed() * direction, position.y);
 	}
 }

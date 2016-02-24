@@ -50,7 +50,7 @@ public class ServerConnection implements Runnable {
 					ArrayList<Byte> bytes = new ArrayList<Byte>();
 					while (!(ended == 3)) {
 						int i = reader.read();
-						if (i == 0) {
+						if (i == 255) {
 							ended++;
 						} else if (ended != 0) {
 							ended = 0;
@@ -76,7 +76,7 @@ public class ServerConnection implements Runnable {
 	}
 
 	private byte[] splitBreak(byte[] primal) {
-		byte[] array = new byte[primal.length-3];
+		byte[] array = new byte[primal.length - 3];
 		for (int i = 0; i < array.length; i++) {
 			array[i] = primal[i];
 		}
@@ -88,9 +88,9 @@ public class ServerConnection implements Runnable {
 		for (int i = 0; i < message.length; i++) {
 			msg[i] = message[i];
 		}
-		msg[msg.length-3] = 0;
-		msg[msg.length-2] = 0;
-		msg[msg.length-1] = 0;
+		msg[msg.length - 3] = (byte) 255;
+		msg[msg.length - 2] = (byte) 255;
+		msg[msg.length - 1] = (byte) 255;
 		queue.add(msg);
 	}
 
@@ -430,7 +430,8 @@ public class ServerConnection implements Runnable {
 	 * Bricht den Bau ab
 	 */
 	public void cancelBuilding(int id) {
-		addMessage(new byte[] {33, (byte) ((id-1)%4)});
+		System.out.println("Cancel");
+		addMessage(new byte[] { 33, (byte) ((id - 1) % 4 + 1) });
 	}
 
 	/**
@@ -442,29 +443,33 @@ public class ServerConnection implements Runnable {
 	 */
 	public void createUnit(int id, int buildingPlace) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(new byte[] { 34, (byte) id, (byte) (buildingPlace + 1) });
+			addMessage(new byte[] { 34, (byte) id, (byte) buildingPlace });
 		}
 	}
 
 	/**
 	 * Bewegt die Einheiten in eine gewünschte richtung
 	 * 
-	 * @param unitID
-	 *            IDs der Einheiten
+	 * @param (integers IDs der Einheiten
 	 * @param right
 	 *            Läuft rechts
 	 * @param walking
 	 *            läuft Überhaupt
+	 * @param running
 	 */
-	public void moveUnit(int[] unitID, boolean right, boolean walking) {
+	public void moveUnit(Integer[] integers, boolean forward, boolean walking,
+			boolean running) {
 		if (analyser.getState() == State.GAME) {
-			byte[] array = new byte[unitID.length * 2 + 2];
+			byte[] array = new byte[integers.length * 2 + 2];
 			array[0] = 35;
-			array[1] = (byte) (Boolean.compare(false, right) << 1 + Boolean
-					.compare(false, walking));
-			for (int i = 0; i < unitID.length; i++) {
-				array[i * 2 + 2] = (byte) (unitID[i] >> 8);
-				array[i * 2 + 3] = (byte) unitID[i];
+			array[1] = (byte) ((((Boolean.compare(
+					((analyser.position & 2) == 2 ^ forward), false) * 2 - 1)
+					* Boolean.compare(!running, false)
+					* Boolean.compare(walking, false) + 1) + Boolean.compare(
+					running, false) * 2));
+			for (int i = 0; i < integers.length; i++) {
+				array[i * 2 + 2] = (byte) (integers[i] >> 8);
+				array[i * 2 + 3] = (byte) (int) integers[i];
 			}
 			addMessage(array);
 		}

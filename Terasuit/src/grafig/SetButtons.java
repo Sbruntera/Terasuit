@@ -101,8 +101,7 @@ public class SetButtons {
 					// Lobby
 					if (loader.connection.isServerAccess()) {
 						loader.switchPanel(loader.Lobbypage);
-						loader.connection.refreshServerList(false, "", 0, 4,
-								255);
+						loader.connection.refreshServerList(false, "", 0, 4, 0);
 					} else {
 						System.out
 								.println("Server konnte nicht gefunden werden. ");
@@ -282,7 +281,7 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.connection.refreshServerList(false, "", 0, 4, 255);
+					loader.connection.refreshServerList(false, "", 0, 4, 0);
 				}
 			});
 			panel.add(btnRefreshGroup);
@@ -401,7 +400,8 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					// TODO Fehlermeldung: Lobby leitung konnte nicht weitergegeben werden Lobby nicht gelöscht
+					// TODO Fehlermeldung: Lobby leitung konnte nicht
+					// weitergegeben werden Lobby nicht gelöscht
 				}
 			});
 			panel.add(btnBACK);

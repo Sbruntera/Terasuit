@@ -93,12 +93,10 @@ public class GameServer implements Runnable {
 		unitsToRemove.clear();
 
 		// Einheiten bewegen
-		Unit unit;
-		for (Integer i : unitIDs) {
-			unit = units.get(i);
-			Unit[] nearesUnits = getNearestUnit((unit.getPlayer() >> 1));
-			if (unit.hasInRange(nearesUnits) && !unit.isRunning()) {
-				Bullet b = unit.shoot(nearesUnits);
+		for (Unit unit : units.values()) {
+			Unit[] nearestUnits = getNearestUnit(unit.getPosition().x, (unit.getPlayer()&2)==2);
+			if (unit.hasInRange(nearestUnits) && !unit.isRunning()) {
+				Bullet b = unit.shoot(nearestUnits);
 				if (b != null) {
 					bullets.add(b);
 				}
@@ -131,6 +129,7 @@ public class GameServer implements Runnable {
 					} else {
 						Unit u = b.create();
 						if (u != null) {
+							units.put((int) u.getID(), u);
 							for (Connection c : connections) {
 								if (c != null) {
 									c.sendCreateUnit(u.getPlayer(),
@@ -162,12 +161,12 @@ public class GameServer implements Runnable {
 		tick.set(false);
 	}
 
-	private Unit[] getNearestUnit(int i) {
+	private Unit[] getNearestUnit(int i, boolean right) {
 		Unit[] nearestUnits = new Unit[2];
 		int[] difference = new int[] { -32768, -32768 };
 		for (Unit u : units.values()) {
 			if (Math.abs(u.getPosition().x - i) < difference[Boolean.compare(
-					u.isFlying(), false)]) {
+					u.isFlying(), false)] && right != ((u.getPlayer()&2)==2)) {
 				nearestUnits[Boolean.compare(u.isFlying(), false)] = u;
 				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u
 						.getPosition().x - i);
@@ -231,12 +230,19 @@ public class GameServer implements Runnable {
 	 *            : Richtung in die die einheiten laufen sollen 1: rechts 0:
 	 *            stehen -1: links
 	 */
-	public void moveUnits(int id, int[] movingUnits, int direction,
-			boolean running) {
+	public void moveUnits(byte id, short[] movingUnits, byte direction) {
 		for (int i : movingUnits) {
+			System.out.println("nuhl");
 			if (units.containsKey(i)) {
+				System.out.println("ainz");
 				if (units.get(i).getPlayer() == id) {
-					units.get(i).setDirection(direction, running);
+					System.out.println("swai");
+					units.get(i).setDirection(direction);
+					for (Connection c : connections) {
+						if (c != null) {
+							c.sendMoveUnit(id, direction, movingUnits);
+						}
+					}
 				}
 			}
 		}
