@@ -18,6 +18,9 @@ public class SelectedUnits {
 	
 	public ArrayList<Integer> getGroupOfUnits(ArrayList<Unit> entity, ArrayList<Integer> selectedEntitysID, int x, int y, int h, int w){
 		for (int i = 0; i < entity.size(); i++) {
+			;
+			System.out.println(entity.get(i).getEntityPositionX());
+			System.out.println(entity.get(i).getEntityPositionY());
 			if (entity.get(i).getEntityPositionX() > x && entity.get(i).getEntityPositionY() > y){
 				if (entity.get(i).getEntityPositionX() < (x+h) && entity.get(i).getEntityPositionY() < (y+w)){
 					selectedEntitysID.add(entity.get(i).getEntityNummer());

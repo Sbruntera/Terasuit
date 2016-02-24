@@ -145,6 +145,7 @@ public class ServerConnection implements Runnable {
 	public void logout() {
 		if (analyser.getState() == State.MENU) {
 			addMessage(new byte[] { 1 });
+			setLoggedIn(false);
 		}
 	}
 
@@ -429,7 +430,7 @@ public class ServerConnection implements Runnable {
 	 * Bricht den Bau ab
 	 */
 	public void cancelBuilding(int id) {
-		addMessage(new byte[] {33, (byte) id});
+		addMessage(new byte[] {33, (byte) ((id-1)%4)});
 	}
 
 	/**
@@ -488,11 +489,10 @@ public class ServerConnection implements Runnable {
 	 */
 	public void sendChatMessage(String message) {
 		if (!message.equals("") && analyser.getState() == State.GAME) {
-			queue.clear();
-			byte[] array = new byte[message.length() + 2];
+			byte[] array = new byte[message.length() + 1];
 			array[0] = 20;
 			for (int i = 0; i < message.length(); i++) {
-				array[i + 2] = (byte) message.charAt(i);
+				array[i + 1] = (byte) message.charAt(i);
 			}
 			addMessage(array);
 		}

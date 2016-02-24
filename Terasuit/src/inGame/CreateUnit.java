@@ -36,6 +36,7 @@ public class CreateUnit {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
+		System.out.println(unitID);
 		unit.setEntityNummer(unitID);
 		
 		// Position wird festgelegt
@@ -62,7 +63,7 @@ public class CreateUnit {
 		
 		// Hülle wird mit Attributen belegt
 		unit.setFlyingEntity(airUnit);
-		unit.setEntityRushLeft(false);	
+		unit.setEntityRushLeft(((color-1)>>1)==1);	
 		unit.setEntitymembership(color);
 		unit.setLabel(label);
 		unit.setEntityname(Entitytype);

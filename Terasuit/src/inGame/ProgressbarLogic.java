@@ -44,7 +44,7 @@ public class ProgressbarLogic {
 	
 	public void init(int time){
 		
-	    Timer timer = new Timer();
+	    timer = new Timer();
 	    new ReminderBeep(time, timer);
 	}
 	

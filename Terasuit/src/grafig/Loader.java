@@ -49,8 +49,10 @@ public class Loader {
 		else if (newPage == Lobbypage)
 			window.setContentPane(new Panel(Lobbypage, func, HEIGHT, WIGTH,
 					this));
-		else if (newPage == Gamepage)
+		else if (newPage == Gamepage) {
+			func.reset();
 			window.setContentPane(new Panel(Gamepage, func, HEIGHT, WIGTH, this));
+		}
 		else if (newPage == Grouppage)
 			window.setContentPane(new Panel(Grouppage, func, HEIGHT, WIGTH,
 					this));

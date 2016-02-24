@@ -182,4 +182,13 @@ public class Funktions {
 		Unitname = Unitname.substring(0, Unitname.length()-4);	
 		return Unitname;
 	}
+	
+	public void reset() {
+		entity = new ArrayList<Unit>();
+		selectedEntitysID = new ArrayList<Integer>();
+		cunit = new CreateUnit();
+		selectedUnit = new SelectedUnits();
+		data = new UnitData();
+		this.data .createUnitData();
+	}
 }
