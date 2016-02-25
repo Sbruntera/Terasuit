@@ -311,7 +311,12 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			loader.game.moveUnit(bs[1] - 1 != 0, bs[1] == 3, bs[1] - 1 >= 0,
+			System.out.println(bs[1]);
+			System.out.println(bs[1] != 1);
+			System.out.println(bs[1] == 3);
+			System.out.println(bs[1] > 1);
+			System.out.println(getUnits(bs)[0]);
+			loader.game.moveUnit(bs[1] != 1, bs[1] == 3, bs[1] > 1,
 					getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;

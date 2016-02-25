@@ -133,19 +133,6 @@ public class Game {
 			progressBar.setBounds(20, 60, 160, 10);
 			func.addProgressBar(progressBar, index);
 			console.add(progressBar);
-//			progressbar = new ProgressbarLogic(index, X, Y, this, index,
-//					primID, time, field, "blubb", buildingName,
-//					buildingLocation);
-//			this.listOfJProgressBar[index] = progressBar;
-//			progressbar.init(time);
-//			console.add(listOfJProgressBar[index]);
-//		} else {
-//			progressbar = new ProgressbarLogic(primID, X, Y, this, index,
-//					primID, time, field, "blubb", buildingName,
-//					buildingLocation);
-//			this.listOfJProgressBar[primID] = progressBar;
-//			progressbar.init(time);
-//			console.add(listOfJProgressBar[primID]);
 		}
 	}
 
@@ -211,6 +198,9 @@ public class Game {
 				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
 				u.setEntityRushLeft(!right);
 			}
+			System.out.println(u.isEntityRunning());
+			System.out.println(u.isEntityRushLeft());;
+			System.out.println(u.isEntityMove());
 		}
 	}
 

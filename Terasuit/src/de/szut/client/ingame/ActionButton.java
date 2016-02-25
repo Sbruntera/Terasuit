@@ -45,7 +45,6 @@ public class ActionButton {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, false);
-				System.out.println("Forward! MY FIRENDS ATACKKKKKK!!!");
 			}
 		});
 		jButton.add(btn);
@@ -56,7 +55,6 @@ public class ActionButton {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, true);
-				System.out.println("NOW! ATTACK THE BASE!");
 			}
 		});
 		jButton.add(btn);
@@ -67,7 +65,6 @@ public class ActionButton {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, false, false);
-				System.out.println("Stop guys. Let them come!");
 			}
 		});
 		jButton.add(btn);
@@ -78,7 +75,6 @@ public class ActionButton {
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.moveUnit(loader.game.getSelectedUnits(), false, true, false);
-				System.out.println("Reverse of Forward!!");
 			}
 		});
 		jButton.add(btn);
@@ -218,7 +214,7 @@ public class ActionButton {
 						case ("Modified Phantom"):
 							System.out.println("Modified Phantom");
 							loader.connection.createUnit(16, (slotID
-									- (9 * (slotID / 16) + 1) & 3));
+									- (9 * (slotID / 10) + 1) & 3));
 							break;
 						}
 					} else if (type.equals("Generation")) {

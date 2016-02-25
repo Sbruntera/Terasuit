@@ -202,10 +202,14 @@ public class Funktions implements Runnable{
 	private void moveUnits() {
 		for (Unit e : entity.values()) {
 			if (e.isEntityMove()) {
-				if (e.isEntityRushLeft() && !e.hasInRange(0)) { // Mainbuildingposition
-					e.setEntityPositionX(e.getEntityPositionX() - e.getEntitySpeed());
-				} else if (e.isEntityRushLeft() && !e.hasInRange(1300)){ // Mainbuildingposition
-					e.setEntityPositionX(e.getEntityPositionX() + e.getEntitySpeed());
+				if (e.isEntityRushLeft()) {
+					if (e.getEntityPositionX() >= 294) {
+						e.setEntityPositionX(e.getEntityPositionX() - e.getEntitySpeed());
+					}
+				} else {
+					if (e.getEntityPositionX() <= 1344) {
+						e.setEntityPositionX(e.getEntityPositionX() + e.getEntitySpeed());
+					}
 				}
 			}
 		}
