@@ -102,7 +102,6 @@ public class Connection implements Runnable {
 					ArrayList<Byte> bytes = new ArrayList<Byte>();
 					while (!(ended == 3)) {
 						int i = reader.read();
-						System.out.println(i);
 						if (i == 255) {
 							ended++;
 						} else if (ended != 0) {
@@ -187,7 +186,6 @@ public class Connection implements Runnable {
 	// Menü
 
 	public void sendStats() {
-		//TODO get Stats from Server
 		addMessage(new byte[] {0});
 	}
 
@@ -344,20 +342,20 @@ public class Connection implements Runnable {
 
 	public void sendStartCreateOrUpgradeBuilding(byte playerNumber, byte position,
 			byte id) {
-		addMessage(new byte[] { 32, playerNumber, (byte) (position +1), id });
+		addMessage(new byte[] { 32, playerNumber, (byte) (position), id });
 	}
 	
 	public void sendCreateOrUpgradeBuilding(byte playerNumber, byte position,
 			byte id) {
-		addMessage(new byte[] { 32, playerNumber, (byte) (position +1), (byte) (128 + id) });
+		addMessage(new byte[] { 32, playerNumber, (byte) (position), (byte) (128 + id) });
 	}
 	
 	public void sendDestroyBuilding(byte playerNumber, byte position) {
-		addMessage(new byte[] { 32, playerNumber, (byte) (position + 1) });
+		addMessage(new byte[] { 32, playerNumber, (byte) (position) });
 	}
 
 	public void sendCancel(byte player, byte position) {
-		addMessage(new byte[] { 33, player, (byte) (position + 1) });
+		addMessage(new byte[] { 33, player, (byte) (position) });
 	}
 
 	public void sendGenerateUnit(byte buildingPlace, byte typeID) {

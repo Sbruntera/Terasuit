@@ -35,19 +35,19 @@ public class GameAnalyser implements Analyser {
 				if (input[2] < 127) {
 					server.build(position, input[1], input[2]);
 				} else {
-					server.destroyBuilding((byte) (input[1] - 1), position);
+					server.destroyBuilding((byte) (input[1]), position);
 				}
 			}
 			break;
 		case (33): // Abbrechen
 			if (input.length == 2) {
-				server.cancelBuilding(position, (byte) (input[1] - 1));
+				server.cancelBuilding(position, (byte) (input[1]));
 			}
 			break;
 		case (34): // Einheit erstellen
 			if (input.length == 3) {
 				byte unitID = input[1];
-				byte buildingPlace = (byte) (input[2] - 1);
+				byte buildingPlace = (byte) (input[2]);
 				server.createUnit(position, unitID, buildingPlace);
 			}
 			break;
@@ -75,9 +75,9 @@ public class GameAnalyser implements Analyser {
 		short[] array = null;
 		if (input.length >= 4 && input.length % 2 == 0) {
 			array = new short[(input.length - 2) / 2];
-			for (int i = 0; i < input.length - 2; i += 2) {
-				array[i] = (short) ((Byte.toUnsignedInt(input[i + 2]) << 8) + Byte
-						.toUnsignedInt(input[i + 3]));
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (short) ((Byte.toUnsignedInt(input[i*2 + 2]) << 8) + Byte
+						.toUnsignedInt(input[i*2 + 3]));
 			}
 		}
 		return array;

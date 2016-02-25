@@ -93,7 +93,6 @@ public abstract class Unit implements Attackable {
 	}
 
 	public void move() {
-		System.out.println(position);
 		position.setLocation(position.x + getSpeed() * direction, position.y);
 	}
 }

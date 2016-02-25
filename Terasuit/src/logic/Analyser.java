@@ -220,7 +220,7 @@ public class Analyser {
 			break;
 		case (33): // bricht eine Produktion ab
 			if (bs[1] == position) {
-				loader.game.cancel((bs[1] << 2) + (bs[1] >> 1) + bs[2]);
+				loader.game.cancel((bs[1] << 2) + (bs[1] >> 1) + bs[2] + 1);
 			}
 			break;
 		case (34): // Ein eigenes Gebäude startet eine Produktion
@@ -232,7 +232,7 @@ public class Analyser {
 			Point position = new Point(
 					(((int) (Byte.toUnsignedInt(bs[2])) << 8) + Byte
 							.toUnsignedInt(bs[3])),
-					((int) (Byte.toUnsignedLong(bs[4])) << 8)
+					((int) (Byte.toUnsignedInt(bs[4])) << 8)
 							+ Byte.toUnsignedInt(bs[5]));
 			short unitID = (short) ((short) (Byte.toUnsignedInt(bs[7]) << 8) + Byte
 					.toUnsignedInt(bs[8]));
@@ -312,8 +312,9 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			loader.game.moveUnit(bs[1] - 1 != 0, bs[1] - 1 == 3,
-					bs[1] - 1 >= 0, getUnits(bs));
+			System.out.println(bs[1]);
+			loader.game.moveUnit(bs[1] - 1 != 0, bs[1] == 3, bs[1] - 1 >= 0,
+					getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
 		case (37): // Einheit beginnt schießen
@@ -371,9 +372,9 @@ public class Analyser {
 		int[] array = null;
 		if (input.length >= 4 && input.length % 2 == 0) {
 			array = new int[(input.length - 2) / 2];
-			for (int i = 0; i < input.length - 2; i += 2) {
-				array[i] = (Byte.toUnsignedInt(input[i + 2]) << 8)
-						+ Byte.toUnsignedInt(input[i + 3]);
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (Byte.toUnsignedInt(input[i * 2 + 2]) << 8)
+						+ Byte.toUnsignedInt(input[i * 2 + 3]);
 			}
 		}
 		return array;

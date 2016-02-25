@@ -232,11 +232,8 @@ public class GameServer implements Runnable {
 	 */
 	public void moveUnits(byte id, short[] movingUnits, byte direction) {
 		for (int i : movingUnits) {
-			System.out.println("nuhl");
 			if (units.containsKey(i)) {
-				System.out.println("ainz");
 				if (units.get(i).getPlayer() == id) {
-					System.out.println("swai");
 					units.get(i).setDirection(direction);
 					for (Connection c : connections) {
 						if (c != null) {

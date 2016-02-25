@@ -122,8 +122,8 @@ public class SetButtons {
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Options"-Buttons gelangt man in die
 					// Optionen
-					loader.connection.stats();
 					loader.switchPanel(loader.Statspage);
+					loader.connection.stats();
 				}
 			});
 			panel.add(btnOption);
@@ -526,10 +526,9 @@ public class SetButtons {
 			welcome.setFont(new Font("Arial", Font.BOLD, 24));
 			welcome.setForeground(Color.RED);
 			panel.add(welcome);
-			
 		}
 	}
-
+	
 	public void showStats(String[][] r) {
 		for (int i = 0; i < r.length; i++) {
 			JLabel Stat = new JLabel(r[i][0]);
@@ -546,7 +545,6 @@ public class SetButtons {
 			panel.add(Stat);
 			panel.add(Statnumber);
 		}
-		
 	}
 
 	/**

@@ -138,6 +138,12 @@ public class ServerConnection implements Runnable {
 
 	// #################################################################
 	// Menü
+	
+	public void stats(){
+		if (analyser.getState() == State.MENU) {
+			addMessage(new byte[] { 0 });
+		}
+	}
 
 	/**
 	 * Loggt den aktuell eingeloggten Spieler aus
@@ -422,7 +428,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void destroyBuilding(int position) {
 		if (analyser.getState() == State.GAME) {
-			addMessage(new byte[] { 32, (byte) (position + 1), 127 });
+			addMessage(new byte[] { 32, (byte) position, 127 });
 		}
 	}
 
@@ -431,7 +437,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void cancelBuilding(int id) {
 		System.out.println("Cancel");
-		addMessage(new byte[] { 33, (byte) ((id - 1) % 4 + 1) });
+		addMessage(new byte[] { 33, (byte) ((id - 1) % 4) });
 	}
 
 	/**
@@ -500,12 +506,6 @@ public class ServerConnection implements Runnable {
 				array[i + 1] = (byte) message.charAt(i);
 			}
 			addMessage(array);
-		}
-	}
-	
-	public void stats(){
-		if (analyser.getState() == State.MENU) {
-			addMessage(new byte[] { 0 });
 		}
 	}
 }
