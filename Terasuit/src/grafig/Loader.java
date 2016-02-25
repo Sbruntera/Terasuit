@@ -118,4 +118,7 @@ public class Loader {
 	public void loggIn(String name) {
 		panel.buttons.loggedIn(name);
 	}
+	public void showStats(String[][] r){
+		panel.buttons.showStats(r);
+	}
 }

@@ -122,6 +122,7 @@ public class SetButtons {
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Options"-Buttons gelangt man in die
 					// Optionen
+					loader.connection.stats();
 					loader.switchPanel(loader.Statspage);
 				}
 			});
@@ -525,23 +526,27 @@ public class SetButtons {
 			welcome.setFont(new Font("Arial", Font.BOLD, 24));
 			welcome.setForeground(Color.RED);
 			panel.add(welcome);
-
-			for (int i = 0; i < 16; i++) {
-				JLabel Stat = new JLabel("Buildingkills");
-				JLabel Statnumber = new JLabel("1");
-				Stat.setBounds(200 + i % 4 * 170, 150 + 125 * (i >> 2), 150, 40);
-				Statnumber.setBounds(200 + i % 4 * 170, 200 + 125 * (i >> 2),
-						150, 40);
-				Stat.setForeground(Color.RED);
-				Statnumber.setForeground(Color.RED);
-				Stat.setHorizontalAlignment(SwingConstants.CENTER);
-				Statnumber.setHorizontalAlignment(SwingConstants.CENTER);
-				Stat.setFont(new Font("Arial", Font.BOLD, 24));
-				Statnumber.setFont(new Font("Arial", Font.BOLD, 24));
-				panel.add(Stat);
-				panel.add(Statnumber);
-			}
+			
 		}
+	}
+
+	public void showStats(String[][] r) {
+		for (int i = 0; i < r.length; i++) {
+			JLabel Stat = new JLabel(r[i][0]);
+			JLabel Statnumber = new JLabel(r[i][1]);
+			Stat.setBounds(200 + i % 4 * 170, 150 + 125 * (i >> 2), 150, 40);
+			Statnumber.setBounds(200 + i % 4 * 170, 200 + 125 * (i >> 2),
+					150, 40);
+			Stat.setForeground(Color.RED);
+			Statnumber.setForeground(Color.RED);
+			Stat.setHorizontalAlignment(SwingConstants.CENTER);
+			Statnumber.setHorizontalAlignment(SwingConstants.CENTER);
+			Stat.setFont(new Font("Arial", Font.BOLD, 24));
+			Statnumber.setFont(new Font("Arial", Font.BOLD, 24));
+			panel.add(Stat);
+			panel.add(Statnumber);
+		}
+		
 	}
 
 	/**

@@ -44,6 +44,10 @@ public class Analyser {
 	private void analyseMenuMessage(byte[] message) {
 		switch (message[0]) {
 		case (0): // Stats
+			System.out.println("Bin da");
+			String[][] test = new String[][] { { "X0", "Y0" }, { "X1", "Y1" },
+					{ "X2", "Y2" }, { "X3", "Y3" }, { "X4", "Y4" } };
+			loader.showStats(test);
 			break;
 		case (1): // Get GameList
 			System.out.println("Hier");
@@ -308,7 +312,8 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			loader.game.moveUnit(bs[1]-1 != 0, bs[1]-1 == 3, bs[1]-1 >= 0,  getUnits(bs));
+			loader.game.moveUnit(bs[1] - 1 != 0, bs[1] - 1 == 3,
+					bs[1] - 1 >= 0, getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
 		case (37): // Einheit beginnt schießen
@@ -361,14 +366,14 @@ public class Analyser {
 		}
 		return bytes;
 	}
-	
+
 	private int[] getUnits(byte[] input) {
 		int[] array = null;
 		if (input.length >= 4 && input.length % 2 == 0) {
 			array = new int[(input.length - 2) / 2];
 			for (int i = 0; i < input.length - 2; i += 2) {
-				array[i] = (Byte.toUnsignedInt(input[i + 2]) << 8) + Byte
-						.toUnsignedInt(input[i + 3]);
+				array[i] = (Byte.toUnsignedInt(input[i + 2]) << 8)
+						+ Byte.toUnsignedInt(input[i + 3]);
 			}
 		}
 		return array;

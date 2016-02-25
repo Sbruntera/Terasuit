@@ -34,6 +34,7 @@ public class MenuAnalyser implements Analyser {
 		switch (input[0]) {
 		case (0): // Stats
 			System.out.println("stats");
+			connection.sendStats();
 			// TODO: Get Stats
 			break;
 		case (1): // logout

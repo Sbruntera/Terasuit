@@ -187,7 +187,8 @@ public class Connection implements Runnable {
 	// Menü
 
 	public void sendStats() {
-		addMessage(new byte[] {});
+		//TODO get Stats from Server
+		addMessage(new byte[] {0});
 	}
 
 	/**

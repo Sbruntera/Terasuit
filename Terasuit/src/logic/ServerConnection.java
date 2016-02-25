@@ -502,4 +502,10 @@ public class ServerConnection implements Runnable {
 			addMessage(array);
 		}
 	}
+	
+	public void stats(){
+		if (analyser.getState() == State.MENU) {
+			addMessage(new byte[] { 0 });
+		}
+	}
 }
