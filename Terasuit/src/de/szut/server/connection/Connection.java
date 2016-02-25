@@ -186,6 +186,16 @@ public class Connection implements Runnable {
 	// Menü
 
 	public void sendStats() {
+		String[][] stats = null;
+		ArrayList<Byte> array = new ArrayList<Byte>();
+		for (String[] innerArray : stats) {
+			array.add((byte) (Integer.valueOf(innerArray[1]) >> 8));
+			array.add((byte) (int) (Integer.valueOf(innerArray[1])));
+			for (char c : innerArray[0].toCharArray()) {
+				array.add((byte) c);
+			}
+			array.add((byte) 0);
+		}
 		addMessage(new byte[] {0});
 	}
 
@@ -249,6 +259,7 @@ public class Connection implements Runnable {
 	 * @param splitted
 	 */
 	public void sendLogin(String name) {
+		loggIn(name);
 		byte[] array = new byte[name.length() + 1];
 		array[0] = 3;
 		for (int i = 0; i < name.length(); i++) {
@@ -282,7 +293,7 @@ public class Connection implements Runnable {
 	 *            Position bei der der Spieler landet
 	 */
 	public void sendSwitchPlayers(byte player1, byte player2) {
-		addMessage(new byte[] { 16, (byte) (player1 + 1), (byte) (player2 + 1) });
+		addMessage(new byte[] { 16, (byte) player1, (byte) player2 });
 	}
 
 	/**

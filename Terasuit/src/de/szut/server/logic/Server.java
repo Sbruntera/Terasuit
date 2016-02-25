@@ -86,9 +86,9 @@ public class Server implements Runnable {
 		String hashed = BCrypt.hashpw(pw, BCrypt.gensalt());
 		if (!db.search(name)) {
 			db.addUser(name, hashed, email, mode);
+			connections.get(id).sendLogin(name);
 		} else {
 			// TODO: Fehlermeldung
-			connections.get(id).sendLogin(name);
 		}
 	}
 

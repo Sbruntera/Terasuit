@@ -54,8 +54,9 @@ public class MenuAnalyser implements Analyser {
 				if (splitted.length > 1) {
 					password = castToString(toPrimal(splitted[1]));
 				}
-				server.createLobby(connection, castToString(toPrimal(splitted[0])),
-						password, getMap(input[1]));
+				server.createLobby(connection,
+						castToString(toPrimal(splitted[0])), password,
+						getMap(input[1]));
 			}
 			break;
 		case (4): // Spiel beitreten
@@ -75,9 +76,10 @@ public class MenuAnalyser implements Analyser {
 				case (2):
 					password = castToString(toPrimal(splitted[1]));
 				case (1):
-					if (server.loginClient(castToString(toPrimal(splitted[0])), password,
-							id)) {
-						connection.sendLogin(castToString(toPrimal(splitted[0])));
+					if (server.loginClient(castToString(toPrimal(splitted[0])),
+							password, id)) {
+						connection
+								.sendLogin(castToString(toPrimal(splitted[0])));
 						connection.loggIn(castToString(toPrimal(splitted[0])));
 					}
 					break;
@@ -88,11 +90,10 @@ public class MenuAnalyser implements Analyser {
 			System.out.println("register");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
-				if (splitted.length == 4) {
+				if (splitted.length == 3) {
 					server.registerClient(castToString(toPrimal(splitted[0])),
 							castToString(toPrimal(splitted[1])),
-							castToString(toPrimal(splitted[2])),
-							castToString(toPrimal(splitted[3])), id);
+							castToString(toPrimal(splitted[2])), "User", id);
 				}
 			}
 			break;
@@ -101,7 +102,7 @@ public class MenuAnalyser implements Analyser {
 			break;
 		}
 	}
-	
+
 	private byte[] toPrimal(Byte[] splitted) {
 		byte[] bytes = new byte[splitted.length];
 		for (int i = 0; i < splitted.length; i++) {

@@ -20,11 +20,9 @@ import de.szut.client.grafik.Panel;
 public class Game {
 
 	BaseBuildings buildings = new BaseBuildings();
-	ProgressbarLogic progressbar;
 	// ArrayList<Buildings> BuildingsEntity = new ArrayList<Buildings>();
 	Buildings[] BuildingsArray = new Buildings[36];
 	ArrayList<JProgressBar> JProgressBarArray = new ArrayList<JProgressBar>();
-	JProgressBar[] listOfJProgressBar = new JProgressBar[36];
 	BtnCreator btnCreator = new BtnCreator();
 	ArrayList<Unit> entity = new ArrayList<Unit>();
 	ArrayList<Unit> NEWentity;
@@ -110,7 +108,7 @@ public class Game {
 		if ((slotID > (playerID-1 >> 1) + (playerID-1)*4 && slotID < (playerID-1 >> 1) + (playerID)*4 + 1) || slotID == (((playerID-1)>>1)+1)*9){
 			func.deMarkEntittys();
 			btnAction.createUserOptions(console, this, buildingsArray,
-					listOfJProgressBar, slotID, primID, func);
+					func.getListOfJProgressBar(), slotID, primID, func);
 		}
 	}
 
@@ -130,22 +128,24 @@ public class Game {
 		int time = 20;
 		func.destroyUserOptions(console, this);
 
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(20, 60, 160, 10);
 		if (primID != 0) {
-			progressbar = new ProgressbarLogic(index, X, Y, this, index,
-					primID, time, field, "blubb", buildingName,
-					buildingLocation);
-			this.listOfJProgressBar[index] = progressBar;
-			progressbar.init(time);
-			console.add(listOfJProgressBar[index]);
-		} else {
-			progressbar = new ProgressbarLogic(primID, X, Y, this, index,
-					primID, time, field, "blubb", buildingName,
-					buildingLocation);
-			this.listOfJProgressBar[primID] = progressBar;
-			progressbar.init(time);
-			console.add(listOfJProgressBar[primID]);
+			JProgressBar progressBar = new JProgressBar();
+			progressBar.setBounds(20, 60, 160, 10);
+			func.addProgressBar(progressBar, index);
+			console.add(progressBar);
+//			progressbar = new ProgressbarLogic(index, X, Y, this, index,
+//					primID, time, field, "blubb", buildingName,
+//					buildingLocation);
+//			this.listOfJProgressBar[index] = progressBar;
+//			progressbar.init(time);
+//			console.add(listOfJProgressBar[index]);
+//		} else {
+//			progressbar = new ProgressbarLogic(primID, X, Y, this, index,
+//					primID, time, field, "blubb", buildingName,
+//					buildingLocation);
+//			this.listOfJProgressBar[primID] = progressBar;
+//			progressbar.init(time);
+//			console.add(listOfJProgressBar[primID]);
 		}
 	}
 
@@ -161,46 +161,25 @@ public class Game {
 	}
 
 	/**
-	 * Sucht mit den gegeben Daten nach der aktuellen JProcessbar und
-	 * aktualisiert sie, wobei bei 100% eine neue Aktion ausgeführt wird
-	 */
-	public void setProgressbar(int ID, int X, int Y, String buildingLocation,
-			String description, String buildingName, int i, int slotID,
-			int primID, int time) {
-		if (listOfJProgressBar[ID] != null) {
-			int percent = listOfJProgressBar[ID].getValue();
-			if (percent != 100) {
-				listOfJProgressBar[ID].setValue(percent + 10);
-			} else {
-				listOfJProgressBar[ID].setVisible(false);
-				listOfJProgressBar[ID] = null;
-				func.destroyUserOptions(console, this);
-				setAllJProgressBarVisible(false);
-				field.repaint();
-			}
-		}
-	}
-
-	/**
 	 * Setzt alle verfügbaren JProcessbars auf sichtbar/nicht sichtbar
 	 */
 	public void setAllJProgressBarVisible(boolean bool) {
-		for (int i = 0; i != listOfJProgressBar.length; i++) {
-			if (listOfJProgressBar[i] != null) {
-				listOfJProgressBar[i].setVisible(bool);
+		for (int i = 0; i != func.getListOfJProgressBar().length; i++) {
+			if (func.getListOfJProgressBar()[i] != null) {
+				func.getListOfJProgressBar()[i].setVisible(bool);
 			}
 		}
 	}
 
 	public void cancel(int index) {
-		listOfJProgressBar[index].setVisible(false);
+		func.getListOfJProgressBar()[index].setVisible(false);
 		func.destroyUserOptions(console, this);
-		listOfJProgressBar[index] = null;
+		func.getListOfJProgressBar()[index] = null;
 
 	}
 
 	public void replaceJProcessbar(int index) {
-		listOfJProgressBar[index].setVisible(true);
+		func.getListOfJProgressBar()[index].setVisible(true);
 	}
 
 	public void setText(String text) {

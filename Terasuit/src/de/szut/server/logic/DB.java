@@ -90,6 +90,24 @@ public class DB {
 		}
 		return 0;
 	}
+	
+	public String[][] getStats(String User){
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Stats WHERE User = '" + User + "';");
+            if (resultSet.next()) {
+                int columncount = resultSet.getMetaData().getColumnCount();
+                String[][] stats = new String[columncount-1][2];
+                for(int i = 2; i <= columncount; i++){
+                    stats[i-2][0] = resultSet.getMetaData().getColumnName(i);
+                    stats[i-2][1] = resultSet.getString(i);
+                }
+                return stats;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 	public void addUser(String Name, String Password, String Email,
 			String Usermode) {

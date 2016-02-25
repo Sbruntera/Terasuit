@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import de.szut.client.grafik.Panel;
 import de.szut.client.logic.UnitData;
@@ -23,6 +24,7 @@ public class Funktions implements Runnable{
 	UnitPics pics = new UnitPics();
 	private UnitData data = new UnitData();
 	private Thread cThread;
+	private JProgressBar[] listOfJProgressBar = new JProgressBar[36];
 	
 	public Funktions(){
 		pics.generateAllEntityPictures();
@@ -46,15 +48,17 @@ public class Funktions implements Runnable{
 		deMarkEntittys();
 		selectedEntitysID = selectedUnit.getUnit(getEntity(), selectedEntitysID, objUnit);
 		for (int id : selectedEntitysID) {
-			String type = entity.get(id).getEntityname();
-			boolean directionLeft = entity.get(id).isEntityRushLeft();
-			int color = entity.get(id).getEntitymembership();
-			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-			entity.get(id).getLabel().setIcon(pic);
-			type = splitUp(entity.get(id).getEntityname());
-			UnitObject unit = data.returnUnitData(type);
-			String description = unit.getDescription();
-			setInformationInGame(game, type, description);
+			if (entity.containsKey(id)) {
+				String type = entity.get(id).getEntityname();
+				boolean directionLeft = entity.get(id).isEntityRushLeft();
+				int color = entity.get(id).getEntitymembership();
+				ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
+				entity.get(id).getLabel().setIcon(pic);
+				type = splitUp(entity.get(id).getEntityname());
+				UnitObject unit = data.returnUnitData(type);
+				String description = unit.getDescription();
+				setInformationInGame(game, type, description);
+			}
 		}
 	}
 	
@@ -63,12 +67,14 @@ public class Funktions implements Runnable{
 	public void findAllEntitys(int minX, int minY, int w, int h, int playerID) {
 		selectedEntitysID = selectedUnit.getGroupOfUnits(getEntity(), selectedEntitysID, minX, minY, w, h);
 		for (int id : selectedEntitysID) {
-			if (entity.get(id).getEntitymembership() == playerID){
-				String type = entity.get(id).getEntityname();
-				boolean directionLeft = entity.get(id).isEntityRushLeft();
-				int color = entity.get(id).getEntitymembership();
-				ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
-				entity.get(id).getLabel().setIcon(pic);
+			if (entity.containsKey(id)) {
+				if (entity.get(id).getEntitymembership() == playerID){
+					String type = entity.get(id).getEntityname();
+					boolean directionLeft = entity.get(id).isEntityRushLeft();
+					int color = entity.get(id).getEntitymembership();
+					ImageIcon pic = pics.getEntityPic(type, color, directionLeft, true);
+					entity.get(id).getLabel().setIcon(pic);
+				}
 			}
 		}
 	}
@@ -76,11 +82,13 @@ public class Funktions implements Runnable{
 	// Iteriert über eine Liste mit IDs von Einheiten in der Entity List und verändert ihre Helligkeit zu dunkel
 	public void deMarkEntittys(){
 		for (int id : selectedEntitysID) {
-			String type = entity.get(id).getEntityname();
-			boolean directionLeft = entity.get(id).isEntityRushLeft();
-			int color = entity.get(id).getEntitymembership();
-			ImageIcon pic = pics.getEntityPic(type, color, directionLeft, false);
-			entity.get(id).getLabel().setIcon(pic);
+			if (entity.containsKey(id)) {
+				String type = entity.get(id).getEntityname();
+				boolean directionLeft = entity.get(id).isEntityRushLeft();
+				int color = entity.get(id).getEntitymembership();
+				ImageIcon pic = pics.getEntityPic(type, color, directionLeft, false);
+				entity.get(id).getLabel().setIcon(pic);
+			}
 		}
 		selectedEntitysID.clear();
 	}
@@ -188,15 +196,28 @@ public class Funktions implements Runnable{
 	@Override
 	public void run() {
 		moveUnits();
+		buildBuildings();
 	}
 
 	private void moveUnits() {
 		for (Unit e : entity.values()) {
 			if (e.isEntityMove()) {
-				if (e.isEntityRushLeft()) {
+				if (e.isEntityRushLeft() && !e.hasInRange(0)) { // Mainbuildingposition
 					e.setEntityPositionX(e.getEntityPositionX() - e.getEntitySpeed());
-				} else {
+				} else if (e.isEntityRushLeft() && !e.hasInRange(1300)){ // Mainbuildingposition
 					e.setEntityPositionX(e.getEntityPositionX() + e.getEntitySpeed());
+				}
+			}
+		}
+	}
+
+	private void buildBuildings() {
+		for (int i = 0; i < listOfJProgressBar.length; i++) {
+			if (listOfJProgressBar[i] != null) {
+				listOfJProgressBar[i].setValue(listOfJProgressBar[i].getValue()+1);
+				if (listOfJProgressBar[i].getValue() == 100) {
+					listOfJProgressBar[i].setVisible(false);
+					listOfJProgressBar[i] = null;
 				}
 			}
 		}
@@ -208,5 +229,13 @@ public class Funktions implements Runnable{
 
 	public Unit getEntity(int i) {
 		return entity.get(i);
+	}
+
+	public void addProgressBar(JProgressBar progressBar, int index) {
+		this.listOfJProgressBar[index] = progressBar;
+	}
+	
+	public JProgressBar[] getListOfJProgressBar() {
+		return listOfJProgressBar;
 	}
 }

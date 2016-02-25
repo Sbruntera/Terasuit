@@ -50,7 +50,6 @@ public class Analyser {
 			loader.showStats(test);
 			break;
 		case (1): // Get GameList
-			System.out.println("Hier");
 			ArrayList<Lobby> list = new ArrayList<Lobby>();
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
@@ -97,7 +96,7 @@ public class Analyser {
 			if (bs.length == 4) {
 				position = bs[3];
 			}
-			game.switchPlayers(bs[1], (byte) (bs[2]));
+			game.switchPlayers((byte) bs[1], (byte) bs[2]);
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (17): // Spieler tritt dem Spiel bei
@@ -312,7 +311,6 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			System.out.println(bs[1]);
 			loader.game.moveUnit(bs[1] - 1 != 0, bs[1] == 3, bs[1] - 1 >= 0,
 					getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen

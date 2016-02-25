@@ -5,7 +5,7 @@ import java.awt.Point;
 public class SpecialOperations implements Building {
 	
 	public static final int MAXLVL = 0;
-	public static final int BUILDINGTIME = 110;
+	public static final int BUILDINGTIME = 100;
 
 	private int lvl = 0;
 	private int buildTime;

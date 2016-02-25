@@ -117,24 +117,26 @@ public class ActionButton {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")) {
 						System.out.println("Ein Gebäude wurde ausgewählt!");
-						loader.connection.createBuilding((slotID
-								- (9 * (slotID / 10) + 1) & 3),
+						System.out.println(slotID);
+						loader.connection.createBuilding(slotID
+								- (9 * (slotID / 10) + 1) & 3,
 								cutHTMLout(((JButton) arg0.getSource())
 										.getText()));
 					} else if (type.equals("Ground")) {
+						System.out.println(slotID);
 						System.out
 								.println("Eine Bodeneinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							loader.connection.createUnit(1, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(1, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							loader.connection.createUnit(2, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(2, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Sniper"):
 							System.out.println("Sniper");
@@ -143,48 +145,48 @@ public class ActionButton {
 							break;
 						case ("Gröditz"):
 							System.out.println("Gröditz");
-							loader.connection.createUnit(4, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(4, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Hover Tank"):
 							System.out.println("Hover Tank");
-							loader.connection.createUnit(5, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(5, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("A25-Roman"):
 							System.out.println("A25-Roman");
-							loader.connection.createUnit(7, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(7, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Sakata-MK2"):
 							System.out.println("Sakata-Mk2");
-							loader.connection.createUnit(10, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(10, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Sakata Spider"):
 							System.out.println("Sakata Spider");
-							loader.connection.createUnit(11, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(11, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Gladiator"):
 							System.out.println("Gladiator");
-							loader.connection.createUnit(12, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(12, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Meditec"):
 							System.out.println("Meditec");
-							loader.connection.createUnit(13, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(13, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Sphinx"):
 							System.out.println("Sphinx");
-							loader.connection.createUnit(15, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(15, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						case ("Modified Sakata"):
 							System.out.println("Modified Sakata");
-							loader.connection.createUnit(17, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(17, slotID
+									- (9 * (slotID / 10) + 1) & 3);
 							break;
 						}
 
