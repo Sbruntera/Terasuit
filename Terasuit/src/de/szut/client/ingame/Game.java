@@ -198,9 +198,6 @@ public class Game {
 				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
 				u.setEntityRushLeft(!right);
 			}
-			System.out.println(u.isEntityRunning());
-			System.out.println(u.isEntityRushLeft());;
-			System.out.println(u.isEntityMove());
 		}
 	}
 

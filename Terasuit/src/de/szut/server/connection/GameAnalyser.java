@@ -33,7 +33,6 @@ public class GameAnalyser implements Analyser {
 		case (32): // Gebäude (aus)bauen/zerstören
 			if (input.length == 3) {
 				if (input[2] < 127) {
-					System.out.println(input[1] + " " + input[2]);
 					server.build(position, input[1], input[2]);
 				} else {
 					server.destroyBuilding((byte) (input[1]), position);

@@ -186,7 +186,7 @@ public class Connection implements Runnable {
 	// Menü
 
 	public void sendStats() {
-		String[][] stats = null;
+		String[][] stats = server.getStats(name);
 		ArrayList<Byte> array = new ArrayList<Byte>();
 		for (String[] innerArray : stats) {
 			array.add((byte) (Integer.valueOf(innerArray[1]) >> 8));
@@ -196,7 +196,7 @@ public class Connection implements Runnable {
 			}
 			array.add((byte) 0);
 		}
-		addMessage(new byte[] {0});
+		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class Connection implements Runnable {
 		addMessage(new byte[] { 35, (byte) playerNumber,
 				(byte) (position.x >> 8), (byte) position.x,
 				(byte) (position.y >> 8), (byte) position.y, typeID,
-				(byte) (unitID >> 8), (byte) unitID });
+				(byte) (unitID >> 8), (byte) unitID, (byte) 0 });
 	}
 
 	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {

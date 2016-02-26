@@ -44,10 +44,21 @@ public class Analyser {
 	private void analyseMenuMessage(byte[] message) {
 		switch (message[0]) {
 		case (0): // Stats
-			System.out.println("Bin da");
-			String[][] test = new String[][] { { "X0", "Y0" }, { "X1", "Y1" },
-					{ "X2", "Y2" }, { "X3", "Y3" }, { "X4", "Y4" } };
-			loader.showStats(test);
+			int i = 1;
+			ArrayList<String[]> array = new ArrayList<String[]>();
+			while (i < message.length) {
+				int value = (((int) (Byte.toUnsignedInt(message[i])) << 8) + Byte
+								.toUnsignedInt(message[i+1]));
+				i = 3;
+				String type = "";
+				while (message[i] != 0 && i < message.length) {
+					type += (char) message[i];
+					i++;
+				}
+				array.add(new String[] {type, String.valueOf(i)});
+				
+			}
+			loader.showStats(array.toArray(new String[array.size()][]));
 			break;
 		case (1): // Get GameList
 			ArrayList<Lobby> list = new ArrayList<Lobby>();
@@ -65,7 +76,7 @@ public class Analyser {
 			position = (byte) (message[2] & 3);
 			splittedMessage = getSplitString(message, 3);
 			String[] names = new String[splittedMessage.length];
-			for (int i = 0; i < splittedMessage.length; i++) {
+			for (i = 0; i < splittedMessage.length; i++) {
 				if (splittedMessage[i].length > 1) {
 					names[i] = castToString(splittedMessage[i]);
 				} else {
@@ -311,11 +322,6 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			System.out.println(bs[1]);
-			System.out.println(bs[1] != 1);
-			System.out.println(bs[1] == 3);
-			System.out.println(bs[1] > 1);
-			System.out.println(getUnits(bs)[0]);
 			loader.game.moveUnit(bs[1] != 1, bs[1] == 3, bs[1] > 1,
 					getUnits(bs));
 			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen

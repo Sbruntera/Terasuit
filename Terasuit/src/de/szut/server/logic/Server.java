@@ -207,4 +207,7 @@ public class Server implements Runnable {
 			}
 		}
 	}
+	public String[][] getStats(String User){
+		return db.getStats(User);
+	}
 }

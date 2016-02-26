@@ -26,13 +26,11 @@ public class UnitPics {
 		for (int i = 0; i != entityGroundList.length; i++){
 			picLocation = "Unit/Ground/" + entityGroundList[i] + ".png";
 			picName = entityGroundList[i];
-			System.out.println(picLocation);
 			this.generate(UnitPicHash);
 		}
 		for (int i = 0; i != entityAirList.length; i++){
 			picLocation = "Unit/Air/" + entityAirList[i] + ".png";
 			picName = entityAirList[i];
-			System.out.println(picLocation);
 			this.generate(UnitPicHash);
 		}
 	}

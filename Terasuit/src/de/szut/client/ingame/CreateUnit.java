@@ -35,7 +35,6 @@ public class CreateUnit {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
 		unit = new Unit();
-		System.out.println(unitID);
 		unit.setEntityNummer(unitID);
 		
 		// Position wird festgelegt

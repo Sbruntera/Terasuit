@@ -105,11 +105,6 @@ public class BaseBuildings {
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < buildingsArray.length; i++) {
-					if (buildingsArray[i] == null){
-						//System.out.println(i + ") " + null);
-					}else{
-						//System.out.println(i + ") " + buildingsArray[i].getName());
-					}
 					if (buildingsArray[i] != null){
 						if (buildingsArray[i].getLabel() == objUnit.getSource()){
 							int primID = buildingsArray[i].getNumber();
