@@ -9,6 +9,8 @@ public interface Building {
 	public byte getPlayer();
 
 	public byte getSlotID();
+	
+	public int getPrice(int lvl);
 
 	public boolean hasUpgrade();
 

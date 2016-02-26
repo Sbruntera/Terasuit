@@ -284,8 +284,7 @@ public class ActionButton {
 	public void deselectOptions(Panel panel) {
 		JButton[] jButtonArray = new JButton[jButton.size()];
 		jButtonArray = jButton.toArray(jButtonArray);
-		if (jButtonArray.length == 0) {
-		} else {
+		if (jButtonArray.length != 0) {
 			for (JButton n : jButtonArray) {
 				panel.remove(n);
 			}

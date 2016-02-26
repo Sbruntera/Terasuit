@@ -47,6 +47,12 @@ public class Generator implements Building {
 	}
 
 	@Override
+	public int getPrice(int lvl) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
 	public boolean hasUpgrade() {
 		return lvl < MAXLVL;
 	}
