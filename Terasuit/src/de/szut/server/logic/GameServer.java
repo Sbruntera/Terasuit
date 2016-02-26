@@ -235,14 +235,16 @@ public class GameServer implements Runnable {
 			if (units.containsKey(i)) {
 				if (units.get(i).getPlayer() == id) {
 					units.get(i).setDirection(direction);
-					for (Connection c : connections) {
-						if (c != null) {
-							c.sendMoveUnit(id, direction, movingUnits);
-						}
-					}
 				}
 			}
 		}
+		
+		for (Connection c : connections) {
+			if (c != null) {
+				c.sendMoveUnit(id, direction, movingUnits);
+			}
+		}
+
 	}
 
 	/**

@@ -44,7 +44,8 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (0 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
-				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, false);
+				loader.connection.moveUnit(loader.game.getSelectedUnits(),
+						true, true, false);
 			}
 		});
 		jButton.add(btn);
@@ -54,7 +55,8 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (1 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
-				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, true, true);
+				loader.connection.moveUnit(loader.game.getSelectedUnits(),
+						true, true, true);
 			}
 		});
 		jButton.add(btn);
@@ -64,7 +66,8 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (2 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
-				loader.connection.moveUnit(loader.game.getSelectedUnits(), true, false, false);
+				loader.connection.moveUnit(loader.game.getSelectedUnits(),
+						true, false, false);
 			}
 		});
 		jButton.add(btn);
@@ -74,7 +77,8 @@ public class ActionButton {
 		btnCreator.createOne(btn, 200 + (3 * 62), 30, 60, 60, 87);
 		btn.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent arg0) {
-				loader.connection.moveUnit(loader.game.getSelectedUnits(), false, true, false);
+				loader.connection.moveUnit(loader.game.getSelectedUnits(),
+						false, true, false);
 			}
 		});
 		jButton.add(btn);
@@ -114,8 +118,8 @@ public class ActionButton {
 					if (type.equals("Building")) {
 						System.out.println("Ein Gebäude wurde ausgewählt!");
 						System.out.println(slotID);
-						loader.connection.createBuilding(slotID
-								- (9 * (slotID / 10) + 1) & 3,
+						loader.connection.createBuilding(
+								slotIDToBuildingPosition(slotID),
 								cutHTMLout(((JButton) arg0.getSource())
 										.getText()));
 					} else if (type.equals("Ground")) {
@@ -126,66 +130,63 @@ public class ActionButton {
 								.getText())) {
 						case ("Marine"):
 							System.out.println("Marine");
-							for (int i = 0; i < 100; i++) {
-								System.out.println(i);
-							loader.connection.createUnit(1, slotID
-									- (9 * (slotID / 10) + 1) & 3);
-							}
+							loader.connection.createUnit(1,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Chronite Tank"):
 							System.out.println("Chronit Tank");
-							loader.connection.createUnit(2, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(2,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sniper"):
 							System.out.println("Sniper");
-							loader.connection.createUnit(3, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(3,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gröditz"):
 							System.out.println("Gröditz");
-							loader.connection.createUnit(4, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(4,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Hover Tank"):
 							System.out.println("Hover Tank");
-							loader.connection.createUnit(5, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(5,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("A25-Roman"):
 							System.out.println("A25-Roman");
-							loader.connection.createUnit(7, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(7,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata-MK2"):
 							System.out.println("Sakata-Mk2");
-							loader.connection.createUnit(10, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(10,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata Spider"):
 							System.out.println("Sakata Spider");
-							loader.connection.createUnit(11, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(11,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gladiator"):
 							System.out.println("Gladiator");
-							loader.connection.createUnit(12, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(12,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Meditec"):
 							System.out.println("Meditec");
-							loader.connection.createUnit(13, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(13,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sphinx"):
 							System.out.println("Sphinx");
-							loader.connection.createUnit(15, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(15,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Modified Sakata"):
 							System.out.println("Modified Sakata");
-							loader.connection.createUnit(17, slotID
-									- (9 * (slotID / 10) + 1) & 3);
+							loader.connection.createUnit(17,
+									slotIDToBuildingPosition(slotID));
 							break;
 						}
 
@@ -196,28 +197,28 @@ public class ActionButton {
 								.getText())) {
 						case ("Black Queen"):
 							System.out.println("Black Queen");
-							loader.connection.createUnit(6, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(6,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Scout"):
 							System.out.println("Scout");
-							loader.connection.createUnit(8, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(8,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Phantom"):
 							System.out.println("Phantom");
-							loader.connection.createUnit(9, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(9,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Saint"):
 							System.out.println("Saint");
-							loader.connection.createUnit(14, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(14,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Modified Phantom"):
 							System.out.println("Modified Phantom");
-							loader.connection.createUnit(16, (slotID
-									- (9 * (slotID / 10) + 1) & 3));
+							loader.connection.createUnit(16,
+									slotIDToBuildingPosition(slotID));
 							break;
 						}
 					} else if (type.equals("Generation")) {
@@ -226,8 +227,8 @@ public class ActionButton {
 					} else if (type.equals("Destroy")) {
 						System.out
 								.println("Das gewählte Gebäude wird abgerissen");
-						loader.connection.destroyBuilding((slotID
-								- (9 * (slotID / 10) + 1) & 3));
+						loader.connection
+								.destroyBuilding(slotIDToBuildingPosition(slotID));
 					} else if (type.equals("Cancel")) {
 						System.out.println("Abbruch");
 						loader.connection.cancelBuilding(slotID);
@@ -271,12 +272,12 @@ public class ActionButton {
 		}
 		console.repaint();
 	}
-	
-	public void changeDescription(String description){
+
+	public void changeDescription(String description) {
 		Description.setText(wrapLines(description));
 	}
-	
-	public void changeBuildingName(String type){
+
+	public void changeBuildingName(String type) {
 		BuildingNameLbl.setText(wrapLines(type));
 	}
 
@@ -351,4 +352,7 @@ public class ActionButton {
 		deselectOptions(console);
 	}
 
+	private int slotIDToBuildingPosition(int slotID) {
+		return (slotID - (9 * (slotID / 10) + 1) & 3);
+	}
 }

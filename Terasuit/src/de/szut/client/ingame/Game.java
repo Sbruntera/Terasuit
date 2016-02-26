@@ -188,15 +188,17 @@ public class Game {
 
 	public void moveUnit(boolean moving, boolean running, boolean right, int[] units) {
 		for (int i : units) {
-			Unit u = func.getEntity(i);
-			u.setEntityRun(running);
-			u.setEntityMove(moving);
-			if (running || !moving) {
-				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
-				u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
-			} else {
-				u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
-				u.setEntityRushLeft(!right);
+			if (func.entity.containsKey(i)) {
+				Unit u = func.getEntity(i);
+				u.setEntityRun(running);
+				u.setEntityMove(moving);
+				if (running || !moving) {
+					u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
+					u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
+				} else {
+					u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
+					u.setEntityRushLeft(!right);
+				}
 			}
 		}
 	}
