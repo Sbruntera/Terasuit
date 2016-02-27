@@ -2,7 +2,7 @@ package de.szut.client.ingame;
 
 import javax.swing.JLabel;
 
-public class Unit {
+public class Unit implements Attackable{
 	
 	JLabel label = new JLabel("");
 	int EntityNummer = 0;
@@ -23,8 +23,8 @@ public class Unit {
 	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
-	private boolean canAttackGround = false;
-	private boolean canAttackAir = false;
+	private boolean canAttackGround = true;
+	private boolean canAttackAir = true;
 	
 	public boolean isFlyingEntity() {
 		return flyingEntity;
@@ -187,13 +187,14 @@ public class Unit {
 		this.canAttackAir = canAttackAir;
 	}
 
-	public boolean hasInRange(Unit[] attackables) {
-		if (attackables[0] != null && true) { //TODO: canAttackGround
+	public boolean hasInRange(Attackable[] attackables) {
+		if (attackables[0] != null && canAttackGround) {
+			System.out.println(attackables[0].getEntityPositionX());
 			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
 				return true;
 			}
 		}
-		if (attackables[01] != null && true) { //TODO: canAttackAir
+		if (attackables[01] != null && canAttackAir) {
 			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
 				return true;
 			}
@@ -201,7 +202,22 @@ public class Unit {
 		return false;
 	}
 
-	public Bullet shoot(Unit[] nearestUnits) {
+	public Bullet shoot(Attackable[] target) {
 		return null;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return EntityLive > 0;
+	}
+
+	@Override
+	public void dealDamage(int value) {
+		EntityLive -= value;
+	}
+
+	@Override
+	public void heal(int value) {
+		EntityLive += value;
 	}
 }

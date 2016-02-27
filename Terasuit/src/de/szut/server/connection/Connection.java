@@ -382,12 +382,13 @@ public class Connection implements Runnable {
 	}
 
 	public void sendMoveUnit(byte playerNumber, byte direction, short[] unitIDs) {
-		byte[] array = new byte[unitIDs.length * 2 + 2];
+		byte[] array = new byte[unitIDs.length * 2 + 3];
 		array[0] = 36;
-		array[1] = direction;
+		array[1] = playerNumber;
+		array[2] = direction;
 		for (int i = 0; i < unitIDs.length; i++) {
-			array[i*2 + 2] = (byte) (unitIDs[i] >> 8);
-			array[i*2 + 3] = (byte) (unitIDs[i]);
+			array[i*2 + 3] = (byte) (unitIDs[i] >> 8);
+			array[i*2 + 4] = (byte) (unitIDs[i]);
 		}
 		addMessage(array);
 	}

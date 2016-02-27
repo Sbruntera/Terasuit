@@ -463,19 +463,19 @@ public class ServerConnection implements Runnable {
 	 *            läuft Überhaupt
 	 * @param running
 	 */
-	public void moveUnit(Integer[] integers, boolean forward, boolean walking,
+	public void moveUnit(Integer[] unitIDs, boolean forward, boolean walking,
 			boolean running) {
 		if (analyser.getState() == State.GAME) {
-			byte[] array = new byte[integers.length * 2 + 2];
+			byte[] array = new byte[unitIDs.length * 2 + 2];
 			array[0] = 35;
 			array[1] = (byte) ((((Boolean.compare(
 					((analyser.position & 2) == 2 ^ forward), false) * 2 - 1)
 					* Boolean.compare(!running, false)
 					* Boolean.compare(walking, false) + 1) + Boolean.compare(
 					running, false) * 2));
-			for (int i = 0; i < integers.length; i++) {
-				array[i * 2 + 2] = (byte) (integers[i] >> 8);
-				array[i * 2 + 3] = (byte) (int) integers[i];
+			for (int i = 0; i < unitIDs.length; i++) {
+				array[i * 2 + 2] = (byte) (unitIDs[i] >> 8);
+				array[i * 2 + 3] = (byte) (int) unitIDs[i];
 			}
 			addMessage(array);
 		}

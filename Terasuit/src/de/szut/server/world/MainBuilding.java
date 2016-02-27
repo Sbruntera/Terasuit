@@ -19,6 +19,11 @@ public class MainBuilding implements Building, Attackable {
 			position = new Point(164, 414);
 		}
 	}
+	
+	@Override
+	public boolean isFlying() {
+		return false;
+	}
 
 	@Override
 	public void upgrade() { //Main Building can not be upgraded

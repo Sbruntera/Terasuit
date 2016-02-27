@@ -27,6 +27,7 @@ public class Funktions implements Runnable {
 	private ConcurrentLinkedQueue<Unit> unitQueue = new ConcurrentLinkedQueue<Unit>();
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private boolean ended;
+	private MainBuilding[] mainBuildings = new MainBuilding[2];
 
 	public Funktions() {
 		pics.generateAllEntityPictures();
@@ -151,24 +152,23 @@ public class Funktions implements Runnable {
 		for (Unit e : entity.values()) {
 			Unit[] nearestUnits = getNearestUnit(e.getEntityPositionX(),
 					(e.getEntitymembership() - 1 & 2) == 2);
-			System.out.println(nearestUnits[0]);
-			if (e.hasInRange(nearestUnits) && !e.isEntityRunning()) {
+			if (e.hasInRange(nearestUnits) && !e.isEntityRunning() && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
 				Bullet b = e.shoot(nearestUnits);
 				if (b != null) {
 					bullets .add(b);
 				}
-//			} else if (e.hasInRange(new Attackable[] {
-//					mainBuildings[e.getEntitymembership() - 1 >> 1], null })) {
-//				Bullet b = e.shoot(new Attackable[] {
-//						mainBuildings[e.getEntitymembership() - 1 >> 1], null });
-//				if (b != null) {
-//					bullets.add(b);
-//				}
+			} else if (e.hasInRange(new Attackable[] {
+					mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null }) && !e.isEntityRunning() && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
+				Bullet b = e.shoot(new Attackable[] {
+						mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null });
+				if (b != null) {
+					bullets.add(b);
+				}
 			} else if (e.isEntityMove()) {
-				if (e.isEntityRushLeft()) {
+				if (e.isEntityRushLeft() && e.getEntityPositionX() >= 294) {
 					e.setEntityPositionX(e.getEntityPositionX()
 							- e.getEntitySpeed());
-				} else {
+				} else if (!e.isEntityRushLeft() && e.getEntityPositionX() <= 1344) {
 					e.setEntityPositionX(e.getEntityPositionX()
 							+ e.getEntitySpeed());
 				}
@@ -222,5 +222,11 @@ public class Funktions implements Runnable {
 
 	public JProgressBar[] getListOfJProgressBar() {
 		return listOfJProgressBar;
+	}
+
+	public void setMainBuildings(MainBuilding mainBuilding1, MainBuilding mainBuilding2) {
+		System.out.println(mainBuilding1.toString() + mainBuilding2);
+		mainBuildings[0] = mainBuilding1;
+		mainBuildings[1] = mainBuilding2;
 	}
 }

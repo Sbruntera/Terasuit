@@ -42,9 +42,51 @@ public class BaseBuildings {
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*3, default_position_Y-default_interval, leftSide, 7);
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*4, default_position_Y, leftSide, 8);
 		// MAIN_BASE
-		createEntity(field, load, func, game, buildingsArray, base, "Base",  default_position_X+default_interval*2, default_position_Y, leftSide, 9);
+		createMainBuilding(field, load, func, game, buildingsArray, base, "Base",  default_position_X+default_interval*2, default_position_Y, leftSide, 9);
 	}
 	
+	private void createMainBuilding(Panel field, Loader loader, Funktions func, Game game, Buildings[] buildingsArray, String Entitytype,  String EntityName, int  X, int Y, boolean leftSide, int ID){
+		building = new MainBuilding();
+		
+		ImageIcon pic = new ImageIcon(Entitytype);
+		label = new JLabel("");
+		label.setIcon(pic);
+		label.setBounds(X, Y, pic.getIconWidth(), pic.getIconHeight());
+		label.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent objUnit) {
+
+				for (int i = 0; i < buildingsArray.length; i++) {
+
+					if (buildingsArray[i] != null){
+						if (buildingsArray[i].getLabel() == objUnit.getSource()){
+							int slotID = i;
+							int primID = 0;
+							game.createUserOptions(slotID, primID, buildingsArray);
+						}
+					}else{
+						// Index leer!
+					}
+				}
+			}
+		});
+		building.setX(X);
+		building.setY(Y);
+		building.setLabel(label);
+		building.setDescription("Ich bin ein ganz wichtiges Gebäude!");
+		building.setName(EntityName);
+		building.setSpwanableEntity(searchForPossibleEntitys(EntityName));
+		if (leftSide){
+			building.setNumber(ID);
+			buildingsArray[ID] = building;
+		}else{
+			ID = ID + 9;
+			building.setNumber(ID);
+			buildingsArray[ID] = building;
+		}
+		field.add(label);
+		field.repaint();
+	}
+
 	/*
 	 * Läd alle Slot auf dem Spielfeld und gibt ihnen verweise auf mögliche Aktionen 
 	 */

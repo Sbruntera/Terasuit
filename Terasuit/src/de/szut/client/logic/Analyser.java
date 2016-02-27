@@ -322,7 +322,7 @@ public class Analyser {
 					flying, unitID, position);
 			break;
 		case (36): // Spieler bewegt eine Einheit
-			loader.game.moveUnit(bs[1] != 1, bs[1] == 3, bs[1] > 1,
+			loader.game.moveUnit(bs[1], bs[2] != 1, bs[2] == 3, bs[2] > 1,
 					getUnits(bs));
 			break;
 		case (37): // Einheit beginnt schießen
@@ -377,11 +377,11 @@ public class Analyser {
 
 	private int[] getUnits(byte[] input) {
 		int[] array = null;
-		if (input.length >= 4 && input.length % 2 == 0) {
-			array = new int[(input.length - 2) / 2];
+		if (input.length >= 5 && input.length % 2 == 1) {
+			array = new int[(input.length - 3) / 2];
 			for (int i = 0; i < array.length; i++) {
-				array[i] = (Byte.toUnsignedInt(input[i * 2 + 2]) << 8)
-						+ Byte.toUnsignedInt(input[i * 2 + 3]);
+				array[i] = (Byte.toUnsignedInt(input[i * 2 + 3]) << 8)
+						+ Byte.toUnsignedInt(input[i * 2 + 4]);
 			}
 		}
 		return array;

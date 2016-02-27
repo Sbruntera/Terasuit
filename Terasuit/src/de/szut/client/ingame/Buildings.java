@@ -65,18 +65,6 @@ public class Buildings {
 	public void setLabel(JLabel label) {
 		this.label = label;
 	}
-	public int getBuilding_Live() {
-		return building_Live;
-	}
-	public void setBuilding_Live(int building_Live) {
-		this.building_Live = building_Live;
-	}
-	public boolean isAttackabel() {
-		return attackabel;
-	}
-	public void setAttackabel(boolean attackabel) {
-		this.attackabel = attackabel;
-	}
 	public int getType() {
 		return type;
 	}

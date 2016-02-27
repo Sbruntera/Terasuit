@@ -59,6 +59,7 @@ public class Game {
 				buildings.default_position_Rightside_y, false);
 
 		// Back-Button
+		func.setMainBuildings((MainBuilding) BuildingsArray[9], (MainBuilding) BuildingsArray[18]);
 		JButton btnBACK = new JButton("X");
 		btnCreator.createOne(btnBACK, 673, 114, 60, 60, 87);
 		btnBACK.addMouseListener(new MouseAdapter() {
@@ -192,18 +193,20 @@ public class Game {
 		playerID = id;
 	}
 
-	public void moveUnit(boolean moving, boolean running, boolean right, int[] units) {
+	public void moveUnit(byte player, boolean moving, boolean running, boolean right, int[] units) {
 		for (int i : units) {
 			if (func.entity.containsKey(i)) {
 				Unit u = func.getEntity(i);
-				u.setEntityRun(running);
-				u.setEntityMove(moving);
-				if (running || !moving) {
-					u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
-					u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
-				} else {
-					u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
-					u.setEntityRushLeft(!right);
+				if (u.getEntitymembership() == player+1) {
+					u.setEntityRun(running);
+					u.setEntityMove(moving);
+					if (running || !moving) {
+						u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
+						u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
+					} else {
+						u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
+						u.setEntityRushLeft(!right);
+					}
 				}
 			}
 		}

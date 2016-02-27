@@ -4,6 +4,8 @@ import java.awt.Point;
 
 public interface Attackable {
 
+	boolean isFlying();
+	
 	Point getPosition();
 	
 	int getHealth();
