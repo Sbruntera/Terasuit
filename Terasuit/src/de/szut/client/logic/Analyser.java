@@ -324,7 +324,6 @@ public class Analyser {
 		case (36): // Spieler bewegt eine Einheit
 			loader.game.moveUnit(bs[1] != 1, bs[1] == 3, bs[1] > 1,
 					getUnits(bs));
-			// TODO: An Feldmann: Hier Funktionsaufruf Einheit bewegen
 			break;
 		case (37): // Einheit beginnt schießen
 			break;
@@ -336,10 +335,9 @@ public class Analyser {
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;
 		case (40): // Spiel gewonnen/verloren
-			boolean won = bs[1] > 1;
-			// TODO: An Feldmann: Hier Funktionsaufruf Sieg/Niederlage
+			loader.game.end(bs[1] > 0);
 			break;
-		case (21):
+		case (21): // Chat
 			loader.setGameText(game.getPlayerName(bs[1]) + ": "
 					+ castToString(bs).substring(2));
 			break;

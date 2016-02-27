@@ -65,6 +65,7 @@ public class Game {
 			public void mouseReleased(MouseEvent arg0) {
 				loader.connection.leaveGame();
 				loader.switchPanel(loader.Mainpage);
+				loader.game.end();
 			}
 		});
 		// Chat
@@ -90,6 +91,14 @@ public class Game {
         console.repaint();
         console.revalidate();
         panel.repaint();
+	}
+
+	public void end(boolean won) {
+		func.end();
+	}
+
+	public void end() {
+		func.end();
 	}
 
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {

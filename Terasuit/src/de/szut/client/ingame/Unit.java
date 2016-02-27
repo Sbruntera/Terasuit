@@ -23,6 +23,8 @@ public class Unit {
 	boolean EntityRushLeft = true;
 	boolean EntityFire = false;
 	boolean Entitymarked = false;
+	private boolean canAttackGround = false;
+	private boolean canAttackAir = false;
 	
 	public boolean isFlyingEntity() {
 		return flyingEntity;
@@ -32,7 +34,6 @@ public class Unit {
 		this.flyingEntity = flyingEntity;
 	}
 
-	
 	public boolean isEntityMove() {
 		return EntityMove;
 	}
@@ -142,14 +143,6 @@ public class Unit {
 		EntityLive = entityLive;
 	}
 
-	public boolean isEntityFire() {
-		return EntityFire;
-	}
-
-	public void setEntityFire(boolean entityFire) {
-		EntityFire = entityFire;
-	}
-
 	public void setLabel(JLabel label) {
 		this.label = label;
 	}
@@ -161,6 +154,7 @@ public class Unit {
 	public void setEntityPositionY(int entityPositionY) {
 		EntityPositionY = entityPositionY;
 	}
+	
 	public int getEntitySpawntimer() {
 		return EntitySpawntimer;
 	}
@@ -176,12 +170,38 @@ public class Unit {
 	public int getEntitySpeed() {
 		return EntitySpeed;
 	}
+	
+	public boolean canAttackGround() {
+		return canAttackGround;
+	}
+	
+	public void setCanAttackGround(boolean canAttackGround) {
+		this.canAttackGround = canAttackGround;
+	}
+	
+	public boolean canAttackAir() {
+		return canAttackAir;
+	}
+	
+	public void setCanAttackAir(boolean canAttackAir) {
+		this.canAttackAir = canAttackAir;
+	}
 
-	public boolean hasInRange(int target) {
-		if (((Entitymembership-1) & 2) != 2) {
-			return EntityPositionX + EntityFirerange >= target;
-		} else {
-			return EntityPositionX - EntityFirerange <= target;
+	public boolean hasInRange(Unit[] attackables) {
+		if (attackables[0] != null && true) { //TODO: canAttackGround
+			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
+				return true;
+			}
 		}
+		if (attackables[01] != null && true) { //TODO: canAttackAir
+			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Bullet shoot(Unit[] nearestUnits) {
+		return null;
 	}
 }
