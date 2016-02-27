@@ -14,6 +14,7 @@ public class Unit implements Attackable{
 	int EntityFirepower = 0;
 	int EntitySplashDmg = 0;
 	int EntitySpawntimer = 0;
+	private int weaponCooldown = 0;
 	int EntityLive = 0;
 	String Entityname = "";
 	boolean flyingEntity = false;
@@ -25,6 +26,7 @@ public class Unit implements Attackable{
 	boolean Entitymarked = false;
 	private boolean canAttackGround = true;
 	private boolean canAttackAir = true;
+	private int cooldown;
 	
 	public boolean isFlyingEntity() {
 		return flyingEntity;
@@ -189,7 +191,6 @@ public class Unit implements Attackable{
 
 	public boolean hasInRange(Attackable[] attackables) {
 		if (attackables[0] != null && canAttackGround) {
-			System.out.println(attackables[0].getEntityPositionX());
 			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
 				return true;
 			}
@@ -203,7 +204,28 @@ public class Unit implements Attackable{
 	}
 
 	public Bullet shoot(Attackable[] target) {
+		if (canAttackGround() && getCooldown(false)) {
+			cooldown = getWeaponCooldown(false);
+			return new Bullet(this, target[0]);
+		} else if (canAttackAir() && getCooldown(true)) {
+			cooldown = getWeaponCooldown(false);
+			return new Bullet(this, target[1]);
+		} else {
+			cooldown--;
+		}
 		return null;
+	}
+
+	public int getWeaponCooldown(boolean b) {
+		return weaponCooldown;
+	}
+
+	public void setWeaponCooldown(int cooldown) {
+		this.weaponCooldown = cooldown;
+	}
+
+	private boolean getCooldown(boolean b) {
+		return cooldown <= 0;
 	}
 
 	@Override
@@ -219,5 +241,9 @@ public class Unit implements Attackable{
 	@Override
 	public void heal(int value) {
 		EntityLive += value;
+	}
+
+	public int getBulletSpeed() {
+		return 5;
 	}
 }

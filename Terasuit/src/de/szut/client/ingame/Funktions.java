@@ -1,5 +1,6 @@
 package de.szut.client.ingame;
 
+import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,9 +30,14 @@ public class Funktions implements Runnable {
 	private boolean ended;
 	private MainBuilding[] mainBuildings = new MainBuilding[2];
 
+	ArrayList<Bullet> bulletsToRemove;
+	HashMap<Integer, Unit> unitsToRemove;
+
 	public Funktions() {
 		pics.generateAllEntityPictures();
 		this.data.createUnitData();
+		bulletsToRemove = new ArrayList<Bullet>();
+		unitsToRemove = new HashMap<Integer, Unit>();
 	}
 
 	public HashMap<Integer, Unit> getEntity() {
@@ -128,6 +134,7 @@ public class Funktions implements Runnable {
 		selectedEntitysID = new ArrayList<Integer>();
 		cunit = new CreateUnit();
 		selectedUnit = new SelectedUnits();
+		bullets = new ArrayList<Bullet>();
 		Controller controller = new Controller(this);
 		cThread = new Thread(controller);
 		cThread.start();
@@ -137,6 +144,7 @@ public class Funktions implements Runnable {
 	@Override
 	public void run() {
 		addUnits();
+		moveBullets();
 		moveUnits();
 		buildBuildings();
 	}
@@ -146,6 +154,37 @@ public class Funktions implements Runnable {
 			Unit u = unitQueue.remove();
 			entity.put(u.getEntityNummer(), u);
 		}
+	}
+	
+	private void moveBullets() {
+		for (Bullet b : bullets) {
+			if (b.move()) {
+				b.getTarget().dealDamage(b.getDamage());
+				bulletsToRemove.add(b);
+				if (!b.getTarget().isAlive()) {
+					if (b.getTarget() instanceof Unit) {
+						unitsToRemove.put(((Unit) b.getTarget()).getEntityNummer(), (Unit) b.getTarget());
+					} else {
+						System.out.println("victory");
+					}
+				}
+			}
+		}
+		for (Bullet b : bulletsToRemove) {
+			bullets.remove(b);
+		}
+
+		bulletsToRemove.clear();
+
+		for (Unit u : unitsToRemove.values()) {
+			entity.remove(u.getEntityNummer());
+			Container parent = u.getLabel().getParent();
+			parent.remove((u.getLabel()));
+			parent.repaint();
+			parent.revalidate();
+		}
+
+		unitsToRemove.clear();
 	}
 
 	private void moveUnits() {
@@ -225,7 +264,6 @@ public class Funktions implements Runnable {
 	}
 
 	public void setMainBuildings(MainBuilding mainBuilding1, MainBuilding mainBuilding2) {
-		System.out.println(mainBuilding1.toString() + mainBuilding2);
 		mainBuildings[0] = mainBuilding1;
 		mainBuildings[1] = mainBuilding2;
 	}

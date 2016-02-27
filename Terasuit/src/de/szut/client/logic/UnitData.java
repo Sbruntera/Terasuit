@@ -16,7 +16,7 @@ public class UnitData {
 	
 	public void createUnitData(){
 
-		 UnitDataHash.put("Marine", new UnitObject("Light armor. Armed with shock rifles and rockets, effective against both ground and air.", 0, 2, 0, 0, 62, 20, 2, 1, 50, 0, 2, 2, 0));
+		 UnitDataHash.put("Marine", new UnitObject("Light armor. Armed with shock rifles and rockets, effective against both ground and air.", 0, 2, 0, 0, 62, 20, 200, 1, 500, 0, 2, 2, 0));
 	        UnitDataHash.put("Chronite_Tank", new UnitObject("Chronite (heavy) armor. Armed with explosive shells, but cannot fire at air targets.", 5, 10, 0, 0, 310, 1, 2, 1, 5, 2, 5, 0, 0));
 	        UnitDataHash.put("Gröditz", new UnitObject("Chronite (heavy) armor. Armed with standart machine guns.", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));
 	        UnitDataHash.put("A25-Roman", new UnitObject("Titanium armor. Armes with pulse rifles, but cannot fire at air targets.", 0, 0, 5, 0, 250, 1, 2, 1, 5, 0, 2, 0, 0));

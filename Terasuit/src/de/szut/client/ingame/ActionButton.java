@@ -117,13 +117,11 @@ public class ActionButton {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")) {
 						System.out.println("Ein Gebäude wurde ausgewählt!");
-						System.out.println(slotID);
 						loader.connection.createBuilding(
 								slotIDToBuildingPosition(slotID),
 								cutHTMLout(((JButton) arg0.getSource())
 										.getText()));
 					} else if (type.equals("Ground")) {
-						System.out.println(slotID);
 						System.out
 								.println("Eine Bodeneinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())

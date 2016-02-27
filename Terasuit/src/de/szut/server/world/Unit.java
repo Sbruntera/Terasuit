@@ -32,13 +32,15 @@ public abstract class Unit implements Attackable {
 
 	public abstract boolean canAttackAir();
 
-	public abstract int getDamage(boolean ground);
+	public abstract int getDamage(boolean flying);
 
-	public abstract int getRange(boolean ground);
+	public abstract int getRange(boolean flying);
 
-	public abstract int getShootSpeed(boolean ground);
+	public abstract int getShootSpeed(boolean flying);
 
-	public abstract int getSplashDamage(boolean ground);
+	public abstract int getSplashDamage(boolean flying);
+
+	public abstract double getBulletSpeed(boolean flying);
 
 	public boolean hasInRange(Attackable[] attackables) {
 		if (attackables[0] != null && canAttackGround()) {

@@ -15,6 +15,7 @@ public class A25Roman extends Unit {
 	private static int range;
 	private static int shootSpeed;
 	private int splashDamage;
+	private double bulletSpeed;
 	
 	public A25Roman(short id, Point position, byte player) {
 		this.id = id;
@@ -70,6 +71,11 @@ public class A25Roman extends Unit {
 	@Override
 	public int getSplashDamage(boolean ground) {
 		return splashDamage;
+	}
+
+	@Override
+	public double getBulletSpeed(boolean ground) {
+		return bulletSpeed;
 	}
 
 	@Override

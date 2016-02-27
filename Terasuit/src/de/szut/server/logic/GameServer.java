@@ -112,7 +112,7 @@ public class GameServer implements Runnable {
 			}
 		}
 
-		// Einheit ausbilden
+		// Gebäudestuff
 		for (Building[] array : buildings) {
 			for (Building b : array) {
 				if (b != null) {
