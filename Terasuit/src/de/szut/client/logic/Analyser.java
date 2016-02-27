@@ -55,7 +55,7 @@ public class Analyser {
 					type += (char) message[i];
 					i++;
 				}
-				array.add(new String[] {type, String.valueOf(i)});
+				array.add(new String[] {type, String.valueOf(value)});
 				
 			}
 			loader.showStats(array.toArray(new String[array.size()][]));

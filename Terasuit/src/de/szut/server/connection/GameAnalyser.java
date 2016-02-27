@@ -1,9 +1,5 @@
 package de.szut.server.connection;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-
 import de.szut.server.logic.GameServer;
 
 /**

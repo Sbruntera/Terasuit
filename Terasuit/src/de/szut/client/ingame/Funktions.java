@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -25,6 +26,7 @@ public class Funktions implements Runnable{
 	private UnitData data = new UnitData();
 	private Thread cThread;
 	private JProgressBar[] listOfJProgressBar = new JProgressBar[36];
+	private ConcurrentLinkedQueue<Unit> unitQueue = new ConcurrentLinkedQueue<Unit>();
 	
 	public Funktions(){
 		pics.generateAllEntityPictures();
@@ -41,7 +43,7 @@ public class Funktions implements Runnable{
 
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste hinzu
 	public void createEntity(Panel field, String Entitytype, int color, boolean airUnit, Game game, short unitID, Point position){
-		entity.put((int) unitID, cunit.createEntity(field, game, Entitytype, color, airUnit, this, unitID, position, pics));
+		unitQueue.add(cunit.createEntity(field, game, Entitytype, color, airUnit, this, unitID, position, pics));
 	}
 	
 	public void findEntity(MouseEvent objUnit, Game game) {
@@ -195,8 +197,16 @@ public class Funktions implements Runnable{
 
 	@Override
 	public void run() {
+		addUnits();
 		moveUnits();
 		buildBuildings();
+	}
+	
+	private void addUnits() {
+		while(!unitQueue.isEmpty()) {
+			Unit u = unitQueue.remove();
+			entity.put(u.getEntityNummer(), u);
+		}
 	}
 
 	private void moveUnits() {

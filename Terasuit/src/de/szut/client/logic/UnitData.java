@@ -1,7 +1,6 @@
 package de.szut.client.logic;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class UnitData {
 	

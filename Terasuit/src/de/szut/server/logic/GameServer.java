@@ -346,7 +346,6 @@ public class GameServer implements Runnable {
 					yPosition = defaultSpawnGround + generator.nextInt(150);
 				}
 			}
-			System.out.println(playerPosition + " " + buildingPlace);
 			if (buildings[playerPosition][buildingPlace].createUnit(id,
 					unitIDCounter, new Point(xPosition, yPosition))) {
 				unitIDCounter++;

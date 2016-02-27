@@ -123,9 +123,6 @@ public class Game {
 
 	public void createBuilding(String buildingName, String buildingLocation,
 			int index, int primID) {
-		int X = BuildingsArray[index].getX();
-		int Y = BuildingsArray[index].getY();
-		int time = 20;
 		func.destroyUserOptions(console, this);
 
 		if (primID != 0) {
