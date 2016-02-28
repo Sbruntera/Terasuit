@@ -38,7 +38,7 @@ public class Server_test {
 	public void test() {
 		sc.createGroup((byte) 1, "Lobby", "123");
 		s.getLobbylist(new Filter(true, "", Map.Nightsun, 0, 4));
-		assertEquals(1,s.getLobbylist(new Filter(true, "", Map.Nightsun, 0, 4)).length );
+		assertEquals(1,s.getLobbylist(new Filter(false, "", Map.Nightsun, 0, 4)).length );
 	}
 
 }

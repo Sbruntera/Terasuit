@@ -7,9 +7,12 @@ import java.net.ServerSocket;
 
 import org.junit.Test;
 
+import de.szut.client.grafik.Loader;
 import de.szut.client.logic.ServerConnection;
 import de.szut.server.connection.Connection;
+import de.szut.server.logic.Filter;
 import de.szut.server.logic.GameServer;
+import de.szut.server.logic.Map;
 import de.szut.server.logic.Server;
 /**
  * Macht noch absolut garnichts
@@ -22,19 +25,22 @@ public class Game_tests {
 
 	private Server s;
 	private ServerConnection sc;
+	private Loader ld;
 	public Game_tests(){
 		try {
 			new Thread(s = new Server(3142)).start();
-			sc = new ServerConnection(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		ld = new Loader();
 		
 	}
 	@Test
 	public void place_test() {
-		sc.createGroup((byte) 1, "Lobby", "123");		
+		ld.connection.createGroup(2, "Lobby", "123");
+		ld.connection.startGame();
+		ld.connection.createBuilding(1, "Outpost");
+		System.out.println(s.getLobby((byte) 0));
+		System.out.println(s.getLobbylist(new Filter(false, "", Map.Nightsun, 0, 4)).length);
 		//TODO Test of Gamefunctions GamerServer.java
 	}
 

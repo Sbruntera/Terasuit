@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -100,17 +101,18 @@ public class Game {
         
         //Resources
         r1 = new JLabel("200");
-        r1.setIcon(null);
+        r1.setIcon(new ImageIcon("Game_Assets/money.png"));
         setAttributes(r1, 10, 140, 60, 30);
         r2 = new JLabel("200");
-        r2.setIcon(null);
+        r2.setIcon(new ImageIcon("Game_Assets/Strom.png"));
         setAttributes(r2, 85, 140, 60, 30);
         r3 = new JLabel("50");
-        r3.setIcon(null);
+        r3.setIcon(new ImageIcon("Game_Assets/human.png"));
         setAttributes(r3, 160, 140, 60, 30);
         r4 = new JLabel("50");
-        r4.setIcon(null);
+        r4.setIcon(new ImageIcon("Game_Assets/monk.png"));
         setAttributes(r4, 245, 140, 60, 30);
+        
 	}
 	
 	/**
