@@ -49,10 +49,15 @@ public class Analyser {
 			while (i < message.length) {
 				int value = (((int) (Byte.toUnsignedInt(message[i])) << 8) + Byte
 								.toUnsignedInt(message[i+1]));
-				i = 3;
+				i += 2;
 				String type = "";
-				while (message[i] != 0 && i < message.length) {
-					type += (char) message[i];
+				boolean end = false;
+				while (!end && i < message.length) {
+					if (message[i] != 0) {
+						type += (char) message[i];
+					} else {
+						end = true;
+					}
 					i++;
 				}
 				array.add(new String[] {type, String.valueOf(value)});
