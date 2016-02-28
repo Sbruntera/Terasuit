@@ -1,6 +1,7 @@
 package de.szut.client.ingame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,6 +38,9 @@ public class Game {
 	int counter = 0;
 	private String s = "Willkommen im Chat";
 	private JScrollBar ts;
+	private JLabel r1;
+	private JLabel r2;
+	private JLabel r3;
 
 	public void init(Panel panel, Panel field, Panel console, Loader loader,
 			Funktions func, int playerID) {
@@ -92,6 +96,44 @@ public class Game {
         console.repaint();
         console.revalidate();
         panel.repaint();
+        
+        //Resources
+        r1 = new JLabel("200");
+        r1.setIcon(null);
+        setAttributes(r1, 10, 140, 60, 30);
+        r2 = new JLabel("200");
+        r2.setIcon(null);
+        setAttributes(r2, 85, 140, 60, 30);
+        r3 = new JLabel("50");
+        r3.setIcon(null);
+        setAttributes(r3, 160, 140, 60, 30);
+	}
+	
+	public void setAttributes(JLabel c, int x, int y, int width, int height){
+		c.setHorizontalAlignment(SwingConstants.CENTER);
+        c.setFont(new Font("Arial", Font.BOLD, 16));
+        c.setForeground(Color.WHITE);
+        c.setBounds(x, y, width, height);
+        console.add(c);
+	}
+	
+	public void setResources(String Resource, int number){
+		switch(Resource){
+		case ("Gold"):
+			r1.setText((Integer.parseInt(r1.getText()) + number) + "");
+			break;
+		case ("Oil"):
+			r2.setText((Integer.parseInt(r2.getText()) + number) + "");
+			break;
+		case ("Units"):
+			r3.setText((Integer.parseInt(r3.getText()) + number) + "");
+			if (Integer.parseInt(r3.getText()) == 50){
+				r3.setForeground(Color.RED);
+			} else{
+				r3.setForeground(Color.WHITE);
+			}
+			break;
+		}
 	}
 
 	public void end(boolean won) {

@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -59,6 +60,11 @@ public class SetButtons {
 	private JButton btnLogin;
 	private JButton btnRegister;
 	private boolean panelopen = false;
+	private JCheckBox checknoPW;
+	private JTextField nameContains;
+	private JTextField minPlayers;
+	private JTextField maxPlayers;
+	private JCheckBox map_ns;
 
 	/**
 	 * Plaziert alle wichtigen Schaltflächen passend zum Hintergrund
@@ -278,7 +284,13 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.connection.refreshServerList(false, "", 0, 4, 0);
+					int map;
+					if(map_ns.isSelected()){
+						map = 0;
+					} else{
+						map = 255;
+					}
+					loader.connection.refreshServerList(checknoPW.isSelected(), nameContains.getText(), Integer.parseInt(minPlayers.getText()), Integer.parseInt(maxPlayers.getText()) , map);
 				}
 			});
 			panel.add(btnRefreshGroup);
@@ -296,6 +308,43 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBACK);
+			
+			//Filter-Options
+			JLabel filter = new JLabel("Filter");
+			filter.setBounds(10, 170, 120, 30);
+			filter.setHorizontalAlignment(SwingConstants.CENTER);
+			filter.setFont(new Font("Arial", Font.BOLD, 24));
+			checknoPW = new JCheckBox("No Password");
+			checknoPW.setBounds(10, 210, 130, 30);
+			checknoPW.setOpaque(false);
+			JLabel name = new JLabel("Name Filter");
+			name.setBounds(10, 250, 130, 30);
+			nameContains = new JTextField();
+			nameContains.setBounds(10, 290, 120, 30);
+			JLabel min = new JLabel("Min Players");
+			min.setBounds(10, 330, 130, 30);
+			minPlayers = new JTextField("0");
+			minPlayers.setBounds(10, 370, 60, 30);
+			JLabel max = new JLabel("Max Players");
+			max.setBounds(10, 410, 130, 30);
+			maxPlayers = new JTextField("4");
+			maxPlayers.setBounds(10, 450, 60, 30);
+			JLabel map = new JLabel("Map Filter");
+			map.setBounds(10, 490, 130, 30);
+			map_ns = new JCheckBox("Nightsun");
+			map_ns.setBounds(10, 520, 130, 30);
+			map_ns.setOpaque(false);
+			
+			panel.add(filter);
+			panel.add(map);
+			panel.add(name);
+			panel.add(min);
+			panel.add(max);
+			panel.add(checknoPW);
+			panel.add(map_ns);
+			panel.add(nameContains);
+			panel.add(minPlayers);
+			panel.add(maxPlayers);
 
 			// #########################################################################
 			//
@@ -524,7 +573,12 @@ public class SetButtons {
 			panel.add(welcome);
 		}
 	}
-	
+		
+	/**
+	 * Erstellt die Lables zur darstellung der Stats
+	 * 
+	 * @param r String Array mit Stats
+	 */
 	public void showStats(String[][] r) {
 		for (int i = 0; i < r.length; i++) {
 			JLabel Stat = new JLabel(r[i][0]);
@@ -802,7 +856,11 @@ public class SetButtons {
 		panel.add(user);
 		reload(panel);
 	}
-	
+	 /**
+	  * Repaintet und revalidatet den übergebenen Component
+	  * 
+	  * @param c Component der Repaint werden soll
+	  */
 	public void reload(Component c){
 		c.repaint();
 		c.revalidate();
