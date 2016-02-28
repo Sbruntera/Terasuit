@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -62,8 +64,8 @@ public class SetButtons {
 	private boolean panelopen = false;
 	private JCheckBox checknoPW;
 	private JTextField nameContains;
-	private JTextField minPlayers;
-	private JTextField maxPlayers;
+	private JComboBox<Integer> minPlayers;
+	private JComboBox<Integer> maxPlayers;
 	private JCheckBox map_ns;
 
 	/**
@@ -287,13 +289,15 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
+					loader.connection.refreshServerList(false, "", 0, 4, 0);
 					int map;
 					if(map_ns.isSelected()){
 						map = 0;
 					} else{
 						map = 255;
 					}
-					loader.connection.refreshServerList(checknoPW.isSelected(), nameContains.getText(), Integer.parseInt(minPlayers.getText()), Integer.parseInt(maxPlayers.getText()) , map);
+					System.out.println(minPlayers.getSelectedItem().toString());
+					loader.connection.refreshServerList(checknoPW.isSelected(), nameContains.getText(), Integer.parseInt(minPlayers.getSelectedItem().toString()), Integer.parseInt(maxPlayers.getSelectedItem().toString()) , map);
 				}
 			});
 			panel.add(btnRefreshGroup);
@@ -322,16 +326,18 @@ public class SetButtons {
 			checknoPW.setOpaque(false);
 			JLabel name = new JLabel("Name Filter");
 			name.setBounds(10, 250, 130, 30);
-			nameContains = new JTextField();
+			nameContains = new JTextField("");
 			nameContains.setBounds(10, 290, 120, 30);
 			JLabel min = new JLabel("Min Players");
 			min.setBounds(10, 330, 130, 30);
-			minPlayers = new JTextField("0");
+			Integer[] playernumbers = { 0, 1, 2, 3, 4 };
+			minPlayers = new JComboBox<Integer>(playernumbers);
 			minPlayers.setBounds(10, 370, 60, 30);
 			JLabel max = new JLabel("Max Players");
 			max.setBounds(10, 410, 130, 30);
-			maxPlayers = new JTextField("4");
+			maxPlayers = new JComboBox<Integer>(playernumbers);
 			maxPlayers.setBounds(10, 450, 60, 30);
+			maxPlayers.setSelectedIndex(4);
 			JLabel map = new JLabel("Map Filter");
 			map.setBounds(10, 490, 130, 30);
 			map_ns = new JCheckBox("Nightsun");
@@ -772,10 +778,24 @@ public class SetButtons {
 	 * @return JPanel
 	 */
 	public JPanel createInfos() {
-		JPanel en = new JPanel();
+		JPanel en = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7618787260533400660L;
+
+			public void paint(Graphics g) {
+				super.paint(g);
+				Graphics2D f2 = (Graphics2D) g;
+				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(), 0, 0, null);
+				paintChildren(g);
+				g.setColor(Color.RED);
+			}
+		};
 		en.setLayout(null);
 		en.setOpaque(true);
-		en.setBounds(300, 251, 473, 264);
+		//473 264
+		en.setBounds(244, 283, 585, 199);
 		en.setBackground(Color.RED);
 		JLabel nl = new JLabel("Lobbyname: ");
 		JLabel pl = new JLabel("Password: ");
@@ -783,7 +803,9 @@ public class SetButtons {
 		JTextField n = new JTextField();
 		JTextField p = new JTextField();
 		nl.setFont(new Font("Arial", Font.BOLD, 12));
+		nl.setForeground(Color.WHITE);
 		pl.setFont(new Font("Arial", Font.BOLD, 12));
+		pl.setForeground(Color.WHITE);
 		c.setFont(new Font("Arial", Font.BOLD, 12));
 		n.setFont(new Font("Arial", Font.BOLD, 12));
 		p.setFont(new Font("Arial", Font.BOLD, 12));
@@ -792,7 +814,7 @@ public class SetButtons {
 		pl.setBounds(20, 130, 130, 50);
 		n.setBounds(150, 40, 230, 50);
 		p.setBounds(150, 130, 230, 50);
-		c.setBounds(186, 200, 100, 60);
+		c.setBounds(440, 80, 100, 60);
 		c.addActionListener(e -> {
 			loader.connection.createGroup(2, n.getText(), p.getText());
 		});
@@ -811,19 +833,35 @@ public class SetButtons {
 	 * @return JPanel
 	 */
 	public JPanel needPW() {
-		JPanel np = new JPanel();
+		JPanel np = new JPanel(){
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7618787260533400660L;
+
+			public void paint(Graphics g) {
+				super.paint(g);
+				Graphics2D f2 = (Graphics2D) g;
+				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(), 0, 0, null);
+				paintChildren(g);
+				g.setColor(Color.RED);
+			}
+			
+		};
 		JLabel ep = new JLabel(
 				"This Lobby has a Password. Please enter it and press Enter");
 		JTextField tp = new JTextField();
 		tp.addActionListener(e -> {
 			loader.connection.connectGroup(markedLobby, tp.getText());
 		});
-		tp.setBounds(30, 80, 305, 50);
-		ep.setBounds(30, 20, 305, 50);
+		tp.setBounds(117, 80, 350, 50);
+		ep.setBounds(117, 20, 350, 50);
 		ep.setFont(new Font("Arial", Font.BOLD, 12));
+		ep.setForeground(Color.WHITE);
 		np.setLayout(null);
 		np.setOpaque(true);
-		np.setBounds(350, 300, 370, 165);
+		np.setBounds(244, 283, 585, 199);
 		np.setBackground(Color.RED);
 		np.add(tp);
 		np.add(ep);

@@ -111,6 +111,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
+		setName(null);
 	}
 
 	/**

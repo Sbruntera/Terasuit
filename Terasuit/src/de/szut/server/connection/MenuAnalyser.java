@@ -124,14 +124,14 @@ public class MenuAnalyser implements Analyser {
 			Map map = null;
 			String name = "";
 			noPassword = (input[1] & 64) != 0;
-			int minPlayers = input[1] & 56;
+			int minPlayers = input[1]>>3 & 247;
 			int maxPlayers = input[1] & 7;
-			if (input.length > 2) {
-				map = getMap(input[2]);
-				if (input.length > 3) {
-					name = input.toString().substring(3);
-				}
-			}
+			 if (input.length > 2) {
+	                map = getMap(input[2]);
+	                for (int i = 3; i < input.length; i++) {
+	                    name += (char) input[i];
+	                }
+	            }
 			return new Filter(noPassword, name, map, minPlayers, maxPlayers);
 		}
 		return null;
