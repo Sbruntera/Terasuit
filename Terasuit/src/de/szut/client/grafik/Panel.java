@@ -16,6 +16,11 @@ import javax.swing.ScrollPaneConstants;
 
 import de.szut.client.ingame.Funktions;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class Panel extends JPanel {
 
 	private static final long serialVersionUID = 1L;

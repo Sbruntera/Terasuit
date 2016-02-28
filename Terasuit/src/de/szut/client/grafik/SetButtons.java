@@ -128,8 +128,11 @@ public class SetButtons {
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Options"-Buttons gelangt man in die
 					// Optionen
-					loader.switchPanel(loader.Statspage);
-					loader.connection.stats();
+					if(loader.connection.getName() != null){
+						loader.switchPanel(loader.Statspage);
+						loader.connection.stats();
+					}
+					
 				}
 			});
 			panel.add(btnOption);

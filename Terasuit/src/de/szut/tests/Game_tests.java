@@ -3,9 +3,12 @@ package de.szut.tests;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import org.junit.Test;
 
+import de.szut.client.logic.ServerConnection;
+import de.szut.server.connection.Connection;
 import de.szut.server.logic.GameServer;
 import de.szut.server.logic.Server;
 /**
@@ -17,9 +20,12 @@ import de.szut.server.logic.Server;
 @SuppressWarnings("unused")
 public class Game_tests {
 
+	private Server s;
+	private ServerConnection sc;
 	public Game_tests(){
 		try {
-			GameServer gs = new GameServer(null, new Server(3214));
+			new Thread(s = new Server(3142)).start();
+			sc = new ServerConnection(null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -28,6 +34,7 @@ public class Game_tests {
 	}
 	@Test
 	public void place_test() {
+		sc.createGroup((byte) 1, "Lobby", "123");		
 		//TODO Test of Gamefunctions GamerServer.java
 	}
 

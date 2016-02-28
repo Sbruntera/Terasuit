@@ -41,6 +41,7 @@ public class Game {
 	private JLabel r1;
 	private JLabel r2;
 	private JLabel r3;
+	private JLabel r4;
 
 	public void init(Panel panel, Panel field, Panel console, Loader loader,
 			Funktions func, int playerID) {
@@ -107,8 +108,20 @@ public class Game {
         r3 = new JLabel("50");
         r3.setIcon(null);
         setAttributes(r3, 160, 140, 60, 30);
+        r4 = new JLabel("50");
+        r4.setIcon(null);
+        setAttributes(r4, 245, 140, 60, 30);
 	}
 	
+	/**
+	 * Setzt den Text Mittig, die Schrift größer und Weiß und setzt die position anhand der übergebenen Werte
+	 * 
+	 * @param c JLabel was bearbeitet werden soll
+	 * @param x Position auf der X Achse
+	 * @param y Position auf der Y Achse
+	 * @param width Breite
+	 * @param height Höhe
+	 */
 	public void setAttributes(JLabel c, int x, int y, int width, int height){
 		c.setHorizontalAlignment(SwingConstants.CENTER);
         c.setFont(new Font("Arial", Font.BOLD, 16));
@@ -117,21 +130,25 @@ public class Game {
         console.add(c);
 	}
 	
+	/**
+	 * Setzt die anzeige der Resourcen
+	 * 
+	 * @param Resource Typ der Resourcen
+	 * @param number Anzahl der Resourcen die hinzugefügt werden sollen
+	 */
 	public void setResources(String Resource, int number){
 		switch(Resource){
 		case ("Gold"):
 			r1.setText((Integer.parseInt(r1.getText()) + number) + "");
 			break;
-		case ("Oil"):
+		case ("Energy"):
 			r2.setText((Integer.parseInt(r2.getText()) + number) + "");
 			break;
 		case ("Units"):
 			r3.setText((Integer.parseInt(r3.getText()) + number) + "");
-			if (Integer.parseInt(r3.getText()) == 50){
-				r3.setForeground(Color.RED);
-			} else{
-				r3.setForeground(Color.WHITE);
-			}
+			break;
+		case ("Politic"):
+			r4.setText((Integer.parseInt(r4.getText()) + number) + "");
 			break;
 		}
 	}
@@ -218,6 +235,11 @@ public class Game {
 		func.getListOfJProgressBar()[index].setVisible(true);
 	}
 
+	/**
+	 * Fügt die Nachricht den Chatfenster hinzu und bewegt den Scroller nach ganz unten
+	 * 
+	 * @param text Nachricht an den Chat
+	 */
 	public void setText(String text) {
 		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
@@ -228,7 +250,7 @@ public class Game {
             e.printStackTrace();
         }
         int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
-        ts.setValue(s);
+        ts.setValue(s); //Setzt den Scroller an das Ende der Scrollbar
 	}
 	
 	public void setPlayerID(int id) {

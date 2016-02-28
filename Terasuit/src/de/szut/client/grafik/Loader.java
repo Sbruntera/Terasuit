@@ -8,6 +8,11 @@ import de.szut.client.logic.Debugger_Thread;
 import de.szut.client.logic.Lobby;
 import de.szut.client.logic.ServerConnection;
 
+/**
+ * 
+ * @author Alexander, Jan-Philipp
+ *
+ */
 public class Loader {
 
 	Debugger_Thread debugger = new Debugger_Thread();
@@ -32,8 +37,10 @@ public class Loader {
 	JFrame window = new JFrame("Terasuit");
 	private Panel panel;
 
+	/**
+	 * Standart Einstellungen für des JFrame
+	 */
 	public void print() {
-
 		window.setContentPane(new Panel(Mainpage, func, HEIGHT, WIGTH, this));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
@@ -42,6 +49,13 @@ public class Loader {
 		connectionThread.start();
 	}
 
+	/**
+	 * Wechselt das ContentPane auf dem Panel anhand des gegebenen
+	 * Hintergrundbilds
+	 * 
+	 * @param newPage
+	 *            Pfad des Hintergrundbildes
+	 */
 	public void switchPanel(String newPage) {
 		if (newPage == Mainpage)
 			window.setContentPane(new Panel(Mainpage, func, HEIGHT, WIGTH, this));
@@ -51,8 +65,7 @@ public class Loader {
 		else if (newPage == Gamepage) {
 			func.reset();
 			window.setContentPane(new Panel(Gamepage, func, HEIGHT, WIGTH, this));
-		}
-		else if (newPage == Grouppage)
+		} else if (newPage == Grouppage)
 			window.setContentPane(new Panel(Grouppage, func, HEIGHT, WIGTH,
 					this));
 		else if (newPage == Grouppage_owner)
@@ -67,6 +80,18 @@ public class Loader {
 		window.setVisible(true);
 	}
 
+	/**
+	 * Startet die GUI für das Spiel
+	 * 
+	 * @param panel
+	 *            Background Panel
+	 * @param field
+	 *            Spielfeld Panel
+	 * @param console
+	 *            Consolen Panel
+	 * @param func
+	 *            Funktionen
+	 */
 	public void init(Panel panel, Panel field, Panel console, Funktions func) {
 		game = new Game();
 		game.init(panel, field, console, this, func, 1);
@@ -76,36 +101,75 @@ public class Loader {
 		debugger.startRound();
 	}
 
-	public void changeTo(String page) {
-		switchPanel(page);
-	}
-
+	/**
+	 * Beendet das Progamm
+	 */
 	public void exit() {
 		System.exit(0);
 	}
 
+	/**
+	 * MouseListener für das Auswahlfeld
+	 * 
+	 * @param minX
+	 * @param minY
+	 * @param w
+	 * @param h
+	 */
 	public void mousListernerAction(int minX, int minY, int w, int h) {
 		game.searchForEntitysInRectangle(minX, minY, w, h);
 	}
 
+	/**
+	 * Setzen des Chattextes in der Lobby
+	 * 
+	 * @param msg
+	 *            Nachricht des Chats
+	 */
 	public void setText(String msg) {
 		panel.buttons.setText(msg);
 
 	}
 
+	/**
+	 * Setzen des Aktuellen Panels
+	 * 
+	 * @param panel
+	 *            Aktuell genutztes Panel
+	 */
 	public void setPanel(Panel panel) {
 		this.panel = panel;
 	}
 
+	/**
+	 * Setzen der Chatnachricht in Game
+	 * 
+	 * @param msg
+	 *            Nachricht an den Chat
+	 */
 	public void setGameText(String msg) {
 		game.setText(msg);
 
 	}
 
+	/**
+	 * Ruft die Update Methode für das Updaten der Lobby Liste in der Gui auf
+	 * 
+	 * @param lobbyList
+	 *            Liste aller Lobbys auf dem Server
+	 */
 	public void updateLobbyList(Lobby[] lobbyList) {
 		panel.buttons.updateLobbyList(lobbyList);
 	}
 
+	/**
+	 * Ruft die Update Methoden für die Lobby auf um die Spieler anzuzeigen
+	 * 
+	 * @param players
+	 *            Liste aller Spieler in einer Lobby
+	 * @param host
+	 *            boolean ob der Spieler Host der Lobby ist
+	 */
 	public void updatePlayerList(String[] players, boolean host) {
 		if (host) {
 			panel.buttons.updateCombo(players);
@@ -114,11 +178,23 @@ public class Loader {
 		}
 	}
 
+	/**
+	 * Gibt der GUI bekannt das der Spieler eingeloggt wurde
+	 * 
+	 * @param name
+	 *            Name des Eingeloggten
+	 */
 	public void loggIn(String name) {
 		panel.buttons.loggedIn(name);
 	}
-	
-	public void showStats(String[][] r){
+
+	/**
+	 * Ruft die Methode zum anzeigen der Stats auf der GUI auf
+	 * 
+	 * @param r
+	 *            Liste aller Stats des Spieler vom Server
+	 */
+	public void showStats(String[][] r) {
 		panel.buttons.showStats(r);
 	}
 }
