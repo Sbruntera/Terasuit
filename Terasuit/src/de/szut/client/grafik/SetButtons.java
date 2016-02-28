@@ -289,14 +289,12 @@ public class SetButtons {
 			btnRefreshGroup.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
-					loader.connection.refreshServerList(false, "", 0, 4, 0);
 					int map;
 					if(map_ns.isSelected()){
+						map = 1;
+					} else {
 						map = 0;
-					} else{
-						map = 255;
 					}
-					System.out.println(minPlayers.getSelectedItem().toString());
 					loader.connection.refreshServerList(checknoPW.isSelected(), nameContains.getText(), Integer.parseInt(minPlayers.getSelectedItem().toString()), Integer.parseInt(maxPlayers.getSelectedItem().toString()) , map);
 				}
 			});

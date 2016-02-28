@@ -53,6 +53,7 @@ public class Game {
 		this.playerID = playerID;
 		this.loader = loader;
 		btnAction = new ActionButton(loader);
+		func.setGame(this);
 
 		// Erstellen der Basis
 		buildings.buildBase(field, this, BuildingsArray, loader, func,
@@ -138,21 +139,11 @@ public class Game {
 	 * @param Resource Typ der Resourcen
 	 * @param number Anzahl der Resourcen die hinzugefügt werden sollen
 	 */
-	public void setResources(String Resource, int number){
-		switch(Resource){
-		case ("Gold"):
-			r1.setText((Integer.parseInt(r1.getText()) + number) + "");
-			break;
-		case ("Energy"):
-			r2.setText((Integer.parseInt(r2.getText()) + number) + "");
-			break;
-		case ("Units"):
-			r3.setText((Integer.parseInt(r3.getText()) + number) + "");
-			break;
-		case ("Politic"):
-			r4.setText((Integer.parseInt(r4.getText()) + number) + "");
-			break;
-		}
+	public void setResources(double[] resources) {
+		r1.setText(String.valueOf((int)resources[0]));
+		r2.setText(String.valueOf((int)resources[1]));
+		r3.setText(String.valueOf((int)resources[2]));
+		r4.setText(String.valueOf((int)resources[3]));
 	}
 
 	public void end(boolean won) {
@@ -166,12 +157,12 @@ public class Game {
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {
 		func.deMarkEntittys();
 		func.findAllEntitys(minX, minY, w, h, playerID);
-		func.destroyUserOptions(console, this);
+		func.destroyUserOptions(console);
 	}
 
 	public void selectSingleEntity(MouseEvent objUnit) {
-		func.findEntity(objUnit, this);
-		func.destroyUserOptions(console, this);
+		func.findEntity(objUnit);
+		func.destroyUserOptions(console);
 	}
 
 	public void createUserOptions(int slotID, int primID,
@@ -184,17 +175,17 @@ public class Game {
 	}
 
 	public void entity(String unitString, int playerNumber, boolean air, short unitID, Point position) {
-		func.createEntity(field, unitString, playerNumber, air, this, unitID, position);
+		func.createEntity(field, unitString, playerNumber, air, unitID, position);
 	}
 
 	public void destroyBuilding(int i) {
 		buildings.destroyPrimaryBuilding(BuildingsArray, i, field, 20);
-		func.destroyUserOptions(console, this);
+		func.destroyUserOptions(console);
 	}
 
 	public void createBuilding(String buildingName, String buildingLocation,
 			int index, int primID) {
-		func.destroyUserOptions(console, this);
+		func.destroyUserOptions(console);
 
 		if (primID != 0) {
 			JProgressBar progressBar = new JProgressBar();
@@ -228,7 +219,7 @@ public class Game {
 
 	public void cancel(int index) {
 		func.getListOfJProgressBar()[index].setVisible(false);
-		func.destroyUserOptions(console, this);
+		func.destroyUserOptions(console);
 		func.getListOfJProgressBar()[index] = null;
 
 	}

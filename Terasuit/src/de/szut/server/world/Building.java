@@ -10,7 +10,9 @@ public interface Building {
 
 	public byte getSlotID();
 	
-	public int getPrice(int lvl);
+	public int[] getPrice(int lvl);
+
+	public int[] getPrice();
 
 	public boolean hasUpgrade();
 

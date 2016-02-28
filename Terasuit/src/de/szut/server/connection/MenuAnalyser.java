@@ -31,6 +31,7 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(byte[] input) {
+		System.out.println("analyse");
 		switch (input[0]) {
 		case (0): // Stats
 			System.out.println("stats");

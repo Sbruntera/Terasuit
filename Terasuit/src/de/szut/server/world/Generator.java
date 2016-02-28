@@ -14,7 +14,9 @@ public class Generator implements Building {
 	private byte player;
 	
 	private Unit unit;
-
+	
+	private static final int[][] prices =  {{50, 00, 00, 00},
+											{50, 00, 00, 00}};
 	private static final byte[] unitIDs = { 17 };
 	private static final int[] numberOfUnits = { 0, 1 };
 	
@@ -47,9 +49,17 @@ public class Generator implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices[lvl];
+	}
+
+	@Override
+	public int[] getPrice() {
+		if (lvl > 0) {
+			return prices[lvl+1];
+		} else {
+			return prices[lvl];
+		}
 	}
 
 	@Override
@@ -96,7 +106,7 @@ public class Generator implements Building {
 				}
 			}
 			if (contains) {
-				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				unit = WorldConstants.getNewUnit(typeID, unitID, position, player);
 				createTime = unit.getBuildTime();
 				return true;
 			}

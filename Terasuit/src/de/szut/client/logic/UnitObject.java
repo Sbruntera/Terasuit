@@ -17,8 +17,8 @@ public class UnitObject {
 	int GroundAir = 0;
 	int AirAir = 0;
 	
-	public UnitObject(String description, int money, int electricity,
-			int human, int monarchy, int live, int speed, int dmg, int rpm, int range,
+	public UnitObject(String description, int money, int human,
+			int electricity, int monarchy, int live, int speed, int dmg, int rpm, int range,
 			int splashDamage, int groundGround, int groundAir, int airAir) {
 		this.description = description;
 		this.money = money;

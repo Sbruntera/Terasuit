@@ -126,7 +126,7 @@ public class Analyser {
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
-				loader.connection.refreshServerList(false, "", 0, 4, 255);
+				loader.connection.refreshServerList(false, "", 0, 4, 0);
 				game = null;
 			}
 			break;

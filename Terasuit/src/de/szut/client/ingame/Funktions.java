@@ -29,9 +29,11 @@ public class Funktions implements Runnable {
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private boolean ended;
 	private MainBuilding[] mainBuildings = new MainBuilding[2];
+	private double[] resources;
 
 	ArrayList<Bullet> bulletsToRemove;
 	HashMap<Integer, Unit> unitsToRemove;
+	private Game game;
 
 	public Funktions() {
 		pics.generateAllEntityPictures();
@@ -51,12 +53,12 @@ public class Funktions implements Runnable {
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste
 	// hinzu
 	public void createEntity(Panel field, String Entitytype, int color,
-			boolean airUnit, Game game, short unitID, Point position) {
+			boolean airUnit, short unitID, Point position) {
 		unitQueue.add(cunit.createEntity(field, game, Entitytype, color,
 				airUnit, this, unitID, position, pics));
 	}
 
-	public void findEntity(MouseEvent objUnit, Game game) {
+	public void findEntity(MouseEvent objUnit) {
 		deMarkEntittys();
 		selectedEntitysID = selectedUnit.getUnit(getEntity(),
 				selectedEntitysID, objUnit);
@@ -71,7 +73,7 @@ public class Funktions implements Runnable {
 				type = splitUp(entity.get(id).getEntityname());
 				UnitObject unit = data.returnUnitData(type);
 				String description = unit.getDescription();
-				setInformationInGame(game, type, description);
+				setInformationInGame(type, description);
 			}
 		}
 	}
@@ -110,7 +112,7 @@ public class Funktions implements Runnable {
 		selectedEntitysID.clear();
 	}
 
-	public void destroyUserOptions(Panel console, Game game) {
+	public void destroyUserOptions(Panel console) {
 		if (this.selectedEntitysID.size() != 0) {
 			game.btnAction.createUserUnitOptions(console);
 		} else {
@@ -118,7 +120,7 @@ public class Funktions implements Runnable {
 		}
 	}
 
-	private void setInformationInGame(Game game, String type, String description) {
+	private void setInformationInGame(String type, String description) {
 		game.changeInformation(type, description);
 	}
 
@@ -135,9 +137,9 @@ public class Funktions implements Runnable {
 		cunit = new CreateUnit();
 		selectedUnit = new SelectedUnits();
 		bullets = new ArrayList<Bullet>();
+		resources = new double[] {50, 50, 50, 0};
 		Controller controller = new Controller(this);
 		cThread = new Thread(controller);
-		cThread.start();
 		ended = false;
 	}
 
@@ -147,6 +149,7 @@ public class Funktions implements Runnable {
 		moveBullets();
 		moveUnits();
 		buildBuildings();
+		generateResources();
 	}
 
 	private void addUnits() {
@@ -228,6 +231,14 @@ public class Funktions implements Runnable {
 		}
 	}
 
+	private void generateResources() {
+		resources[0] += 0.08;
+		resources[1] += 0.05;
+		resources[2] += 0.05;
+		resources[3] += 0.02;
+		game.setResources(resources);
+	}
+
 	private Unit[] getNearestUnit(int i, boolean right) {
 		Unit[] nearestUnits = new Unit[2];
 		int[] difference = new int[] { 32767, 32767 };
@@ -266,5 +277,10 @@ public class Funktions implements Runnable {
 	public void setMainBuildings(MainBuilding mainBuilding1, MainBuilding mainBuilding2) {
 		mainBuildings[0] = mainBuilding1;
 		mainBuildings[1] = mainBuilding2;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+		cThread.start();
 	}
 }

@@ -15,6 +15,9 @@ public class Bank implements Building {
 	
 	private Unit unit;
 	
+	private static final int[][] prices =  {{50, 00, 00, 00},
+											{50, 00, 00, 00}};
+	
 	public Bank(byte position, byte player) {
 		this.position = position;
 		this.player = player;
@@ -44,9 +47,17 @@ public class Bank implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices[lvl];
+	}
+
+	@Override
+	public int[] getPrice() {
+		if (lvl > 0) {
+			return prices[lvl+1];
+		} else {
+			return prices[lvl];
+		}
 	}
 
 	@Override

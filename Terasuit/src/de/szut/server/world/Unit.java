@@ -94,7 +94,13 @@ public abstract class Unit implements Attackable {
 		running = (direction == 3);
 	}
 
+	public int getDirection() {
+		return direction;
+	}
+
 	public void move() {
-		position.setLocation(position.x + getSpeed() * direction, position.y);
+		if (position.getX() >= 294 && position.getX() <= 1344) {
+			position.setLocation(position.x + getSpeed() * direction, position.y);
+		}
 	}
 }

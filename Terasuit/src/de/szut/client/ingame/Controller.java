@@ -10,6 +10,11 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		while (!func.ended()) {
 			new Thread(func).start();
 			try {

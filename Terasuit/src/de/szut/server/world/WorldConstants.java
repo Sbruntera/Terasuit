@@ -14,7 +14,7 @@ public class WorldConstants {
 	public static final byte BARRACKSID = 2;
 	public static final byte ARSENALID = 3;
 	public static final byte FORGEID = 4;
-	public static final byte MANUFACTORYID = 5;
+	public static final byte MANUFACTUREID = 5;
 	public static final byte MECHANICSTERMINALID = 6;
 	public static final byte HOSPITALID = 7;
 	public static final byte WARSANCTUMID = 8;
@@ -67,7 +67,7 @@ public class WorldConstants {
 		}
 	}
 
-	public static Unit getUnit(byte type, short id, Point position, byte player) {
+	public static Unit getNewUnit(byte type, short id, Point position, byte player) {
 		switch (type) {
 		case MARINEID:
 			return new Marine(id, position, player);
@@ -144,6 +144,53 @@ public class WorldConstants {
 			return ModifiedSakata.FLYING;
 		default:
 			return false;
+		}
+	}
+
+	public static double[] getStartResources() {
+		return new double[] {50, 50, 50, 0};
+	}
+
+	public static double[] getResources() {
+		return new double[] {0.08, 0.05, 0.05, 0.02};
+	}
+
+	public static int[] getUnitPrice(byte id) {
+		switch (id) {
+		case MARINEID:
+			return Marine.PRICE;
+		case CHRONITETANKID:
+			return ChroniteTank.PRICE;
+		case SNIPERID:
+			return Sniper.PRICE;
+		case GRÖDITZID:
+			return Gröditz.PRICE;
+		case HOVERTANKID:
+			return HoverTank.PRICE;
+		case BLACKQUEENID:
+			return BlackQueen.PRICE;
+		case A25ROMANID:
+			return A25Roman.PRICE;
+		case SCOUTID:
+			return Scout.PRICE;
+		case PHANTOMID:
+			return Phantom.PRICE;
+		case SAKATAMK2ID:
+			return SakataMK2.PRICE;
+		case SAKATASPIDERID:
+			return SakataSpider.PRICE;
+		case MEDITECID:
+			return Meditec.PRICE;
+		case SAINTID:
+			return Saint.PRICE;
+		case SPHINXID:
+			return Sphinx.PRICE;
+		case MODIFIEDPHANTOMID:
+			return ModifiedPhantom.PRICE;
+		case MODIFIEDSAKATAID:
+			return ModifiedSakata.PRICE;
+		default:
+			return null;
 		}
 	}
 }

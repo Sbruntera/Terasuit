@@ -15,6 +15,8 @@ public class SpecialOperations implements Building {
 	
 	private Unit unit;
 	
+	private static final int[] prices =  {80, 30, 30, 00};
+	
 	public SpecialOperations(byte position, byte player) {
 		this.position = position;
 		this.player = player;
@@ -47,9 +49,13 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices;
+	}
+
+	@Override
+	public int[] getPrice() {
+		return null;
 	}
 
 	@Override

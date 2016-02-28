@@ -14,7 +14,8 @@ public class Armory implements Building {
 	private byte player;
 
 	private Unit unit;
-
+	
+	private static final int[] prices =  {60, 25, 25, 00};
 	private static final byte[] unitIDs = { 16 };
 	private static final int[] numberOfUnits = { 1 };
 	
@@ -40,9 +41,13 @@ public class Armory implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices;
+	}
+
+	@Override
+	public int[] getPrice() {
+		return null;
 	}
 
 	@Override
@@ -81,7 +86,7 @@ public class Armory implements Building {
 				}
 			}
 			if (contains) {
-				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				unit = WorldConstants.getNewUnit(typeID, unitID, position, player);
 				createTime = unit.getBuildTime();
 				return true;
 			}

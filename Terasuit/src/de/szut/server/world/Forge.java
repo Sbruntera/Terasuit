@@ -14,7 +14,10 @@ public class Forge implements Building {
 	private byte player;
 	
 	private Unit unit;
-
+	
+	private static final int[][] prices =  {{40, 30, 30, 00},
+											{60, 00, 00, 00},
+											{70, 20, 00, 00}};
 	private static final byte[] unitIDs = { 7, 8, 9, 10, 11, 12 };
 	private static final int[] numberOfUnits = { 2, 4, 6 };
 	
@@ -30,7 +33,7 @@ public class Forge implements Building {
 		case (0):
 			return WorldConstants.FORGEID;
 		case (1):
-			return WorldConstants.MANUFACTORYID;
+			return WorldConstants.MANUFACTUREID;
 		case (2):
 			return WorldConstants.MECHANICSTERMINALID;
 		default:
@@ -49,9 +52,17 @@ public class Forge implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices[lvl];
+	}
+
+	@Override
+	public int[] getPrice() {
+		if (lvl > 0) {
+			return prices[lvl+1];
+		} else {
+			return prices[lvl];
+		}
 	}
 
 	@Override
@@ -63,7 +74,7 @@ public class Forge implements Building {
 	public byte getUpgrade() {
 		switch (lvl) {
 		case (0):
-			return WorldConstants.MANUFACTORYID;
+			return WorldConstants.MANUFACTUREID;
 		case (1):
 			return WorldConstants.MECHANICSTERMINALID;
 		default:
@@ -100,7 +111,7 @@ public class Forge implements Building {
 				}
 			}
 			if (contains) {
-				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				unit = WorldConstants.getNewUnit(typeID, unitID, position, player);
 				createTime = unit.getBuildTime();
 				return true;
 			}

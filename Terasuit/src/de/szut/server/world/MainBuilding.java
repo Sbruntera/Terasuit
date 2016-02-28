@@ -55,9 +55,13 @@ public class MainBuilding implements Building, Attackable {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return null;
+	}
+
+	@Override
+	public int[] getPrice() {
+		return null;
 	}
 
 	@Override

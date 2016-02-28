@@ -15,6 +15,9 @@ public class Outpost implements Building {
 
 	private Unit unit;
 
+	private static final int[][] prices =  {{40, 30, 30, 00},
+											{30, 00, 00, 00},
+											{80, 50, 00, 00}};
 	private static final byte[] unitIDs = { 1, 2, 3, 4, 5, 6 };
 	private static final int[] numberOfUnits = { 2, 4, 6 };
 
@@ -49,9 +52,17 @@ public class Outpost implements Building {
 	}
 
 	@Override
-	public int getPrice(int lvl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] getPrice(int lvl) {
+		return prices[lvl];
+	}
+
+	@Override
+	public int[] getPrice() {
+		if (lvl > 0) {
+			return prices[lvl+1];
+		} else {
+			return prices[lvl];
+		}
 	}
 
 	@Override
@@ -102,7 +113,7 @@ public class Outpost implements Building {
 				}
 			}
 			if (contains) {
-				unit = WorldConstants.getUnit(typeID, unitID, position, player);
+				unit = WorldConstants.getNewUnit(typeID, unitID, position, player);
 				createTime = unit.getBuildTime();
 				return true;
 			}
