@@ -132,9 +132,11 @@ public class Analyser {
 		case (17): // Spieler tritt dem Spiel bei
 			game.addPlayer(bs[1], castToString(bs).substring(2));
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
+			loader.setText(game.getPlayerName(bs[1]) + " joined");
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bs.length == 2) {
+				loader.setText(game.getPlayerName(bs[1]) + " left");
 				game.removePlayer(bs[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
