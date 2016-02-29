@@ -164,7 +164,7 @@ public class Funktions implements Runnable {
 			if (b.move()) {
 				b.getTarget().dealDamage(b.getDamage());
 				bulletsToRemove.add(b);
-				if (!b.getTarget().isAlive()) {
+				if (b.getTarget().died()) {
 					if (b.getTarget() instanceof Unit) {
 						unitsToRemove.put(((Unit) b.getTarget()).getEntityNummer(), (Unit) b.getTarget());
 					} else {
@@ -182,9 +182,11 @@ public class Funktions implements Runnable {
 		for (Unit u : unitsToRemove.values()) {
 			entity.remove(u.getEntityNummer());
 			Container parent = u.getLabel().getParent();
-			parent.remove((u.getLabel()));
-			parent.repaint();
-			parent.revalidate();
+			if (parent != null) {
+				parent.remove((u.getLabel()));
+				parent.repaint();
+				parent.revalidate();
+			}
 		}
 
 		unitsToRemove.clear();

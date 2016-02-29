@@ -27,6 +27,7 @@ public class Unit implements Attackable{
 	private boolean canAttackGround = true;
 	private boolean canAttackAir = true;
 	private int cooldown;
+	boolean died = false;
 	
 	public boolean isFlyingEntity() {
 		return flyingEntity;
@@ -232,9 +233,23 @@ public class Unit implements Attackable{
 	public boolean isAlive() {
 		return EntityLive > 0;
 	}
+	
+	@Override
+	public boolean died() {
+		if (died) {
+			died = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public void dealDamage(int value) {
+		if (EntityLive <= value && EntityLive >= 0) {
+			died = true;
+		}
+		System.out.println(died);
 		EntityLive -= value;
 	}
 

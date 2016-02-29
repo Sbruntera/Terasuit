@@ -38,5 +38,10 @@ public class MainBuilding extends Buildings implements Attackable {
 	public void heal(int value) {
 		health += value;
 	}
+
+	@Override
+	public boolean died() {
+		return false;
+	}
 	
 }
