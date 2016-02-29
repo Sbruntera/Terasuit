@@ -69,9 +69,9 @@ public class Lobby {
 					}
 				}
 			}
-		} else if(!password.equals(this.password)){
+		} else if (!password.equals(this.password)) {
 			player.sendFailed((byte) 2);
-		} else{
+		} else {
 			player.sendFailed((byte) 3);
 		}
 		return playerJoined;
@@ -135,7 +135,7 @@ public class Lobby {
 	 * @param id
 	 *            : Nummer des Senders
 	 */
-	public void broadcast(String msg, short id) {
+	public void broadcast(byte[] msg, short id) {
 		byte position = getPosition(id);
 		for (int i = 0; i < playerList.length; i++) {
 			if (playerList[i] != null) {

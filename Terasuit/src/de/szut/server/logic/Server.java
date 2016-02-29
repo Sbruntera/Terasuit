@@ -88,7 +88,6 @@ public class Server implements Runnable {
 			db.addUser(name, hashed, email, mode);
 			connections.get(id).sendLogin(name);
 		} else {
-			// TODO: Fehlermeldung
 			connections.get(id).sendFailed((byte) 1);
 		}
 	}

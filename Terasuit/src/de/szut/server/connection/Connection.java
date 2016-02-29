@@ -164,14 +164,18 @@ public class Connection implements Runnable {
 		queue.clear();
 	}
 
-	public void sendChatMessage(byte id, String message) {
-		byte[] msg = new byte[message.length() + 2];
+	public void sendChatMessage(byte id, byte[] bs) {
+		byte[] msg = new byte[bs.length + 2];
 		msg[0] = 21;
 		msg[1] = id;
-		for (int i = 0; i < message.length(); i++) {
-			msg[i + 2] = (byte) message.charAt(i);
+		for (int i = 0; i < bs.length; i++) {
+			msg[i + 2] = (byte) bs[i];
 		}
 		addMessage(msg);
+	}
+	
+	public void sendFailed(byte i) {
+		addMessage(new byte[] {4, i});
 	}
 
 	private byte[] toPrimal(Byte[] array) {
@@ -210,16 +214,18 @@ public class Connection implements Runnable {
 		boolean first = true;
 		for (Lobby l : lobbys) {
 			if (!first) {
-				array.add((byte) 1);
+				array.add((byte) 0);
+				array.add((byte) 0);
 			} else {
 				first = false;
 			}
 			array.add(l.getID());
 			array.add(l.getMap().getID());
-			array.add((byte) (128 + (Boolean.compare(l.hasPassword(), false) << 3) + l
+			array.add((byte) ((Boolean.compare(l.hasPassword(), false) << 3) + l
 					.getNumberOfPlayers()));
 			for (char c : l.getName().toCharArray()) {
-				array.add((byte) c);
+				array.add((byte) ((c&0xFF00)>>8));
+				array.add((byte) (c&0x00FF));
 			}
 		}
 		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
@@ -241,11 +247,13 @@ public class Connection implements Runnable {
 			String[] names = lobby.getPlayerNames();
 			for (int i = 0; i < names.length; i++) {
 				if (i != 0) {
-					array.add((byte) 1);
+					array.add((byte) 0);
+					array.add((byte) 0);
 				}
 				if (names[i] != null) {
-					for (char c : names[i].toCharArray()) {
-						array.add((byte) c);
+					for(char c : names[i].toCharArray()) {
+						array.add((byte) ((c&0xFF00)>>8));
+						array.add((byte) (c&0x00FF));
 					}
 				}
 			}
@@ -260,10 +268,11 @@ public class Connection implements Runnable {
 	 */
 	public void sendLogin(String name) {
 		loggIn(name);
-		byte[] array = new byte[name.length() + 1];
+		byte[] array = new byte[name.length()*2 + 1];
 		array[0] = 3;
 		for (int i = 0; i < name.length(); i++) {
-			array[i + 1] = (byte) name.charAt(i);
+			array[i * 2 + 1] = (byte) ((name.charAt(i)&0xFF00)>>8);
+			array[i * 2 + 2] = (byte) (name.charAt(i)&0x00FF);
 		}
 		addMessage(array);
 	}
@@ -305,11 +314,12 @@ public class Connection implements Runnable {
 	 *            Name des neuen Spielers
 	 */
 	public void sendPlayerJoined(byte position, String name) {
-		byte[] array = new byte[name.length() + 2];
+		byte[] array = new byte[name.length()*2 + 2];
 		array[0] = 17;
 		array[1] = position;
 		for (int i = 0; i < name.length(); i++) {
-			array[i + 2] = (byte) name.charAt(i);
+			array[i*2+2] = (byte) ((name.charAt(i)&0xFF00)>>8);
+			array[i*2+3] = (byte) (name.charAt(i)&0x00FF);
 		}
 		addMessage(array);
 	}
@@ -428,11 +438,6 @@ public class Connection implements Runnable {
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
 		addMessage(new byte[] { 40, (byte) (Boolean.compare(won, false) + 1)});
-	}
-
-	public void sendFailed(byte i) {
-		// TODO Auto-generated method stub
-		addMessage(new byte[] {4, i});
 	}
 
 }

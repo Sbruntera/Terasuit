@@ -132,10 +132,9 @@ public class SetButtons {
 					if(loader.connection.getName() != null){
 						loader.switchPanel(loader.Statspage);
 						loader.connection.stats();
-					} else{
+					} else {
 						loader.feedback("You are not logged in!");
 					}
-					
 				}
 			});
 			panel.add(btnOption);

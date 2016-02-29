@@ -56,7 +56,7 @@ public class GameAnalyser implements Analyser {
 			server.disconnect(id);
 			break;
 		case (20): // Chat
-			server.broadcast(castToString(input).substring(1), id);
+			server.broadcast(split(input, 1), id);
 			break;
 		}
 	}
@@ -79,11 +79,11 @@ public class GameAnalyser implements Analyser {
 		return array;
 	}
 
-	private String castToString(byte[] input) {
-		String s = "";
-		for (byte i : input) {
-			s += (char) i;
+	private byte[] split(byte[] input, int bytesToSplit) {
+		byte[] output = new byte[input.length-1];
+		for (int i = 0; i < output.length; i++) {
+			output[i] = input[i+1];
 		}
-		return s;
+		return output;
 	}
 }

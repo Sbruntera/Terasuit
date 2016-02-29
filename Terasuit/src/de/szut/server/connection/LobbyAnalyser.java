@@ -40,16 +40,16 @@ public class LobbyAnalyser implements Analyser {
 			lobby.startGame(id);
 			break;
 		case (20):
-			lobby.broadcast(castToString(input).substring(1), id);
+			lobby.broadcast(split(input, 1), id);
 			break;
 		}
 	}
 
-	private String castToString(byte[] input) {
-		String s = "";
-		for (byte i : input) {
-			s += (char) i;
+	private byte[] split(byte[] input, int bytesToSplit) {
+		byte[] output = new byte[input.length-1];
+		for (int i = 0; i < output.length; i++) {
+			output[i] = input[i+1];
 		}
-		return s;
+		return output;
 	}
 }

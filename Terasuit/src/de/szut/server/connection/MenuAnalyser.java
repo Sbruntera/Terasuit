@@ -31,28 +31,32 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(byte[] input) {
+		System.out.println("analyse");
 		switch (input[0]) {
 		case (0): // Stats
+			System.out.println("stats");
 			connection.sendStats();
 			break;
 		case (1): // logout
+			System.out.println("logout");
 			connection.loggOut();
 			break;
 		case (2): // Serverliste
+			System.out.println("Hier");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
 		case (3): // Spiel erstellen
-			Byte[][] splitted;
+			byte[][] splitted;
 			String password;
 			if (input.length > 3) {
 				splitted = getSplitString(input, 2);
 				password = "";
 				if (splitted.length > 1) {
-					password = castToString(toPrimal(splitted[1]));
+					password = castToString(splitted[1], 0);
 				}
 				server.createLobby(connection,
-						castToString(toPrimal(splitted[0])), password,
+						castToString(splitted[0], 0), password,
 						getMap(input[1]));
 			}
 			break;
@@ -60,37 +64,39 @@ public class MenuAnalyser implements Analyser {
 			if (input.length > 1) {
 				if (server.hasLobby(input[1])) {
 					server.getLobby(input[1]).addPlayer(connection,
-							castToString(input).substring(2));
+							castToString(input, 2));
 				}
 			}
 			break;
 		case (5): // Einloggen
+			System.out.println("login");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				password = "";
 				switch (splitted.length) {
 				case (2):
-					password = castToString(toPrimal(splitted[1]));
+					password = castToString(splitted[1], 0);
 				case (1):
-					if (server.loginClient(castToString(toPrimal(splitted[0])),
+					if (server.loginClient(castToString(splitted[0], 0),
 							password, id)) {
 						connection
-								.sendLogin(castToString(toPrimal(splitted[0])));
-						connection.loggIn(castToString(toPrimal(splitted[0])));
-					} else{
+								.sendLogin(castToString(splitted[0], 0));
+						connection.loggIn(castToString(splitted[0], 0));
+					} else {
 						connection.sendFailed((byte) 0);
-					}
+ 					}
 					break;
 				}
 			}
 			break;
 		case (6): // Registrieren
+			System.out.println("register");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				if (splitted.length == 3) {
-					server.registerClient(castToString(toPrimal(splitted[0])),
-							castToString(toPrimal(splitted[1])),
-							castToString(toPrimal(splitted[2])), "User", id);
+					server.registerClient(castToString(splitted[0], 0),
+							castToString(splitted[1], 0),
+							castToString(splitted[2], 0), "User", id);
 				}
 			}
 			break;
@@ -156,25 +162,38 @@ public class MenuAnalyser implements Analyser {
 	 * @param input
 	 * @return
 	 */
-	private Byte[][] getSplitString(byte[] input, int bytesToCut) {
-		ArrayList<Byte[]> outerArray = new ArrayList<Byte[]>();
+	private byte[][] getSplitString(byte[] input, int bytesToCut) {
+		ArrayList<byte[]> outerArray = new ArrayList<byte[]>();
 		ArrayList<Byte> array = new ArrayList<Byte>();
+		boolean second = false;
 		for (int i = bytesToCut; i < input.length; i++) {
-			if (input[i] == 1) {
-				outerArray.add(array.toArray(new Byte[array.size()]));
-				array.clear();
+			if (input[i] == 0) {
+				if (!second) {
+					second = true;
+				} else {
+					outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
+					array.clear();
+					second = false;
+				}
 			} else {
+				if (second) {
+					array.add((byte) 0);
+				}
 				array.add(input[i]);
+				second = false;
 			}
 		}
-		outerArray.add(array.toArray(new Byte[array.size()]));
-		return outerArray.toArray(new Byte[outerArray.size()][]);
+		outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
+		return outerArray.toArray(new byte[outerArray.size()][]);
 	}
 
-	private String castToString(byte[] input) {
+	private String castToString(byte[] input, int bytesToCut) {
 		String s = "";
-		for (byte i : input) {
-			s += (char) i;
+		char[] buffer = new char[input.length-bytesToCut >> 1];
+		for(int i = 0; i < buffer.length; i++) {
+			int bpos = (i << 1) + bytesToCut;
+			char c = (char)(((input[bpos]&0x00FF)<<8) + (input[bpos+1]&0x00FF));
+			s += c;
 		}
 		return s;
 	}

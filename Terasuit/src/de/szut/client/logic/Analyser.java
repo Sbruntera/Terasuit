@@ -53,12 +53,12 @@ public class Analyser {
 				String type = "";
 				boolean end = false;
 				while (!end && i < message.length) {
-					if (message[i] != 0) {
-						type += (char) message[i];
-					} else {
+					if (message[i] == 0 && message[i+1] == 0) {
 						end = true;
+					} else {
+						type += (char) (((message[i]&0x00FF)<<8) + (message[i+1]&0x00FF));
 					}
-					i++;
+					i += 2;
 				}
 				array.add(new String[] {type, String.valueOf(value)});
 				
@@ -70,7 +70,7 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					list.add(new Lobby(s[0], castToString(s).substring(3),
+					list.add(new Lobby(s[0], castToString(s, 3),
 							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
 			}
@@ -83,7 +83,7 @@ public class Analyser {
 			String[] names = new String[splittedMessage.length];
 			for (i = 0; i < splittedMessage.length; i++) {
 				if (splittedMessage[i].length > 1) {
-					names[i] = castToString(splittedMessage[i]);
+					names[i] = castToString(splittedMessage[i], 0);
 				} else {
 					names[i] = "";
 				}
@@ -100,7 +100,7 @@ public class Analyser {
 			break;
 		case (3): // Log in
 			loader.connection.setLoggedIn(true);
-			loader.connection.setName(castToString(message).substring(1));
+			loader.connection.setName(castToString(message, 1));
 			loader.loggIn(loader.connection.getName());
 			break;
 		case (4): //Login Failed
@@ -130,13 +130,11 @@ public class Analyser {
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
 			break;
 		case (17): // Spieler tritt dem Spiel bei
-			game.addPlayer(bs[1], castToString(bs).substring(2));
+			game.addPlayer(bs[1], castToString(bs, 2));
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
-			loader.setText(game.getPlayerName(bs[1]) + " joined");
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bs.length == 2) {
-				loader.setText(game.getPlayerName(bs[1]) + " left");
 				game.removePlayer(bs[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
 			} else {
@@ -159,7 +157,7 @@ public class Analyser {
 			break;
 		case (21):
 			loader.setText(game.getPlayerName(bs[1]) + ": "
-					+ castToString(bs).substring(2));
+					+ castToString(bs, 2));
 			break;
 		}
 	}
@@ -360,15 +358,18 @@ public class Analyser {
 			break;
 		case (21): // Chat
 			loader.setGameText(game.getPlayerName(bs[1]) + ": "
-					+ castToString(bs).substring(2));
+					+ castToString(bs, 2));
 			break;
 		}
 	}
 
-	private String castToString(byte[] message) {
+	private String castToString(byte[] message, int bytesToCut) {
 		String s = "";
-		for (byte i : message) {
-			s += (char) i;
+		char[] buffer = new char[message.length-bytesToCut >> 1];
+		for(int i = 0; i < buffer.length; i++) {
+			int bpos = (i << 1) + bytesToCut;
+			char c = (char)(((message[bpos]&0x00FF)<<8) + (message[bpos+1]&0x00FF));
+			s += c;
 		}
 		return s;
 	}
@@ -376,12 +377,22 @@ public class Analyser {
 	private byte[][] getSplitString(byte[] input, int bytesToCut) {
 		ArrayList<byte[]> outerArray = new ArrayList<byte[]>();
 		ArrayList<Byte> array = new ArrayList<Byte>();
+		boolean second = false;
 		for (int i = bytesToCut; i < input.length; i++) {
-			if (input[i] == 1) {
-				outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
-				array.clear();
+			if (input[i] == 0) {
+				if (!second) {
+					second = true;
+				} else {
+					outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
+					array.clear();
+					second = false;
+				}
 			} else {
+				if (second) {
+					array.add((byte) 0);
+				}
 				array.add(input[i]);
+				second = false;
 			}
 		}
 		outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));

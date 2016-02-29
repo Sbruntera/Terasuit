@@ -203,12 +203,12 @@ public class GameServer implements Runnable {
 	/**
 	 * Sendet eine Chatnachricht an alle Nutzer
 	 * 
-	 * @param msg
+	 * @param bs
 	 *            : nachricht die gesendet werden soll
 	 * @param id
 	 *            : ID des Senders
 	 */
-	public void broadcast(String msg, short id) {
+	public void broadcast(byte[] bs, short id) {
 		byte position = 0;
 		for (byte i = 0; i < connections.length; i++) {
 			if (connections[i] != null) {
@@ -219,7 +219,7 @@ public class GameServer implements Runnable {
 		}
 		for (int i = 0; i < connections.length; i++) {
 			if (connections[i] != null) {
-				connections[i].sendChatMessage(position, msg);
+				connections[i].sendChatMessage(position, bs);
 			}
 		}
 	}

@@ -198,7 +198,7 @@ public class Loader {
 	public void showStats(String[][] r) {
 		panel.buttons.showStats(r);
 	}
-
+	
 	public void feedback(String string) {
 		JOptionPane.showMessageDialog(panel, string, "A Problem occurred", JOptionPane.WARNING_MESSAGE);	
 	}
