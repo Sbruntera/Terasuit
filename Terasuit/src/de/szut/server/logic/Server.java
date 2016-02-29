@@ -89,6 +89,7 @@ public class Server implements Runnable {
 			connections.get(id).sendLogin(name);
 		} else {
 			// TODO: Fehlermeldung
+			connections.get(id).sendFailed((byte) 1);
 		}
 	}
 

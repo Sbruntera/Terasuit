@@ -437,7 +437,6 @@ public class ServerConnection implements Runnable {
 	 * Bricht den Bau ab
 	 */
 	public void cancelBuilding(int id) {
-		System.out.println("Cancel");
 		addMessage(new byte[] { 33, (byte) ((id - 1) % 4) });
 	}
 

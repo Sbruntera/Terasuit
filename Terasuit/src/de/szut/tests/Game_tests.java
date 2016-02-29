@@ -41,7 +41,7 @@ public class Game_tests {
 		ld.connection.createBuilding(1, "Outpost");
 		System.out.println(s.getLobby((byte) 0));
 		System.out.println(s.getLobbylist(new Filter(false, "", Map.Nightsun, 0, 4)).length);
-		//TODO Test of Gamefunctions GamerServer.java
+		//TODO assertEquals(null, null);
 	}
 
 }

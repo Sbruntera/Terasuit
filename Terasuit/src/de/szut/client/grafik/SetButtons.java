@@ -111,8 +111,7 @@ public class SetButtons {
 						loader.switchPanel(loader.Lobbypage);
 						loader.connection.refreshServerList(false, "", 0, 4, 0);
 					} else {
-						System.out
-								.println("Server konnte nicht gefunden werden. ");
+						loader.feedback("Server konnte nicht gefunden werden. ");
 					}
 				}
 			});
@@ -133,6 +132,8 @@ public class SetButtons {
 					if(loader.connection.getName() != null){
 						loader.switchPanel(loader.Statspage);
 						loader.connection.stats();
+					} else{
+						loader.feedback("You are not logged in!");
 					}
 					
 				}

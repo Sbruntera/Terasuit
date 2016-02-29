@@ -69,6 +69,10 @@ public class Lobby {
 					}
 				}
 			}
+		} else if(!password.equals(this.password)){
+			player.sendFailed((byte) 2);
+		} else{
+			player.sendFailed((byte) 3);
 		}
 		return playerJoined;
 	}

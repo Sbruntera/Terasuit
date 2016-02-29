@@ -430,4 +430,9 @@ public class Connection implements Runnable {
 		addMessage(new byte[] { 40, (byte) (Boolean.compare(won, false) + 1)});
 	}
 
+	public void sendFailed(byte i) {
+		// TODO Auto-generated method stub
+		addMessage(new byte[] {4, i});
+	}
+
 }

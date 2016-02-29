@@ -1,6 +1,7 @@
 package de.szut.client.grafik;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import de.szut.client.ingame.Funktions;
 import de.szut.client.ingame.Game;
@@ -196,5 +197,9 @@ public class Loader {
 	 */
 	public void showStats(String[][] r) {
 		panel.buttons.showStats(r);
+	}
+
+	public void feedback(String string) {
+		JOptionPane.showMessageDialog(panel, string, "A Problem occurred", JOptionPane.WARNING_MESSAGE);	
 	}
 }

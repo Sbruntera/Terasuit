@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -86,6 +87,8 @@ public class LoginRegisterPanel {
 				if (password1.equals(password2)) {
 					connection.register(userField.getText(), password1,
 							mailField.getText());
+				} else{
+					JOptionPane.showMessageDialog(panel, "Password is not identical", "Inane warning", JOptionPane.WARNING_MESSAGE);	
 				}
 			}
 		});

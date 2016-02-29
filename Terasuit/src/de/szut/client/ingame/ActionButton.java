@@ -116,105 +116,83 @@ public class ActionButton {
 			btn.addMouseListener(new MouseAdapter() {
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")) {
-						System.out.println("Ein Gebäude wurde ausgewählt!");
 						loader.connection.createBuilding(
 								slotIDToBuildingPosition(slotID),
 								cutHTMLout(((JButton) arg0.getSource())
 										.getText()));
 					} else if (type.equals("Ground")) {
-						System.out
-								.println("Eine Bodeneinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
 						case ("Marine"):
-							System.out.println("Marine");
 							loader.connection.createUnit(1,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Chronite Tank"):
-							System.out.println("Chronit Tank");
 							loader.connection.createUnit(2,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sniper"):
-							System.out.println("Sniper");
 							loader.connection.createUnit(3,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gröditz"):
-							System.out.println("Gröditz");
 							loader.connection.createUnit(4,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Hover Tank"):
-							System.out.println("Hover Tank");
 							loader.connection.createUnit(5,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("A25-Roman"):
-							System.out.println("A25-Roman");
 							loader.connection.createUnit(7,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata-MK2"):
-							System.out.println("Sakata-Mk2");
 							loader.connection.createUnit(10,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata Spider"):
-							System.out.println("Sakata Spider");
 							loader.connection.createUnit(11,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gladiator"):
-							System.out.println("Gladiator");
 							loader.connection.createUnit(12,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Meditec"):
-							System.out.println("Meditec");
 							loader.connection.createUnit(13,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sphinx"):
-							System.out.println("Sphinx");
 							loader.connection.createUnit(15,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Modified Sakata"):
-							System.out.println("Modified Sakata");
 							loader.connection.createUnit(17,
 									slotIDToBuildingPosition(slotID));
 							break;
 						}
 
 					} else if (type.equals("Air")) {
-						System.out
-								.println("Eine Lufteinheit wurde ausgewählt!");
 						switch (cutHTMLout(((JButton) arg0.getSource())
 								.getText())) {
 						case ("Black Queen"):
-							System.out.println("Black Queen");
 							loader.connection.createUnit(6,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Scout"):
-							System.out.println("Scout");
 							loader.connection.createUnit(8,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Phantom"):
-							System.out.println("Phantom");
 							loader.connection.createUnit(9,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Saint"):
-							System.out.println("Saint");
 							loader.connection.createUnit(14,
 									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Modified Phantom"):
-							System.out.println("Modified Phantom");
 							loader.connection.createUnit(16,
 									slotIDToBuildingPosition(slotID));
 							break;
@@ -228,7 +206,6 @@ public class ActionButton {
 						loader.connection
 								.destroyBuilding(slotIDToBuildingPosition(slotID));
 					} else if (type.equals("Cancel")) {
-						System.out.println("Abbruch");
 						loader.connection.cancelBuilding(slotID);
 					} else if (type.equals("null")) {
 						System.out

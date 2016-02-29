@@ -31,18 +31,14 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(byte[] input) {
-		System.out.println("analyse");
 		switch (input[0]) {
 		case (0): // Stats
-			System.out.println("stats");
 			connection.sendStats();
 			break;
 		case (1): // logout
-			System.out.println("logout");
 			connection.loggOut();
 			break;
 		case (2): // Serverliste
-			System.out.println("Hier");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
@@ -69,7 +65,6 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (5): // Einloggen
-			System.out.println("login");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				password = "";
@@ -82,13 +77,14 @@ public class MenuAnalyser implements Analyser {
 						connection
 								.sendLogin(castToString(toPrimal(splitted[0])));
 						connection.loggIn(castToString(toPrimal(splitted[0])));
+					} else{
+						connection.sendFailed((byte) 0);
 					}
 					break;
 				}
 			}
 			break;
 		case (6): // Registrieren
-			System.out.println("register");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				if (splitted.length == 3) {

@@ -103,6 +103,20 @@ public class Analyser {
 			loader.connection.setName(castToString(message).substring(1));
 			loader.loggIn(loader.connection.getName());
 			break;
+		case (4): //Login Failed
+			switch(message[1]){
+			case(0):
+				loader.feedback("Failed to Login");
+				break;
+			case(1):
+				loader.feedback("User already exsists");
+				break;
+			case(2):
+				loader.feedback("Wrong Password");
+				break;
+			case(3):
+				loader.feedback("Could not join Lobby.");
+			}
 		}
 	}
 
