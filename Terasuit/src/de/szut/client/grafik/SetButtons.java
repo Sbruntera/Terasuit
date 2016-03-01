@@ -352,6 +352,11 @@ public class SetButtons {
 			panel.add(nameContains);
 			panel.add(minPlayers);
 			panel.add(maxPlayers);
+			
+			ImageIcon image = new ImageIcon("Wallpaper/SlotHolder.png");
+			JLabel slotHolder = new JLabel(image);
+			slotHolder.setBounds(-4, 100, 140, 600);
+			panel.add(slotHolder);
 
 			// #########################################################################
 			//
