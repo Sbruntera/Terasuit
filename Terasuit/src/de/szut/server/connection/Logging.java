@@ -25,7 +25,6 @@ public class Logging {
 				pWriter.println(dateTime + ": (" + flag + ") " + log);
 				bWriter.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

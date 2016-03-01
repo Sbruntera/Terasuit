@@ -157,7 +157,6 @@ public class DB {
 			statement.executeUpdate("DELETE FROM Stats WHERE User = '" + name
 					+ "';");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

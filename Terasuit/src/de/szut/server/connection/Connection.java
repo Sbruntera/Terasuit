@@ -1,6 +1,5 @@
 package de.szut.server.connection;
 
-import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,7 +44,6 @@ public class Connection implements Runnable {
 			reader = new BufferedInputStream(socket.getInputStream());
 			this.writer = socket.getOutputStream();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		queue = new ConcurrentLinkedQueue<byte[]>();
@@ -117,7 +115,6 @@ public class Connection implements Runnable {
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -141,7 +138,6 @@ public class Connection implements Runnable {
 			writer.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -27,7 +27,6 @@ public class Server_test {
 			new Thread(s = new Server(3142)).start();
 			sc = new ServerConnection(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

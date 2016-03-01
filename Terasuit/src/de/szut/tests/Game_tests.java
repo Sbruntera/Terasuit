@@ -39,7 +39,6 @@ public class Game_tests {
 		ld.connection.createGroup(2, "Lobby", "123");
 		ld.connection.startGame();
 		ld.connection.createBuilding(1, "Outpost");
-		//TODO assertEquals(null, null);
 	}
 
 }

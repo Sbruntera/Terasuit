@@ -7,7 +7,6 @@ public class Main {
 		try {
 			new Thread(new Server(3142)).start();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

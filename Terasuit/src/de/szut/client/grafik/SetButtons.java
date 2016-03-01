@@ -249,7 +249,6 @@ public class SetButtons {
 					} else {
 						loader.connection.connectGroup(markedLobby, "");
 					}
-					// TODO Fehler falls Gruppe voll
 
 				}
 			});
@@ -275,8 +274,6 @@ public class SetButtons {
 					panel.add(create);
 					panel.setComponentZOrder(create, 0);
 					reload(panel);
-					// TODO Fehler Gruppe kann nicht erstellt werden
-
 				}
 			});
 			panel.add(btnCreateGroup);
@@ -375,7 +372,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					// TODO Gruppe konnte nicht verlassen werden
 				}
 			});
 
@@ -458,8 +454,6 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					loader.connection.returnFromLobby();
-					// TODO Fehlermeldung: Lobby leitung konnte nicht
-					// weitergegeben werden Lobby nicht gelöscht
 				}
 			});
 			panel.add(btnBACK);
@@ -576,7 +570,6 @@ public class SetButtons {
 			});
 			panel.add(btnBack);
 
-			// TODO Give me list of all Stats Server pls
 			JLabel welcome = new JLabel("Stats for "
 					+ loader.connection.getName());
 			welcome.setBounds(150, 95, 500, 40);
@@ -623,7 +616,6 @@ public class SetButtons {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int s = ts.getModel().getMaximum() + ts.getModel().getExtent();

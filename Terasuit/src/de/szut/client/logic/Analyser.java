@@ -155,7 +155,6 @@ public class Analyser {
 			switchState(State.GAME);
 			loader.switchPanel(loader.Gamepage);
 			loader.game.setPlayerID(position + 1);
-			// TODO: An Feldmann: Hier Funktionsaufruf Spiel starten
 			break;
 		case (21):
 			loader.setText(game.getPlayerName(bs[1]) + ": "
@@ -261,7 +260,6 @@ public class Analyser {
 		case (34): // Ein eigenes Gebäude startet eine Produktion
 			id = bs[1];
 			buildingPosition = bs[2];
-			// TODO: An Feldmann: Hier Einheitenproduktion starten
 			break;
 		case (35): // Spieler erstellt eine Einheit
 			Point position = new Point(
@@ -358,7 +356,6 @@ public class Analyser {
 			playerNumber = bs[1];
 			loader.setGameText(game.getPlayerName(playerNumber) + " hat das Spiel verlassen.");
 			game.removePlayer(playerNumber);
-			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;
 		case (40): // Spiel gewonnen/verloren
 			loader.game.end(bs[1] > 0);

@@ -109,7 +109,6 @@ public class Bank implements Building {
 
 	@Override
 	public boolean createUnit(byte typeID, short unitID, Point position) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

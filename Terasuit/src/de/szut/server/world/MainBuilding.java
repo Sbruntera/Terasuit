@@ -71,7 +71,6 @@ public class MainBuilding implements Building, Attackable {
 
 	@Override
 	public byte getUpgrade() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -29,9 +29,7 @@ public class ServerConnection implements Runnable {
 			this.writer = socket.getOutputStream();
 			serverAccess = true;
 		} catch (ConnectException e) {
-			// TODO Auto-generated catch block
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -64,7 +62,6 @@ public class ServerConnection implements Runnable {
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -9,11 +9,8 @@ public class SpecialOperations implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
-	//TODO private int createTime;
 	private byte position;
 	private byte player;
-	
-	//TODO private Unit unit;
 	
 	private static final int[] prices =  {80, 30, 30, 00};
 	
@@ -83,13 +80,11 @@ public class SpecialOperations implements Building {
 
 	@Override
 	public boolean createUnit(byte typeID, short unitID, Point position) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Unit create() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
