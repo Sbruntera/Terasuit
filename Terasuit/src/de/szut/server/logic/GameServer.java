@@ -68,101 +68,111 @@ public class GameServer implements Runnable {
 
 	@Override
 	public void run() {
-		// Kugeln bewegen
-		tick.set(true);
-		for (Bullet b : bullets) {
-			if (b.move()) {
-				b.getTarget().dealDamage(b.getDamage());
-				bulletsToRemove.add(b);
-				if (!b.getTarget().isAlive()) {
-					if (b.getTarget() instanceof Unit) {
-						unitsToRemove.add((Unit) b.getTarget());
-					} else {
-						ended.set(true);
-						for (int i = 0; i < connections.length; i++) {
-							if (connections[i] != null) {
-								connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) == (i >> 1));
-							}
-						}
-					}
-				}
-			}
-		}
-		for (Bullet b : bulletsToRemove) {
-			bullets.remove(b);
-		}
-
-		bulletsToRemove.clear();
-
-		for (Unit u : unitsToRemove) {
-			units.remove(u.getID());
-			unitIDs.remove(u.getID());
-		}
-
-		unitsToRemove.clear();
-
-		// Einheiten bewegen
-		for (Unit u : units.values()) {
-			Unit[] nearestUnits = getNearestUnit(u.getPosition().getX(),
-					(u.getPlayer() & 2) == 2);
-			if (u.hasInRange(nearestUnits) && !u.isRunning()
-					&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
-				Bullet b = u.shoot(nearestUnits);
-				if (b != null) {
-					bullets.add(b);
-				}
-			} else if (u.hasInRange(new Attackable[] {
-					mainBuildings[1 - (u.getPlayer() >> 1)], null })
-					&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
-				Bullet b = u.shoot(new Attackable[] {
-						mainBuildings[1 - (u.getPlayer() >> 1)], null });
-				if (b != null) {
-					bullets.add(b);
-				}
-			} else {
-				u.move();
-			}
-		}
-
-		// Gebäudestuff
-		for (Building[] array : buildings) {
-			for (Building b : array) {
-				if (b != null) {
-					if (!b.isFinished()) {
-						if (b.build()) {
-							for (Connection c : connections) {
-								if (c != null) {
-									c.sendCreateOrUpgradeBuilding(
-											b.getPlayer(), b.getSlotID(),
-											b.getType());
-								}
-							}
-						}
-					} else {
-						Unit u = b.create();
-						if (u != null) {
-							units.put((int) u.getID(), u);
-							for (Connection c : connections) {
-								if (c != null) {
-									c.sendCreateUnit(u.getPlayer(),
-											u.getPosition(), u.getType(),
-											u.getID());
+		while (!ended.get()) {
+			// Kugeln bewegen
+			long waitTimer = System.currentTimeMillis();
+			tick.set(true);
+			for (Bullet b : bullets) {
+				if (b.move()) {
+					b.getTarget().dealDamage(b.getDamage());
+					bulletsToRemove.add(b);
+					if (!b.getTarget().isAlive()) {
+						if (b.getTarget() instanceof Unit) {
+							unitsToRemove.add((Unit) b.getTarget());
+						} else {
+							ended.set(true);
+							for (int i = 0; i < connections.length; i++) {
+								if (connections[i] != null) {
+									connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) == (i >> 1));
 								}
 							}
 						}
 					}
 				}
 			}
-		}
-
-		// Resources auffüllen
-		double[] gainedResources = WorldConstants.getResources();
-		for (double[] array : resources) {
-			for (int i = 0; i < array.length; i++) {
-				array[i] += gainedResources[i];
+			for (Bullet b : bulletsToRemove) {
+				bullets.remove(b);
 			}
+	
+			bulletsToRemove.clear();
+	
+			for (Unit u : unitsToRemove) {
+				units.remove(u.getID());
+				unitIDs.remove(u.getID());
+			}
+	
+			unitsToRemove.clear();
+	
+			// Einheiten bewegen
+			for (Unit u : units.values()) {
+				Unit[] nearestUnits = getNearestUnit(u.getPosition().getX(),
+						(u.getPlayer() & 2) == 2);
+				if (u.hasInRange(nearestUnits) && !u.isRunning()
+						&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
+					Bullet b = u.shoot(nearestUnits);
+					if (b != null) {
+						bullets.add(b);
+					}
+				} else if (u.hasInRange(new Attackable[] {
+						mainBuildings[1 - (u.getPlayer() >> 1)], null })
+						&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
+					Bullet b = u.shoot(new Attackable[] {
+							mainBuildings[1 - (u.getPlayer() >> 1)], null });
+					if (b != null) {
+						bullets.add(b);
+					}
+				} else {
+					u.move();
+				}
+			}
+	
+			// Gebäudestuff
+			for (Building[] array : buildings) {
+				for (Building b : array) {
+					if (b != null) {
+						if (!b.isFinished()) {
+							if (b.build()) {
+								for (Connection c : connections) {
+									if (c != null) {
+										c.sendCreateOrUpgradeBuilding(
+												b.getPlayer(), b.getSlotID(),
+												b.getType());
+									}
+								}
+							}
+						} else {
+							Unit u = b.create();
+							if (u != null) {
+								units.put((int) u.getID(), u);
+								for (Connection c : connections) {
+									if (c != null) {
+										c.sendCreateUnit(u.getPlayer(),
+												u.getPosition(), u.getType(),
+												u.getID());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+	
+			// Resources auffüllen
+			double[] gainedResources = WorldConstants.getResources();
+			for (double[] array : resources) {
+				for (int i = 0; i < array.length; i++) {
+					array[i] += gainedResources[i];
+				}
+			}
+			tick.set(false);
+			try {
+				Thread.sleep(50 - (System.currentTimeMillis() - waitTimer));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-		tick.set(false);
 	}
 
 	private Unit[] getNearestUnit(double d, boolean right) {

@@ -152,7 +152,7 @@ public class WorldConstants {
 	}
 
 	public static double[] getResources() {
-		return new double[] {0.08, 0.05, 0.05, 0.02};
+		return new double[] {0.04, 0.025, 0.025, 0.01};
 	}
 
 	public static int[] getUnitPrice(byte id) {
