@@ -57,7 +57,11 @@ public class MenuAnalyser implements Analyser {
 					server.createLobby(connection,
 							castToString(splitted[0], 0), password,
 							getMap(input[1]));
-					Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " dem Password " + password + " auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
+					if (password.length() > 0) {
+						Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " dem Password " + password + " auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
+					} else {
+						Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " ohne Password auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
+					}
 				}
 			}
 			break;
@@ -107,7 +111,7 @@ public class MenuAnalyser implements Analyser {
 			server.diconnect(id);
 			break;
 		default:
-			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
+			Logging.log("Nachricht konnte nicht analysiert werden(Menü-Fehler: " + input[0] + " " + input.length + ")", "ERROR");
 			break;
 		}
 	}

@@ -192,12 +192,19 @@ public class Connection implements Runnable {
 	public void sendStats() {
 		String[][] stats = server.getStats(name);
 		ArrayList<Byte> array = new ArrayList<Byte>();
+		boolean first = true;
 		for (String[] innerArray : stats) {
 			array.add((byte) 0);
+			if (first) {
+				first = false;
+			} else {
+				array.add((byte) 0);
+			}
 			array.add((byte) (Integer.valueOf(innerArray[1]) >> 8));
 			array.add((byte) (int) (Integer.valueOf(innerArray[1])));
 			for (char c : innerArray[0].toCharArray()) {
-				array.add((byte) c);
+				array.add((byte) ((c&0xFF00)>>8));
+				array.add((byte) (c&0x00FF));
 			}
 		}
 		addMessage(toPrimal(array.toArray(new Byte[array.size()])));

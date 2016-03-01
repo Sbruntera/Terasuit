@@ -46,7 +46,7 @@ public class LobbyAnalyser implements Analyser {
 			lobby.broadcast(split(input, 1), id);
 			break;
 		default:
-			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
+			Logging.log("Nachricht konnte nicht analysiert werden(Lobby-Fehler: " + (char) input[0] + " " + input.length + ")", "ERROR");
 			break;
 		}
 	}

@@ -29,6 +29,10 @@ public class Bullet {
 	public int getSplashDamage() {
 		return attacker.getSplashDamage(target.isFlying());
 	}
+	
+	public int getPlayer() {
+		return attacker.getPlayer();
+	}
 
 	public Attackable getTarget() {
 		return target;

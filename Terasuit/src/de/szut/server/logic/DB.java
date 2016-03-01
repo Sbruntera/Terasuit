@@ -49,6 +49,11 @@ public class DB {
 		loadDatabase();
 	}
 
+	public void updateStats(String name, int kills, boolean won,
+			boolean finnisher) {
+		//TODO: Jan mach;
+	}
+
 	/**
 	 * Erweitert die Satistik um ein neue Daten
 	 * 

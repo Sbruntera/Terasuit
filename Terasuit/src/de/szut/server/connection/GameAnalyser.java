@@ -60,7 +60,7 @@ public class GameAnalyser implements Analyser {
 			server.broadcast(split(input, 1), id);
 			break;
 		default:
-			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
+			Logging.log("Nachricht konnte nicht analysiert werden(Spiel-Fehler: " + (char) input[0] + " " + input.length + ")", "ERROR");
 			break;
 		}
 	}

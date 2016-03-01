@@ -30,6 +30,7 @@ public class GameServer implements Runnable {
 	private MainBuilding[] mainBuildings;
 	private Building[][] buildings;
 	private double[][] resources;
+	private int[] unitkills;
 
 	ArrayList<Bullet> bulletsToRemove;
 	ArrayList<Unit> unitsToRemove;
@@ -61,8 +62,7 @@ public class GameServer implements Runnable {
 		bulletsToRemove = new ArrayList<Bullet>();
 		unitsToRemove = new ArrayList<Unit>();
 		unitIDCounter = 1;
-		Controller controller = new Controller(this);
-		Thread controlThread = new Thread(controller);
+		Thread controlThread = new Thread(this);
 		controlThread.start();
 	}
 
@@ -79,11 +79,15 @@ public class GameServer implements Runnable {
 					if (!b.getTarget().isAlive()) {
 						if (b.getTarget() instanceof Unit) {
 							unitsToRemove.add((Unit) b.getTarget());
+							unitkills[b.getPlayer()] += 1;
 						} else {
 							ended.set(true);
 							for (int i = 0; i < connections.length; i++) {
 								if (connections[i] != null) {
 									connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) == (i >> 1));
+									if (connections[i].isLoggedIn()) {
+										server.writeStats(connections[i].getName(), unitkills[i], (b.getTarget().getPlayer()>>1) == (i >> 1), b.getPlayer() == i);
+									}
 								}
 							}
 						}

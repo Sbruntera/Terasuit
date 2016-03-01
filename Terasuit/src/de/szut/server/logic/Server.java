@@ -213,4 +213,8 @@ public class Server implements Runnable {
 	public String[][] getStats(String User){
 		return db.getStats(User);
 	}
+
+	public void writeStats(String name, int kills, boolean won, boolean finnisher) {
+		db.updateStats(name, kills, won, finnisher);
+	}
 }

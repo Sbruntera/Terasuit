@@ -9,8 +9,9 @@ public class ChroniteTank extends Unit {
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = false;
 	public static final int[] PRICE = new int[] {5, 0, 10, 0};
+	public static final int MAXHEALTH = 600;
 
-	private static int speed;
+	private static double speed = 1.6;
 	private static int damage = 1000;
 	private static int range = 2000;
 	private static int shootSpeed = 1;
