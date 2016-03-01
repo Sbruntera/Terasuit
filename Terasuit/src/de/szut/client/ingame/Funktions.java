@@ -160,7 +160,6 @@ public class Funktions implements Runnable {
 			moveUnits();
 			buildBuildings();
 			generateResources();
-			System.out.println(50 - (System.currentTimeMillis() - i));
 			try {
 				Thread.sleep(50 - (System.currentTimeMillis() - i));
 			} catch (InterruptedException e) {
@@ -225,10 +224,10 @@ public class Funktions implements Runnable {
 			} else if (e.isEntityMove()) {
 				if (e.isEntityRushLeft() && e.getEntityPositionX() >= 294) {
 					e.setEntityPositionX(e.getEntityPositionX()
-							- e.getEntitySpeed());
+							- e.getEntitySpeed()/5.0);
 				} else if (!e.isEntityRushLeft() && e.getEntityPositionX() <= 1344) {
 					e.setEntityPositionX(e.getEntityPositionX()
-							+ e.getEntitySpeed());
+							+ e.getEntitySpeed()/5.0);
 				}
 			}
 		}
@@ -259,16 +258,16 @@ public class Funktions implements Runnable {
 		}
 	}
 
-	private Unit[] getNearestUnit(int i, boolean right) {
+	private Unit[] getNearestUnit(double d, boolean right) {
 		Unit[] nearestUnits = new Unit[2];
-		int[] difference = new int[] { 32767, 32767 };
+		double[] difference = new double[] { 32767, 32767 };
 		for (Unit u : entity.values()) {
-			if (Math.abs(u.getEntityPositionX() - i) < difference[Boolean
+			if (Math.abs(u.getEntityPositionX() - d) < difference[Boolean
 					.compare(u.isFlyingEntity(), false)]
 					&& right != ((u.getEntitymembership() - 1 & 2) == 2)) {
 				nearestUnits[Boolean.compare(u.isFlyingEntity(), false)] = u;
 				difference[Boolean.compare(u.isFlyingEntity(), false)] = Math
-						.abs(u.getEntityPositionX() - i);
+						.abs(u.getEntityPositionX() - d);
 			}
 		}
 		return nearestUnits;

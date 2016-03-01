@@ -1,6 +1,6 @@
 package de.szut.server.connection;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -383,11 +383,11 @@ public class Connection implements Runnable {
 		addMessage(new byte[] { 34, typeID, buildingPlace });
 	}
 
-	public void sendCreateUnit(short playerNumber, Point position, byte typeID,
+	public void sendCreateUnit(short playerNumber, Point2D point2d, byte typeID,
 			short unitID) {
 		addMessage(new byte[] { 35, (byte) playerNumber,
-				(byte) (position.x >> 8), (byte) position.x,
-				(byte) (position.y >> 8), (byte) position.y, typeID,
+				(byte) (((int) point2d.getX()) >> 8), (byte) ((int) point2d.getX()),
+				(byte) (((int) point2d.getY()) >> 8), (byte) ((int) point2d.getY()), typeID,
 				(byte) (unitID >> 8), (byte) unitID, (byte) 0 });
 	}
 

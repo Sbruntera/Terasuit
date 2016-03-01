@@ -380,7 +380,6 @@ public class GameServer implements Runnable {
 	private boolean payPrice(int player, int[] price) {
 		boolean possible = true;
 		for (int i = 0; i < resources[player].length; i++) {
-			System.out.println(resources[player][i]);
 			if (resources[player][i] < price[i]) {
 				possible = false;
 			}

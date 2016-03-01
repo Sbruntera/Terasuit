@@ -39,8 +39,6 @@ public class Game_tests {
 		ld.connection.createGroup(2, "Lobby", "123");
 		ld.connection.startGame();
 		ld.connection.createBuilding(1, "Outpost");
-		System.out.println(s.getLobby((byte) 0));
-		System.out.println(s.getLobbylist(new Filter(false, "", Map.Nightsun, 0, 4)).length);
 		//TODO assertEquals(null, null);
 	}
 

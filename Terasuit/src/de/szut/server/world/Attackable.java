@@ -1,6 +1,7 @@
 package de.szut.server.world;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public interface Attackable {
 
@@ -8,7 +9,7 @@ public interface Attackable {
 
 	boolean isFlying();
 	
-	Point getPosition();
+	Point2D getPosition();
 	
 	int getHealth();
 	

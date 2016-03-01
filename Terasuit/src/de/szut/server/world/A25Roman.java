@@ -85,7 +85,7 @@ public class A25Roman extends Unit {
 	}
 
 	@Override
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 }

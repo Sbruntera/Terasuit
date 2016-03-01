@@ -10,12 +10,12 @@ public class MainBuilding extends Buildings implements Attackable {
 	}
 
 	@Override
-	public int getEntityPositionX() {
+	public double getEntityPositionX() {
 		return getX();
 	}
 
 	@Override
-	public int getEntityPositionY() {
+	public double getEntityPositionY() {
 		return getY();
 	}
 

@@ -6,8 +6,8 @@ public class Unit implements Attackable{
 	
 	JLabel label = new JLabel("");
 	int EntityNummer = 0;
-	int EntityPositionX = 0;
-	int EntityPositionY = 0;
+	double EntityPositionX = 0;
+	double EntityPositionY = 0;
 	int EntitySpeed = 0;
 	int Entitymembership = 0;
 	int EntityFirerange = 0;
@@ -98,13 +98,13 @@ public class Unit implements Attackable{
 		EntityNummer = entityNummer;
 	}
 
-	public int getEntityPositionX() {
+	public double getEntityPositionX() {
 		return EntityPositionX;
 	}
 
-	public void setEntityPositionX(int entityPositionX) {
-		EntityPositionX = entityPositionX;
-		label.setLocation(EntityPositionX, EntityPositionY);
+	public void setEntityPositionX(double entityPosition) {
+		EntityPositionX = entityPosition;
+		label.setLocation((int) EntityPositionX, (int) EntityPositionY);
 	}
 
 	public int getEntitymembership() {
@@ -151,7 +151,7 @@ public class Unit implements Attackable{
 		this.label = label;
 	}
 	
-	public int getEntityPositionY() {
+	public double getEntityPositionY() {
 		return EntityPositionY;
 	}
 

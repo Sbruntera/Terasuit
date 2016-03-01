@@ -1,10 +1,10 @@
 package de.szut.server.world;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class Bullet {
 
-	private Point position;
+	private Point2D position;
 	private Unit attacker;
 	private Attackable target;
 
@@ -16,10 +16,9 @@ public class Bullet {
 
 	public boolean move() {;
 		double v = attacker.getBulletSpeed(target.isFlying())
-				/ Math.sqrt(Math.pow(target.getPosition().x - position.x, 2)
-						+ Math.pow(target.getPosition().y - position.y, 2));
-		position.x += (target.getPosition().x - position.x) * v;
-		position.y += (target.getPosition().y - position.y) * v;
+				/ Math.sqrt(Math.pow(target.getPosition().getX() - position.getX(), 2)
+						+ Math.pow(target.getPosition().getY() - position.getY(), 2));
+		position.setLocation((target.getPosition().getX() - position.getX()) * v, (target.getPosition().getY() - position.getY()) * v);
 		return Math.abs(v) > 1;
 	}
 

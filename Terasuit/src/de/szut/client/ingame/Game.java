@@ -236,7 +236,6 @@ public class Game {
 	}
 	
 	public void finishBuilding(int primID) {
-		System.out.println("Dies ist fertig");
 		field.remove(BuildingsArray[primID - 18].getLabel());
 		field.add(BuildingsArray[primID].getLabel());
 		field.add(BuildingsArray[primID - 18].getLabel());
@@ -265,7 +264,6 @@ public class Game {
 		func.getListOfJProgressBar()[index] = null;
 		func.refundPrice(BuildingsArray[index + 18].getPrice());
 		if (BuildingsArray[index + 18].getPrimerBuilding() != null) {
-			System.out.println("Upgrade");
 			BuildingsArray[index + 18] = BuildingsArray[index + 18].getPrimerBuilding();
 			BuildingsArray[index].setPrimerBuilding(BuildingsArray[index + 18]);
 			BuildingsArray[index + 18].setPrimerBuilding(null);

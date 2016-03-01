@@ -1,13 +1,13 @@
 package de.szut.server.world;
 
-import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public abstract class Unit implements Attackable {
 	
 	protected short id;
 	protected byte playerID;
 
-	protected Point position;
+	protected Point2D position;
 	protected int direction;
 	protected boolean running;
 	protected int health;
@@ -45,12 +45,12 @@ public abstract class Unit implements Attackable {
 
 	public boolean hasInRange(Attackable[] attackables) {
 		if (attackables[0] != null && canAttackGround()) {
-			if (Math.abs(getPosition().x - attackables[0].getPosition().x) - getRange(true) <= 0) {
+			if (Math.abs(getPosition().getY() - attackables[0].getPosition().getX()) - getRange(true) <= 0) {
 				return true;
 			}
 		}
 		if (attackables[01] != null && canAttackAir()) {
-			if (Math.abs(getPosition().x - attackables[0].getPosition().x) - getRange(false) <= 0) {
+			if (Math.abs(getPosition().getX() - attackables[0].getPosition().getX()) - getRange(false) <= 0) {
 				return true;
 			}
 		}
@@ -79,10 +79,10 @@ public abstract class Unit implements Attackable {
 		health += value;
 	}
 	
-	public abstract int getSpeed();
+	public abstract double getSpeed();
 
 	@Override
-	public Point getPosition() {
+	public Point2D getPosition() {
 		return position;
 	}
 
@@ -101,7 +101,7 @@ public abstract class Unit implements Attackable {
 
 	public void move() {
 		if (position.getX() >= 294 && position.getX() <= 1344) {
-			position.setLocation(position.x + getSpeed() * direction, position.y);
+			position.setLocation(position.getX() + getSpeed() * direction, position.getY());
 		}
 	}
 }

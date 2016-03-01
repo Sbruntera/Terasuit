@@ -88,7 +88,7 @@ public class ChroniteTank extends Unit {
 	}
 
 	@Override
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 }

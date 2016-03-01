@@ -11,8 +11,8 @@ public class Bullet {
 	public Bullet(Unit attacker, Attackable target) {
 		this.attacker = attacker;
 		this.target = target;
-		position = new Point(attacker.getEntityPositionX(),
-				attacker.getEntityPositionY());
+		position = new Point((int) attacker.getEntityPositionX(),
+				(int) attacker.getEntityPositionY());
 	}
 
 	public boolean move() {

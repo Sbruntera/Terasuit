@@ -53,10 +53,12 @@ public class MenuAnalyser implements Analyser {
 				if (splitted.length > 1) {
 					password = castToString(splitted[1], 0);
 				}
-				server.createLobby(connection,
-						castToString(splitted[0], 0), password,
-						getMap(input[1]));
-				Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " dem Password " + password + " auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
+				if (splitted[0].length > 0) {
+					server.createLobby(connection,
+							castToString(splitted[0], 0), password,
+							getMap(input[1]));
+					Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " dem Password " + password + " auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
+				}
 			}
 			break;
 		case (4): // Spiel beitreten
@@ -69,7 +71,6 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (5): // Einloggen
-			System.out.println("login");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				password = "";
@@ -92,7 +93,6 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (6): // Registrieren
-			System.out.println("register");
 			if (!connection.isLoggedIn()) {
 				splitted = getSplitString(input, 1);
 				if (splitted.length == 3) {

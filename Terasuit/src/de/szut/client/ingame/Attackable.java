@@ -4,9 +4,9 @@ public interface Attackable {
 
 	boolean isFlyingEntity();
 	
-	int getEntityPositionX();
+	double getEntityPositionX();
 	
-	int getEntityPositionY();
+	double getEntityPositionY();
 	
 	int getEntityLive();
 	
