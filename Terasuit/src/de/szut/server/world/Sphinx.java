@@ -9,18 +9,20 @@ public class Sphinx extends Unit {
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = true;
 	public static final int[] PRICE = new int[] {0, 0, 0, 80};
+	public static final int MAXHEALTH = 1300;
 
-	private static int speed;
-	private static int damage;
-	private static int range;
-	private static int shootSpeed;
-	private int splashDamage;
-	private double bulletSpeed;
+	private static double speed = 1.8;
+	private static int damage = 45;
+	private static int range = 160;
+	private static int shootSpeed = 20;
+	private int splashDamage = 0;
+	private double bulletSpeed = 6;
 	
 	public Sphinx(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
+		this.health = MAXHEALTH;
 	}
 
 	@Override

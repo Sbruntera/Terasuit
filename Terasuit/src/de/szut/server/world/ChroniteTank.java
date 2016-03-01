@@ -12,16 +12,17 @@ public class ChroniteTank extends Unit {
 	public static final int MAXHEALTH = 600;
 
 	private static double speed = 1.6;
-	private static int damage = 1000;
-	private static int range = 2000;
-	private static int shootSpeed = 1;
-	private int splashDamage;
-	private double bulletSpeed = 100;
+	private static int damage = 60;
+	private static int range = 225;
+	private static int shootSpeed = 35;
+	private int splashDamage = 2;
+	private double bulletSpeed = 7;
 	
 	public ChroniteTank(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
+		this.health = MAXHEALTH;
 	}
 
 	@Override

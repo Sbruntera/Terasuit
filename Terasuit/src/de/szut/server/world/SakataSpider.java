@@ -9,18 +9,20 @@ public class SakataSpider extends Unit {
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = false;
 	public static final int[] PRICE = new int[] {0, 23, 0, 0};
+	public static final int MAXHEALTH = 350;
 
-	private static int speed;
-	private static int damage;
-	private static int range;
-	private static int shootSpeed;
-	private int splashDamage;
-	private double bulletSpeed;
+	private static double speed = 2.2;
+	private static int damage = 60;
+	private static int range = 170;
+	private static int shootSpeed = 11;
+	private int splashDamage = 0;
+	private double bulletSpeed = 10;
 	
 	public SakataSpider(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
+		this.health = MAXHEALTH;
 	}
 
 	@Override

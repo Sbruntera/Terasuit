@@ -9,18 +9,20 @@ public class Scout extends Unit {
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = true;
 	public static final int[] PRICE = new int[] {3, 7, 0, 0};
+	public static final int MAXHEALTH = 140;
 
-	private static int speed;
-	private static int damage;
-	private static int range;
-	private static int shootSpeed;
-	private int splashDamage;
-	private double bulletSpeed;
+	private static double speed = 2.2;
+	private static int damage = 40;
+	private static int range = 210;
+	private static int shootSpeed = 9;
+	private int splashDamage = 0;
+	private double bulletSpeed = 11;
 	
 	public Scout(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
+		this.health = MAXHEALTH;
 	}
 
 	@Override

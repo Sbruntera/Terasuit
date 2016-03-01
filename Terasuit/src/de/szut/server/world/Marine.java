@@ -11,7 +11,7 @@ public class Marine extends Unit {
 	public static final int[] PRICE = new int[] {0, 0, 2, 0};
 	public static final int MAXHEALTH = 60;
 
-	private static int speed = 2;
+	private static double speed = 2;
 	private static int damage = 15;
 	private static int range = 180;
 	private static int shootSpeed = 10;

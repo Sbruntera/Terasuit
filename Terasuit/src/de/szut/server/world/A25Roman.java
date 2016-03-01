@@ -7,20 +7,22 @@ public class A25Roman extends Unit {
 	private static final int BUILDTIME = 1;
 	public static final boolean FLYING = false;
 	private static final boolean CANATTACKGROUND = true;
-	private static final boolean CANATTACKAIR = true;
+	private static final boolean CANATTACKAIR = false;
 	public static final int[] PRICE = new int[] {0, 5, 0, 0};
+	public static final int MAXHEALTH = 250;
 
-	private static int speed;
-	private static int damage;
-	private static int range;
-	private static int shootSpeed;
-	private int splashDamage;
-	private double bulletSpeed;
+	private static double speed = 2.2;
+	private static int damage = 80;
+	private static int range = 160;
+	private static int shootSpeed = 32;
+	private int splashDamage = 0;
+	private double bulletSpeed = 10;
 	
 	public A25Roman(short id, Point position, byte player) {
 		this.id = id;
 		this.position = position;
 		this.playerID = player;
+		this.health = MAXHEALTH;
 	}
 
 	@Override
