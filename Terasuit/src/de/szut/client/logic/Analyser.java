@@ -7,7 +7,7 @@ import de.szut.client.grafik.Loader;
 
 public class Analyser {
 
-	private Loader loader;
+	public Loader loader;
 	private State state;
 	private GameLobby game;
 
@@ -48,20 +48,20 @@ public class Analyser {
 			ArrayList<String[]> array = new ArrayList<String[]>();
 			while (i < message.length) {
 				int value = (((int) (Byte.toUnsignedInt(message[i])) << 8) + Byte
-								.toUnsignedInt(message[i+1]));
+						.toUnsignedInt(message[i + 1]));
 				i += 2;
 				String type = "";
 				boolean end = false;
 				while (!end && i < message.length) {
-					if (message[i] == 0 && message[i+1] == 0) {
+					if (message[i] == 0 && message[i + 1] == 0) {
 						end = true;
 					} else {
-						type += (char) (((message[i]&0x00FF)<<8) + (message[i+1]&0x00FF));
+						type += (char) (((message[i] & 0x00FF) << 8) + (message[i + 1] & 0x00FF));
 					}
 					i += 2;
 				}
-				array.add(new String[] {type, String.valueOf(value)});
-				
+				array.add(new String[] { type, String.valueOf(value) });
+
 			}
 			loader.showStats(array.toArray(new String[array.size()][]));
 			break;
@@ -70,8 +70,8 @@ public class Analyser {
 			byte[][] splittedMessage = getSplitString(message, 1);
 			for (byte[] s : splittedMessage) {
 				if (s.length != 0) {
-					list.add(new Lobby(s[0], castToString(s, 3),
-							s[1], ((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
+					list.add(new Lobby(s[0], castToString(s, 3), s[1],
+							((s[2] & 8) >> 3) == 1, (byte) (s[2] & 7)));
 				}
 			}
 			loader.updateLobbyList(list.toArray(new Lobby[list.size()]));
@@ -103,18 +103,18 @@ public class Analyser {
 			loader.connection.setName(castToString(message, 1));
 			loader.loggIn(loader.connection.getName());
 			break;
-		case (4): //Login Failed
-			switch(message[1]){
-			case(0):
+		case (4): // Login Failed
+			switch (message[1]) {
+			case (0):
 				loader.feedback("Failed to Login");
 				break;
-			case(1):
+			case (1):
 				loader.feedback("User already exsists");
 				break;
-			case(2):
+			case (2):
 				loader.feedback("Wrong Password");
 				break;
-			case(3):
+			case (3):
 				loader.feedback("Could not join Lobby.");
 			}
 		}
@@ -132,11 +132,13 @@ public class Analyser {
 		case (17): // Spieler tritt dem Spiel bei
 			game.addPlayer(bs[1], castToString(bs, 2));
 			loader.updatePlayerList(game.getPlayerNames(), isHost);
+			loader.setText(game.getPlayerName(bs[1]) + " joined");
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bs.length == 2) {
 				game.removePlayer(bs[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
+				loader.setText(game.getPlayerName(bs[1]) + " left");
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
@@ -230,16 +232,20 @@ public class Analyser {
 											+ buildingPosition + 1,
 									(playerNumber << 2) + (playerNumber >> 1)
 											+ buildingPosition + 19);
-						} else {
-							// Anzeige anderer Spieler Baut
 						}
 					} else {
-						loader.game.createEnemyBuilding(buildingName,
-								"Buildings/" + buildingName + ".png",
-								(playerNumber << 2) + (playerNumber >> 1)
-										+ buildingPosition + 1,
-								(playerNumber << 2) + (playerNumber >> 1)
-										+ buildingPosition + 19);
+						if (playerNumber != position) {
+							loader.game.createEnemyBuilding(buildingName,
+									"Buildings/" + buildingName + ".png",
+									(playerNumber << 2) + (playerNumber >> 1)
+											+ buildingPosition + 1,
+									(playerNumber << 2) + (playerNumber >> 1)
+											+ buildingPosition + 19);
+						} else {
+							loader.game.finishBuilding((playerNumber << 2)
+									+ (playerNumber >> 1) + buildingPosition
+									+ 19);
+						}
 					}
 				}
 			} else {
@@ -365,10 +371,10 @@ public class Analyser {
 
 	private String castToString(byte[] message, int bytesToCut) {
 		String s = "";
-		char[] buffer = new char[message.length-bytesToCut >> 1];
-		for(int i = 0; i < buffer.length; i++) {
+		char[] buffer = new char[message.length - bytesToCut >> 1];
+		for (int i = 0; i < buffer.length; i++) {
 			int bpos = (i << 1) + bytesToCut;
-			char c = (char)(((message[bpos]&0x00FF)<<8) + (message[bpos+1]&0x00FF));
+			char c = (char) (((message[bpos] & 0x00FF) << 8) + (message[bpos + 1] & 0x00FF));
 			s += c;
 		}
 		return s;
@@ -383,7 +389,8 @@ public class Analyser {
 				if (!second) {
 					second = true;
 				} else {
-					outerArray.add(toPrimal(array.toArray(new Byte[array.size()])));
+					outerArray
+							.add(toPrimal(array.toArray(new Byte[array.size()])));
 					array.clear();
 					second = false;
 				}

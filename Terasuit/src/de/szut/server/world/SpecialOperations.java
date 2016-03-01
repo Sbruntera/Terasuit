@@ -39,6 +39,21 @@ public class SpecialOperations implements Building {
 	}
 
 	@Override
+	public int[] getPrice(int lvl) {
+		return prices;
+	}
+
+	@Override
+	public int[] getPrice() {
+		return null;
+	}
+	
+	@Override
+	public int getLevel() {
+		return lvl;
+	}
+
+	@Override
 	public boolean hasUpgrade() {
 		return lvl < MAXLVL;
 	}
@@ -47,15 +62,9 @@ public class SpecialOperations implements Building {
 	public byte getUpgrade() {
 		return -128;
 	}
-
+	
 	@Override
-	public int[] getPrice(int lvl) {
-		return prices;
-	}
-
-	@Override
-	public int[] getPrice() {
-		return null;
+	public void cancelUpgrade() {
 	}
 
 	@Override

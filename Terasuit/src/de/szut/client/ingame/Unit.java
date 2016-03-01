@@ -27,6 +27,8 @@ public class Unit implements Attackable{
 	private boolean canAttackGround = true;
 	private boolean canAttackAir = true;
 	private int cooldown;
+	private int[] price;
+	private int bulletSpeed;
 	
 	public boolean isFlyingEntity() {
 		return flyingEntity;
@@ -242,8 +244,20 @@ public class Unit implements Attackable{
 	public void heal(int value) {
 		EntityLive += value;
 	}
+	
+	public void setBulletSpeed(int bulletSpeed) {
+		this.bulletSpeed = bulletSpeed;
+	}
 
 	public int getBulletSpeed() {
-		return 5;
+		return bulletSpeed;
+	}
+	
+	public void setPrice(int[] price) {
+		this.price = price;
+	}
+
+	public int[] getPrice() {
+		return price;
 	}
 }

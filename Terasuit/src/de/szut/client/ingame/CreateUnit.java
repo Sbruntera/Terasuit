@@ -69,6 +69,10 @@ public class CreateUnit {
 		unit.setEntityLive(unitData.getLive());
 		unit.setEntitySplashDmg(unitData.getSplashDamage());
 		unit.setEntitySpeed(unitData.getSpeed());
+		unit.setCanAttackGround(unitData.canAttackGround());
+		unit.setCanAttackAir(unitData.canAttackAir());
+		unit.setBulletSpeed(unitData.getBulletSpeed());
+		unit.setPrice(unitData.getPrice());
 		field.add(label);
 		field.repaint();
 		return unit;

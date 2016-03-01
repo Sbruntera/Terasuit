@@ -109,4 +109,13 @@ public class MainBuilding implements Building, Attackable {
 	public byte getPlayer() {
 		return player;
 	}
+	
+	@Override
+	public int getLevel() {
+		return 0;
+	}
+	
+	@Override
+	public void cancelUpgrade() {
+	}
 }

@@ -280,21 +280,13 @@ public class GameServer implements Runnable {
 					position);
 			if (payPrice(position, building.getPrice(0))) {
 				buildings[position][buildingPlace] = building;
-				for (Connection c : connections) {
-					if (c != null) {
-						c.sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
-					}
-				}
+				connections[position].sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
 			}
 		} else if (buildings[position][buildingPlace].getUpgrade() == id) {
 			if (payPrice(position,
 					buildings[position][buildingPlace].getPrice())) {
 				buildings[position][buildingPlace].upgrade();
-				for (Connection c : connections) {
-					if (c != null) {
-						c.sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
-					}
-				}
+				connections[position].sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
 			}
 		} else {
 			return;
@@ -314,7 +306,11 @@ public class GameServer implements Runnable {
 		if (buildings[player][position] != null) {
 			if (!buildings[player][position].isFinished()) {
 				getResources(player, buildings[player][position].getPrice(-1));
-				buildings[player][position] = null;
+				if (buildings[player][position].getLevel() == 0) {
+					buildings[player][position] = null;
+				} else {
+					buildings[player][position].cancelUpgrade();
+				}
 				for (Connection c : connections) {
 					if (c != null) {
 						c.sendCancel(player, position);

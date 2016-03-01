@@ -188,6 +188,10 @@ public class Game {
 		func.destroyUserOptions(console);
 
 		if (primID != 0) {
+			buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[primID - 18].getX(), BuildingsArray[primID - 18].getY(),
+					BuildingsArray, "blubb", buildingName, this,
+					primID - 18, primID, field);
+			func.payPrice(BuildingsArray[primID].getPrice());
 			JProgressBar progressBar = new JProgressBar();
 			progressBar.setBounds(20, 60, 160, 10);
 			func.addProgressBar(progressBar, index);
@@ -199,6 +203,18 @@ public class Game {
 		buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[slotID].getX(), BuildingsArray[slotID].getY(),
 				BuildingsArray, "blubb", buildingName, this,
 				slotID, primID, field);
+		field.remove(BuildingsArray[slotID].getLabel());
+		field.add(BuildingsArray[primID].getLabel());
+		field.add(BuildingsArray[slotID].getLabel());
+		field.repaint();
+	}
+	
+	public void finishBuilding(int primID) {
+		System.out.println("Dies ist fertig");
+		field.remove(BuildingsArray[primID - 18].getLabel());
+		field.add(BuildingsArray[primID].getLabel());
+		field.add(BuildingsArray[primID - 18].getLabel());
+		field.repaint();
 	}
 	
 	public void changeInformation(String type, String description){
@@ -221,6 +237,20 @@ public class Game {
 		func.getListOfJProgressBar()[index].setVisible(false);
 		func.destroyUserOptions(console);
 		func.getListOfJProgressBar()[index] = null;
+		func.refundPrice(BuildingsArray[index + 18].getPrice());
+		if (BuildingsArray[index + 18].getPrimerBuilding() != null) {
+			System.out.println("Upgrade");
+			BuildingsArray[index + 18] = BuildingsArray[index + 18].getPrimerBuilding();
+			BuildingsArray[index].setPrimerBuilding(BuildingsArray[index + 18]);
+			BuildingsArray[index + 18].setPrimerBuilding(null);
+			field.remove(BuildingsArray[index].getLabel());
+			field.add(BuildingsArray[index + 18].getLabel());
+			field.add(BuildingsArray[index].getLabel());
+		} else {
+			BuildingsArray[index].setPrimerBuilding(null);
+			BuildingsArray[index + 18] = null;
+		}
+		field.repaint();
 
 	}
 

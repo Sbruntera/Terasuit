@@ -49,6 +49,11 @@ public class Armory implements Building {
 	public int[] getPrice() {
 		return null;
 	}
+	
+	@Override
+	public int getLevel() {
+		return lvl;
+	}
 
 	@Override
 	public boolean hasUpgrade() {
@@ -58,6 +63,10 @@ public class Armory implements Building {
 	@Override
 	public byte getUpgrade() {
 		return -128;
+	}
+	
+	@Override
+	public void cancelUpgrade() {
 	}
 
 	@Override

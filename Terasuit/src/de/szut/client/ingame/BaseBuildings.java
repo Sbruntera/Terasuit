@@ -134,8 +134,9 @@ public class BaseBuildings {
 	
 	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field){
 		building = new Buildings();
-		if (buildingsArray[slotID].getPrimerBuilding() != null){
+		if (buildingsArray[primID] != null){
 			field.remove(buildingsArray[primID].getLabel());
+			building.setPrimerBuilding(buildingsArray[primID]);
 			buildingsArray[primID-18].setPrimerBuilding(null);
 		}
 		ImageIcon pic = new ImageIcon(entityLocation);
@@ -165,17 +166,14 @@ public class BaseBuildings {
 		building.setDescription(description);
 		building.setName(buildingName);
 		building.setSpwanableEntity(searchForPossibleEntitys(buildingName));
+		building.setPrice(searchForPrice(buildingName));
 		buildingsArray[slotID].setPrimerBuilding(building);
 		buildingsArray[primID] = building;
-
-		field.remove(buildingsArray[slotID].getLabel());
-		field.add(label);
-		field.add(buildingsArray[slotID].getLabel());
 
 		field.repaint();
 		return buildingsArray;
 	}
-	
+
 	public void destroyPrimaryBuilding( Buildings[] buildingsArray, int i, Panel field, int time){
 		if (i >= 18){
 			field.remove(buildingsArray[i].getLabel());
@@ -185,7 +183,42 @@ public class BaseBuildings {
 		}
 	}
 	
+
 	
+	private int[] searchForPrice(String buildingName) {
+		switch (buildingName) {
+		case "Outpost":
+			return new int[] {40, 30, 30, 00};
+		case "Barracks":
+			return new int[] {30, 00, 00, 00};
+		case "Arsenal":
+			return new int[] {80, 50, 00, 00};
+		case "Forge":
+			return new int[] {40, 30, 30, 00};
+		case "Manufacture":
+			return new int[] {60, 30, 30, 00};
+		case "Mechanics Terminal":
+			return new int[] {70, 20, 00, 00};
+		case "Armory":
+			return new int[] {60, 25, 25, 00};
+		case "Generator":
+			return new int[] {50, 00, 00, 00};
+		case "Solar Grid":
+			return new int[]{50, 00, 00, 00};
+		case "Bank":
+			return new int[]{50, 00, 00, 00};
+		case "Treasury":
+			return new int[]{50, 00, 00, 00};
+		case "Hospital":
+			return new int[]{40, 30, 10, 00};
+		case "War Sanctum":
+			return new int[]{65, 00, 00, 00};
+		case "Special Operations":
+			return new int[]{80, 30, 30, 00};
+		default:
+			return null;
+		}
+	}
 	
 	private String[] searchForPossibleEntitys(String BuildingName){
 		

@@ -14,9 +14,13 @@ public interface Building {
 
 	public int[] getPrice();
 
+	public int getLevel();
+	
 	public boolean hasUpgrade();
 
 	public byte getUpgrade();
+
+	public void cancelUpgrade();
 
 	public boolean isFinished();
 

@@ -95,6 +95,7 @@ public class ActionButton {
 			noName = buildingsArray[slotID].getSpwanableEntity();
 			if (listOfJProgressBar[slotID] != null) {
 				noName = new String[1];
+				
 				noName[0] = "Cancel";
 				game.replaceJProcessbar(slotID);
 			}

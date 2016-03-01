@@ -54,8 +54,10 @@ public class Funktions implements Runnable {
 	// hinzu
 	public void createEntity(Panel field, String Entitytype, int color,
 			boolean airUnit, short unitID, Point position) {
-		unitQueue.add(cunit.createEntity(field, game, Entitytype, color,
-				airUnit, this, unitID, position, pics));
+		Unit u = cunit.createEntity(field, game, Entitytype, color,
+				airUnit, this, unitID, position, pics);
+		unitQueue.add(u);
+		payPrice(u.getPrice());
 	}
 
 	public void findEntity(MouseEvent objUnit) {
@@ -282,5 +284,17 @@ public class Funktions implements Runnable {
 	public void setGame(Game game) {
 		this.game = game;
 		cThread.start();
+	}
+
+	public void payPrice(int[] price) {
+		for (int i = 0; i < resources.length; i++) {
+			resources[i] -= price[i];
+		}
+	}
+
+	public void refundPrice(int[] price) {
+		for (int i = 0; i < resources.length; i++) {
+			resources[i] += price[i];
+		}
 	}
 }

@@ -16,6 +16,7 @@ public class Buildings {
 	String name = "";
 	String[] spwanableEntity;
 	Buildings primerBuilding = null;
+	private int[] price;
 	
 	public int getX() {
 		return x;
@@ -76,5 +77,11 @@ public class Buildings {
 	}
 	public void setSlotID(int slotID) {
 		this.slotID = slotID;
+	}
+	public void setPrice(int[] price) {
+		this.price = price;
+	}
+	public int[] getPrice() {
+		return price;
 	}
 }

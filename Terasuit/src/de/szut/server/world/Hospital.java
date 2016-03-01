@@ -50,16 +50,21 @@ public class Hospital implements Building {
 
 	@Override
 	public int[] getPrice(int lvl) {
-		return prices[lvl];
+		if (lvl > 0) {
+			return prices[lvl];
+		} else {
+			return prices[this.lvl];
+		}
 	}
 
 	@Override
 	public int[] getPrice() {
-		if (lvl > 0) {
-			return prices[lvl+1];
-		} else {
-			return prices[lvl];
-		}
+		return prices[lvl+1];
+	}
+	
+	@Override
+	public int getLevel() {
+		return lvl;
 	}
 
 	@Override
@@ -75,6 +80,12 @@ public class Hospital implements Building {
 		default:
 			return -128;
 		}
+	}
+	
+	@Override
+	public void cancelUpgrade() {
+		buildTime = 0;
+		lvl--;
 	}
 
 	@Override
