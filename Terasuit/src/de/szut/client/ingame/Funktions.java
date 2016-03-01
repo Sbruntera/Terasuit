@@ -189,6 +189,7 @@ public class Funktions implements Runnable {
 			}
 		}
 		for (Bullet b : bulletsToRemove) {
+			game.field.remove(b.getLabel());
 			bullets.remove(b);
 		}
 
@@ -212,7 +213,7 @@ public class Funktions implements Runnable {
 			if (e.hasInRange(nearestUnits) && !e.isEntityRunning() && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
 				Bullet b = e.shoot(nearestUnits);
 				if (b != null) {
-					bullets .add(b);
+					bullets.add(b);
 				}
 			} else if (e.hasInRange(new Attackable[] {
 					mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null }) && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
@@ -220,6 +221,7 @@ public class Funktions implements Runnable {
 						mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null });
 				if (b != null) {
 					bullets.add(b);
+					game.showBullet(b.getLabel());
 				}
 			} else if (e.isEntityMove()) {
 				if (e.isEntityRushLeft() && e.getEntityPositionX() >= 294) {

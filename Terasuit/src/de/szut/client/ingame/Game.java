@@ -326,4 +326,8 @@ public class Game {
 	public Integer[] getSelectedUnits() {
 		return func.selectedEntitysID.toArray(new Integer[func.selectedEntitysID.size()]);
 	}
+
+	public void showBullet(JLabel bullet) {
+		field.add(bullet);
+	}
 }
