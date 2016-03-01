@@ -14,9 +14,9 @@ public class MainBuilding implements Building, Attackable {
 	public MainBuilding(byte player) {
 		this.player = player;
 		if ((player&2)==2) {
-			position = new Point(1474, 414);
+			position = new Point(1440, 380);
 		} else {
-			position = new Point(164, 414);
+			position = new Point(130, 380);
 		}
 	}
 	
@@ -81,11 +81,6 @@ public class MainBuilding implements Building, Attackable {
 	}
 
 	@Override
-	public Point getPosition() {
-		return position;
-	}
-
-	@Override
 	public int getHealth() {
 		return health;
 	}
@@ -117,5 +112,15 @@ public class MainBuilding implements Building, Attackable {
 	
 	@Override
 	public void cancelUpgrade() {
+	}
+
+	@Override
+	public double getXPosition() {
+		return position.getX();
+	}
+
+	@Override
+	public double getYPosition() {
+		return position.getY();
 	}
 }

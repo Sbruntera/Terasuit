@@ -330,4 +330,9 @@ public class Game {
 	public void showBullet(JLabel bullet) {
 		field.add(bullet);
 	}
+
+	public void repaint() {
+		field.repaint();
+		field.revalidate();
+	}
 }

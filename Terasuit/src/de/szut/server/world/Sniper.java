@@ -11,16 +11,18 @@ public class Sniper extends Unit {
 	public static final int[] PRICE = new int[] {0, 12, 7, 0};
 	public static final int MAXHEALTH = 150;
 
-	private static double speed = 2;
+	private static double speed = 4;
 	private static int damage = 70;
 	private static int range = 425;
 	private static int shootSpeed = 30;
 	private int splashDamage = 0;
-	private double bulletSpeed = 14;
+	private double bulletSpeed = 28;
+	private int cooldown;
 	
 	public Sniper(short id, Point position, byte player) {
 		this.id = id;
-		this.position = position;
+		this.xPosition = position.getX();
+		this.yPosition = position.getY();
 		this.playerID = player;
 		this.health = MAXHEALTH;
 	}
@@ -81,8 +83,16 @@ public class Sniper extends Unit {
 	}
 
 	@Override
-	public Bullet shoot(Attackable[] farestUnits) {
-		// TODO Auto-generated method stub
+	public Bullet shoot(Attackable[] nearestUnits) {
+		if (cooldown  <= 0) {
+			if (CANATTACKGROUND && nearestUnits[0] != null) {
+				return new Bullet(this, nearestUnits[0]);
+			} else if (CANATTACKAIR && nearestUnits[1] != null) {
+				return new Bullet(this, nearestUnits[1]);
+			}
+		} else {
+			cooldown--;
+		}
 		return null;
 	}
 

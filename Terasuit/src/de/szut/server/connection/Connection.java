@@ -390,11 +390,11 @@ public class Connection implements Runnable {
 		addMessage(new byte[] { 34, typeID, buildingPlace });
 	}
 
-	public void sendCreateUnit(short playerNumber, Point2D point2d, byte typeID,
+	public void sendCreateUnit(short playerNumber, double x, double y, byte typeID,
 			short unitID) {
 		addMessage(new byte[] { 35, (byte) playerNumber,
-				(byte) (((int) point2d.getX()) >> 8), (byte) ((int) point2d.getX()),
-				(byte) (((int) point2d.getY()) >> 8), (byte) ((int) point2d.getY()), typeID,
+				(byte) (((int) x) >> 8), (byte) ((int) x),
+				(byte) (((int) y) >> 8), (byte) ((int) y), typeID,
 				(byte) (unitID >> 8), (byte) unitID, (byte) 0 });
 	}
 
@@ -439,7 +439,7 @@ public class Connection implements Runnable {
 	}
 
 	public void sendPlayerLeftGame(byte playerID) {
-		addMessage(new byte[] {39, (byte) (playerID+1)});
+		addMessage(new byte[] {39, (byte) (playerID)});
 	}
 
 	public void sendGameEnded(boolean won) {

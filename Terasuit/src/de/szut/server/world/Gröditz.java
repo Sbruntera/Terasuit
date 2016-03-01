@@ -11,16 +11,18 @@ public class Gröditz extends Unit {
 	public static final int[] PRICE = new int[] {5, 0, 16, 0};
 	public static final int MAXHEALTH = 340;
 
-	private static double speed = 1.8;
+	private static double speed = 3.6;
 	private static int damage = 40;
 	private static int range = 140;
 	private static int shootSpeed = 8;
 	private int splashDamage = 0;
-	private double bulletSpeed = 9;
+	private double bulletSpeed = 18;
+	private int cooldown;
 	
 	public Gröditz(short id, Point position, byte player) {
 		this.id = id;
-		this.position = position;
+		this.xPosition = position.getX();
+		this.yPosition = position.getY();
 		this.playerID = player;
 		this.health = MAXHEALTH;
 	}
@@ -81,8 +83,16 @@ public class Gröditz extends Unit {
 	}
 
 	@Override
-	public Bullet shoot(Attackable[] farestUnits) {
-		// TODO Auto-generated method stub
+	public Bullet shoot(Attackable[] nearestUnits) {
+		if (cooldown  <= 0) {
+			if (CANATTACKGROUND && nearestUnits[0] != null) {
+				return new Bullet(this, nearestUnits[0]);
+			} else if (CANATTACKAIR && nearestUnits[1] != null) {
+				return new Bullet(this, nearestUnits[1]);
+			}
+		} else {
+			cooldown--;
+		}
 		return null;
 	}
 

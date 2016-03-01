@@ -355,7 +355,7 @@ public class Analyser {
 		case (38): // Einheit stirbt
 			break;
 		case (39): // Spieler verlässt das Spiel
-			playerNumber = (byte) (bs[1] - 1);
+			playerNumber = bs[1];
 			loader.setGameText(game.getPlayerName(playerNumber) + " hat das Spiel verlassen.");
 			game.removePlayer(playerNumber);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen

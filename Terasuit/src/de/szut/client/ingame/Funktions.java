@@ -139,13 +139,14 @@ public class Funktions implements Runnable {
 	}
 
 	public void reset() {
+		unitQueue = new ConcurrentLinkedQueue<Unit>();
+		listOfJProgressBar = new JProgressBar[36];
 		entity = new HashMap<Integer, Unit>();
 		selectedEntitysID = new ArrayList<Integer>();
 		cunit = new CreateUnit();
 		selectedUnit = new SelectedUnits();
 		bullets = new ArrayList<Bullet>();
 		resources = new double[] {50, 50, 50, 0};
-		//Controller controller = new Controller(this);
 		cThread = new Thread(this);
 		ended = false;
 		wait = 10;
@@ -161,10 +162,8 @@ public class Funktions implements Runnable {
 			buildBuildings();
 			generateResources();
 			try {
-				Thread.sleep(50 - (System.currentTimeMillis() - i));
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Thread.sleep(100 - (System.currentTimeMillis() - i));
+			} catch (Exception e) {
 			}
 		}
 	}
@@ -192,6 +191,8 @@ public class Funktions implements Runnable {
 			game.field.remove(b.getLabel());
 			bullets.remove(b);
 		}
+		
+		game.repaint();
 
 		bulletsToRemove.clear();
 
@@ -214,6 +215,7 @@ public class Funktions implements Runnable {
 				Bullet b = e.shoot(nearestUnits);
 				if (b != null) {
 					bullets.add(b);
+					game.showBullet(b.getLabel());
 				}
 			} else if (e.hasInRange(new Attackable[] {
 					mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null }) && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
@@ -249,10 +251,10 @@ public class Funktions implements Runnable {
 	}
 
 	private void generateResources() {
-		resources[0] += 0.04;
-		resources[1] += 0.025;
-		resources[2] += 0.025;
-		resources[3] += 0.01;
+		resources[0] += 0.08;
+		resources[1] += 0.05;
+		resources[2] += 0.05;
+		resources[3] += 0.02;
 		if (wait > 0) {
 			wait--;
 		} else {

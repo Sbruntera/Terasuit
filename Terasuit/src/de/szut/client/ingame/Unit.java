@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 
 public class Unit implements Attackable{
 	
-	JLabel label = new JLabel("");
+	JLabel label;
 	int EntityNummer = 0;
 	double EntityPositionX = 0;
 	double EntityPositionY = 0;
@@ -104,7 +104,9 @@ public class Unit implements Attackable{
 
 	public void setEntityPositionX(double entityPosition) {
 		EntityPositionX = entityPosition;
-		label.setLocation((int) EntityPositionX, (int) EntityPositionY);
+		if (label != null) {
+			label.setLocation((int) (EntityPositionX - label.getIcon().getIconWidth()/2), (int) (EntityPositionY - label.getIcon().getIconHeight()/2));
+		}
 	}
 
 	public int getEntitymembership() {
@@ -259,5 +261,9 @@ public class Unit implements Attackable{
 
 	public int[] getPrice() {
 		return price;
+	}
+
+	public void setEntityReloadTimer(int rpm) {
+		weaponCooldown = rpm;
 	}
 }

@@ -11,16 +11,18 @@ public class SakataMK2 extends Unit {
 	public static final int[] PRICE = new int[] {0, 21, 0, 0};
 	public static final int MAXHEALTH = 200;
 
-	private static double speed = 2.2;
+	private static double speed = 4.4;
 	private static int damage = 200;
 	private static int range = 200;
 	private static int shootSpeed = 40;
 	private int splashDamage = 0;
-	private double bulletSpeed = 10;
+	private double bulletSpeed = 20;
+	private int cooldown;
 	
 	public SakataMK2(short id, Point position, byte player) {
 		this.id = id;
-		this.position = position;
+		this.xPosition = position.getX();
+		this.yPosition = position.getY();
 		this.playerID = player;
 		this.health = MAXHEALTH;
 	}
@@ -81,8 +83,14 @@ public class SakataMK2 extends Unit {
 	}
 
 	@Override
-	public Bullet shoot(Attackable[] farestUnits) {
-		// TODO Auto-generated method stub
+	public Bullet shoot(Attackable[] nearestUnits) {
+		if (cooldown  <= 0) {
+			if (CANATTACKAIR && nearestUnits[1] != null) {
+				return new Bullet(this, nearestUnits[1]);
+			}
+		} else {
+			cooldown--;
+		}
 		return null;
 	}
 

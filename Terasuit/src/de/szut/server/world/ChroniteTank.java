@@ -11,16 +11,18 @@ public class ChroniteTank extends Unit {
 	public static final int[] PRICE = new int[] {5, 0, 10, 0};
 	public static final int MAXHEALTH = 600;
 
-	private static double speed = 1.6;
+	private static double speed = 3.2;
 	private static int damage = 60;
 	private static int range = 225;
 	private static int shootSpeed = 35;
 	private int splashDamage = 2;
-	private double bulletSpeed = 7;
+	private double bulletSpeed = 14;
+	private int cooldown = 0;
 	
 	public ChroniteTank(short id, Point position, byte player) {
 		this.id = id;
-		this.position = position;
+		this.xPosition = position.getX();
+		this.yPosition = position.getY();
 		this.playerID = player;
 		this.health = MAXHEALTH;
 	}
@@ -82,11 +84,14 @@ public class ChroniteTank extends Unit {
 
 	@Override
 	public Bullet shoot(Attackable[] nearestUnits) {
-		if (nearestUnits != null) {
-			return new Bullet(this, nearestUnits[0]);
+		if (cooldown <= 0) {
+			if (CANATTACKGROUND && nearestUnits[0] != null) {
+				return new Bullet(this, nearestUnits[0]);
+			}
 		} else {
-			return null;
+			cooldown--;
 		}
+		return null;
 	}
 
 	@Override

@@ -52,8 +52,8 @@ public class GameServer implements Runnable {
 		bullets = new ArrayList<Bullet>();
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
-		for (int i = 0; i < 2; i++) {
-			mainBuildings[i] = new MainBuilding((byte) i);
+		for (int i = 0; i < 3; i += 2) {
+			mainBuildings[i>>1] = new MainBuilding((byte) i);
 		}
 		resources = new double[connections.length][];
 		for (int i = 0; i < resources.length; i++) {
@@ -62,6 +62,7 @@ public class GameServer implements Runnable {
 		bulletsToRemove = new ArrayList<Bullet>();
 		unitsToRemove = new ArrayList<Unit>();
 		unitIDCounter = 1;
+		unitkills = new int[4];
 		Thread controlThread = new Thread(this);
 		controlThread.start();
 	}
@@ -84,9 +85,9 @@ public class GameServer implements Runnable {
 							ended.set(true);
 							for (int i = 0; i < connections.length; i++) {
 								if (connections[i] != null) {
-									connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) == (i >> 1));
+									connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) != (i >> 1));
 									if (connections[i].isLoggedIn()) {
-										server.writeStats(connections[i].getName(), unitkills[i], (b.getTarget().getPlayer()>>1) == (i >> 1), b.getPlayer() == i);
+										server.writeStats(connections[i].getName(), unitkills[i], (b.getTarget().getPlayer()>>1) != (i >> 1), b.getPlayer() == i);
 									}
 								}
 							}
@@ -109,17 +110,17 @@ public class GameServer implements Runnable {
 	
 			// Einheiten bewegen
 			for (Unit u : units.values()) {
-				Unit[] nearestUnits = getNearestUnit(u.getPosition().getX(),
+				Unit[] nearestUnits = getNearestUnit(u.getXPosition(),
 						(u.getPlayer() & 2) == 2);
 				if (u.hasInRange(nearestUnits) && !u.isRunning()
-						&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
+						&& (u.getDirection() == -1) == ((u.getPlayer() & 2) == 2)) {
 					Bullet b = u.shoot(nearestUnits);
 					if (b != null) {
 						bullets.add(b);
 					}
 				} else if (u.hasInRange(new Attackable[] {
 						mainBuildings[1 - (u.getPlayer() >> 1)], null })
-						&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
+						&& (u.getDirection() == -1) == ((u.getPlayer() & 2) == 2)) {
 					Bullet b = u.shoot(new Attackable[] {
 							mainBuildings[1 - (u.getPlayer() >> 1)], null });
 					if (b != null) {
@@ -151,7 +152,7 @@ public class GameServer implements Runnable {
 								for (Connection c : connections) {
 									if (c != null) {
 										c.sendCreateUnit(u.getPlayer(),
-												u.getPosition(), u.getType(),
+												u.getXPosition(), u.getYPosition(), u.getType(),
 												u.getID());
 									}
 								}
@@ -170,10 +171,8 @@ public class GameServer implements Runnable {
 			}
 			tick.set(false);
 			try {
-				Thread.sleep(50 - (System.currentTimeMillis() - waitTimer));
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Thread.sleep(100 - (System.currentTimeMillis() - waitTimer));
+			} catch (Exception e) {
 			}
 			
 		}
@@ -183,12 +182,12 @@ public class GameServer implements Runnable {
 		Unit[] nearestUnits = new Unit[2];
 		double[] difference = new double[] { -32768, -32768 };
 		for (Unit u : units.values()) {
-			if (Math.abs(u.getPosition().getX() - d) < difference[Boolean
+			if (Math.abs(u.getXPosition() - d) < difference[Boolean
 					.compare(u.isFlying(), false)]
 					&& right != ((u.getPlayer() & 2) == 2)) {
 				nearestUnits[Boolean.compare(u.isFlying(), false)] = u;
 				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u
-						.getPosition().getX() - d);
+						.getXPosition() - d);
 			}
 		}
 		return nearestUnits;
@@ -359,16 +358,23 @@ public class GameServer implements Runnable {
 	}
 
 	public void disconnect(short id) {
+		int number = -1;
+		for (int i = 0; i < connections.length; i++) {
+			if (connections[i] != null && connections[i].getID() == id) {
+				number = i;
+			}
+		}
 		boolean found = false;
-		for (byte i = 0; i < connections.length; i++) {
-			if (connections[i] != null) {
-				if (connections[i].getID() == id) {
-					connections[i].setAnalyser(new MenuAnalyser(server,
-							connections[i], id));
-					connections[i] = null;
-				} else {
-					connections[i].sendPlayerLeftGame(i);
-					found = true;
+		if (number != -1) {
+			for (Connection c : connections) {
+				if (c != null) {
+					if (c.getID() == id) {
+						c.setAnalyser(new MenuAnalyser(server, c, id));
+						c = null;
+					} else {
+						c.sendPlayerLeftGame((byte) number);
+						found = true;
+					}
 				}
 			}
 		}

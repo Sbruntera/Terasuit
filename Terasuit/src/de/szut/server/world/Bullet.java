@@ -1,24 +1,25 @@
 package de.szut.server.world;
 
-import java.awt.geom.Point2D;
+import java.awt.Point;
 
 public class Bullet {
 
-	private Point2D position;
+	private Point position;
 	private Unit attacker;
 	private Attackable target;
 
 	public Bullet(Unit attacker, Attackable target) {
 		this.attacker = attacker;
 		this.target = target;
-		position = attacker.getPosition();
+		position = new Point((int) attacker.getXPosition(), (int) attacker.getYPosition());
 	}
 
 	public boolean move() {;
 		double v = attacker.getBulletSpeed(target.isFlying())
-				/ Math.sqrt(Math.pow(target.getPosition().getX() - position.getX(), 2)
-						+ Math.pow(target.getPosition().getY() - position.getY(), 2));
-		position.setLocation((target.getPosition().getX() - position.getX()) * v, (target.getPosition().getY() - position.getY()) * v);
+				/ Math.sqrt(Math.pow(target.getXPosition() - position.getX(), 2)
+						+ Math.pow(target.getYPosition() - position.getY(), 2));
+		position.x += (target.getXPosition() - position.getX()) * v;
+		position.y += (target.getYPosition() - position.getY()) * v;
 		return Math.abs(v) > 1;
 	}
 
@@ -29,7 +30,7 @@ public class Bullet {
 	public int getSplashDamage() {
 		return attacker.getSplashDamage(target.isFlying());
 	}
-	
+
 	public int getPlayer() {
 		return attacker.getPlayer();
 	}

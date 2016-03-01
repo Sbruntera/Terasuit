@@ -46,7 +46,7 @@ public class CreateUnit {
 		label.setIcon(pic);
 		
 		// Aktionlisener
-		label.setBounds(position.x, position.y, pic.getIconWidth(), pic.getIconHeight());
+		label.setBounds(position.x - pic.getIconWidth()/2, position.y - pic.getIconHeight()/2, pic.getIconWidth(), pic.getIconHeight());
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent objUnit) {
@@ -68,6 +68,7 @@ public class CreateUnit {
 		unit.setEntityFirerange(unitData.getRange());
 		unit.setEntityLive(unitData.getLive());
 		unit.setEntitySplashDmg(unitData.getSplashDamage());
+		unit.setEntityReloadTimer(unitData.getRpm());
 		unit.setEntitySpeed(unitData.getSpeed());
 		unit.setCanAttackGround(unitData.canAttackGround());
 		unit.setCanAttackAir(unitData.canAttackAir());

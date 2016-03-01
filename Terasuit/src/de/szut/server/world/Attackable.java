@@ -1,15 +1,14 @@
 package de.szut.server.world;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
-
 public interface Attackable {
 
 	byte getPlayer();
 
 	boolean isFlying();
 	
-	Point2D getPosition();
+	double getXPosition();
+
+	double getYPosition();
 	
 	int getHealth();
 	

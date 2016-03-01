@@ -1,13 +1,12 @@
 package de.szut.server.world;
 
-import java.awt.geom.Point2D;
-
 public abstract class Unit implements Attackable {
 	
 	protected short id;
 	protected byte playerID;
 
-	protected Point2D position;
+	protected double xPosition;
+	protected double yPosition;
 	protected int direction;
 	protected boolean running;
 	protected int health;
@@ -45,12 +44,12 @@ public abstract class Unit implements Attackable {
 
 	public boolean hasInRange(Attackable[] attackables) {
 		if (attackables[0] != null && canAttackGround()) {
-			if (Math.abs(getPosition().getY() - attackables[0].getPosition().getX()) - getRange(true) <= 0) {
+			if (Math.abs(getXPosition() - attackables[0].getXPosition()) - getRange(true) <= 0) {
 				return true;
 			}
 		}
 		if (attackables[01] != null && canAttackAir()) {
-			if (Math.abs(getPosition().getX() - attackables[0].getPosition().getX()) - getRange(false) <= 0) {
+			if (Math.abs(getXPosition() - attackables[0].getXPosition()) - getRange(false) <= 0) {
 				return true;
 			}
 		}
@@ -82,8 +81,13 @@ public abstract class Unit implements Attackable {
 	public abstract double getSpeed();
 
 	@Override
-	public Point2D getPosition() {
-		return position;
+	public double getXPosition() {
+		return xPosition;
+	}
+
+	@Override
+	public double getYPosition() {
+		return xPosition;
 	}
 
 	public boolean isRunning() {
@@ -100,8 +104,8 @@ public abstract class Unit implements Attackable {
 	}
 
 	public void move() {
-		if (position.getX() >= 294 && position.getX() <= 1344) {
-			position.setLocation(position.getX() + getSpeed() * direction, position.getY());
+		if (xPosition >= 294 && xPosition <= 1344) {
+			xPosition = xPosition + getSpeed() * direction;
 		}
 	}
 }
