@@ -145,18 +145,29 @@ public class Funktions implements Runnable {
 		selectedUnit = new SelectedUnits();
 		bullets = new ArrayList<Bullet>();
 		resources = new double[] {50, 50, 50, 0};
-		Controller controller = new Controller(this);
-		cThread = new Thread(controller);
+		//Controller controller = new Controller(this);
+		cThread = new Thread(this);
 		ended = false;
+		wait = 10;
 	}
 
 	@Override
 	public void run() {
-		addUnits();
-		moveBullets();
-		moveUnits();
-		buildBuildings();
-		generateResources();
+		while (!ended) {
+			long i = System.currentTimeMillis();
+			addUnits();
+			moveBullets();
+			moveUnits();
+			buildBuildings();
+			generateResources();
+			System.out.println(50 - (System.currentTimeMillis() - i));
+			try {
+				Thread.sleep(50 - (System.currentTimeMillis() - i));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void addUnits() {
@@ -237,10 +248,10 @@ public class Funktions implements Runnable {
 	}
 
 	private void generateResources() {
-		resources[0] += 0.08;
-		resources[1] += 0.05;
-		resources[2] += 0.05;
-		resources[3] += 0.02;
+		resources[0] += 0.04;
+		resources[1] += 0.025;
+		resources[2] += 0.025;
+		resources[3] += 0.01;
 		if (wait > 0) {
 			wait--;
 		} else {
