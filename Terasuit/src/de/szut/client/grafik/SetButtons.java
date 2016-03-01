@@ -111,7 +111,7 @@ public class SetButtons {
 						loader.switchPanel(loader.Lobbypage);
 						loader.connection.refreshServerList(false, "", 0, 4, 0);
 					} else {
-						loader.feedback("Server konnte nicht gefunden werden. ");
+						loader.feedback("Server Not Reachable");
 					}
 				}
 			});

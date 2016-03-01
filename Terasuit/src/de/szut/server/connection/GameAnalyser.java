@@ -53,10 +53,14 @@ public class GameAnalyser implements Analyser {
 			}
 			break;
 		case (36): // Spiel verlassen
+			Logging.log(id + " hat das Spiel verlassen(Ingame)", "STATUSUPDATE");
 			server.disconnect(id);
 			break;
 		case (20): // Chat
 			server.broadcast(split(input, 1), id);
+			break;
+		default:
+			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
 			break;
 		}
 	}

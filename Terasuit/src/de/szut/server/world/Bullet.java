@@ -14,7 +14,7 @@ public class Bullet {
 		position = attacker.getPosition();
 	}
 
-	public boolean move() {
+	public boolean move() {;
 		double v = attacker.getBulletSpeed(target.isFlying())
 				/ Math.sqrt(Math.pow(target.getPosition().x - position.x, 2)
 						+ Math.pow(target.getPosition().y - position.y, 2));

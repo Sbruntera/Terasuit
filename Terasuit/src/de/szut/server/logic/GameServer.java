@@ -77,6 +77,13 @@ public class GameServer implements Runnable {
 				if (!b.getTarget().isAlive()) {
 					if (b.getTarget() instanceof Unit) {
 						unitsToRemove.add((Unit) b.getTarget());
+					} else {
+						ended.set(true);
+						for (int i = 0; i < connections.length; i++) {
+							if (connections[i] != null) {
+								connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) == (i >> 1));
+							}
+						}
 					}
 				}
 			}
@@ -106,7 +113,6 @@ public class GameServer implements Runnable {
 				}
 			} else if (u.hasInRange(new Attackable[] {
 					mainBuildings[1 - (u.getPlayer() >> 1)], null })
-					&& !u.isRunning()
 					&& (u.getDirection() == 0) == ((u.getPlayer() & 2) == 2)) {
 				Bullet b = u.shoot(new Attackable[] {
 						mainBuildings[1 - (u.getPlayer() >> 1)], null });
@@ -154,23 +160,6 @@ public class GameServer implements Runnable {
 		for (double[] array : resources) {
 			for (int i = 0; i < array.length; i++) {
 				array[i] += gainedResources[i];
-			}
-		}
-
-		// Sieg
-		if (!mainBuildings[0].isAlive() && !mainBuildings[1].isAlive()) {
-			for (Connection c : connections) {
-				if (c != null) {
-					c.sendGameEnded(false);
-				}
-			}
-		} else if (!mainBuildings[0].isAlive()) {
-			for (int i = 0; i < connections.length; i++) {
-				connections[i].sendGameEnded((connections.length - 1) / 2 > 1);
-			}
-		} else if (!mainBuildings[1].isAlive()) {
-			for (int i = 0; i < connections.length; i++) {
-				connections[i].sendGameEnded((connections.length - 1) / 2 < 0);
 			}
 		}
 		tick.set(false);

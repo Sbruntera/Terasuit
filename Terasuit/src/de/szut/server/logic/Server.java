@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.szut.server.connection.Connection;
+import de.szut.server.connection.Logging;
 import de.szut.server.connection.MenuAnalyser;
 import logic.BCrypt;
 
@@ -87,8 +88,10 @@ public class Server implements Runnable {
 		if (!db.search(name)) {
 			db.addUser(name, hashed, email, mode);
 			connections.get(id).sendLogin(name);
+			Logging.log("Register complete (" + name + " ist jetzt registiert)", "STATUSUPDATE");
 		} else {
 			connections.get(id).sendFailed((byte) 1);
+			Logging.log("Register Failed(Fehler: " + name + " bereits vorhanden)" , "ERROR");
 		}
 	}
 

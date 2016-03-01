@@ -437,7 +437,7 @@ public class Connection implements Runnable {
 
 	public void sendGameEnded(boolean won) {
 		switchToMenu();
-		addMessage(new byte[] { 40, (byte) (Boolean.compare(won, false) + 1)});
+		addMessage(new byte[] { 40, (byte) (Boolean.compare(won, false))});
 	}
 
 }

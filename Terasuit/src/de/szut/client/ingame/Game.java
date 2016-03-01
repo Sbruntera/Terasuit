@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -147,6 +149,28 @@ public class Game {
 	}
 
 	public void end(boolean won) {
+		JLabel victory;
+		if(won){
+			victory = new JLabel(new ImageIcon("Game_Assets/victory.png"));
+		} else {
+			victory = new JLabel(new ImageIcon("Game_Assets/defeat.png"));
+		}
+		victory.setBounds(100, 100, 552, 80);
+		field.setEnabled(false);
+		for (MouseListener n : field.getMouseListeners()){
+			field.removeMouseListener(n);
+		}
+		for (MouseMotionListener n : field.getMouseMotionListeners()){
+			field.removeMouseMotionListener(n);
+		}
+		console.setEnabled(false);
+		for (MouseListener n : console.getMouseListeners()){
+			console.removeMouseListener(n);
+		}
+		panel.add(victory);	
+		panel.setComponentZOrder(victory, 0);
+		panel.repaint();
+		panel.revalidate();
 		func.end();
 	}
 
@@ -197,6 +221,8 @@ public class Game {
 			func.addProgressBar(progressBar, index);
 			console.add(progressBar);
 		}
+
+		createUserOptions(primID - 18, primID, BuildingsArray);
 	}
 
 	public void createEnemyBuilding(String buildingName, String buildingLocation, int slotID, int primID) {

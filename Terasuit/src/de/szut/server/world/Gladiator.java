@@ -8,7 +8,7 @@ public class Gladiator extends Unit {
 	public static final boolean FLYING = false;
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = true;
-	public static final int[] PRICE = new int[] {0, 0, 0, 0};
+	public static final int[] PRICE = new int[] {30, 25, 10, 0};
 
 	private static int speed;
 	private static int damage;

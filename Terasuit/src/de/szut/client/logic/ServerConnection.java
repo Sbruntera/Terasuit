@@ -30,7 +30,6 @@ public class ServerConnection implements Runnable {
 			serverAccess = true;
 		} catch (ConnectException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Server Not Reachable");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

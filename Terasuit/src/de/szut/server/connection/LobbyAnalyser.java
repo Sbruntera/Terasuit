@@ -32,15 +32,21 @@ public class LobbyAnalyser implements Analyser {
 			break;
 		case (17): // Spiel verlassen
 			lobby.removePlayer(id, lobby.getPosition(id));
+			Logging.log(lobby.getPosition(id) + " hat die Lobby " + lobby.getName() + " verlassen", "STATUSUPDATE");
 			break;
 		case (18): // Spieler kicken
 			lobby.removePlayer(id, input[1]);
+			Logging.log(input[1] + " wurde aus der Lobby " + lobby.getName() + " gekickt", "STATUSUPDATE");
 			break;
 		case (19): // Spiel starten
 			lobby.startGame(id);
+			Logging.log("Das Spiel der Lobby " + lobby.getName() + " mit der ID " + lobby.getID() + " wurde gestartet", "STATUSUPDATE");
 			break;
 		case (20):
 			lobby.broadcast(split(input, 1), id);
+			break;
+		default:
+			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
 			break;
 		}
 	}

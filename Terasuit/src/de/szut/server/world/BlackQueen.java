@@ -8,7 +8,7 @@ public class BlackQueen extends Unit {
 	public static final boolean FLYING = true;
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = true;
-	public static final int[] PRICE = new int[] {0, 0, 0, 0};
+	public static final int[] PRICE = new int[] {30, 25, 50, 0};
 
 	private static int speed;
 	private static int damage;

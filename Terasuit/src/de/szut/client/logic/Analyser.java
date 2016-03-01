@@ -136,9 +136,9 @@ public class Analyser {
 			break;
 		case (18): // Spieler verlässt das Spiel
 			if (bs.length == 2) {
+				loader.setText(game.getPlayerName(bs[1]) + " left");
 				game.removePlayer(bs[1]);
 				loader.updatePlayerList(game.getPlayerNames(), isHost);
-				loader.setText(game.getPlayerName(bs[1]) + " left");
 			} else {
 				switchState(State.MENU);
 				loader.switchPanel(loader.Lobbypage);
@@ -356,6 +356,7 @@ public class Analyser {
 			break;
 		case (39): // Spieler verlässt das Spiel
 			playerNumber = (byte) (bs[1] - 1);
+			loader.setGameText(game.getPlayerName(playerNumber) + " hat das Spiel verlassen.");
 			game.removePlayer(playerNumber);
 			// TODO: An Feldmann: Hier Funktionsaufruf Spieler verlässt anzeigen
 			break;

@@ -4,6 +4,8 @@ import java.awt.Point;
 
 public interface Attackable {
 
+	byte getPlayer();
+
 	boolean isFlying();
 	
 	Point getPosition();

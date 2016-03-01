@@ -47,7 +47,9 @@ public class Loader {
 		window.setResizable(false);
 		window.pack();
 		window.setVisible(true);
-		connectionThread.start();
+		if (connection.isServerAccess()) {
+			connectionThread.start();
+		}
 	}
 
 	/**

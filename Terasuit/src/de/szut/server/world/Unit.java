@@ -13,11 +13,12 @@ public abstract class Unit implements Attackable {
 	protected int health;
 
 	public abstract byte getType();
-	
+
 	public short getID() {
 		return id;
 	}
-
+	
+	@Override
 	public byte getPlayer() {
 		return playerID;
 	}

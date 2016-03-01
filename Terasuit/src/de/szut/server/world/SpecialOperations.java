@@ -9,11 +9,11 @@ public class SpecialOperations implements Building {
 
 	private int lvl = 0;
 	private int buildTime;
-	private int createTime;
+	//TODO private int createTime;
 	private byte position;
 	private byte player;
 	
-	private Unit unit;
+	//TODO private Unit unit;
 	
 	private static final int[] prices =  {80, 30, 30, 00};
 	

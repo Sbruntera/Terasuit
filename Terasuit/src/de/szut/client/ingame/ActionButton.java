@@ -255,8 +255,13 @@ public class ActionButton {
 		Description.setBounds(20, -50, 180, 300);
 
 		if (primID == 0) {
-			BuildingNameLbl
-					.setText(wrapLines(buildingsArray[slotID].getName()));
+			if (buildingsArray[slotID].getPrimerBuilding() == null) {
+				BuildingNameLbl
+						.setText(wrapLines(buildingsArray[slotID].getName()));
+			} else {
+				BuildingNameLbl
+				.setText(wrapLines(buildingsArray[slotID].getPrimerBuilding().getName()));
+			}
 		} else {
 			BuildingNameLbl
 					.setText(wrapLines(buildingsArray[primID].getName()));

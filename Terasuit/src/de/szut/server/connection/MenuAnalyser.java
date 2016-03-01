@@ -31,18 +31,16 @@ public class MenuAnalyser implements Analyser {
 	 */
 	@Override
 	public void analyse(byte[] input) {
-		System.out.println("analyse");
 		switch (input[0]) {
 		case (0): // Stats
-			System.out.println("stats");
 			connection.sendStats();
+		Logging.log(connection.getName() + " hat Stats angefordert", "REQUEST");
 			break;
 		case (1): // logout
-			System.out.println("logout");
+			Logging.log(connection.getName() + " hat sich ausgeloggt", "STATUSUPDATE");
 			connection.loggOut();
 			break;
 		case (2): // Serverliste
-			System.out.println("Hier");
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));
 			connection.sendGameList(lobbyList);
 			break;
@@ -58,6 +56,7 @@ public class MenuAnalyser implements Analyser {
 				server.createLobby(connection,
 						castToString(splitted[0], 0), password,
 						getMap(input[1]));
+				Logging.log(connection.getName() + " hat eine Lobby mit dem Namen " +  castToString(splitted[0], 0) + " dem Password " + password + " auf der Map " + getMap(input[1]) + " erstellt", "STATUSUPDATE");
 			}
 			break;
 		case (4): // Spiel beitreten
@@ -65,6 +64,7 @@ public class MenuAnalyser implements Analyser {
 				if (server.hasLobby(input[1])) {
 					server.getLobby(input[1]).addPlayer(connection,
 							castToString(input, 2));
+					Logging.log(connection.getName() + " ist der Lobby " + server.getLobby(input[1]).getName() + " mit der ID " + server.getLobby(input[1]).getID() + " beigetreten", "STATUSUPDATE");
 				}
 			}
 			break;
@@ -82,8 +82,10 @@ public class MenuAnalyser implements Analyser {
 						connection
 								.sendLogin(castToString(splitted[0], 0));
 						connection.loggIn(castToString(splitted[0], 0));
+						Logging.log(castToString(splitted[0], 0) + " wurde eingeloggt", "STATUSUPDATE");
 					} else {
 						connection.sendFailed((byte) 0);
+						Logging.log(castToString(splitted[0], 0) + " konnte nicht eingeloggt werden(Fehler: Password falsch oder User nicht vorhanden)", "ERROR");
  					}
 					break;
 				}
@@ -101,7 +103,11 @@ public class MenuAnalyser implements Analyser {
 			}
 			break;
 		case (7):
+			Logging.log(connection.getName() + "hat das Spiel verlassen(Exit)", "STATUSUPDATE");
 			server.diconnect(id);
+			break;
+		default:
+			Logging.log("Nachricht konnte nicht analysiert werden(Fehler: " + (char) input[0] + ")", "ERROR");
 			break;
 		}
 	}

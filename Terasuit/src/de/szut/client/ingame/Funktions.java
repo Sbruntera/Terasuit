@@ -30,6 +30,7 @@ public class Funktions implements Runnable {
 	private boolean ended;
 	private MainBuilding[] mainBuildings = new MainBuilding[2];
 	private double[] resources;
+	private int wait = 10;
 
 	ArrayList<Bullet> bulletsToRemove;
 	HashMap<Integer, Unit> unitsToRemove;
@@ -119,6 +120,10 @@ public class Funktions implements Runnable {
 			game.btnAction.createUserUnitOptions(console);
 		} else {
 			game.btnAction.destroyUserOptions(console);
+			setInformationInGame("", "");
+			game.setAllJProgressBarVisible(false);
+			
+			
 		}
 	}
 
@@ -169,8 +174,6 @@ public class Funktions implements Runnable {
 				if (!b.getTarget().isAlive()) {
 					if (b.getTarget() instanceof Unit) {
 						unitsToRemove.put(((Unit) b.getTarget()).getEntityNummer(), (Unit) b.getTarget());
-					} else {
-						System.out.println("victory");
 					}
 				}
 			}
@@ -202,7 +205,7 @@ public class Funktions implements Runnable {
 					bullets .add(b);
 				}
 			} else if (e.hasInRange(new Attackable[] {
-					mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null }) && !e.isEntityRunning() && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
+					mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null }) && e.isEntityRushLeft() == ((e.getEntitymembership()-1&2)==2)) {
 				Bullet b = e.shoot(new Attackable[] {
 						mainBuildings[1-(e.getEntitymembership() - 1 >> 1)], null });
 				if (b != null) {
@@ -238,7 +241,11 @@ public class Funktions implements Runnable {
 		resources[1] += 0.05;
 		resources[2] += 0.05;
 		resources[3] += 0.02;
-		game.setResources(resources);
+		if (wait > 0) {
+			wait--;
+		} else {
+			game.setResources(resources);
+		}
 	}
 
 	private Unit[] getNearestUnit(int i, boolean right) {

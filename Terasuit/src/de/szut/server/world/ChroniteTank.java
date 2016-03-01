@@ -8,14 +8,14 @@ public class ChroniteTank extends Unit {
 	public static final boolean FLYING = false;
 	private static final boolean CANATTACKGROUND = true;
 	private static final boolean CANATTACKAIR = false;
-	public static final int[] PRICE = new int[] {0, 0, 0, 0};
+	public static final int[] PRICE = new int[] {5, 0, 10, 0};
 
 	private static int speed;
-	private static int damage;
-	private static int range;
-	private static int shootSpeed;
+	private static int damage = 1000;
+	private static int range = 2000;
+	private static int shootSpeed = 1;
 	private int splashDamage;
-	private double bulletSpeed;
+	private double bulletSpeed = 100;
 	
 	public ChroniteTank(short id, Point position, byte player) {
 		this.id = id;
@@ -79,9 +79,12 @@ public class ChroniteTank extends Unit {
 	}
 
 	@Override
-	public Bullet shoot(Attackable[] farestUnits) {
-		// TODO Auto-generated method stub
-		return null;
+	public Bullet shoot(Attackable[] nearestUnits) {
+		if (nearestUnits != null) {
+			return new Bullet(this, nearestUnits[0]);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

@@ -41,7 +41,12 @@ public class LoginRegisterPanel {
 				for (char c : passwordField.getPassword()) {
 					password += c;
 				}
-				connection.login(userField.getText(), password);
+				if(connection.isServerAccess()){
+					connection.login(userField.getText(), password);
+				} else{
+					JOptionPane.showMessageDialog(panel, "Server not reachable", "Problem", JOptionPane.WARNING_MESSAGE);
+				}
+				
 			}
 		});
 		panel.add(btnlogin);
@@ -85,8 +90,13 @@ public class LoginRegisterPanel {
 					password2 += c;
 				}
 				if (password1.equals(password2)) {
-					connection.register(userField.getText(), password1,
-							mailField.getText());
+					if(connection.isServerAccess()){
+						connection.register(userField.getText(), password1,
+								mailField.getText());
+					} else{
+						JOptionPane.showMessageDialog(panel, "Server not reachable", "Problem", JOptionPane.WARNING_MESSAGE);
+					}
+					
 				} else {
 					JOptionPane.showMessageDialog(panel, "Password is not identical", "Inane warning", JOptionPane.WARNING_MESSAGE);
 				}
