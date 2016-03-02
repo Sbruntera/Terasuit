@@ -8,8 +8,9 @@ import de.szut.server.logic.Server;
 
 /**
  * 
- * @author Alexander, Simeon
- *
+ * @author Alexander, Simeon, Jan
+ * Version 1.0
+ * 02.03.2016
  */
 public class START {
 
