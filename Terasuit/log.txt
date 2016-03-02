@@ -1,0 +1,35 @@
+02.03.2016 08:14:57.306: (STATUSUPDATE) Register complete (Mel ist jetzt registiert)
+02.03.2016 08:14:57.306: (STATUSUPDATE) Mel hat eine Lobby mit dem Namen masd ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:14:57.306: (STATUSUPDATE) Das Spiel der Lobby masd mit der ID 2 wurde gestartet
+02.03.2016 08:14:57.306: (STATUSUPDATE) 2 hat das Spiel verlassen(Ingame)
+02.03.2016 08:14:57.306: (STATUSUPDATE) Mel hat eine Lobby mit dem Namen dafsh ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:14:57.306: (STATUSUPDATE) 2 wurde aus der Lobby dafsh gekickt
+02.03.2016 08:14:57.306: (STATUSUPDATE) Das Spiel der Lobby dafsh mit der ID 3 wurde gestartet
+02.03.2016 08:14:57.306: (STATUSUPDATE) 2 hat das Spiel verlassen(Ingame)
+02.03.2016 08:14:57.306: (STATUSUPDATE) Mel hat eine Lobby mit dem Namen asdg ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:14:57.306: (STATUSUPDATE) Das Spiel der Lobby asdg mit der ID 4 wurde gestartet
+02.03.2016 08:14:57.306: (ERROR) Nachricht konnte nicht analysiert werden(Menü-Fehler: 36 1)
+02.03.2016 08:14:57.306: (STATUSUPDATE) Mel hat eine Lobby mit dem Namen asdg ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:14:57.306: (STATUSUPDATE) Das Spiel der Lobby asdg mit der ID 5 wurde gestartet
+02.03.2016 08:14:57.306: (STATUSUPDATE) 2 hat das Spiel verlassen(Ingame)
+02.03.2016 08:14:57.306: (STATUSUPDATE) Mel hat eine Lobby mit dem Namen dgh ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:14:57.306: (STATUSUPDATE) 0 wurde aus der Lobby dgh gekickt
+02.03.2016 08:21:36.498: (STATUSUPDATE) Guest4673 hat eine Lobby mit dem Namen sfh ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:21:36.498: (STATUSUPDATE) Guest1785 ist der Lobby sfh mit der ID 2 beigetreten
+02.03.2016 08:21:36.498: (STATUSUPDATE) Das Spiel der Lobby sfh mit der ID 2 wurde gestartet
+02.03.2016 08:21:36.498: (ERROR) Nachricht konnte nicht analysiert werden(Menü-Fehler: 36 1)
+02.03.2016 08:21:36.498: (ERROR) Nachricht konnte nicht analysiert werden(Menü-Fehler: 36 1)
+02.03.2016 08:24:16.275: (STATUSUPDATE) Guest6099 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:24:16.275: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:27:58.686: (STATUSUPDATE) Guest6820 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:27:58.686: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:38:39.324: (STATUSUPDATE) Guest6865 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:38:39.324: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:40:49.488: (STATUSUPDATE) Guest9572 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:40:49.488: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:48:02.200: (STATUSUPDATE) Guest0349 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:48:02.200: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:49:41.070: (STATUSUPDATE) Guest2615 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:49:41.070: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 08:51:04.420: (STATUSUPDATE) Guest3643 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 08:51:04.420: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
