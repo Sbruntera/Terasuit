@@ -199,9 +199,11 @@ public class Funktions implements Runnable {
 		for (Unit u : unitsToRemove.values()) {
 			entity.remove(u.getEntityNummer());
 			Container parent = u.getLabel().getParent();
-			parent.remove((u.getLabel()));
-			parent.repaint();
-			parent.revalidate();
+			if (parent != null) {
+				parent.remove((u.getLabel()));
+				parent.repaint();
+				parent.revalidate();
+			}
 		}
 
 		unitsToRemove.clear();
