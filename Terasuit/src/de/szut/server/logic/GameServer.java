@@ -43,6 +43,14 @@ public class GameServer implements Runnable {
 	private int defaultSpawnGround = 350;
 	private int defaultSpawnAir = 120;
 
+	/**
+	 * Initialisiert einen GameServer mit einer übergebenen Liste an Spielern
+	 * und dem Server
+	 * 
+	 * @param connections
+	 *            Liste der Spielerverbindungen
+	 * @param server
+	 */
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
 		this.server = server;
@@ -51,7 +59,7 @@ public class GameServer implements Runnable {
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
 		mainBuildings = new MainBuilding[2];
 		for (int i = 0; i < 3; i += 2) {
-			mainBuildings[i>>1] = new MainBuilding((byte) i);
+			mainBuildings[i >> 1] = new MainBuilding((byte) i);
 		}
 		resources = new double[connections.length][];
 		for (int i = 0; i < resources.length; i++) {
@@ -75,17 +83,25 @@ public class GameServer implements Runnable {
 				if (b.move()) {
 					b.getTarget().dealDamage(b.getDamage());
 					bulletsToRemove.add(b);
-					if (!b.getTarget().isAlive()) {
-						if (b.getTarget() instanceof Unit) {
+					if (!b.getTarget().isAlive()) { // Ziel gestorben
+						if (b.getTarget() instanceof Unit && !b.getTarget().wasAlreadyDead()) { // Einheit
+							b.getTarget().setAlreadyDead();
 							unitsToRemove.add(((Unit) b.getTarget()).getID());
 							unitkills[b.getPlayer()] += 1;
-						} else {
-							ended.set(true);
-							for (int i = 0; i < connections.length; i++) {
-								if (connections[i] != null) {
-									connections[i].sendGameEnded((b.getTarget().getPlayer()>>1) != (i >> 1));
-									if (connections[i].isLoggedIn()) {
-										server.writeStats(connections[i].getName(), unitkills[i], (b.getTarget().getPlayer()>>1) != (i >> 1), b.getPlayer() == i);
+						} else if (!(b.getTarget() instanceof Unit)) { // Hauptgebäude
+							if (!ended.get()) {
+								ended.set(true);
+								for (int i = 0; i < connections.length; i++) {
+									if (connections[i] != null) {
+										connections[i].sendGameEnded((b.getTarget()
+												.getPlayer() >> 1) != (i >> 1));
+										if (connections[i].isLoggedIn()) {
+											server.writeStats(
+													connections[i].getName(),
+													unitkills[i],
+													(b.getTarget().getPlayer() >> 1) != (i >> 1),
+													b.getPlayer() == i);
+										}
 									}
 								}
 							}
@@ -96,26 +112,28 @@ public class GameServer implements Runnable {
 			for (Bullet b : bulletsToRemove) {
 				bullets.remove(b);
 			}
-	
+
 			bulletsToRemove.clear();
-	
+
 			for (Connection c : connections) {
 				if (c != null) {
-					c.sendUnitDied(unitsToRemove.toArray(new Short[unitsToRemove.size()]));
+					c.sendUnitDied(unitsToRemove
+							.toArray(new Short[unitsToRemove.size()]));
 				}
 			}
-			
+
 			for (Short s : unitsToRemove) {
 				units.remove(new Integer(s.shortValue()));
 			}
-	
+
 			unitsToRemove.clear();
 
 			// Einheiten bewegen
 			for (Unit u : units.values()) {
 				Unit[] nearestUnits = getNearestUnit(u.getXPosition(),
 						(u.getPlayer() & 2) == 2);
-				if (u.hasInRange(nearestUnits) && !u.isRunning()
+				if (u.hasInRange(nearestUnits)
+						&& !u.isRunning()
 						&& (u.getDirection() == -1) == ((u.getPlayer() & 2) == 2)) {
 					Bullet b = u.shoot(nearestUnits);
 					if (b != null) {
@@ -124,7 +142,6 @@ public class GameServer implements Runnable {
 				} else if (u.hasInRange(new Attackable[] {
 						mainBuildings[1 - (u.getPlayer() >> 1)], null })
 						&& (u.getDirection() == -1) == ((u.getPlayer() & 2) == 2)) {
-					System.out.println("Nicht gut");
 					Bullet b = u.shoot(new Attackable[] {
 							mainBuildings[1 - (u.getPlayer() >> 1)], null });
 					if (b != null) {
@@ -134,7 +151,7 @@ public class GameServer implements Runnable {
 					u.move();
 				}
 			}
-	
+
 			// Gebäudestuff
 			for (Building[] array : buildings) {
 				for (Building b : array) {
@@ -156,7 +173,8 @@ public class GameServer implements Runnable {
 								for (Connection c : connections) {
 									if (c != null) {
 										c.sendCreateUnit(u.getPlayer(),
-												u.getXPosition(), u.getYPosition(), u.getType(),
+												u.getXPosition(),
+												u.getYPosition(), u.getType(),
 												u.getID());
 									}
 								}
@@ -165,7 +183,7 @@ public class GameServer implements Runnable {
 					}
 				}
 			}
-	
+
 			// Resources auffüllen
 			double[] gainedResources = WorldConstants.getResources();
 			for (double[] array : resources) {
@@ -178,25 +196,41 @@ public class GameServer implements Runnable {
 				Thread.sleep(100 - (System.currentTimeMillis() - waitTimer));
 			} catch (Exception e) {
 			}
-			
+
 		}
 	}
 
-	private Unit[] getNearestUnit(double d, boolean right) {
+	/**
+	 * Sucht zu einer Position die nähesten Gegner
+	 * 
+	 * @param position
+	 *            Position zu der gesucht werden soll
+	 * @param right
+	 *            Seite zu der die Einheit gehört
+	 * @return Die nähesten Einheiten, position0 = Boden; position 1= Fliegend
+	 */
+	private Unit[] getNearestUnit(double position, boolean right) {
 		Unit[] nearestUnits = new Unit[2];
 		double[] difference = new double[] { 32767, 32767 };
 		for (Unit u : units.values()) {
-			if (Math.abs(u.getXPosition() - d) < difference[Boolean
+			if (Math.abs(u.getXPosition() - position) < difference[Boolean
 					.compare(u.isFlying(), false)]
 					&& right != ((u.getPlayer() & 2) == 2)) {
 				nearestUnits[Boolean.compare(u.isFlying(), false)] = u;
 				difference[Boolean.compare(u.isFlying(), false)] = Math.abs(u
-						.getXPosition() - d);
+						.getXPosition() - position);
 			}
 		}
 		return nearestUnits;
 	}
 
+	/**
+	 * Gibt die position des übergebenen Spielers zurück
+	 * 
+	 * @param connection
+	 *            Spieler dessen ID gesucht wird
+	 * @return Position des Spielers
+	 */
 	public byte getPosition(Connection connection) {
 		for (byte i = 0; i < connections.length; i++) {
 			if (connections[i] == connection) {
@@ -210,9 +244,9 @@ public class GameServer implements Runnable {
 	 * Sendet eine Chatnachricht an alle Nutzer
 	 * 
 	 * @param bs
-	 *            : nachricht die gesendet werden soll
+	 *            Nachricht die gesendet werden soll
 	 * @param id
-	 *            : ID des Senders
+	 *            ID des Senders
 	 */
 	public void broadcast(byte[] bs, short id) {
 		byte position = 0;
@@ -231,14 +265,14 @@ public class GameServer implements Runnable {
 	}
 
 	/**
-	 * Fordert die Einheiten auf in eine bestimmte richtung zu laufen
+	 * Fordert die Einheiten auf in eine bestimmte Richtung zu laufen
 	 * 
 	 * @param id
-	 *            : ID des Besitzers der Einheiten
+	 *            ID des Besitzers der Einheiten
 	 * @param movingUnits
-	 *            : Einheiten die bewegt werden sollen
+	 *            Einheiten die bewegt werden sollen
 	 * @param direction
-	 *            : Richtung in die die einheiten laufen sollen 1: rechts 0:
+	 *            Richtung in die die einheiten laufen sollen 1: rechts 0:
 	 *            stehen -1: links
 	 */
 	public void moveUnits(byte id, short[] movingUnits, byte direction) {
@@ -263,9 +297,9 @@ public class GameServer implements Runnable {
 	 * position hat
 	 * 
 	 * @param id
-	 *            : Nutzer der geprüft werden soll
+	 *            Nutzer der geprüft werden soll
 	 * @param pos
-	 *            : Position des Gebäudes
+	 *            Position des Gebäudes
 	 * @return
 	 */
 	public boolean hasBuildingAt(int id, int pos) {
@@ -276,9 +310,9 @@ public class GameServer implements Runnable {
 	 * Erstellt ein Gebäude an einer bestimmten position
 	 * 
 	 * @param b
-	 *            : ID des Gebäudes
+	 *            ID des Gebäudes
 	 * @param buildingPlace
-	 *            : position des Gebäudes
+	 *            position des Gebäudes
 	 */
 	public void build(byte position, byte buildingPlace, byte id) {
 		if (buildings[position][buildingPlace] == null) {
@@ -286,19 +320,29 @@ public class GameServer implements Runnable {
 					position);
 			if (payPrice(position, building.getPrice(0))) {
 				buildings[position][buildingPlace] = building;
-				connections[position].sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
+				connections[position].sendStartCreateOrUpgradeBuilding(
+						position, buildingPlace, id);
 			}
 		} else if (buildings[position][buildingPlace].getUpgrade() == id) {
 			if (payPrice(position,
 					buildings[position][buildingPlace].getPrice())) {
 				buildings[position][buildingPlace].upgrade();
-				connections[position].sendStartCreateOrUpgradeBuilding(position, buildingPlace, id);
+				connections[position].sendStartCreateOrUpgradeBuilding(
+						position, buildingPlace, id);
 			}
 		} else {
 			return;
 		}
 	}
 
+	/**
+	 * Zerstört das Gebäude an der Position
+	 * 
+	 * @param buildingPlace
+	 *            Position des Gebäudes
+	 * @param position
+	 *            Position des Bsesitzers
+	 */
 	public void destroyBuilding(byte buildingPlace, byte position) {
 		buildings[position][buildingPlace] = null;
 		for (Connection c : connections) {
@@ -308,6 +352,14 @@ public class GameServer implements Runnable {
 		}
 	}
 
+	/**
+	 * Bricht die Ererichtung eines Gebäudes ab.
+	 * 
+	 * @param player
+	 *            Spieler dem das Gebäude gehört
+	 * @param position
+	 *            Position des Gebäudes
+	 */
 	public void cancelBuilding(byte player, byte position) {
 		if (buildings[player][position] != null) {
 			if (!buildings[player][position].isFinished()) {
@@ -326,6 +378,16 @@ public class GameServer implements Runnable {
 		}
 	}
 
+	/**
+	 * erstellt eine Einheit
+	 * 
+	 * @param playerPosition
+	 *            position des Spielers
+	 * @param id
+	 *            Typ der Einheit
+	 * @param buildingPlace
+	 *            Position des produzierenden gebäudes
+	 */
 	public void createUnit(byte playerPosition, byte id, byte buildingPlace) {
 		Random generator = new Random();
 		if (playerPosition < connections.length && playerPosition >= 0
@@ -354,13 +416,18 @@ public class GameServer implements Runnable {
 				if (buildings[playerPosition][buildingPlace].createUnit(id,
 						unitIDCounter, new Point(xPosition, yPosition))) {
 					unitIDCounter++;
-	
-					connections[playerPosition].sendGenerateUnit(id, buildingPlace);
+
+					connections[playerPosition].sendGenerateUnit(id,
+							buildingPlace);
 				}
 			}
 		}
 	}
 
+	/**
+	 * Entfernt einen Spieler aus dem Spiel
+	 * @param id
+	 */
 	public void disconnect(short id) {
 		int number = -1;
 		for (int i = 0; i < connections.length; i++) {
@@ -387,10 +454,20 @@ public class GameServer implements Runnable {
 		}
 	}
 
+	/**
+	 * Gibt zurück ob das Spiel vorbei ist
+	 * @return
+	 */
 	public boolean ended() {
 		return ended.get();
 	}
 
+	/**
+	 * Bezahlt einen Preis für einen Spieler
+	 * @param player Spieler der zahlt
+	 * @param price Preis der gezahlt wird
+	 * @return ob die Zahlung möglich war
+	 */
 	private boolean payPrice(int player, int[] price) {
 		boolean possible = true;
 		for (int i = 0; i < resources[player].length; i++) {
@@ -405,11 +482,16 @@ public class GameServer implements Runnable {
 		}
 		return possible;
 	}
-	
+
+	/**
+	 * Gibt dem Spieler die Rohstoffe zurück 
+	 * @param player Spieler der die rohstoffe erhalten soll
+	 * @param price Rohstoffe die übergeben werden sollen
+	 */
 	private void getResources(int player, int[] price) {
 		for (int i = 0; i < resources[player].length; i++) {
 			resources[player][i] += price[i];
 		}
-		
+
 	}
 }

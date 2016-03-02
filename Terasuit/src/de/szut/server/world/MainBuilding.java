@@ -122,4 +122,13 @@ public class MainBuilding implements Building, Attackable {
 	public double getYPosition() {
 		return position.getY();
 	}
+
+	@Override
+	public boolean wasAlreadyDead() {
+		return false;
+	}
+
+	@Override
+	public void setAlreadyDead() {
+	}
 }

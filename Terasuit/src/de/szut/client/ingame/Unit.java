@@ -203,7 +203,7 @@ public class Unit implements Attackable{
 			}
 		}
 		if (attackables[01] != null && canAttackAir) {
-			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
+			if (Math.abs(getEntityPositionX() - attackables[1].getEntityPositionX()) - getEntityFirerange() <= 0) {
 				return true;
 			}
 		}
@@ -211,10 +211,10 @@ public class Unit implements Attackable{
 	}
 
 	public Bullet shoot(Attackable[] target) {
-		if (canAttackGround() && getCooldown(false)) {
+		if (canAttackGround() && getCooldown(false) && target[0] != null) {
 			cooldown = getWeaponCooldown(false);
 			return new Bullet(this, target[0]);
-		} else if (canAttackAir() && getCooldown(true)) {
+		} else if (canAttackAir() && getCooldown(true) && target[1] != null) {
 			cooldown = getWeaponCooldown(false);
 			return new Bullet(this, target[1]);
 		} else {

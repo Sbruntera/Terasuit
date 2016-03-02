@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.szut.server.connection.Connection;
-import de.szut.server.connection.Logging;
 import de.szut.server.connection.MenuAnalyser;
 import logic.BCrypt;
 
@@ -27,6 +26,12 @@ public class Server implements Runnable {
 	HashMap<Integer, Lobby> lobbys = new HashMap<Integer, Lobby>();
 	private byte idGenerator;
 
+	/**
+	 * Initialisiert einen neuen Hauptserver
+	 * 
+	 * @param port
+	 * @throws IOException
+	 */
 	public Server(int port) throws IOException {
 		server = new ServerSocket(port);
 		db = new DB();
@@ -72,15 +77,15 @@ public class Server implements Runnable {
 	 * registriert einen Nutzer in der Datenbank
 	 * 
 	 * @param name
-	 *            : Name des Nutzers
+	 *            Name des Nutzers
 	 * @param pw
-	 *            : Passwort des Nutzers als Hash
+	 *            Passwort des Nutzers als Hash
 	 * @param email
-	 *            : E-Mail des Nutzers
+	 *            E-Mail des Nutzers
 	 * @param mode
-	 *            : Privilegien
+	 *            Privilegien
 	 * @param id
-	 *            : ID des Nutzers
+	 *            ID des Nutzers
 	 */
 	public void registerClient(String name, String pw, String email,
 			String mode, int id) {
@@ -88,10 +93,13 @@ public class Server implements Runnable {
 		if (!db.search(name)) {
 			db.addUser(name, hashed, email, mode);
 			connections.get(id).sendLogin(name);
-			Logging.log("Register complete (" + name + " ist jetzt registiert)", "STATUSUPDATE");
+			Logging.log(
+					"Register complete (" + name + " ist jetzt registiert)",
+					"STATUSUPDATE");
 		} else {
 			connections.get(id).sendFailed((byte) 1);
-			Logging.log("Register Failed(Fehler: " + name + " bereits vorhanden)" , "ERROR");
+			Logging.log("Register Failed(Fehler: " + name
+					+ " bereits vorhanden)", "ERROR");
 		}
 	}
 
@@ -99,11 +107,12 @@ public class Server implements Runnable {
 	 * Loggt einen Nutzer ein
 	 * 
 	 * @param name
+	 *            Name des Accounts
 	 * @param pw
-	 * @param id
-	 * @return
+	 *            Passwort des Accounts
+	 * @return ob der Loggin erfolgreich war
 	 */
-	public boolean loginClient(String name, String pw, int id) {
+	public boolean loginClient(String name, String pw) {
 		if (db.getUser(name) != null) {
 			if (BCrypt.checkpw(pw, db.getUser(name))) { // hashed: hash steht in
 														// der DB
@@ -116,6 +125,11 @@ public class Server implements Runnable {
 		}
 	}
 
+	/**
+	 * Schließt eine Verbindung
+	 * 
+	 * @param id
+	 */
 	public void diconnect(int id) {
 		connections.get(id).close();
 	}
@@ -124,8 +138,8 @@ public class Server implements Runnable {
 	 * Gibt die Liste aller aktiven Lobby zurück
 	 * 
 	 * @param filter
-	 *            : Filter nach dem die Lobbys gefiltert werden sollen
-	 * @return
+	 *            Filter nach dem die Lobbys gefiltert werden sollen
+	 * @return Liste der gefilterten Lobbys
 	 */
 	public Lobby[] getLobbylist(Filter filter) {
 		ArrayList<Lobby> filteredList = new ArrayList<Lobby>();
@@ -146,7 +160,8 @@ public class Server implements Runnable {
 				filteredList.add(lobby);
 			}
 		}
-		Lobby[] filteredArray = filteredList.toArray(new Lobby[filteredList.size()]);
+		Lobby[] filteredArray = filteredList.toArray(new Lobby[filteredList
+				.size()]);
 		return filteredArray;
 	}
 
@@ -154,13 +169,13 @@ public class Server implements Runnable {
 	 * Erstellt eine Lobby
 	 * 
 	 * @param connection
-	 *            : Verbindung des Host
+	 *            Verbindung des Host
 	 * @param name
-	 *            : Name der Lobby
+	 *            Name der Lobby
 	 * @param password
-	 *            : Passwort der Lobby
+	 *            Passwort der Lobby
 	 * @param map
-	 *            : Karte der Lobby
+	 *            Karte der Lobby
 	 */
 	public Lobby createLobby(Connection connection, String name,
 			String password, Map map) {
@@ -175,10 +190,10 @@ public class Server implements Runnable {
 	 * Löscht eine Lobby
 	 * 
 	 * @param lobby
-	 *            : zu entfernende Lobby
+	 *            zu entfernende Lobby
 	 */
 	public void removeLobby(byte id) {
-		lobbys.remove((int)id);
+		lobbys.remove((int) id);
 	}
 
 	public boolean hasLobby(byte id) {
@@ -189,7 +204,7 @@ public class Server implements Runnable {
 	 * Gibt eine Lobby zurück
 	 * 
 	 * @param id
-	 *            : ID der Lobby
+	 *            ID der Lobby
 	 * @return
 	 */
 	public Lobby getLobby(byte id) {
@@ -200,6 +215,10 @@ public class Server implements Runnable {
 		}
 	}
 
+	/**
+	 * Erstellt aus einer Lobby ein Spiel
+	 * @param lobby Lobby die in ein Spiel umgewandelt werden soll
+	 */
 	public void createGame(Lobby lobby) {
 		lobbys.remove(lobby);
 		GameServer game = new GameServer(lobby.getConnections(), this);
@@ -210,11 +229,25 @@ public class Server implements Runnable {
 			}
 		}
 	}
-	public String[][] getStats(String User){
+
+	/**
+	 * Gibt die Stats eines Nutzers zurück
+	 * @param User Nutzername
+	 * @return Stats
+	 */
+	public String[][] getStats(String User) {
 		return db.getStats(User);
 	}
 
-	public void writeStats(String name, int kills, boolean won, boolean finnisher) {
+	/**
+	 * Schreibt die Stats eines Nutzers
+	 * @param name Name der Nutzers
+	 * @param kills Kills die gemacht wurden
+	 * @param won ob er gewonnen hat
+	 * @param finnisher ob er es beendet hat
+	 */
+	public void writeStats(String name, int kills, boolean won,
+			boolean finnisher) {
 		db.updateStats(name, kills, won, finnisher);
 	}
 }

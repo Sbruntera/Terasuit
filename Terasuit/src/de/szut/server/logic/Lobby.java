@@ -19,14 +19,20 @@ public class Lobby {
 	private byte id;
 
 	/**
-	 * Erstellt ein neues Spiel
+	 * Initialisiert eine neue Lobby
 	 * 
-	 * @param lobby
+	 * @param server
+	 *            Hauptserver
 	 * @param host
+	 *            Host der Lobby
 	 * @param gameName
+	 *            Name des Spiels
 	 * @param password
+	 *            Passwort des Spiels
 	 * @param map
+	 *            Map des Spiels
 	 * @param id
+	 *            ID des Spiels
 	 */
 	public Lobby(Server server, Connection host, String gameName,
 			String password, Map map, byte id) {
@@ -44,7 +50,10 @@ public class Lobby {
 	 * Fügt einen Spieler zu der Lobby hinzu
 	 * 
 	 * @param player
+	 *            Verbindung die hinzugefügt werden soll
 	 * @param password
+	 *            Passwort das der Nutzer als Lobbypasswort angegeben hat
+	 * @return ob der Beitritt erfolgreich war
 	 */
 	public boolean addPlayer(Connection player, String password) {
 		boolean playerJoined = false;
@@ -80,9 +89,11 @@ public class Lobby {
 	/**
 	 * Entfernt einen Spieler aus der Lobby
 	 * 
-	 * @param s
+	 * @param Sender
+	 *            der die Entfernung angefordert hat
 	 * 
 	 * @param position
+	 *            Position des zu entfernenden Spielers
 	 */
 	public void removePlayer(short senderID, byte playerNumber) {
 		if ((getPosition(senderID) == playerNumber || senderID == host.getID())
@@ -116,6 +127,13 @@ public class Lobby {
 		}
 	}
 
+	/**
+	 * Gibt die Position einer Verbindung mit dieser ID zurück
+	 * 
+	 * @param playerID
+	 *            ID des Spielers
+	 * @return Position des Spielers
+	 */
 	public byte getPosition(short playerID) {
 		for (byte i = 0; i < playerList.length; i++) {
 			if (playerList[i] != null) {
@@ -148,9 +166,12 @@ public class Lobby {
 	 * Verschiebt einen Spieler innnerhalb der Lobby
 	 * 
 	 * @param id
+	 *            Nummer der Person die diese aktion angefordert hat
 	 * 
 	 * @param oldPosition
+	 *            position1 die getauscht werden soll
 	 * @param newPosition
+	 *            position2 die getauscht werden soll
 	 */
 	public void switchPlayers(short id, byte player1, byte player2) {
 		if (host.getID() == id) {
@@ -235,7 +256,7 @@ public class Lobby {
 	}
 
 	/**
-	 * Gibt die anzahl der beigetretenen Spieler zurück
+	 * Gibt die Anzahl der beigetretenen Spieler zurück
 	 * 
 	 * @return Anzahl der Spieler
 	 */
@@ -267,10 +288,18 @@ public class Lobby {
 		return playerList[0].getName();
 	}
 
+	/**
+	 * Gibt die ID der Lobby zurück
+	 * @return ID
+	 */
 	public byte getID() {
 		return id;
 	}
 
+	/**
+	 * Startet das Spiel
+	 * @param id
+	 */
 	public void startGame(short id) {
 		if (host.getID() == id) {
 			server.createGame(this);
@@ -278,6 +307,10 @@ public class Lobby {
 		}
 	}
 
+	/**
+	 * Gibt alle Verbindungen zurück
+	 * @return
+	 */
 	public Connection[] getConnections() {
 		return playerList;
 	}

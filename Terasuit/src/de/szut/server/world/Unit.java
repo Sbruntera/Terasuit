@@ -10,6 +10,7 @@ public abstract class Unit implements Attackable {
 	protected int direction;
 	protected boolean running;
 	protected int health;
+	private boolean alreadyDead;
 
 	public abstract byte getType();
 
@@ -48,8 +49,8 @@ public abstract class Unit implements Attackable {
 				return true;
 			}
 		}
-		if (attackables[01] != null && canAttackAir()) {
-			if (Math.abs(getXPosition() - attackables[0].getXPosition()) - getRange(false) <= 0) {
+		if (attackables[1] != null && canAttackAir()) {
+			if (Math.abs(getXPosition() - attackables[1].getXPosition()) - getRange(false) <= 0) {
 				return true;
 			}
 		}
@@ -107,5 +108,15 @@ public abstract class Unit implements Attackable {
 		if (xPosition >= 294 && xPosition <= 1344) {
 			xPosition = xPosition + getSpeed() * direction;
 		}
+	}
+
+	@Override
+	public boolean wasAlreadyDead() {
+		return alreadyDead;
+	}
+
+	@Override
+	public void setAlreadyDead() {
+		alreadyDead = true;
 	}
 }

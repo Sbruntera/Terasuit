@@ -1,4 +1,4 @@
-package de.szut.server.connection;
+package de.szut.server.logic;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

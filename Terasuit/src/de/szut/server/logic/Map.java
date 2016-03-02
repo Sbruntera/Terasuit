@@ -11,10 +11,18 @@ public enum Map {
 	
 	private byte id;
 	
+	/**
+	 * Initialisiert eine neue Map
+	 * @param id
+	 */
 	Map(byte id) {
 		this.id = id;
 	}
 	
+	/**
+	 * Gibt die ID zurück
+	 * @return
+	 */
 	public byte getID() {
 		return id;
 	}

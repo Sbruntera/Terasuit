@@ -50,7 +50,7 @@ public class Filter {
 	}
 
 	/**
-	 * Gibt die minimalzahl an Spielern an die gewünscht sind
+	 * Gibt die Minimalzahl an Spielern an die gewünscht sind zurück
 	 * 
 	 * @return
 	 */
@@ -59,7 +59,7 @@ public class Filter {
 	}
 
 	/**
-	 * Gibt die maximalzahl an Spielern an die gewünscht sind
+	 * Gibt die maximalzahl an Spielern an die gewünscht sind zurück
 	 * 
 	 * @return
 	 */

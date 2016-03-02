@@ -18,4 +18,8 @@ public interface Attackable {
 
 	void heal(int value);
 
+	boolean wasAlreadyDead();
+
+	void setAlreadyDead();
+
 }

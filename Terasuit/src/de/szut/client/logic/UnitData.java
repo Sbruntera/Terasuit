@@ -15,7 +15,7 @@ public class UnitData {
 		UnitDataHash.put("Marine", new UnitObject("Light armor. Armed with shock rifles and rockets, effective against both ground and air.", 0, 2, 0, 0, 60, 20, 15, 10, 180, 0, 20, true, true));
         UnitDataHash.put("Chronite_Tank", new UnitObject("Chronite (heavy) armor. Armed with explosive shells, but cannot fire at air targets.", 5, 10, 0, 0, 600, 16, 60, 35, 225, 2, 14, true, false));
         UnitDataHash.put("Gröditz", new UnitObject("Chronite (heavy) armor. Armed with standart machine guns.", 5, 16, 0, 0, 340, 18, 40, 8, 140, 0, 18, true, true));
-        UnitDataHash.put("A25-Roman", new UnitObject("Titanium armor. Armes with pulse rifles, but cannot fire at air targets.", 0, 0, 5, 0, 250, 22, 80, 32, 160, 0, 20, true, false));
+        UnitDataHash.put("A25-Roman", new UnitObject("Titanium armor. Armes with pulse rifles, but cannot fire at air targets.", 0, 0, 5, 0, 250, 22, 80, 32, 180, 0, 20, true, false));
         UnitDataHash.put("Gladiator", new UnitObject("Special armor, resistant against missile damage. Armed with a high frequency pulse rifle. Not as effective against air targets.", 30, 10, 25, 0, 500, 24, 25, 5, 170, 0, 20, true, true));
         UnitDataHash.put("Hover_Tank", new UnitObject("Special armor, resistant against missile damage. Armed with high impact, linear Positron cannons.", 0, 30, 10, 0, 370, 18, 80, 37, 200, 0, 16, true, false));
         UnitDataHash.put("Meditec", new UnitObject("Light armor. Can heal/repair any friendly ground unit.", 0, 6, 0, 0, 100, 20, 20, 18, 130, 0, 20, true, true));

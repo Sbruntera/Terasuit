@@ -13,7 +13,7 @@ public class A25Roman extends Unit {
 	private static final int SHOOTSPEED = 32;
 	private static final double SPEED = 4.4;
 	private static final int DAMAGE = 80;
-	private static final int RANGE = 160;
+	private static final int RANGE = 180;
 	private static final int SPLASHDAMAGE = 0;
 	private static final double BULLETSPEED = 20;
 	

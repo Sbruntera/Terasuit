@@ -3,7 +3,7 @@ package de.szut.client.logic;
 import java.io.IOException;
 
 import de.szut.client.grafik.Loader;
-import de.szut.server.connection.Logging;
+import de.szut.server.logic.Logging;
 import de.szut.server.logic.Server;
 
 public class START {
