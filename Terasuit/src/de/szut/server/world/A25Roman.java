@@ -10,13 +10,13 @@ public class A25Roman extends Unit {
 	private static final boolean CANATTACKAIR = false;
 	public static final int[] PRICE = new int[] {0, 5, 0, 0};
 	public static final int MAXHEALTH = 250;
-
-	private static double speed = 4.4;
-	private static int damage = 80;
-	private static int range = 160;
-	private static int shootSpeed = 32;
-	private int splashDamage = 0;
-	private double bulletSpeed = 20;
+	private static final int SHOOTSPEED = 32;
+	private static final double SPEED = 4.4;
+	private static final int DAMAGE = 80;
+	private static final int RANGE = 160;
+	private static final int SPLASHDAMAGE = 0;
+	private static final double BULLETSPEED = 20;
+	
 	private int cooldown = 0;
 	
 	public A25Roman(short id, Point position, byte player) {
@@ -59,33 +59,34 @@ public class A25Roman extends Unit {
 
 	@Override
 	public int getDamage(boolean ground) {
-		return damage;
+		return DAMAGE;
 	}
 
 	@Override
 	public int getRange(boolean ground) {
-		return range;
+		return RANGE;
 	}
 
 	@Override
 	public int getShootSpeed(boolean ground) {
-		return shootSpeed;
+		return SHOOTSPEED;
 	}
 
 	@Override
 	public int getSplashDamage(boolean ground) {
-		return splashDamage;
+		return SPLASHDAMAGE;
 	}
 
 	@Override
 	public double getBulletSpeed(boolean ground) {
-		return bulletSpeed;
+		return BULLETSPEED;
 	}
 
 	@Override
 	public Bullet shoot(Attackable[] nearestUnits) {
 		if (cooldown  <= 0) {
 			if (CANATTACKGROUND && nearestUnits[0] != null) {
+				cooldown = SHOOTSPEED;
 				return new Bullet(this, nearestUnits[0]);
 			}
 		} else {
@@ -96,6 +97,6 @@ public class A25Roman extends Unit {
 
 	@Override
 	public double getSpeed() {
-		return speed;
+		return SPEED;
 	}
 }

@@ -10,13 +10,13 @@ public class ChroniteTank extends Unit {
 	private static final boolean CANATTACKAIR = false;
 	public static final int[] PRICE = new int[] {5, 0, 10, 0};
 	public static final int MAXHEALTH = 600;
-
-	private static double speed = 3.2;
-	private static int damage = 60;
-	private static int range = 225;
-	private static int shootSpeed = 35;
-	private int splashDamage = 2;
-	private double bulletSpeed = 14;
+	private static final double SPEED = 3.2;
+	private static final int DAMAGE = 60;
+	private static final int RANGE = 225;
+	private static final int SHOOTSPEED = 35;
+	private static final int SPLASHDAMAGE = 2;
+	private static final double BULLETSPEED = 14;
+	
 	private int cooldown = 0;
 	
 	public ChroniteTank(short id, Point position, byte player) {
@@ -59,33 +59,34 @@ public class ChroniteTank extends Unit {
 
 	@Override
 	public int getDamage(boolean ground) {
-		return damage;
+		return DAMAGE;
 	}
 
 	@Override
 	public int getRange(boolean ground) {
-		return range;
+		return RANGE;
 	}
 
 	@Override
 	public int getShootSpeed(boolean ground) {
-		return shootSpeed;
+		return SHOOTSPEED;
 	}
 
 	@Override
 	public int getSplashDamage(boolean ground) {
-		return splashDamage;
+		return SPLASHDAMAGE;
 	}
 
 	@Override
 	public double getBulletSpeed(boolean ground) {
-		return bulletSpeed;
+		return BULLETSPEED;
 	}
 
 	@Override
 	public Bullet shoot(Attackable[] nearestUnits) {
 		if (cooldown <= 0) {
 			if (CANATTACKGROUND && nearestUnits[0] != null) {
+				cooldown = SHOOTSPEED;
 				return new Bullet(this, nearestUnits[0]);
 			}
 		} else {
@@ -96,6 +97,6 @@ public class ChroniteTank extends Unit {
 
 	@Override
 	public double getSpeed() {
-		return speed;
+		return SPEED;
 	}
 }

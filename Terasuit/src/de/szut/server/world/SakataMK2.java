@@ -10,13 +10,13 @@ public class SakataMK2 extends Unit {
 	private static final boolean CANATTACKAIR = true;
 	public static final int[] PRICE = new int[] {0, 21, 0, 0};
 	public static final int MAXHEALTH = 200;
-
-	private static double speed = 4.4;
-	private static int damage = 200;
-	private static int range = 200;
-	private static int shootSpeed = 40;
-	private int splashDamage = 0;
-	private double bulletSpeed = 20;
+	private static final double SPEED = 4.4;
+	private static final int DAMAGE = 200;
+	private static final int RANGE = 200;
+	private static final int SHOOTSPEED = 40;
+	private static final int SPLASHDAMAGE = 0;
+	private static final double BULLETSPEED = 20;
+	
 	private int cooldown;
 	
 	public SakataMK2(short id, Point position, byte player) {
@@ -59,33 +59,34 @@ public class SakataMK2 extends Unit {
 
 	@Override
 	public int getDamage(boolean ground) {
-		return damage;
+		return DAMAGE;
 	}
 
 	@Override
 	public int getRange(boolean ground) {
-		return range;
+		return RANGE;
 	}
 
 	@Override
 	public int getShootSpeed(boolean ground) {
-		return shootSpeed;
+		return SHOOTSPEED;
 	}
 
 	@Override
 	public int getSplashDamage(boolean ground) {
-		return splashDamage;
+		return SPLASHDAMAGE;
 	}
 
 	@Override
 	public double getBulletSpeed(boolean ground) {
-		return bulletSpeed;
+		return BULLETSPEED;
 	}
 
 	@Override
 	public Bullet shoot(Attackable[] nearestUnits) {
 		if (cooldown  <= 0) {
 			if (CANATTACKAIR && nearestUnits[1] != null) {
+				cooldown = SHOOTSPEED;
 				return new Bullet(this, nearestUnits[1]);
 			}
 		} else {
@@ -96,6 +97,6 @@ public class SakataMK2 extends Unit {
 
 	@Override
 	public double getSpeed() {
-		return speed;
+		return SPEED;
 	}
 }

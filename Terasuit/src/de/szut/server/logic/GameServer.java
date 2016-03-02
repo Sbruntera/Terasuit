@@ -25,7 +25,6 @@ public class GameServer implements Runnable {
 	private Server server;
 	private Connection[] connections;
 	private HashMap<Integer, Unit> units;
-	private ArrayList<Integer> unitIDs;
 	private ArrayList<Bullet> bullets;
 	private MainBuilding[] mainBuildings;
 	private Building[][] buildings;
@@ -47,7 +46,6 @@ public class GameServer implements Runnable {
 	public GameServer(Connection[] connections, Server server) {
 		this.connections = connections;
 		this.server = server;
-		unitIDs = new ArrayList<Integer>();
 		units = new HashMap<Integer, Unit>();
 		bullets = new ArrayList<Bullet>();
 		buildings = new Building[connections.length][WorldConstants.BUILDINGSCOUNT];
@@ -73,6 +71,7 @@ public class GameServer implements Runnable {
 			// Kugeln bewegen
 			long waitTimer = System.currentTimeMillis();
 			tick.set(true);
+			System.out.println(bullets.size());
 			for (Bullet b : bullets) {
 				if (b.move()) {
 					b.getTarget().dealDamage(b.getDamage());
@@ -103,7 +102,6 @@ public class GameServer implements Runnable {
 	
 			for (Unit u : unitsToRemove) {
 				units.remove(u.getID());
-				unitIDs.remove(u.getID());
 			}
 	
 			unitsToRemove.clear();
@@ -121,6 +119,7 @@ public class GameServer implements Runnable {
 				} else if (u.hasInRange(new Attackable[] {
 						mainBuildings[1 - (u.getPlayer() >> 1)], null })
 						&& (u.getDirection() == -1) == ((u.getPlayer() & 2) == 2)) {
+					System.out.println("Nicht gut");
 					Bullet b = u.shoot(new Attackable[] {
 							mainBuildings[1 - (u.getPlayer() >> 1)], null });
 					if (b != null) {
@@ -180,7 +179,7 @@ public class GameServer implements Runnable {
 
 	private Unit[] getNearestUnit(double d, boolean right) {
 		Unit[] nearestUnits = new Unit[2];
-		double[] difference = new double[] { -32768, -32768 };
+		double[] difference = new double[] { 32767, 32767 };
 		for (Unit u : units.values()) {
 			if (Math.abs(u.getXPosition() - d) < difference[Boolean
 					.compare(u.isFlying(), false)]
