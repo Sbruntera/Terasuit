@@ -171,3 +171,6 @@
 02.03.2016 06:14:10.155: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 3 wurde gestartet
 02.03.2016 06:16:20.389: (STATUSUPDATE) Guest1166 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
 02.03.2016 06:16:20.389: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 06:21:32.275: (STATUSUPDATE) Guest3376 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 06:21:32.275: (STATUSUPDATE) Guest6150 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 06:21:32.275: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet

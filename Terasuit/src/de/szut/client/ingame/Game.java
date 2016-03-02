@@ -39,7 +39,7 @@ public class Game {
 	JLabel tl;
 	int playerID;
 	int counter = 0;
-	private String s = "Willkommen im Chat";
+	private String s = "Welcome to Terasuit";
 	private JScrollBar ts;
 	private JLabel r1;
 	private JLabel r2;

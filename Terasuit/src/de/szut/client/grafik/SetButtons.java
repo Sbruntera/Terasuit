@@ -51,7 +51,7 @@ public class SetButtons {
 	private ImageIcon open = new ImageIcon("Menu_Assets/Schloss_offen.png");
 	private ImageIcon closed = new ImageIcon("Menu_Assets/Schloss.png");
 	private ImageIcon map1 = new ImageIcon("Menu_Assets/Thumbnail.png");
-	private String s = "Willkommen im Chat";
+	private String s = "Welcome to Terasuit";
 	private String[] standartselect;
 	private JLabel tl;
 	private JPanel jp;
@@ -875,7 +875,7 @@ public class SetButtons {
 		panel.remove(btnLogin);
 		panel.remove(btnRegister);
 		loginRegisterPanel.popupdestroy(panel);
-		JLabel user = new JLabel("Willkommen " + name);
+		JLabel user = new JLabel("Welcome " + name);
 		user.setBounds(755, 732, 155, 25);
 		JButton btnlogout = new JButton("Logout");
 		btnlogout.setBounds(920, 732, 90, 25);
