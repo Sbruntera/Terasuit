@@ -93,13 +93,13 @@ public class Loader {
 	 *            Consolen Panel
 	 * @param func
 	 *            Funktionen
-	 * @param scrollPane 
+	 * @param scrollPane
 	 */
-	public void init(Panel panel, Panel field, Panel console, Funktions func, JScrollPane scrollPane) {
+	public void init(Panel panel, Panel field, Panel console, Funktions func,
+			JScrollPane scrollPane) {
 		game = new Game();
 		game.init(panel, field, console, this, func, 1, scrollPane);
 	}
-
 
 	/**
 	 * Beendet das Progamm
@@ -197,8 +197,15 @@ public class Loader {
 	public void showStats(String[][] r) {
 		panel.buttons.showStats(r);
 	}
-	
+
+	/**
+	 * Zeigt eine Meldung auf dem Monitor an
+	 * 
+	 * @param string
+	 *            Text der Nachricht
+	 */
 	public void feedback(String string) {
-		JOptionPane.showMessageDialog(panel, string, "A Problem occurred", JOptionPane.WARNING_MESSAGE);	
+		JOptionPane.showMessageDialog(panel, string, "A Problem occurred",
+				JOptionPane.WARNING_MESSAGE);
 	}
 }

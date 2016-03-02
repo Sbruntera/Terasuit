@@ -26,12 +26,19 @@ public class LoginRegisterPanel {
 	JLabel lbmail = new JLabel();
 	ServerConnection connection;
 
+	/**
+	 * Initialisiert das LoginRegisterPanel mit der Verbindung
+	 * 
+	 * @param connection
+	 *            Die Verbindung zum Server
+	 */
 	public LoginRegisterPanel(ServerConnection connection) {
 		this.connection = connection;
 	}
-	
+
 	/**
 	 * Erstellt ein Fenster mit Knöpfen zum Einloggen
+	 * 
 	 * @param panel
 	 */
 	public void popupLogin(Panel panel) {
@@ -45,12 +52,14 @@ public class LoginRegisterPanel {
 				for (char c : passwordField.getPassword()) {
 					password += c;
 				}
-				if(connection.isServerAccess()){
+				if (connection.isServerAccess()) {
 					connection.login(userField.getText(), password);
-				} else{
-					JOptionPane.showMessageDialog(panel, "Server not reachable", "Problem", JOptionPane.WARNING_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(panel,
+							"Server not reachable", "Problem",
+							JOptionPane.WARNING_MESSAGE);
 				}
-				
+
 			}
 		});
 		panel.add(btnlogin);
@@ -77,9 +86,10 @@ public class LoginRegisterPanel {
 
 		panel.repaint();
 	}
-	
+
 	/**
 	 * Erstellt ein Fenster zum Registrieren
+	 * 
 	 * @param panel
 	 */
 	public void popupRegister(Panel panel) {
@@ -98,15 +108,19 @@ public class LoginRegisterPanel {
 					password2 += c;
 				}
 				if (password1.equals(password2)) {
-					if(connection.isServerAccess()){
+					if (connection.isServerAccess()) {
 						connection.register(userField.getText(), password1,
 								mailField.getText());
-					} else{
-						JOptionPane.showMessageDialog(panel, "Server not reachable", "Problem", JOptionPane.WARNING_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(panel,
+								"Server not reachable", "Problem",
+								JOptionPane.WARNING_MESSAGE);
 					}
-					
+
 				} else {
-					JOptionPane.showMessageDialog(panel, "Password is not identical", "Inane warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(panel,
+							"Password is not identical", "Inane warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -153,9 +167,10 @@ public class LoginRegisterPanel {
 		panel.repaint();
 
 	}
-	
+
 	/**
 	 * Erstellt den Hintergrund für die Register Buttons/ die Login-Buttons
+	 * 
 	 * @param panel
 	 */
 	private void createpopup(Panel panel) {
@@ -164,9 +179,10 @@ public class LoginRegisterPanel {
 		registerPanel.setBounds(770, 335, 500, 500);
 		panel.add(registerPanel);
 	}
-	
+
 	/**
 	 * Zerstört konsequent alle Login/Register Komponenten
+	 * 
 	 * @param panel
 	 */
 	public void popupdestroy(Panel panel) {

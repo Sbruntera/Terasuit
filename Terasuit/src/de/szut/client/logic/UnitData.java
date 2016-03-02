@@ -2,6 +2,11 @@ package de.szut.client.logic;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class UnitData {
 	
 	HashMap<String, UnitObject> UnitDataHash = new HashMap<String, UnitObject>();

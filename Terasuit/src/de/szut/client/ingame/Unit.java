@@ -1,12 +1,14 @@
 package de.szut.client.ingame;
 
 import javax.swing.JLabel;
+
 /**
  * Objekt für die Units, jegliche Kleinigkeit kann gesetzt werden
- * @author Sbrun
+ * 
+ * @author Alexander
  */
-public class Unit implements Attackable{
-	
+public class Unit implements Attackable {
+
 	JLabel label;
 	int EntityNummer = 0;
 	double EntityPositionX = 0;
@@ -32,7 +34,8 @@ public class Unit implements Attackable{
 	private int cooldown;
 	private int[] price;
 	private int bulletSpeed;
-	
+
+	@Override
 	public boolean isFlyingEntity() {
 		return flyingEntity;
 	}
@@ -80,7 +83,7 @@ public class Unit implements Attackable{
 	public void setNewEntity(boolean newEntity) {
 		this.newEntity = newEntity;
 	}
-	
+
 	public boolean isEntitymarked() {
 		return Entitymarked;
 	}
@@ -108,7 +111,9 @@ public class Unit implements Attackable{
 	public void setEntityPositionX(double entityPosition) {
 		EntityPositionX = entityPosition;
 		if (label != null) {
-			label.setLocation((int) (EntityPositionX - label.getIcon().getIconWidth()/2), (int) (EntityPositionY - label.getIcon().getIconHeight()/2));
+			label.setLocation((int) (EntityPositionX - label.getIcon()
+					.getIconWidth() / 2), (int) (EntityPositionY - label
+					.getIcon().getIconHeight() / 2));
 		}
 	}
 
@@ -155,7 +160,7 @@ public class Unit implements Attackable{
 	public void setLabel(JLabel label) {
 		this.label = label;
 	}
-	
+
 	public double getEntityPositionY() {
 		return EntityPositionY;
 	}
@@ -163,7 +168,7 @@ public class Unit implements Attackable{
 	public void setEntityPositionY(int entityPositionY) {
 		EntityPositionY = entityPositionY;
 	}
-	
+
 	public int getEntitySpawntimer() {
 		return EntitySpawntimer;
 	}
@@ -179,31 +184,35 @@ public class Unit implements Attackable{
 	public int getEntitySpeed() {
 		return EntitySpeed;
 	}
-	
+
 	public boolean canAttackGround() {
 		return canAttackGround;
 	}
-	
+
 	public void setCanAttackGround(boolean canAttackGround) {
 		this.canAttackGround = canAttackGround;
 	}
-	
+
 	public boolean canAttackAir() {
 		return canAttackAir;
 	}
-	
+
 	public void setCanAttackAir(boolean canAttackAir) {
 		this.canAttackAir = canAttackAir;
 	}
 
 	public boolean hasInRange(Attackable[] attackables) {
 		if (attackables[0] != null && canAttackGround) {
-			if (Math.abs(getEntityPositionX() - attackables[0].getEntityPositionX()) - getEntityFirerange() <= 0) {
+			if (Math.abs(getEntityPositionX()
+					- attackables[0].getEntityPositionX())
+					- getEntityFirerange() <= 0) {
 				return true;
 			}
 		}
 		if (attackables[01] != null && canAttackAir) {
-			if (Math.abs(getEntityPositionX() - attackables[1].getEntityPositionX()) - getEntityFirerange() <= 0) {
+			if (Math.abs(getEntityPositionX()
+					- attackables[1].getEntityPositionX())
+					- getEntityFirerange() <= 0) {
 				return true;
 			}
 		}
@@ -249,7 +258,7 @@ public class Unit implements Attackable{
 	public void heal(int value) {
 		EntityLive += value;
 	}
-	
+
 	public void setBulletSpeed(int bulletSpeed) {
 		this.bulletSpeed = bulletSpeed;
 	}
@@ -257,7 +266,7 @@ public class Unit implements Attackable{
 	public int getBulletSpeed() {
 		return bulletSpeed;
 	}
-	
+
 	public void setPrice(int[] price) {
 		this.price = price;
 	}

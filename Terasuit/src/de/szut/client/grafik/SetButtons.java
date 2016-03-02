@@ -129,7 +129,7 @@ public class SetButtons {
 				public void mouseReleased(MouseEvent arg0) {
 					// Beim klick auf dem "Options"-Buttons gelangt man in die
 					// Optionen
-					if(loader.connection.getName() != null){
+					if (loader.connection.getName() != null) {
 						loader.switchPanel(loader.Statspage);
 						loader.connection.stats();
 					} else {
@@ -287,12 +287,16 @@ public class SetButtons {
 				@Override
 				public void mouseReleased(MouseEvent arg0) {
 					int map;
-					if(map_ns.isSelected()){
+					if (map_ns.isSelected()) {
 						map = 1;
 					} else {
 						map = 0;
 					}
-					loader.connection.refreshServerList(checknoPW.isSelected(), nameContains.getText(), Integer.parseInt(minPlayers.getSelectedItem().toString()), Integer.parseInt(maxPlayers.getSelectedItem().toString()) , map);
+					loader.connection.refreshServerList(checknoPW.isSelected(),
+							nameContains.getText(), Integer.parseInt(minPlayers
+									.getSelectedItem().toString()), Integer
+									.parseInt(maxPlayers.getSelectedItem()
+											.toString()), map);
 				}
 			});
 			panel.add(btnRefreshGroup);
@@ -310,8 +314,8 @@ public class SetButtons {
 				}
 			});
 			panel.add(btnBACK);
-			
-			//Filter-Options
+
+			// Filter-Options
 			JLabel filter = new JLabel("Filter");
 			filter.setBounds(10, 170, 120, 30);
 			filter.setHorizontalAlignment(SwingConstants.CENTER);
@@ -338,7 +342,7 @@ public class SetButtons {
 			map_ns = new JCheckBox("Nightsun");
 			map_ns.setBounds(10, 520, 130, 30);
 			map_ns.setOpaque(false);
-			
+
 			panel.add(filter);
 			panel.add(map);
 			panel.add(name);
@@ -349,7 +353,7 @@ public class SetButtons {
 			panel.add(nameContains);
 			panel.add(minPlayers);
 			panel.add(maxPlayers);
-			
+
 			ImageIcon image = new ImageIcon("Wallpaper/SlotHolder.png");
 			JLabel slotHolder = new JLabel(image);
 			slotHolder.setBounds(-4, 100, 140, 600);
@@ -578,19 +582,20 @@ public class SetButtons {
 			panel.add(welcome);
 		}
 	}
-		
+
 	/**
 	 * Erstellt die Lables zur darstellung der Stats
 	 * 
-	 * @param r String Array mit Stats
+	 * @param r
+	 *            String Array mit Stats
 	 */
 	public void showStats(String[][] r) {
 		for (int i = 0; i < r.length; i++) {
 			JLabel Stat = new JLabel(r[i][0]);
 			JLabel Statnumber = new JLabel(r[i][1]);
 			Stat.setBounds(200 + i % 4 * 170, 150 + 125 * (i >> 2), 150, 40);
-			Statnumber.setBounds(200 + i % 4 * 170, 200 + 125 * (i >> 2),
-					150, 40);
+			Statnumber.setBounds(200 + i % 4 * 170, 200 + 125 * (i >> 2), 150,
+					40);
 			Stat.setForeground(Color.RED);
 			Statnumber.setForeground(Color.RED);
 			Stat.setHorizontalAlignment(SwingConstants.CENTER);
@@ -773,7 +778,7 @@ public class SetButtons {
 	 * @return JPanel
 	 */
 	public JPanel createInfos() {
-		JPanel en = new JPanel(){
+		JPanel en = new JPanel() {
 			/**
 			 * 
 			 */
@@ -782,14 +787,15 @@ public class SetButtons {
 			public void paint(Graphics g) {
 				super.paint(g);
 				Graphics2D f2 = (Graphics2D) g;
-				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(), 0, 0, null);
+				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(),
+						0, 0, null);
 				paintChildren(g);
 				g.setColor(Color.RED);
 			}
 		};
 		en.setLayout(null);
 		en.setOpaque(true);
-		//473 264
+		// 473 264
 		en.setBounds(244, 283, 585, 199);
 		en.setBackground(Color.RED);
 		JLabel nl = new JLabel("Lobbyname: ");
@@ -828,8 +834,8 @@ public class SetButtons {
 	 * @return JPanel
 	 */
 	public JPanel needPW() {
-		JPanel np = new JPanel(){
-			
+		JPanel np = new JPanel() {
+
 			/**
 			 * 
 			 */
@@ -838,11 +844,12 @@ public class SetButtons {
 			public void paint(Graphics g) {
 				super.paint(g);
 				Graphics2D f2 = (Graphics2D) g;
-				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(), 0, 0, null);
+				f2.drawImage(new ImageIcon("Wallpaper/popup.png").getImage(),
+						0, 0, null);
 				paintChildren(g);
 				g.setColor(Color.RED);
 			}
-			
+
 		};
 		JLabel ep = new JLabel(
 				"This Lobby has a Password. Please enter it and press Enter");
@@ -892,12 +899,14 @@ public class SetButtons {
 		panel.add(user);
 		reload(panel);
 	}
-	 /**
-	  * Repaintet und revalidatet den übergebenen Component
-	  * 
-	  * @param c Component der Repaint werden soll
-	  */
-	public void reload(Component c){
+
+	/**
+	 * Repaintet und revalidatet den übergebenen Component
+	 * 
+	 * @param c
+	 *            Component der Repaint werden soll
+	 */
+	public void reload(Component c) {
 		c.repaint();
 		c.revalidate();
 	}

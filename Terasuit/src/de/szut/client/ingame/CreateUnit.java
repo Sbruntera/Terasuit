@@ -12,6 +12,11 @@ import de.szut.client.logic.UnitData;
 import de.szut.client.logic.UnitObject;
 import de.szut.client.logic.UnitPics;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class CreateUnit {
 
 	Unit unit = new Unit();
@@ -89,12 +94,6 @@ public class CreateUnit {
 		field.add(label);
 		field.repaint();
 		return unit;
-	}
-
-	// Zufällige Platzierung in der Welt
-	public int random(int zahl) {
-		int rand = (int) (Math.random() * zahl) + 1;
-		return rand;
 	}
 	
 	/**

@@ -9,9 +9,13 @@ import javax.swing.JLabel;
 import de.szut.client.grafik.Loader;
 import de.szut.client.grafik.Panel;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class BaseBuildings {
-	
-	
+
 	public String red = "Buildings/base_red.png";
 	public String blue = "Buildings/base_blue.png";
 	public String grun = "Buildings/base_grün.png";
@@ -26,55 +30,100 @@ public class BaseBuildings {
 	int default_interval = 45;
 	Buildings building = new Buildings();
 	JLabel label = new JLabel("");
-	
+
 	/**
-	 * Funktions aufrufe, um alle Startgebäude zu platzieren (Slots und Rathäuser)
+	 * Funktions aufrufe, um alle Startgebäude zu platzieren (Slots und
+	 * Rathäuser)
+	 * 
 	 * @param field
+	 *            Spielfeld auf dem die Eiheiten laufen
 	 * @param game
+	 *            Gameobjekt des laufenden Spiels
 	 * @param buildingsArray
+	 *            Gebäudeliste des Spiels
 	 * @param load
+	 *            Loader des Clients
 	 * @param func
+	 *            Funcobjekt des Clients
 	 * @param FirstColor
+	 *            Bildname des Slots des ersten Spielers
 	 * @param SecColor
+	 *            Bildname des Slots des zweiten Spielers
 	 * @param default_position_X
-	 * @param default_position_Y
+	 *            kleinster xWert derBase
+	 * @param default_position_Ykleinster
+	 *            yWert derBase
 	 * @param leftSide
+	 *            ob die Base links ist
 	 */
-	public void buildBase(Panel field, Game game, Buildings[] buildingsArray, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y, boolean leftSide){
-	
+	public void buildBase(Panel field, Game game, Buildings[] buildingsArray,
+			Loader load, Funktions func, String FirstColor, String SecColor,
+			int default_position_X, int default_position_Y, boolean leftSide) {
+
 		// Unterspielerfelder
-		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X, default_position_Y, leftSide, 1);
-		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval, default_position_Y+default_interval, leftSide, 2);
-		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval*2, default_position_Y+default_interval*2, leftSide, 3);
-		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval*3, default_position_Y+default_interval, leftSide, 4);
+		createEntity(field, load, func, game, buildingsArray, FirstColor,
+				"Slot", default_position_X, default_position_Y, leftSide, 1);
+		createEntity(field, load, func, game, buildingsArray, FirstColor,
+				"Slot", default_position_X + default_interval,
+				default_position_Y + default_interval, leftSide, 2);
+		createEntity(field, load, func, game, buildingsArray, FirstColor,
+				"Slot", default_position_X + default_interval * 2,
+				default_position_Y + default_interval * 2, leftSide, 3);
+		createEntity(field, load, func, game, buildingsArray, FirstColor,
+				"Slot", default_position_X + default_interval * 3,
+				default_position_Y + default_interval, leftSide, 4);
 		// Oberespielerfelder
-		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval, default_position_Y-default_interval, leftSide, 5);
-		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*2, default_position_Y-default_interval*2, leftSide, 6);
-		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*3, default_position_Y-default_interval, leftSide, 7);
-		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*4, default_position_Y, leftSide, 8);
+		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot",
+				default_position_X + default_interval, default_position_Y
+						- default_interval, leftSide, 5);
+		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot",
+				default_position_X + default_interval * 2, default_position_Y
+						- default_interval * 2, leftSide, 6);
+		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot",
+				default_position_X + default_interval * 3, default_position_Y
+						- default_interval, leftSide, 7);
+		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot",
+				default_position_X + default_interval * 4, default_position_Y,
+				leftSide, 8);
 		// Rathaus
-		createMainBuilding(field, load, func, game, buildingsArray, base, "Base",  default_position_X+default_interval*2, default_position_Y, leftSide, 9);
+		createMainBuilding(field, load, func, game, buildingsArray, base,
+				"Base", default_position_X + default_interval * 2,
+				default_position_Y, leftSide, 9);
 	}
-	
+
 	/**
 	 * Generiert alle möglichen Hauptgebäude, die am anfang benötigt werden
+	 * 
 	 * @param field
+	 *            Spielfeld auf dem die Eiheiten laufen
 	 * @param loader
+	 *            Loader des Clients
 	 * @param func
+	 *            Funcobjekt des Clients
 	 * @param game
+	 *            Gameobjekt des laufenden Spiels
 	 * @param buildingsArray
-	 * @param Entitytype
+	 *            Gebäudeliste des Spiels
+	 * @param pictureName
+	 *            Bildname des Slots
 	 * @param EntityName
+	 *            Name des Typs
 	 * @param X
+	 *            X-Position des Gebäudes
 	 * @param Y
+	 *            Y-Position des Gebäudes
 	 * @param leftSide
+	 *            ob das Gebäude links ist
 	 * @param ID
+	 *            ID des Gebäudes
 	 */
-	private void createMainBuilding(Panel field, Loader loader, Funktions func, Game game, Buildings[] buildingsArray, String Entitytype,  String EntityName, int  X, int Y, boolean leftSide, int ID){
+	private void createMainBuilding(Panel field, Loader loader, Funktions func,
+			Game game, Buildings[] buildingsArray, String pictureName,
+			String EntityName, int X, int Y, boolean leftSide, int ID) {
 		building = new MainBuilding();
-		
+
 		// Bild wird geladen
-		ImageIcon pic = new ImageIcon(Entitytype);
+		ImageIcon pic = new ImageIcon(pictureName);
 		label = new JLabel("");
 		label.setIcon(pic);
 		// Position wird festgelegt
@@ -82,13 +131,14 @@ public class BaseBuildings {
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < buildingsArray.length; i++) {
-					if (buildingsArray[i] != null){
-						if (buildingsArray[i].getLabel() == objUnit.getSource()){
+					if (buildingsArray[i] != null) {
+						if (buildingsArray[i].getLabel() == objUnit.getSource()) {
 							// Slot ID
 							int slotID = i;
 							// ID des Gebäudes, in diesem Fall bei Start 0
 							int primID = 0;
-							game.createUserOptions(slotID, primID, buildingsArray);
+							game.createUserOptions(slotID, primID,
+									buildingsArray);
 						}
 					}
 				}
@@ -101,10 +151,10 @@ public class BaseBuildings {
 		building.setName(EntityName);
 		building.setSpwanableEntity(searchForPossibleEntitys(EntityName));
 		// veränderung der ID, wenn es für die andere Seite platziert wird
-		if (leftSide){
+		if (leftSide) {
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
-		}else{
+		} else {
 			ID = ID + 9;
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
@@ -114,11 +164,37 @@ public class BaseBuildings {
 	}
 
 	/**
-	 * Läd alle Slot auf dem Spielfeld und gibt ihnen Verweise auf mögliche Aktionen 
+	 * Läd alle Slot auf dem Spielfeld und gibt ihnen Verweise auf mögliche
+	 * Aktionen
+	 * 
+	 * @param field
+	 *            Spielfeld auf dem die Eiheiten laufen
+	 * @param loader
+	 *            Loader des Clients
+	 * @param func
+	 *            Funcobjekt des Clients
+	 * @param game
+	 *            Gameobjekt des laufenden Spiels
+	 * @param buildingsArray
+	 *            Gebäudeliste des Spiels
+	 * @param Entitytype
+	 *            Bildname des Slots
+	 * @param EntityName
+	 *            Name des Typs
+	 * @param X
+	 *            X-Position des Gebäudes
+	 * @param Y
+	 *            Y-Position des Gebäudes
+	 * @param leftSide
+	 *            ob das Gebäude links ist
+	 * @param ID
+	 *            ID des Gebäudes
 	 */
-	public void createEntity(Panel field, Loader loader, Funktions func, Game game, Buildings[] buildingsArray, String Entitytype,  String EntityName, int  X, int Y, boolean leftSide, int ID){
+	public void createEntity(Panel field, Loader loader, Funktions func,
+			Game game, Buildings[] buildingsArray, String Entitytype,
+			String EntityName, int X, int Y, boolean leftSide, int ID) {
 		building = new Buildings();
-		
+
 		ImageIcon pic = new ImageIcon(Entitytype);
 		label = new JLabel("");
 		label.setIcon(pic);
@@ -128,13 +204,14 @@ public class BaseBuildings {
 
 				for (int i = 0; i < buildingsArray.length; i++) {
 
-					if (buildingsArray[i] != null){
-						if (buildingsArray[i].getLabel() == objUnit.getSource()){
+					if (buildingsArray[i] != null) {
+						if (buildingsArray[i].getLabel() == objUnit.getSource()) {
 							int slotID = i;
 							int primID = 0;
-							game.createUserOptions(slotID, primID, buildingsArray);
+							game.createUserOptions(slotID, primID,
+									buildingsArray);
 						}
-					}else{
+					} else {
 						// Index leer!
 					}
 				}
@@ -146,10 +223,10 @@ public class BaseBuildings {
 		building.setDescription("Ich bin ein ganz wichtiges Gebäude!");
 		building.setName(EntityName);
 		building.setSpwanableEntity(searchForPossibleEntitys(EntityName));
-		if (leftSide){
+		if (leftSide) {
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
-		}else{
+		} else {
 			ID = ID + 9;
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
@@ -157,46 +234,63 @@ public class BaseBuildings {
 		field.add(label);
 		field.repaint();
 	}
-	
+
 	/**
-	 * Hier wird aus den angegebenden Daten ein Gebäude mit Optionen erstellt, dieses wir auf einem Slot platziert und das Slot darüber informiert
+	 * Hier wird aus den angegebenden Daten ein Gebäude mit Optionen erstellt,
+	 * dieses wir auf einem Slot platziert und das Slot darüber informiert
+	 * 
 	 * @param entityLocation
+	 *            Bildname des Gebäudes
 	 * @param X
+	 *            X-Position des Gebäudes
 	 * @param Y
+	 *            Y-Position des Gebäudes
 	 * @param buildingsArray
+	 *            Gebäudeliste des Spiels
 	 * @param description
+	 *            Beschreibung des Gebäudes
 	 * @param buildingName
+	 *            Name des Gebäudes
 	 * @param game
+	 *            Gameobjekt des laufenden Spiels
 	 * @param slotID
+	 *            SlotID des Gebäudes (1-18); 9 + 18 sind Bases
 	 * @param primID
+	 *            PrimID des Gebäudes (19-36); 27 + 36 sind Bases
 	 * @param field
-	 * @return Buildings[]
+	 *            Spielfeld auf dem die Eiheiten laufen
+	 * @return Buildings[] Neue GebäudeListe
 	 */
-	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field){
+	public Buildings[] createPrimaryBuilding(String entityLocation, int X,
+			int Y, Buildings[] buildingsArray, String description,
+			String buildingName, Game game, int slotID, int primID, Panel field) {
 		building = new Buildings();
 		// Das alte Gebäude wird gelöscht und platz für das neue geschaffen
-		if (buildingsArray[primID] != null){
+		if (buildingsArray[primID] != null) {
 			field.remove(buildingsArray[primID].getLabel());
 			building.setPrimerBuilding(buildingsArray[primID]);
-			buildingsArray[primID-18].setPrimerBuilding(null);
+			buildingsArray[primID - 18].setPrimerBuilding(null);
 		}
 		// Erstellung des neuen Gebäude
 		ImageIcon pic = new ImageIcon(entityLocation);
 		label = new JLabel("");
 		label.setIcon(pic);
-		label.setBounds(X, (Y-getBestOptimum(buildingName)), pic.getIconWidth(), pic.getIconHeight());
+		label.setBounds(X, (Y - getBestOptimum(buildingName)),
+				pic.getIconWidth(), pic.getIconHeight());
 		building.setNumber(primID);
 		building.setSlotID(slotID);
 		// Neue Aktionlistener
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < buildingsArray.length; i++) {
-					if (buildingsArray[i] != null){
-						if (buildingsArray[i].getLabel() == objUnit.getSource()){
+					if (buildingsArray[i] != null) {
+						if (buildingsArray[i].getLabel() == objUnit.getSource()) {
 							int primID = buildingsArray[i].getNumber();
 							int slotID = buildingsArray[i].getSlotID();
-							// SlotID/GebäudeID wird ausgelesen und Optionen erstellt für den Nutzer
-							game.createUserOptions(slotID, primID, buildingsArray);
+							// SlotID/GebäudeID wird ausgelesen und Optionen
+							// erstellt für den Nutzer
+							game.createUserOptions(slotID, primID,
+									buildingsArray);
 						}
 					}
 				}
@@ -215,65 +309,79 @@ public class BaseBuildings {
 		field.repaint();
 		return buildingsArray;
 	}
-	
+
 	/**
-	 * Zerstört das gebäude auf dem Slot und löscht auch alle Verbindungen mit dem Slot
+	 * Zerstört das gebäude auf dem Slot und löscht auch alle Verbindungen mit
+	 * dem Slot
+	 * 
 	 * @param buildingsArray
-	 * @param i
+	 *            Gebäudeliste des Spiels
+	 * @param slotID
+	 *            SlotID des Gebäudes (1-18); 9 + 18 sind Bases
 	 * @param field
-	 * @param time
+	 *            Spielfeld auf dem die Eiheiten laufen
 	 */
-	public void destroyPrimaryBuilding( Buildings[] buildingsArray, int i, Panel field, int time){
-		if (i >= 18){
-			field.remove(buildingsArray[i].getLabel());
-			buildingsArray[i] = null;
-			buildingsArray[i-18].setPrimerBuilding(null);
+	public void destroyPrimaryBuilding(Buildings[] buildingsArray, int slotID,
+			Panel field) {
+		if (slotID >= 18) {
+			field.remove(buildingsArray[slotID].getLabel());
+			buildingsArray[slotID] = null;
+			buildingsArray[slotID - 18].setPrimerBuilding(null);
 			field.repaint();
 		}
 	}
-	
+
 	/**
-	 * Preislsiten für Gebäude
+	 * Preislisten für Gebäude
+	 * 
 	 * @param buildingName
-	 * @return
+	 *            Name des Gebäudes
+	 * @return Preis des Gebäudes
 	 */
 	private int[] searchForPrice(String buildingName) {
 		switch (buildingName) {
 		case "Outpost":
-			return new int[] {40, 30, 30, 00};
+			return new int[] { 40, 30, 30, 00 };
 		case "Barracks":
-			return new int[] {30, 00, 00, 00};
+			return new int[] { 30, 00, 00, 00 };
 		case "Arsenal":
-			return new int[] {80, 50, 00, 00};
+			return new int[] { 80, 50, 00, 00 };
 		case "Forge":
-			return new int[] {40, 30, 30, 00};
+			return new int[] { 40, 30, 30, 00 };
 		case "Manufacture":
-			return new int[] {60, 30, 30, 00};
+			return new int[] { 60, 30, 30, 00 };
 		case "Mechanics Terminal":
-			return new int[] {70, 20, 00, 00};
+			return new int[] { 70, 20, 00, 00 };
 		case "Armory":
-			return new int[] {60, 25, 25, 00};
+			return new int[] { 60, 25, 25, 00 };
 		case "Generator":
-			return new int[] {50, 00, 00, 00};
+			return new int[] { 50, 00, 00, 00 };
 		case "Solar Grid":
-			return new int[]{50, 00, 00, 00};
+			return new int[] { 50, 00, 00, 00 };
 		case "Bank":
-			return new int[]{50, 00, 00, 00};
+			return new int[] { 50, 00, 00, 00 };
 		case "Treasury":
-			return new int[]{50, 00, 00, 00};
+			return new int[] { 50, 00, 00, 00 };
 		case "Hospital":
-			return new int[]{40, 30, 10, 00};
+			return new int[] { 40, 30, 10, 00 };
 		case "War Sanctum":
-			return new int[]{65, 00, 00, 00};
+			return new int[] { 65, 00, 00, 00 };
 		case "Special Operations":
-			return new int[]{80, 30, 30, 00};
+			return new int[] { 80, 30, 30, 00 };
 		default:
 			return null;
 		}
 	}
-	
-	private String[] searchForPossibleEntitys(String BuildingName){
-		
+
+	/**
+	 * Gibt die Optionen zurück die ein Gebäude hat
+	 * 
+	 * @param BuildingName
+	 *            Name des Gebäudes
+	 * @return Liste der Optionen
+	 */
+	private String[] searchForPossibleEntitys(String BuildingName) {
+
 		// 0 Emty Field
 		// 1-3 Kasserne
 		// 4-6 Forge
@@ -283,53 +391,69 @@ public class BaseBuildings {
 		// 12-13 Hospital
 		// 14 Rocketped
 		// 15 Base
-		
+
 		// Recruit
-		switch (BuildingName){ 
+		switch (BuildingName) {
 		case "Slot":
-			return new String[]{"Outpost", "Forge", "Hospital", "Bank", "Armory", "Generator", "Special Operations"};
+			return new String[] { "Outpost", "Forge", "Hospital", "Bank",
+					"Armory", "Generator", "Special Operations" };
 		case "Outpost":
-			return new String[]{"Marine", "Chronite Tank", "Recruit", "Barracks", "Destroy"};
+			return new String[] { "Marine", "Chronite Tank", "Recruit",
+					"Barracks", "Destroy" };
 		case "Barracks":
-			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Recruit", "Arsenal", "Destroy"};
+			return new String[] { "Marine", "Chronite Tank", "Sniper",
+					"Gröditz", "Recruit", "Arsenal", "Destroy" };
 		case "Arsenal":
-			return new String[]{"Marine", "Chronite Tank", "Sniper", "Gröditz", "Hover Tank", "Black Queen", "Recruit", "Destroy"};
+			return new String[] { "Marine", "Chronite Tank", "Sniper",
+					"Gröditz", "Hover Tank", "Black Queen", "Recruit",
+					"Destroy" };
 		case "Forge":
-			return new String[]{"A25-Roman", "Scout", "Salvage", "Manufactory", "Destroy"};
+			return new String[] { "A25-Roman", "Scout", "Salvage",
+					"Manufactory", "Destroy" };
 		case "Manufactory":
-			return new String[]{"A25-Roman", "Scout", "Phantom", "Sakata-MK2", "Salvage", "Mechanics Terminal", "Destroy"};
+			return new String[] { "A25-Roman", "Scout", "Phantom",
+					"Sakata-MK2", "Salvage", "Mechanics Terminal", "Destroy" };
 		case "Mechanics Terminal":
-			return new String[]{"A25-Roman", "Scout", "Phantom", "Sakata-MK2", "Sakata Spider", "Gladiator", "Salvage", "Destroy"};
+			return new String[] { "A25-Roman", "Scout", "Phantom",
+					"Sakata-MK2", "Sakata Spider", "Gladiator", "Salvage",
+					"Destroy" };
 		case "Armory":
-			return new String[]{"Financel Support", "Reinforcments", "Reserve Energy", "Modified Phantom", "Destroy"};
+			return new String[] { "Financel Support", "Reinforcments",
+					"Reserve Energy", "Modified Phantom", "Destroy" };
 		case "Generator":
-			return new String[]{"Power", "Solar Grid", "Destroy"};
+			return new String[] { "Power", "Solar Grid", "Destroy" };
 		case "Solar Grid":
-			return new String[]{"Power", "Modified Sakata", "Destroy"};
+			return new String[] { "Power", "Modified Sakata", "Destroy" };
 		case "Bank":
-			return new String[]{"Exhange", "Treasury", "Destroy"};
+			return new String[] { "Exhange", "Treasury", "Destroy" };
 		case "Treasury":
-			return new String[]{"Traiding", "Destroy"};
+			return new String[] { "Traiding", "Destroy" };
 		case "Hospital":
-			return new String[]{"Resuscitate", "Meditec", "Rescue Team", "War Sanctum", "Destroy"};
+			return new String[] { "Resuscitate", "Meditec", "Rescue Team",
+					"War Sanctum", "Destroy" };
 		case "War Sanctum":
-			return new String[]{"Recover", "Meditec", "Rescue Team", "Saint", "Sphinx", "Destroy"};
+			return new String[] { "Recover", "Meditec", "Rescue Team", "Saint",
+					"Sphinx", "Destroy" };
 		case "Special Operations":
-			return new String[]{"Launch Missile Green", "Launch Missile Blue", "Black Operations", "Special Froces", "Far Sniper", "A27-Pride", "Destroy"};
+			return new String[] { "Launch Missile Green",
+					"Launch Missile Blue", "Black Operations",
+					"Special Froces", "Far Sniper", "A27-Pride", "Destroy" };
 		case "Base":
-			return new String[]{};
+			return new String[] {};
 		default:
-			return new String[]{};
+			return new String[] {};
 		}
 	}
-	
+
 	/**
-	 * Hier können Gebäude nach positioniert werden, falls sie größer sind als gedacht
+	 * Hier können Gebäude nach positioniert werden, falls sie größer sind als
+	 * gedacht
+	 * 
 	 * @param buildingName
 	 * @return
 	 */
-	public int getBestOptimum(String buildingName){
-		switch (buildingName){ 
+	public int getBestOptimum(String buildingName) {
+		switch (buildingName) {
 		case "Armory":
 			return 7;
 		case "Hospital":
@@ -344,6 +468,6 @@ public class BaseBuildings {
 			return 25;
 		default:
 			return 0;
-		}	
+		}
 	}
 }

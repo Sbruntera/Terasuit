@@ -4,6 +4,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Alexander
+ *
+ */
 public class SelectedUnits {
 	
 	/**

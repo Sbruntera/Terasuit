@@ -8,6 +8,14 @@ public class Lobby {
 	private boolean hasPassword;
 	private byte numberOfPlayers;
 	
+	/**
+	 * Initialisiert eine Lobby
+	 * @param iD
+	 * @param name
+	 * @param mapID
+	 * @param hasPassword
+	 * @param numberOfPlayers
+	 */
 	public Lobby(byte iD, String name, byte mapID, boolean hasPassword, byte numberOfPlayers) {
 		this.iD = iD;
 		this.name = name;
@@ -17,6 +25,7 @@ public class Lobby {
 	}
 
 	/**
+	 * Gibt die ID zurück
 	 * @return the id
 	 */
 	public byte getID() {
@@ -24,28 +33,32 @@ public class Lobby {
 	}
 
 	/**
-	 * @return the id
+	 * Gibt den Namen zurück 
+	 * @return der Name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the id
+	 * Gibt die MapID zurück
+	 * @return
 	 */
 	public byte getMapID() {
 		return mapID;
 	}
 
 	/**
-	 * @return the id
+	 * Gibt zurück ob die Lobby ein Passwort hat
+	 * @return
 	 */
 	public boolean hasPassword() {
 		return hasPassword;
 	}
 
 	/**
-	 * @return the id
+	 * Gibt die Zahl der Spieler zurück
+	 * @return
 	 */
 	public byte getNumberOfPlayers() {
 		return numberOfPlayers;

@@ -17,7 +17,7 @@ import de.szut.client.ingame.ImageManipulator;
  * -> 4 verschiedene Farben
  * -> 2 richtungen
  * -> 2 Helligkeitsstufen
- * @author Sbrun
+ * @author Alexander
  */
 public class UnitPics {
 	

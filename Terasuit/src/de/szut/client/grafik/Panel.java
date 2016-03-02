@@ -33,10 +33,12 @@ public class Panel extends JPanel {
 	int h;
 	int minX;
 	int w;
-	
+
 	/**
-	 * Mit dem übergeben einenes Bildernames, wird ein neues Panel erzeugt und das alte damit getauscht
-	 * Alle Buttons gehen damit verloren, neue werden nach erstellen direkt mit drauf erzeugt
+	 * Mit dem übergeben einenes Bildernames, wird ein neues Panel erzeugt und
+	 * das alte damit getauscht Alle Buttons gehen damit verloren, neue werden
+	 * nach erstellen direkt mit drauf erzeugt
+	 * 
 	 * @param picName
 	 * @param func
 	 * @param HEIGHT
@@ -77,7 +79,7 @@ public class Panel extends JPanel {
 			console.setLayout(null);
 			console.setPreferredSize(new Dimension(WIGTH, 185));
 			add(console, BorderLayout.SOUTH);
-			
+
 			// Start des Spiels!
 			loader.init(this, field, console, func, scrollPane);
 
@@ -94,7 +96,7 @@ public class Panel extends JPanel {
 			buttons.setbuttons(this, picName, loader, func);
 		}
 	}
-	
+
 	/**
 	 * Canvas für das zeichnen eine Rechteck auf dem Spielfeld
 	 */
@@ -106,9 +108,10 @@ public class Panel extends JPanel {
 		g.setColor(Color.RED);
 		g.drawRect(minX, minY, w, h);
 	}
-	
+
 	/**
 	 * MouseListener um das auswählen mehrere Einheiten zu triggern
+	 * 
 	 * @param loader
 	 */
 	private void addListenersForMouse(Loader loader) {
@@ -134,10 +137,12 @@ public class Panel extends JPanel {
 			}
 		});
 	}
-	
+
 	/**
-	 * Ermittlung der Koordinaten des Rechteckt, damit es in alle Richtung möglich ist
-	 * Und das setzten der Linien, damit sie beim nächsten Paint angezeigt werden
+	 * Ermittlung der Koordinaten des Rechteckt, damit es in alle Richtung
+	 * möglich ist Und das setzten der Linien, damit sie beim nächsten Paint
+	 * angezeigt werden
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -159,7 +164,7 @@ public class Panel extends JPanel {
 		}
 		repaint();
 	}
-	
+
 	/**
 	 * Repaintet die GUI
 	 */

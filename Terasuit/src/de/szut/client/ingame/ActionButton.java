@@ -14,6 +14,11 @@ import javax.swing.JProgressBar;
 import de.szut.client.grafik.Loader;
 import de.szut.client.grafik.Panel;
 
+/**
+ * 
+ * @author Alexander, Simeon
+ *
+ */
 public class ActionButton {
 
 	BtnCreator btnCreator = new BtnCreator();
@@ -30,16 +35,30 @@ public class ActionButton {
 	String[] noName;
 	private Loader loader;
 
+	/**
+	 * Initialisiert ein ActionButton Objekt
+	 * 
+	 * @param loader
+	 *            Der Loader des Clients
+	 */
 	public ActionButton(Loader loader) {
 		this.loader = loader;
 	}
 
+	/**
+	 * Formatiert einen Text
+	 * 
+	 * @param s
+	 *            zu Formatierender Text
+	 * @return formatierter Text
+	 */
 	private static String wrapLines(String s) {
 		return String.format("<html>%s</html>", s);
 	}
-	
+
 	/**
 	 * Unitknöpfe werden auf ein Panel gesetzt, alle haben ein MouseListener
+	 * 
 	 * @param console
 	 */
 	public void createUserUnitOptions(Panel console) {
@@ -90,8 +109,10 @@ public class ActionButton {
 	}
 
 	/**
-	 * Hier werden alle Gebäudeaktionen erstellt und auf ein Panel gesetzt, alle Knöpfe besitzen MouseListener
-	 * Jede Aktion wird hier an den Server gerichtet
+	 * Hier werden alle Gebäudeaktionen erstellt und auf ein Panel gesetzt, alle
+	 * Knöpfe besitzen MouseListener Jede Aktion wird hier an den Server
+	 * gerichtet
+	 * 
 	 * @param console
 	 * @param game
 	 * @param buildingsArray
@@ -103,18 +124,18 @@ public class ActionButton {
 	public void createUserOptions(Panel console, Game game,
 			Buildings[] buildingsArray, JProgressBar[] listOfJProgressBar,
 			int slotID, int primID, Funktions func) {
-		
+
 		// Alle Optionen und andere Felder werden auf der Console gelöscht
 		deselectOptions(console);
 		game.setAllJProgressBarVisible(false);
-		
+
 		// Unterscheidung von Slots und gebäude
 		if (primID == 0) {
 			// Ein Slot wurde ausgewählt
 			noName = buildingsArray[slotID].getSpwanableEntity();
 			if (listOfJProgressBar[slotID] != null) {
 				noName = new String[1];
-				
+
 				noName[0] = "Cancel";
 				game.replaceJProcessbar(slotID);
 			}
@@ -135,50 +156,67 @@ public class ActionButton {
 			String type = getEntityAction(noName[n]);
 
 			btn.addMouseListener(new MouseAdapter() {
-				
-				// MouseListener startet eine übersetztung des Knopfes, welche Aktion ausgeführt werden soll
+
+				// MouseListener startet eine übersetztung des Knopfes, welche
+				// Aktion ausgeführt werden soll
 				// Möglichkeiten:
 				// Ground, Air, Building, Generation, Destroy, Cancel
 				public void mouseReleased(MouseEvent arg0) {
 					if (type.equals("Building")) {
-						loader.connection.createBuilding(slotIDToBuildingPosition(slotID),cutHTMLout(((JButton) arg0.getSource()).getText()));
+						loader.connection.createBuilding(
+								slotIDToBuildingPosition(slotID),
+								cutHTMLout(((JButton) arg0.getSource())
+										.getText()));
 					} else if (type.equals("Ground")) {
-						switch (cutHTMLout(((JButton) arg0.getSource()).getText())) {
+						switch (cutHTMLout(((JButton) arg0.getSource())
+								.getText())) {
 						case ("Marine"):
-							loader.connection.createUnit(1,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(1,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Chronite Tank"):
-							loader.connection.createUnit(2,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(2,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sniper"):
-							loader.connection.createUnit(3,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(3,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gröditz"):
-							loader.connection.createUnit(4,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(4,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Hover Tank"):
-							loader.connection.createUnit(5,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(5,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("A25-Roman"):
-							loader.connection.createUnit(7,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(7,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata-MK2"):
-							loader.connection.createUnit(10,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(10,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sakata Spider"):
-							loader.connection.createUnit(11,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(11,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Gladiator"):
-							loader.connection.createUnit(12,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(12,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Meditec"):
-							loader.connection.createUnit(13,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(13,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Sphinx"):
-							loader.connection.createUnit(15,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(15,
+									slotIDToBuildingPosition(slotID));
 							break;
 						case ("Modified Sakata"):
-							loader.connection.createUnit(17,slotIDToBuildingPosition(slotID));
+							loader.connection.createUnit(17,
+									slotIDToBuildingPosition(slotID));
 							break;
 						}
 
@@ -216,14 +254,15 @@ public class ActionButton {
 						System.out
 								.println("Keine Option für dieses Button vorhanden!!");
 					} else {
-						System.out.println("Kritischer Fehler: ActionButton.java => getEntityType.mth");
+						System.out
+								.println("Kritischer Fehler: ActionButton.java => getEntityType.mth");
 					}
 				}
 			});
 			jButton.add(btn);
 			console.add(btn);
 		}
-		
+
 		// Neue Beschreibungen werden gesetzt
 		if (primID == 0) {
 			Description.setText(wrapLines(buildingsArray[slotID]
@@ -234,18 +273,21 @@ public class ActionButton {
 		}
 		Description.setForeground(Color.BLACK);
 		Description.setBounds(20, -50, 180, 300);
-		
+
 		// Neue Gebäudename wird auf die Konsole gesetzt
 		if (primID == 0) {
 			if (buildingsArray[slotID].getPrimerBuilding() == null) {
-				BuildingNameLbl.setText(wrapLines(buildingsArray[slotID].getName()));
+				BuildingNameLbl.setText(wrapLines(buildingsArray[slotID]
+						.getName()));
 			} else {
-				BuildingNameLbl.setText(wrapLines(buildingsArray[slotID].getPrimerBuilding().getName()));
+				BuildingNameLbl.setText(wrapLines(buildingsArray[slotID]
+						.getPrimerBuilding().getName()));
 			}
 		} else {
-			BuildingNameLbl.setText(wrapLines(buildingsArray[primID].getName()));
+			BuildingNameLbl
+					.setText(wrapLines(buildingsArray[primID].getName()));
 		}
-		
+
 		BuildingNameLbl.setForeground(Color.BLACK);
 		BuildingNameLbl.setFont(new Font("Arial", Font.PLAIN, 19));
 		BuildingNameLbl.setBounds(20, -20, 180, 100);
@@ -256,25 +298,28 @@ public class ActionButton {
 		}
 		console.repaint();
 	}
-	
+
 	/**
 	 * Schreibt die Beschreibung um auf der Konsole
+	 * 
 	 * @param description
 	 */
 	public void changeDescription(String description) {
 		Description.setText(wrapLines(description));
 	}
-	
+
 	/**
 	 * Schreibt den angezeigten Namen um
+	 * 
 	 * @param type
 	 */
 	public void changeBuildingName(String type) {
 		BuildingNameLbl.setText(wrapLines(type));
 	}
-	
+
 	/**
 	 * Alle Optionen werden entfernt und das Arraylist wird geleert
+	 * 
 	 * @param panel
 	 */
 	public void deselectOptions(Panel panel) {
@@ -288,10 +333,11 @@ public class ActionButton {
 		jButton.clear();
 		panel.repaint();
 	}
-	
+
 	/**
-	 * Aus einem String wird die Aktion ermittelt, die eine spezielle Funktion aufruft
-	 * Falls keine Aktion gefunden wird, wird NULL zurück gegeben
+	 * Aus einem String wird die Aktion ermittelt, die eine spezielle Funktion
+	 * aufruft Falls keine Aktion gefunden wird, wird NULL zurück gegeben
+	 * 
 	 * @param EntityName
 	 * @return EntityAktion
 	 */
@@ -340,7 +386,7 @@ public class ActionButton {
 		}
 		return "null";
 	}
-	
+
 	/**
 	 * Schneidet aus einem HTML String die Tags aus
 	 */
@@ -350,9 +396,11 @@ public class ActionButton {
 		ButtonName = parts[0];
 		return ButtonName;
 	}
-	
+
 	/**
-	 * Löscht mit einem Funktionsaufruf alle Useroptionen aus dem übergebenden Panel
+	 * Löscht mit einem Funktionsaufruf alle Useroptionen aus dem übergebenden
+	 * Panel
+	 * 
 	 * @param console
 	 */
 	public void destroyUserOptions(Panel console) {
@@ -361,6 +409,7 @@ public class ActionButton {
 
 	/**
 	 * Rechnet die SlotID in eine Zahl von 0-4 um
+	 * 
 	 * @param slotID
 	 * @return
 	 */

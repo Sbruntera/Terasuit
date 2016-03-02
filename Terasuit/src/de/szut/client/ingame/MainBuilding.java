@@ -1,5 +1,10 @@
 package de.szut.client.ingame;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class MainBuilding extends Buildings implements Attackable {
 
 	private int health;
@@ -38,5 +43,5 @@ public class MainBuilding extends Buildings implements Attackable {
 	public void heal(int value) {
 		health += value;
 	}
-	
+
 }

@@ -10,6 +10,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.szut.client.grafik.Loader;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class ServerConnection implements Runnable {
 
 	private boolean serverAccess = false;
@@ -21,6 +26,11 @@ public class ServerConnection implements Runnable {
 	private boolean isLoggedIn;
 	private String name;
 
+	/**
+	 * Initialisiert eine Verbindung zu Server
+	 * 
+	 * @param loader
+	 */
 	public ServerConnection(Loader loader) {
 		Socket socket;
 		try {
@@ -54,7 +64,8 @@ public class ServerConnection implements Runnable {
 						}
 						bytes.add((byte) i);
 					}
-					analyser.analyse(splitBreak(toPrimal(bytes.toArray(new Byte[bytes.size()]))));
+					analyser.analyse(splitBreak(toPrimal(bytes
+							.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
 					writer.write(queue.remove());
@@ -71,6 +82,12 @@ public class ServerConnection implements Runnable {
 		}
 	}
 
+	/**
+	 * Trennt 3 bytes ab
+	 * 
+	 * @param primal
+	 * @return
+	 */
 	private byte[] splitBreak(byte[] primal) {
 		byte[] array = new byte[primal.length - 3];
 		for (int i = 0; i < array.length; i++) {
@@ -79,6 +96,11 @@ public class ServerConnection implements Runnable {
 		return array;
 	}
 
+	/**
+	 * Fügt eine Nachricht hinzu und fügt dieser das Ending hinzu
+	 * 
+	 * @param message
+	 */
 	private void addMessage(byte[] message) {
 		byte[] msg = new byte[message.length + 3];
 		for (int i = 0; i < message.length; i++) {
@@ -90,12 +112,19 @@ public class ServerConnection implements Runnable {
 		queue.add(msg);
 	}
 
+	/**
+	 * Gibt zurück ob eine Verbindung zum Server Aufgebaut werden konnte
+	 * 
+	 * @return
+	 */
 	public boolean isServerAccess() {
 		return serverAccess;
 	}
 
 	/**
-	 * @return the isLoggedIn
+	 * Gibt zurück ob der Client eingeloggt ist
+	 * 
+	 * @return
 	 */
 	public boolean isLoggedIn() {
 		return isLoggedIn;
@@ -118,6 +147,8 @@ public class ServerConnection implements Runnable {
 	}
 
 	/**
+	 * Setzt den Namen
+	 * 
 	 * @param name
 	 *            the name to set
 	 */
@@ -125,6 +156,11 @@ public class ServerConnection implements Runnable {
 		this.name = name;
 	}
 
+	/**
+	 * Wandelt ein Byte[] in ein byte[] um
+	 * @param array
+	 * @return
+	 */
 	private byte[] toPrimal(Byte[] array) {
 		byte[] bytes = new byte[array.length];
 		for (int i = 0; i < array.length; i++) {
@@ -135,8 +171,11 @@ public class ServerConnection implements Runnable {
 
 	// #################################################################
 	// Menü
-	
-	public void stats(){
+
+	/**
+	 * Fordert die Stats an
+	 */
+	public void stats() {
 		if (analyser.getState() == State.MENU) {
 			addMessage(new byte[] { 0 });
 		}
@@ -172,15 +211,15 @@ public class ServerConnection implements Runnable {
 	public void refreshServerList(boolean noPassword, String name,
 			int minPlayers, int maxPlayers, int mapID) {
 		if (analyser.getState() == State.MENU) {
-			byte[] array = new byte[3 + name.length()*2];
+			byte[] array = new byte[3 + name.length() * 2];
 			array[0] = 2;
 			array[1] = (byte) ((Boolean.compare(noPassword, false) << 6)
 					+ (minPlayers << 3) + maxPlayers);
 			array[2] = (byte) mapID;
 			for (int i = 0; i < name.length(); i++) {
 				int bpos = (i << 1) + 3;
-				array[bpos] = (byte) ((name.charAt(i)&0xFF00)>>8);
-				array[bpos + 1] = (byte) (name.charAt(i)&0x00FF);
+				array[bpos] = (byte) ((name.charAt(i) & 0xFF00) >> 8);
+				array[bpos + 1] = (byte) (name.charAt(i) & 0x00FF);
 			}
 			addMessage(array);
 		}
@@ -203,14 +242,14 @@ public class ServerConnection implements Runnable {
 			array.add((byte) 3);
 			array.add((byte) mapID);
 			for (char c : name.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			array.add((byte) 0);
 			array.add((byte) 0);
 			for (char c : password.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
@@ -227,13 +266,13 @@ public class ServerConnection implements Runnable {
 	public void connectGroup(int id, String password) {
 		if (analyser.getState() == State.MENU) {
 			queue.clear();
-			byte[] array = new byte[password.length()*2 + 2];
+			byte[] array = new byte[password.length() * 2 + 2];
 			array[0] = 4;
 			array[1] = (byte) id;
 			for (int i = 0; i < password.length(); i++) {
 				int bpos = (i << 1) + 2;
-				array[bpos] = (byte) ((password.charAt(i)&0xFF00)>>8);
-				array[bpos + 1] = (byte) (password.charAt(i)&0x00FF);
+				array[bpos] = (byte) ((password.charAt(i) & 0xFF00) >> 8);
+				array[bpos + 1] = (byte) (password.charAt(i) & 0x00FF);
 			}
 			addMessage(array);
 		}
@@ -252,14 +291,14 @@ public class ServerConnection implements Runnable {
 			ArrayList<Byte> array = new ArrayList<Byte>();
 			array.add((byte) 5);
 			for (char c : user.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			array.add((byte) 0);
 			array.add((byte) 0);
 			for (char c : password.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
@@ -280,20 +319,20 @@ public class ServerConnection implements Runnable {
 			ArrayList<Byte> array = new ArrayList<Byte>();
 			array.add((byte) 6);
 			for (char c : user.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			array.add((byte) 0);
 			array.add((byte) 0);
 			for (char c : password.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			array.add((byte) 0);
 			array.add((byte) 0);
 			for (char c : mail.toCharArray()) {
-				array.add((byte) ((c&0xFF00)>>8));
-				array.add((byte) (c&0x00FF));
+				array.add((byte) ((c & 0xFF00) >> 8));
+				array.add((byte) (c & 0x00FF));
 			}
 			addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 		}
@@ -362,10 +401,10 @@ public class ServerConnection implements Runnable {
 		if (!msg.equals("") && analyser.getState() == State.LOBBY) {
 			byte[] array = new byte[(msg.length() << 1) + 1];
 			array[0] = 20;
-			for(int i = 0; i < msg.length(); i++) {
+			for (int i = 0; i < msg.length(); i++) {
 				int bpos = (i << 1) + 1;
-				array[bpos] = (byte) ((msg.charAt(i)&0xFF00)>>8);
-				array[bpos + 1] = (byte) (msg.charAt(i)&0x00FF);
+				array[bpos] = (byte) ((msg.charAt(i) & 0xFF00) >> 8);
+				array[bpos + 1] = (byte) (msg.charAt(i) & 0x00FF);
 			}
 			addMessage(array);
 		}
@@ -514,10 +553,10 @@ public class ServerConnection implements Runnable {
 		if (!message.equals("") && analyser.getState() == State.GAME) {
 			byte[] array = new byte[(message.length() << 1) + 1];
 			array[0] = 20;
-			for(int i = 0; i < message.length(); i++) {
+			for (int i = 0; i < message.length(); i++) {
 				int bpos = (i << 1) + 1;
-				array[bpos] = (byte) ((message.charAt(i)&0xFF00)>>8);
-				array[bpos + 1] = (byte) (message.charAt(i)&0x00FF);
+				array[bpos] = (byte) ((message.charAt(i) & 0xFF00) >> 8);
+				array[bpos + 1] = (byte) (message.charAt(i) & 0x00FF);
 			}
 			addMessage(array);
 		}

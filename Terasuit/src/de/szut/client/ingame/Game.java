@@ -21,6 +21,11 @@ import javax.swing.SwingConstants;
 import de.szut.client.grafik.Loader;
 import de.szut.client.grafik.Panel;
 
+/**
+ * 
+ * @author Alexander, Simeon
+ *
+ */
 public class Game {
 
 	BaseBuildings buildings = new BaseBuildings();
@@ -47,6 +52,17 @@ public class Game {
 	private JLabel r4;
 	JScrollPane scrollPane;
 
+	/**
+	 * Initialisiert das Spiel
+	 * 
+	 * @param panel
+	 * @param field
+	 * @param console
+	 * @param loader
+	 * @param func
+	 * @param playerID
+	 * @param scrollPane
+	 */
 	public void init(Panel panel, Panel field, Panel console, Loader loader,
 			Funktions func, int playerID, JScrollPane scrollPane) {
 		this.func = func;
@@ -70,7 +86,8 @@ public class Game {
 				buildings.default_position_Rightside_y, false);
 
 		// Back-Button
-		func.setMainBuildings((MainBuilding) BuildingsArray[9], (MainBuilding) BuildingsArray[18]);
+		func.setMainBuildings((MainBuilding) BuildingsArray[9],
+				(MainBuilding) BuildingsArray[18]);
 		JButton btnBACK = new JButton("X");
 		btnCreator.createOne(btnBACK, 673, 114, 60, 60, 87);
 		btnBACK.addMouseListener(new MouseAdapter() {
@@ -82,140 +99,206 @@ public class Game {
 		});
 		// Chat
 		tl = new JLabel(s);
-        tl.setBounds(756, 11, 255, 134);
-        tl.setForeground(Color.WHITE);
-        tl.setVerticalAlignment(SwingConstants.TOP);
-        JScrollPane scroller = new JScrollPane(tl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scroller.setBounds(756, 11, 255, 134);
-        scroller.setOpaque(false);
-        scroller.getViewport().setOpaque(false);
-        ts = scroller.getVerticalScrollBar();
-        // 666, 350, 320, 364
-        JTextField tf = new JTextField();
-        tf.setBounds(756, 145, 255, 30);
-        tf.addActionListener(e -> {
-            loader.connection.sendChatMessage(tf.getText());
-            tf.setText("");
-        });
-        console.add(scroller);
-        console.add(tf);
-        console.add(btnBACK);
-        console.repaint();
-        console.revalidate();
-        panel.repaint();
-        
-        //Resources
-        r1 = new JLabel("50");
-        r1.setIcon(new ImageIcon("Game_Assets/money.png"));
-        setAttributes(r1, 10, 140, 60, 30);
-        r2 = new JLabel("50");
-        r2.setIcon(new ImageIcon("Game_Assets/Strom.png"));
-        setAttributes(r2, 85, 140, 60, 30);
-        r3 = new JLabel("50");
-        r3.setIcon(new ImageIcon("Game_Assets/human.png"));
-        setAttributes(r3, 160, 140, 60, 30);
-        r4 = new JLabel("0");
-        r4.setIcon(new ImageIcon("Game_Assets/monk.png"));
-        setAttributes(r4, 245, 140, 60, 30);
-        
+		tl.setBounds(756, 11, 255, 134);
+		tl.setForeground(Color.WHITE);
+		tl.setVerticalAlignment(SwingConstants.TOP);
+		JScrollPane scroller = new JScrollPane(tl,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroller.setBounds(756, 11, 255, 134);
+		scroller.setOpaque(false);
+		scroller.getViewport().setOpaque(false);
+		ts = scroller.getVerticalScrollBar();
+		// 666, 350, 320, 364
+		JTextField tf = new JTextField();
+		tf.setBounds(756, 145, 255, 30);
+		tf.addActionListener(e -> {
+			loader.connection.sendChatMessage(tf.getText());
+			tf.setText("");
+		});
+		console.add(scroller);
+		console.add(tf);
+		console.add(btnBACK);
+		console.repaint();
+		console.revalidate();
+		panel.repaint();
+
+		// Resources
+		r1 = new JLabel("50");
+		r1.setIcon(new ImageIcon("Game_Assets/money.png"));
+		setAttributes(r1, 10, 140, 60, 30);
+		r2 = new JLabel("50");
+		r2.setIcon(new ImageIcon("Game_Assets/Strom.png"));
+		setAttributes(r2, 85, 140, 60, 30);
+		r3 = new JLabel("50");
+		r3.setIcon(new ImageIcon("Game_Assets/human.png"));
+		setAttributes(r3, 160, 140, 60, 30);
+		r4 = new JLabel("0");
+		r4.setIcon(new ImageIcon("Game_Assets/monk.png"));
+		setAttributes(r4, 245, 140, 60, 30);
+
 	}
-	
+
 	/**
-	 * Setzt den Text Mittig, die Schrift größer und Weiß und setzt die position anhand der übergebenen Werte
+	 * Setzt den Text Mittig, die Schrift größer und Weiß und setzt die position
+	 * anhand der übergebenen Werte
 	 * 
-	 * @param c JLabel was bearbeitet werden soll
-	 * @param x Position auf der X Achse
-	 * @param y Position auf der Y Achse
-	 * @param width Breite
-	 * @param height Höhe
+	 * @param c
+	 *            JLabel was bearbeitet werden soll
+	 * @param x
+	 *            Position auf der X Achse
+	 * @param y
+	 *            Position auf der Y Achse
+	 * @param width
+	 *            Breite
+	 * @param height
+	 *            Höhe
 	 */
-	public void setAttributes(JLabel c, int x, int y, int width, int height){
+	public void setAttributes(JLabel c, int x, int y, int width, int height) {
 		c.setHorizontalAlignment(SwingConstants.CENTER);
-        c.setFont(new Font("Arial", Font.BOLD, 16));
-        c.setForeground(Color.WHITE);
-        c.setBounds(x, y, width, height);
-        console.add(c);
+		c.setFont(new Font("Arial", Font.BOLD, 16));
+		c.setForeground(Color.WHITE);
+		c.setBounds(x, y, width, height);
+		console.add(c);
 	}
-	
+
 	/**
 	 * Setzt die anzeige der Resourcen
 	 * 
-	 * @param Resource Typ der Resourcen
-	 * @param number Anzahl der Resourcen die hinzugefügt werden sollen
+	 * @param Resource
+	 *            Typ der Resourcen
+	 * @param number
+	 *            Anzahl der Resourcen die hinzugefügt werden sollen
 	 */
 	public void setResources(double[] resources) {
-		r1.setText(String.valueOf((int)resources[0]));
-		r2.setText(String.valueOf((int)resources[1]));
-		r3.setText(String.valueOf((int)resources[2]));
-		r4.setText(String.valueOf((int)resources[3]));
+		r1.setText(String.valueOf((int) resources[0]));
+		r2.setText(String.valueOf((int) resources[1]));
+		r3.setText(String.valueOf((int) resources[2]));
+		r4.setText(String.valueOf((int) resources[3]));
 	}
 
+	/**
+	 * zeigt Victory oder Defeat
+	 * 
+	 * @param won
+	 */
 	public void end(boolean won) {
 		JLabel victory;
-		if(won){
+		if (won) {
 			victory = new JLabel(new ImageIcon("Game_Assets/victory.png"));
 		} else {
 			victory = new JLabel(new ImageIcon("Game_Assets/defeat.png"));
 		}
 		victory.setBounds(100, 100, 552, 80);
 		field.setEnabled(false);
-		for (MouseListener n : field.getMouseListeners()){
+		for (MouseListener n : field.getMouseListeners()) {
 			field.removeMouseListener(n);
 		}
-		for (MouseMotionListener n : field.getMouseMotionListeners()){
+		for (MouseMotionListener n : field.getMouseMotionListeners()) {
 			field.removeMouseMotionListener(n);
 		}
 		console.setEnabled(false);
-		for (MouseListener n : console.getMouseListeners()){
+		for (MouseListener n : console.getMouseListeners()) {
 			console.removeMouseListener(n);
 		}
-		panel.add(victory);	
+		panel.add(victory);
 		panel.setComponentZOrder(victory, 0);
 		panel.repaint();
 		panel.revalidate();
 		func.end();
 	}
 
+	/**
+	 * Beendet das Spiel
+	 */
 	public void end() {
 		func.end();
 	}
 
+	/**
+	 * Sucht nach Einheiten im Auswahlfeld
+	 * 
+	 * @param minX
+	 * @param minY
+	 * @param w
+	 * @param h
+	 */
 	public void searchForEntitysInRectangle(int minX, int minY, int w, int h) {
 		func.deMarkEntittys();
 		func.findAllEntitys(minX, minY, w, h, playerID);
 		func.destroyUserOptions(console);
 	}
 
+	/**
+	 * markiert eine einzelne Einheit
+	 * 
+	 * @param objUnit
+	 */
 	public void selectSingleEntity(MouseEvent objUnit) {
 		func.findEntity(objUnit);
 		func.destroyUserOptions(console);
 	}
 
+	/**
+	 * Erstellt Nutzeroptionen
+	 * 
+	 * @param slotID
+	 * @param primID
+	 * @param buildingsArray
+	 */
 	public void createUserOptions(int slotID, int primID,
 			Buildings[] buildingsArray) {
-		if ((slotID > (playerID-1 >> 1) + (playerID-1)*4 && slotID < (playerID-1 >> 1) + (playerID)*4 + 1) || slotID == (((playerID-1)>>1)+1)*9){
+		if ((slotID > (playerID - 1 >> 1) + (playerID - 1) * 4 && slotID < (playerID - 1 >> 1)
+				+ (playerID) * 4 + 1)
+				|| slotID == (((playerID - 1) >> 1) + 1) * 9) {
 			func.deMarkEntittys();
 			btnAction.createUserOptions(console, this, buildingsArray,
 					func.getListOfJProgressBar(), slotID, primID, func);
 		}
 	}
 
-	public void entity(String unitString, int playerNumber, boolean air, short unitID, Point position) {
-		func.createEntity(field, unitString, playerNumber, air, unitID, position, playerNumber == this.playerID);
+	/**
+	 * Erstellt eine Einheit
+	 * 
+	 * @param unitString
+	 * @param playerNumber
+	 * @param air
+	 * @param unitID
+	 * @param position
+	 */
+	public void entity(String unitString, int playerNumber, boolean air,
+			short unitID, Point position) {
+		func.createEntity(field, unitString, playerNumber, air, unitID,
+				position, playerNumber == this.playerID);
 	}
 
+	/**
+	 * Zerstört ein Gebäude
+	 * 
+	 * @param i
+	 */
 	public void destroyBuilding(int i) {
-		buildings.destroyPrimaryBuilding(BuildingsArray, i, field, 20);
+		buildings.destroyPrimaryBuilding(BuildingsArray, i, field);
 		func.destroyUserOptions(console);
 	}
 
+	/**
+	 * Erstellt ein Gebäudetimer
+	 * 
+	 * @param buildingName
+	 * @param buildingLocation
+	 * @param index
+	 * @param primID
+	 */
 	public void createBuilding(String buildingName, String buildingLocation,
 			int index, int primID) {
 		func.destroyUserOptions(console);
 
 		if (primID != 0) {
-			buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[primID - 18].getX(), BuildingsArray[primID - 18].getY(),
-					BuildingsArray, "This is a production building!", buildingName, this,
+			buildings.createPrimaryBuilding(buildingLocation,
+					BuildingsArray[primID - 18].getX(),
+					BuildingsArray[primID - 18].getY(), BuildingsArray,
+					"This is a production building!", buildingName, this,
 					primID - 18, primID, field);
 			func.payPrice(BuildingsArray[primID].getPrice());
 			JProgressBar progressBar = new JProgressBar();
@@ -227,8 +310,18 @@ public class Game {
 		createUserOptions(primID - 18, primID, BuildingsArray);
 	}
 
-	public void createEnemyBuilding(String buildingName, String buildingLocation, int slotID, int primID) {
-		buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[slotID].getX(), BuildingsArray[slotID].getY(),
+	/**
+	 * Erstellt ein Gebäude sofort
+	 * 
+	 * @param buildingName
+	 * @param buildingLocation
+	 * @param slotID
+	 * @param primID
+	 */
+	public void createEnemyBuilding(String buildingName,
+			String buildingLocation, int slotID, int primID) {
+		buildings.createPrimaryBuilding(buildingLocation,
+				BuildingsArray[slotID].getX(), BuildingsArray[slotID].getY(),
 				BuildingsArray, "This a enemy building!", buildingName, this,
 				slotID, primID, field);
 		field.remove(BuildingsArray[slotID].getLabel());
@@ -236,15 +329,26 @@ public class Game {
 		field.add(BuildingsArray[slotID].getLabel());
 		field.repaint();
 	}
-	
+
+	/**
+	 * Beendet ein eigenes Gebäude
+	 * 
+	 * @param primID
+	 */
 	public void finishBuilding(int primID) {
 		field.remove(BuildingsArray[primID - 18].getLabel());
 		field.add(BuildingsArray[primID].getLabel());
 		field.add(BuildingsArray[primID - 18].getLabel());
 		field.repaint();
 	}
-	
-	public void changeInformation(String type, String description){
+
+	/**
+	 * Ändert die Beschreibung
+	 * 
+	 * @param type
+	 * @param description
+	 */
+	public void changeInformation(String type, String description) {
 		btnAction.changeDescription(description);
 		btnAction.changeBuildingName(type);
 	}
@@ -260,13 +364,19 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Bricht eine Gebäudeproduktion ab
+	 * 
+	 * @param index
+	 */
 	public void cancel(int index) {
 		func.getListOfJProgressBar()[index].setVisible(false);
 		func.destroyUserOptions(console);
 		func.getListOfJProgressBar()[index] = null;
 		func.refundPrice(BuildingsArray[index + 18].getPrice());
 		if (BuildingsArray[index + 18].getPrimerBuilding() != null) {
-			BuildingsArray[index + 18] = BuildingsArray[index + 18].getPrimerBuilding();
+			BuildingsArray[index + 18] = BuildingsArray[index + 18]
+					.getPrimerBuilding();
 			BuildingsArray[index].setPrimerBuilding(BuildingsArray[index + 18]);
 			BuildingsArray[index + 18].setPrimerBuilding(null);
 			field.remove(BuildingsArray[index].getLabel());
@@ -280,46 +390,79 @@ public class Game {
 
 	}
 
+	/**
+	 * Zeigt eine neue Progressbar an
+	 * 
+	 * @param index
+	 */
 	public void replaceJProcessbar(int index) {
 		func.getListOfJProgressBar()[index].setVisible(true);
 	}
 
 	/**
-	 * Fügt die Nachricht den Chatfenster hinzu und bewegt den Scroller nach ganz unten
+	 * Fügt die Nachricht den Chatfenster hinzu und bewegt den Scroller nach
+	 * ganz unten
 	 * 
-	 * @param text Nachricht an den Chat
+	 * @param text
+	 *            Nachricht an den Chat
 	 */
 	public void setText(String text) {
 		s = s + "<br>" + text;
 		tl.setText("<html>" + s + "</html>");
 		try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        int s = ts.getModel().getMaximum() + ts.getModel().getExtent() ;
-        ts.setValue(s); //Setzt den Scroller an das Ende der Scrollbar
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		int s = ts.getModel().getMaximum() + ts.getModel().getExtent();
+		ts.setValue(s); // Setzt den Scroller an das Ende der Scrollbar
 	}
-	
+
+	/**
+	 * Setzt die SpielrId
+	 * 
+	 * @param id
+	 */
 	public void setPlayerID(int id) {
 		playerID = id;
-		if (playerID == 3 || playerID == 4){
-			scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getMaximum());
+		if (playerID == 3 || playerID == 4) {
+			scrollPane.getHorizontalScrollBar().setValue(
+					scrollPane.getHorizontalScrollBar().getMaximum());
 		}
 	}
 
-	public void moveUnit(byte player, boolean moving, boolean running, boolean right, int[] units) {
+	/**
+	 * Ändert die Richtung ausgewählter Einheiten
+	 * 
+	 * @param player
+	 * @param moving
+	 * @param running
+	 * @param right
+	 * @param units
+	 */
+	public void moveUnit(byte player, boolean moving, boolean running,
+			boolean right, int[] units) {
 		for (int i : units) {
 			if (func.entity.containsKey(i)) {
 				Unit u = func.getEntity(i);
-				if (u.getEntitymembership() == player+1) {
+				if (u.getEntitymembership() == player + 1) {
 					u.setEntityRun(running);
 					u.setEntityMove(moving);
 					if (running || !moving) {
-						u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), (((u.getEntitymembership()-1)&2) == 2), func.selectedEntitysID.contains(i)));
-						u.setEntityRushLeft(((u.getEntitymembership()-1)&2) == 2);
+						u.getLabel()
+								.setIcon(
+										func.pics.getEntityPic(
+												u.getEntityname(),
+												u.getEntitymembership(),
+												(((u.getEntitymembership() - 1) & 2) == 2),
+												func.selectedEntitysID
+														.contains(i)));
+						u.setEntityRushLeft(((u.getEntitymembership() - 1) & 2) == 2);
 					} else {
-						u.getLabel().setIcon(func.pics.getEntityPic(u.getEntityname(), u.getEntitymembership(), !right, func.selectedEntitysID.contains(i)));
+						u.getLabel().setIcon(
+								func.pics.getEntityPic(u.getEntityname(),
+										u.getEntitymembership(), !right,
+										func.selectedEntitysID.contains(i)));
 						u.setEntityRushLeft(!right);
 					}
 				}
@@ -327,19 +470,36 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Gibt die ausgewählten Einheiten zurück
+	 */
 	public Integer[] getSelectedUnits() {
-		return func.selectedEntitysID.toArray(new Integer[func.selectedEntitysID.size()]);
+		return func.selectedEntitysID
+				.toArray(new Integer[func.selectedEntitysID.size()]);
 	}
 
+	/**
+	 * Fügt ein Label der Gui hinzu
+	 * 
+	 * @param bullet
+	 */
 	public void showBullet(JLabel bullet) {
 		field.add(bullet);
 	}
 
+	/**
+	 * Malt die Gui neu
+	 */
 	public void repaint() {
 		field.repaint();
 		field.revalidate();
 	}
 
+	/**
+	 * Entfernt einige Einheiten
+	 * 
+	 * @param units
+	 */
 	public void removeUnits(int[] units) {
 		func.removeUnits(units);
 	}

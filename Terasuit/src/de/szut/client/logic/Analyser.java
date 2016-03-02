@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 import de.szut.client.grafik.Loader;
 
+/**
+ * 
+ * @author Simeon
+ *
+ */
 public class Analyser {
 
 	public Loader loader;
@@ -14,11 +19,21 @@ public class Analyser {
 	private boolean isHost;
 	byte position;
 
+	/**
+	 * Initialisiert einen Analyser für den Client
+	 * 
+	 * @param loader
+	 */
 	public Analyser(Loader loader) {
 		state = State.MENU;
 		this.loader = loader;
 	}
 
+	/**
+	 * analysiert eine Nachricht
+	 * 
+	 * @param bs
+	 */
 	public void analyse(byte[] bs) {
 		switch (state) {
 		case MENU:
@@ -33,14 +48,27 @@ public class Analyser {
 		}
 	}
 
+	/**
+	 * Wechselt den Analysierungsstatus
+	 */
 	public void switchState(State state) {
 		this.state = state;
 	}
 
+	/**
+	 * Gibt den Analysierungsstatus zurück
+	 * 
+	 * @return
+	 */
 	public State getState() {
 		return state;
 	}
 
+	/**
+	 * Analysiert die Nachricht als Menü-Nachricht
+	 * 
+	 * @param message
+	 */
 	private void analyseMenuMessage(byte[] message) {
 		switch (message[0]) {
 		case (0): // Stats
@@ -120,6 +148,11 @@ public class Analyser {
 		}
 	}
 
+	/**
+	 * Analysiert die Nachricht als Lobby-Nachricht
+	 * 
+	 * @param bs
+	 */
 	private void analyseLobbyMessage(byte[] bs) {
 		switch (bs[0]) {
 		case (16): // Position Wechseln
@@ -163,6 +196,10 @@ public class Analyser {
 		}
 	}
 
+	/**
+	 * Analysiert die Nachricht als Spiel-Nachricht
+	 * @param bs
+	 */
 	private void analyseGameMessage(byte[] bs) {
 		switch (bs[0]) {
 		case (32): // Spieler erstellt oder verbessert ein gebäude ein Gebäude
@@ -358,7 +395,8 @@ public class Analyser {
 			break;
 		case (39): // Spieler verlässt das Spiel
 			playerNumber = bs[1];
-			loader.setGameText(game.getPlayerName(playerNumber) + " hat das Spiel verlassen.");
+			loader.setGameText(game.getPlayerName(playerNumber)
+					+ " hat das Spiel verlassen.");
 			game.removePlayer(playerNumber);
 			break;
 		case (40): // Spiel gewonnen/verloren
@@ -371,6 +409,12 @@ public class Analyser {
 		}
 	}
 
+	/**
+	 * Wandelt ein byte[] in einen String um und schneidet die ersten ab
+	 * @param message
+	 * @param bytesToCut
+	 * @return
+	 */
 	private String castToString(byte[] message, int bytesToCut) {
 		String s = "";
 		char[] buffer = new char[message.length - bytesToCut >> 1];
@@ -382,6 +426,13 @@ public class Analyser {
 		return s;
 	}
 
+	/**
+	 * Schneidet von einem byte[] eine gewünschte Zahl an bytes vorne ab und Teilt den Rest nach 0x00 *2
+	 * 
+	 * @param input Zu teilendes Array
+	 * @param bytesToCut Zahl der bytes die abgeschnitten werden solles
+	 * @return Geteiltes Array
+	 */
 	private byte[][] getSplitString(byte[] input, int bytesToCut) {
 		ArrayList<byte[]> outerArray = new ArrayList<byte[]>();
 		ArrayList<Byte> array = new ArrayList<Byte>();
@@ -408,6 +459,11 @@ public class Analyser {
 		return outerArray.toArray(new byte[outerArray.size()][]);
 	}
 
+	/**
+	 * Wandelt ein Byte[] in ein byte[] um
+	 * @param splitted
+	 * @return
+	 */
 	private byte[] toPrimal(Byte[] splitted) {
 		byte[] bytes = new byte[splitted.length];
 		for (int i = 0; i < splitted.length; i++) {
@@ -416,6 +472,12 @@ public class Analyser {
 		return bytes;
 	}
 
+	/**
+	 * Liest die Units aus einem byte[] aus
+	 * @param input
+	 * @param bytesToCut
+	 * @return
+	 */
 	private int[] getUnits(byte[] input, int bytesToCut) {
 		int[] array = null;
 		if (input.length >= bytesToCut + 2 && input.length % 2 == 1) {
