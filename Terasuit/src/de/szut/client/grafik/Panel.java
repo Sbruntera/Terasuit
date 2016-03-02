@@ -69,7 +69,7 @@ public class Panel extends JPanel {
 			console.setPreferredSize(new Dimension(WIGTH, 185));
 			add(console, BorderLayout.SOUTH);
 
-			loader.init(this, field, console, func);
+			loader.init(this, field, console, func, scrollPane);
 
 		} else {
 			setLayout(null);

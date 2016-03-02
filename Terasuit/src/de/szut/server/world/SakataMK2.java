@@ -89,9 +89,8 @@ public class SakataMK2 extends Unit {
 				cooldown = SHOOTSPEED;
 				return new Bullet(this, nearestUnits[1]);
 			}
-		} else {
-			cooldown--;
 		}
+		cooldown--;
 		return null;
 	}
 

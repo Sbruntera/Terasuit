@@ -89,9 +89,8 @@ public class ChroniteTank extends Unit {
 				cooldown = SHOOTSPEED;
 				return new Bullet(this, nearestUnits[0]);
 			}
-		} else {
-			cooldown--;
 		}
+		cooldown--;
 		return null;
 	}
 

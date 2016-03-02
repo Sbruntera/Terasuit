@@ -45,15 +45,17 @@ public class Game {
 	private JLabel r2;
 	private JLabel r3;
 	private JLabel r4;
+	JScrollPane scrollPane;
 
 	public void init(Panel panel, Panel field, Panel console, Loader loader,
-			Funktions func, int playerID) {
+			Funktions func, int playerID, JScrollPane scrollPane) {
 		this.func = func;
 		this.panel = panel;
 		this.field = field;
 		this.console = console;
 		this.playerID = playerID;
 		this.loader = loader;
+		this.scrollPane = scrollPane;
 		btnAction = new ActionButton(loader);
 		func.setGame(this);
 
@@ -213,7 +215,7 @@ public class Game {
 
 		if (primID != 0) {
 			buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[primID - 18].getX(), BuildingsArray[primID - 18].getY(),
-					BuildingsArray, "blubb", buildingName, this,
+					BuildingsArray, "This is a production building!", buildingName, this,
 					primID - 18, primID, field);
 			func.payPrice(BuildingsArray[primID].getPrice());
 			JProgressBar progressBar = new JProgressBar();
@@ -227,7 +229,7 @@ public class Game {
 
 	public void createEnemyBuilding(String buildingName, String buildingLocation, int slotID, int primID) {
 		buildings.createPrimaryBuilding(buildingLocation, BuildingsArray[slotID].getX(), BuildingsArray[slotID].getY(),
-				BuildingsArray, "blubb", buildingName, this,
+				BuildingsArray, "This a enemy building!", buildingName, this,
 				slotID, primID, field);
 		field.remove(BuildingsArray[slotID].getLabel());
 		field.add(BuildingsArray[primID].getLabel());
@@ -301,6 +303,9 @@ public class Game {
 	
 	public void setPlayerID(int id) {
 		playerID = id;
+		if (playerID == 3 || playerID == 4){
+			scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getMaximum());
+		}
 	}
 
 	public void moveUnit(byte player, boolean moving, boolean running, boolean right, int[] units) {

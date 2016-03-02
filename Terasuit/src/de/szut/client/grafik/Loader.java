@@ -2,6 +2,7 @@ package de.szut.client.grafik;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import de.szut.client.ingame.Funktions;
 import de.szut.client.ingame.Game;
@@ -94,10 +95,11 @@ public class Loader {
 	 *            Consolen Panel
 	 * @param func
 	 *            Funktionen
+	 * @param scrollPane 
 	 */
-	public void init(Panel panel, Panel field, Panel console, Funktions func) {
+	public void init(Panel panel, Panel field, Panel console, Funktions func, JScrollPane scrollPane) {
 		game = new Game();
-		game.init(panel, field, console, this, func, 1);
+		game.init(panel, field, console, this, func, 1, scrollPane);
 	}
 
 	public void startDebugger() {
