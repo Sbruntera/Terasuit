@@ -174,7 +174,11 @@ public class Funktions implements Runnable {
 
 	private void removeUnits() {
 		while (!removeQueue.isEmpty()) {
-			entity.remove(removeQueue.remove());
+			Integer i = removeQueue.remove();
+			if (entity.get(i) != null) {
+				entity.get(i).getLabel().getParent().remove(entity.get(i).getLabel());;
+				entity.remove(i);
+			}
 		}
 	}
 

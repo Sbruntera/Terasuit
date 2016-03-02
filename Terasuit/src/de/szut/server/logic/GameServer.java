@@ -78,7 +78,6 @@ public class GameServer implements Runnable {
 					if (!b.getTarget().isAlive()) {
 						if (b.getTarget() instanceof Unit) {
 							unitsToRemove.add(((Unit) b.getTarget()).getID());
-							System.out.println(unitsToRemove.get(0));
 							unitkills[b.getPlayer()] += 1;
 						} else {
 							ended.set(true);
@@ -107,8 +106,7 @@ public class GameServer implements Runnable {
 			}
 			
 			for (Short s : unitsToRemove) {
-				System.out.println(units.containsKey(s));
-				units.remove(s);
+				units.remove(new Integer(s.shortValue()));
 			}
 	
 			unitsToRemove.clear();
