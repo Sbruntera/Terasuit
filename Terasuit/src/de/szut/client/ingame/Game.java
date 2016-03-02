@@ -201,7 +201,7 @@ public class Game {
 	}
 
 	public void entity(String unitString, int playerNumber, boolean air, short unitID, Point position) {
-		func.createEntity(field, unitString, playerNumber, air, unitID, position);
+		func.createEntity(field, unitString, playerNumber, air, unitID, position, playerNumber == this.playerID);
 	}
 
 	public void destroyBuilding(int i) {
@@ -338,5 +338,9 @@ public class Game {
 	public void repaint() {
 		field.repaint();
 		field.revalidate();
+	}
+
+	public void removeUnits(int[] units) {
+		func.removeUnits(units);
 	}
 }

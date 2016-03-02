@@ -346,11 +346,15 @@ public class Analyser {
 			break;
 		case (36): // Spieler bewegt eine Einheit
 			loader.game.moveUnit(bs[1], bs[2] != 1, bs[2] == 3, bs[2] > 1,
-					getUnits(bs));
+					getUnits(bs, 3));
 			break;
 		case (37): // Einheit beginnt schießen
 			break;
 		case (38): // Einheit stirbt
+			int[] units = getUnits(bs, 1);
+			if (units != null) {
+				loader.game.removeUnits(units);
+			}
 			break;
 		case (39): // Spieler verlässt das Spiel
 			playerNumber = bs[1];
@@ -412,13 +416,13 @@ public class Analyser {
 		return bytes;
 	}
 
-	private int[] getUnits(byte[] input) {
+	private int[] getUnits(byte[] input, int bytesToCut) {
 		int[] array = null;
-		if (input.length >= 5 && input.length % 2 == 1) {
-			array = new int[(input.length - 3) / 2];
+		if (input.length >= bytesToCut + 2 && input.length % 2 == 1) {
+			array = new int[(input.length - bytesToCut) / 2];
 			for (int i = 0; i < array.length; i++) {
-				array[i] = (Byte.toUnsignedInt(input[i * 2 + 3]) << 8)
-						+ Byte.toUnsignedInt(input[i * 2 + 4]);
+				array[i] = (Byte.toUnsignedInt(input[i * 2 + bytesToCut]) << 8)
+						+ Byte.toUnsignedInt(input[i * 2 + bytesToCut + 1]);
 			}
 		}
 		return array;

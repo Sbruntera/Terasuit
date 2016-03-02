@@ -32,7 +32,7 @@ public class GameServer implements Runnable {
 	private int[] unitkills;
 
 	ArrayList<Bullet> bulletsToRemove;
-	ArrayList<Unit> unitsToRemove;
+	ArrayList<Short> unitsToRemove;
 
 	private short unitIDCounter;
 	private AtomicBoolean ended = new AtomicBoolean(false);
@@ -58,7 +58,7 @@ public class GameServer implements Runnable {
 			resources[i] = WorldConstants.getStartResources();
 		}
 		bulletsToRemove = new ArrayList<Bullet>();
-		unitsToRemove = new ArrayList<Unit>();
+		unitsToRemove = new ArrayList<Short>();
 		unitIDCounter = 1;
 		unitkills = new int[4];
 		Thread controlThread = new Thread(this);
@@ -71,14 +71,14 @@ public class GameServer implements Runnable {
 			// Kugeln bewegen
 			long waitTimer = System.currentTimeMillis();
 			tick.set(true);
-			System.out.println(bullets.size());
 			for (Bullet b : bullets) {
 				if (b.move()) {
 					b.getTarget().dealDamage(b.getDamage());
 					bulletsToRemove.add(b);
 					if (!b.getTarget().isAlive()) {
 						if (b.getTarget() instanceof Unit) {
-							unitsToRemove.add((Unit) b.getTarget());
+							unitsToRemove.add(((Unit) b.getTarget()).getID());
+							System.out.println(unitsToRemove.get(0));
 							unitkills[b.getPlayer()] += 1;
 						} else {
 							ended.set(true);
@@ -100,12 +100,19 @@ public class GameServer implements Runnable {
 	
 			bulletsToRemove.clear();
 	
-			for (Unit u : unitsToRemove) {
-				units.remove(u.getID());
+			for (Connection c : connections) {
+				if (c != null) {
+					c.sendUnitDied(unitsToRemove.toArray(new Short[unitsToRemove.size()]));
+				}
+			}
+			
+			for (Short s : unitsToRemove) {
+				System.out.println(units.containsKey(s));
+				units.remove(s);
 			}
 	
 			unitsToRemove.clear();
-	
+
 			// Einheiten bewegen
 			for (Unit u : units.values()) {
 				Unit[] nearestUnits = getNearestUnit(u.getXPosition(),

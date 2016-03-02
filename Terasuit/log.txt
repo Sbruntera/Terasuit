@@ -102,3 +102,48 @@
 02.03.2016 11:48:43.936: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
 02.03.2016 11:54:26.895: (STATUSUPDATE) Guest2958 hat eine Lobby mit dem Namen sdsd ohne Password auf der Map Nightsun erstellt
 02.03.2016 11:54:26.895: (STATUSUPDATE) Das Spiel der Lobby sdsd mit der ID 2 wurde gestartet
+02.03.2016 12:07:52.739: (STATUSUPDATE) Guest1053 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:07:52.739: (STATUSUPDATE) Guest0601 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:07:52.739: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:33:39.292: (STATUSUPDATE) Guest8606 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:33:39.292: (STATUSUPDATE) Guest8292 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:33:39.292: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:35:07.560: (STATUSUPDATE) Guest7541 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:35:07.560: (STATUSUPDATE) Guest5897 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:35:07.560: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:36:45.386: (STATUSUPDATE) Guest8488 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:36:45.386: (STATUSUPDATE) Guest3477 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:36:45.386: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:39:52.430: (STATUSUPDATE) Guest9759 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:39:52.430: (STATUSUPDATE) Guest4363 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:39:52.430: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:41:26.307: (STATUSUPDATE) Guest2855 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:41:26.307: (STATUSUPDATE) Guest7193 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:41:26.307: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:44:23.683: (STATUSUPDATE) Guest2914 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:44:23.683: (STATUSUPDATE) Guest4248 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:44:23.683: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:48:50.807: (STATUSUPDATE) Guest2526 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:48:50.807: (STATUSUPDATE) Guest4555 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:48:50.807: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:50:32.035: (STATUSUPDATE) Guest1242 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:50:32.035: (STATUSUPDATE) Guest6298 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:50:32.035: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:53:49.510: (STATUSUPDATE) Guest6761 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:53:49.510: (STATUSUPDATE) Guest7071 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:53:49.510: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 12:59:58.729: (STATUSUPDATE) Guest0392 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 12:59:58.729: (STATUSUPDATE) Guest5982 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 12:59:58.729: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 01:04:24.544: (STATUSUPDATE) Guest5044 hat eine Lobby mit dem Namen 1123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 01:04:24.544: (STATUSUPDATE) Das Spiel der Lobby 1123 mit der ID 2 wurde gestartet
+02.03.2016 01:04:24.544: (STATUSUPDATE) 2 hat das Spiel verlassen(Ingame)
+02.03.2016 01:04:41.681: (STATUSUPDATE) Guest4105 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 01:04:41.681: (STATUSUPDATE) Guest7798 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 01:04:41.681: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 01:06:14.346: (STATUSUPDATE) Guest4679 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 01:06:14.346: (STATUSUPDATE) Guest2065 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 01:06:14.346: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet
+02.03.2016 01:13:27.717: (STATUSUPDATE) Guest5867 hat eine Lobby mit dem Namen 123 ohne Password auf der Map Nightsun erstellt
+02.03.2016 01:13:27.717: (STATUSUPDATE) Guest1833 ist der Lobby 123 mit der ID 2 beigetreten
+02.03.2016 01:13:27.717: (STATUSUPDATE) Das Spiel der Lobby 123 mit der ID 2 wurde gestartet

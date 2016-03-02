@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import de.szut.server.logic.GameServer;
 import de.szut.server.logic.Lobby;
 import de.szut.server.logic.Server;
+import de.szut.server.world.Unit;
 
 /**
  * 
@@ -421,17 +422,14 @@ public class Connection implements Runnable {
 		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
 	}
 
-	public void sendUnitDied(short[][] units) {
-		ArrayList<Byte> array = new ArrayList<Byte>();
-		array.add((byte) 38);
-		for (short[] sA : units) {
-			for (short s : sA) {
-				array.add((byte) (s << 8));
-				array.add((byte) s);
-			}
-			array.add((byte) 1);
+	public void sendUnitDied(Short[] units) {
+		byte[] message = new byte[units.length*2 + 1];
+		message[0] = 38;
+		for (int i = 0; i < units.length; i++) {
+			message[i*2+1] = (byte) (units[i] >> 8);
+			message[i*2+2] = (byte) units[i].shortValue();
 		}
-		addMessage(toPrimal(array.toArray(new Byte[array.size()])));
+		addMessage(message);
 	}
 
 	public void sendPlayerLeftGame(byte playerID) {

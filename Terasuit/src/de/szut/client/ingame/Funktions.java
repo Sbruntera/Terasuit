@@ -26,6 +26,7 @@ public class Funktions implements Runnable {
 	private Thread cThread;
 	private JProgressBar[] listOfJProgressBar = new JProgressBar[36];
 	private ConcurrentLinkedQueue<Unit> unitQueue = new ConcurrentLinkedQueue<Unit>();
+	private ConcurrentLinkedQueue<Integer> removeQueue = new ConcurrentLinkedQueue<Integer>();
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private boolean ended;
 	private MainBuilding[] mainBuildings = new MainBuilding[2];
@@ -54,11 +55,13 @@ public class Funktions implements Runnable {
 	// Erstellt eine neue Einheit auf dem Spielfeld und fügt es der Unitliste
 	// hinzu
 	public void createEntity(Panel field, String Entitytype, int color,
-			boolean airUnit, short unitID, Point position) {
+			boolean airUnit, short unitID, Point position, boolean ownUnit) {
 		Unit u = cunit.createEntity(field, game, Entitytype, color,
 				airUnit, this, unitID, position, pics);
 		unitQueue.add(u);
-		payPrice(u.getPrice());
+		if (ownUnit) {
+			payPrice(u.getPrice());
+		}
 	}
 
 	public void findEntity(MouseEvent objUnit) {
@@ -156,6 +159,7 @@ public class Funktions implements Runnable {
 	public void run() {
 		while (!ended) {
 			long i = System.currentTimeMillis();
+			removeUnits();
 			addUnits();
 			moveBullets();
 			moveUnits();
@@ -165,6 +169,12 @@ public class Funktions implements Runnable {
 				Thread.sleep(100 - (System.currentTimeMillis() - i));
 			} catch (Exception e) {
 			}
+		}
+	}
+
+	private void removeUnits() {
+		while (!removeQueue.isEmpty()) {
+			entity.remove(removeQueue.remove());
 		}
 	}
 
@@ -182,7 +192,7 @@ public class Funktions implements Runnable {
 				bulletsToRemove.add(b);
 				if (!b.getTarget().isAlive()) {
 					if (b.getTarget() instanceof Unit) {
-						unitsToRemove.put(((Unit) b.getTarget()).getEntityNummer(), (Unit) b.getTarget());
+						//unitsToRemove.put(((Unit) b.getTarget()).getEntityNummer(), (Unit) b.getTarget());
 					}
 				}
 			}
@@ -318,6 +328,12 @@ public class Funktions implements Runnable {
 	public void refundPrice(int[] price) {
 		for (int i = 0; i < resources.length; i++) {
 			resources[i] += price[i];
+		}
+	}
+
+	public void removeUnits(int[] units) {
+		for (int i : units) {
+			removeQueue.add(i);
 		}
 	}
 }
