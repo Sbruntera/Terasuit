@@ -1,7 +1,10 @@
 package de.szut.client.ingame;
 
 import javax.swing.JLabel;
-
+/**
+ * Objekt für die Units, jegliche Kleinigkeit kann gesetzt werden
+ * @author Sbrun
+ */
 public class Unit implements Attackable{
 	
 	JLabel label;

@@ -24,47 +24,72 @@ public class BaseBuildings {
 	public int default_position_Rightside_y = 380;
 	int default_ender = 200;
 	int default_interval = 45;
-//	ArrayList<Buildings> buildingsEntity;
 	Buildings building = new Buildings();
 	JLabel label = new JLabel("");
-
 	
+	/**
+	 * Funktions aufrufe, um alle Startgebäude zu platzieren (Slots und Rathäuser)
+	 * @param field
+	 * @param game
+	 * @param buildingsArray
+	 * @param load
+	 * @param func
+	 * @param FirstColor
+	 * @param SecColor
+	 * @param default_position_X
+	 * @param default_position_Y
+	 * @param leftSide
+	 */
 	public void buildBase(Panel field, Game game, Buildings[] buildingsArray, Loader load, Funktions func, String FirstColor, String SecColor, int default_position_X, int default_position_Y, boolean leftSide){
-		
-		// Rot
+	
+		// Unterspielerfelder
 		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X, default_position_Y, leftSide, 1);
 		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval, default_position_Y+default_interval, leftSide, 2);
 		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval*2, default_position_Y+default_interval*2, leftSide, 3);
 		createEntity(field, load, func, game, buildingsArray, FirstColor, "Slot", default_position_X+default_interval*3, default_position_Y+default_interval, leftSide, 4);
-		// Blau
+		// Oberespielerfelder
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval, default_position_Y-default_interval, leftSide, 5);
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*2, default_position_Y-default_interval*2, leftSide, 6);
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*3, default_position_Y-default_interval, leftSide, 7);
 		createEntity(field, load, func, game, buildingsArray, SecColor, "Slot", default_position_X+default_interval*4, default_position_Y, leftSide, 8);
-		// MAIN_BASE
+		// Rathaus
 		createMainBuilding(field, load, func, game, buildingsArray, base, "Base",  default_position_X+default_interval*2, default_position_Y, leftSide, 9);
 	}
 	
+	/**
+	 * Generiert alle möglichen Hauptgebäude, die am anfang benötigt werden
+	 * @param field
+	 * @param loader
+	 * @param func
+	 * @param game
+	 * @param buildingsArray
+	 * @param Entitytype
+	 * @param EntityName
+	 * @param X
+	 * @param Y
+	 * @param leftSide
+	 * @param ID
+	 */
 	private void createMainBuilding(Panel field, Loader loader, Funktions func, Game game, Buildings[] buildingsArray, String Entitytype,  String EntityName, int  X, int Y, boolean leftSide, int ID){
 		building = new MainBuilding();
 		
+		// Bild wird geladen
 		ImageIcon pic = new ImageIcon(Entitytype);
 		label = new JLabel("");
 		label.setIcon(pic);
+		// Position wird festgelegt
 		label.setBounds(X, Y, pic.getIconWidth(), pic.getIconHeight());
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
-
 				for (int i = 0; i < buildingsArray.length; i++) {
-
 					if (buildingsArray[i] != null){
 						if (buildingsArray[i].getLabel() == objUnit.getSource()){
+							// Slot ID
 							int slotID = i;
+							// ID des Gebäudes, in diesem Fall bei Start 0
 							int primID = 0;
 							game.createUserOptions(slotID, primID, buildingsArray);
 						}
-					}else{
-						// Index leer!
 					}
 				}
 			}
@@ -72,9 +97,10 @@ public class BaseBuildings {
 		building.setX(X);
 		building.setY(Y);
 		building.setLabel(label);
-		building.setDescription("Ich bin ein ganz wichtiges Gebäude!");
+		building.setDescription("A underground construction site");
 		building.setName(EntityName);
 		building.setSpwanableEntity(searchForPossibleEntitys(EntityName));
+		// veränderung der ID, wenn es für die andere Seite platziert wird
 		if (leftSide){
 			building.setNumber(ID);
 			buildingsArray[ID] = building;
@@ -87,8 +113,8 @@ public class BaseBuildings {
 		field.repaint();
 	}
 
-	/*
-	 * Läd alle Slot auf dem Spielfeld und gibt ihnen verweise auf mögliche Aktionen 
+	/**
+	 * Läd alle Slot auf dem Spielfeld und gibt ihnen Verweise auf mögliche Aktionen 
 	 */
 	public void createEntity(Panel field, Loader loader, Funktions func, Game game, Buildings[] buildingsArray, String Entitytype,  String EntityName, int  X, int Y, boolean leftSide, int ID){
 		building = new Buildings();
@@ -132,19 +158,36 @@ public class BaseBuildings {
 		field.repaint();
 	}
 	
+	/**
+	 * Hier wird aus den angegebenden Daten ein Gebäude mit Optionen erstellt, dieses wir auf einem Slot platziert und das Slot darüber informiert
+	 * @param entityLocation
+	 * @param X
+	 * @param Y
+	 * @param buildingsArray
+	 * @param description
+	 * @param buildingName
+	 * @param game
+	 * @param slotID
+	 * @param primID
+	 * @param field
+	 * @return Buildings[]
+	 */
 	public Buildings[] createPrimaryBuilding(String entityLocation, int X, int Y, Buildings[] buildingsArray, String description, String buildingName, Game game, int slotID, int primID, Panel field){
 		building = new Buildings();
+		// Das alte Gebäude wird gelöscht und platz für das neue geschaffen
 		if (buildingsArray[primID] != null){
 			field.remove(buildingsArray[primID].getLabel());
 			building.setPrimerBuilding(buildingsArray[primID]);
 			buildingsArray[primID-18].setPrimerBuilding(null);
 		}
+		// Erstellung des neuen Gebäude
 		ImageIcon pic = new ImageIcon(entityLocation);
 		label = new JLabel("");
 		label.setIcon(pic);
 		label.setBounds(X, (Y-getBestOptimum(buildingName)), pic.getIconWidth(), pic.getIconHeight());
 		building.setNumber(primID);
 		building.setSlotID(slotID);
+		// Neue Aktionlistener
 		label.addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent objUnit) {
 				for (int i = 0; i < buildingsArray.length; i++) {
@@ -152,9 +195,8 @@ public class BaseBuildings {
 						if (buildingsArray[i].getLabel() == objUnit.getSource()){
 							int primID = buildingsArray[i].getNumber();
 							int slotID = buildingsArray[i].getSlotID();
-
+							// SlotID/GebäudeID wird ausgelesen und Optionen erstellt für den Nutzer
 							game.createUserOptions(slotID, primID, buildingsArray);
-
 						}
 					}
 				}
@@ -173,7 +215,14 @@ public class BaseBuildings {
 		field.repaint();
 		return buildingsArray;
 	}
-
+	
+	/**
+	 * Zerstört das gebäude auf dem Slot und löscht auch alle Verbindungen mit dem Slot
+	 * @param buildingsArray
+	 * @param i
+	 * @param field
+	 * @param time
+	 */
 	public void destroyPrimaryBuilding( Buildings[] buildingsArray, int i, Panel field, int time){
 		if (i >= 18){
 			field.remove(buildingsArray[i].getLabel());
@@ -183,8 +232,11 @@ public class BaseBuildings {
 		}
 	}
 	
-
-	
+	/**
+	 * Preislsiten für Gebäude
+	 * @param buildingName
+	 * @return
+	 */
 	private int[] searchForPrice(String buildingName) {
 		switch (buildingName) {
 		case "Outpost":
@@ -271,6 +323,11 @@ public class BaseBuildings {
 		}
 	}
 	
+	/**
+	 * Hier können Gebäude nach positioniert werden, falls sie größer sind als gedacht
+	 * @param buildingName
+	 * @return
+	 */
 	public int getBestOptimum(String buildingName){
 		switch (buildingName){ 
 		case "Armory":

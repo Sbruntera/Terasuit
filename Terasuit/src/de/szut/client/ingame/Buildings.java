@@ -1,7 +1,11 @@
 package de.szut.client.ingame;
 
 import javax.swing.JLabel;
-
+/**
+ * Hier draus werden Objekte für Gebäude erzeugt.
+ * Alle Gebäude besitzen die unten angegebenen Wert
+ * @author Sbrun
+ */
 public class Buildings {
 	
 	int building_Live = 0;

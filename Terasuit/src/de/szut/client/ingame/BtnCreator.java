@@ -7,10 +7,18 @@ import javax.swing.JButton;
 
 public class BtnCreator {
 	
-	public void createOne(JButton btnBACK, int x, int y, int breite, int höhe, int ColorNum){
-		btnBACK.setBounds(x, y, breite, höhe);//links / runter / breite / höhe
-		btnBACK.setBackground(new Color(ColorNum,ColorNum,ColorNum));
-		btnBACK.setFont(new Font("Arial", Font.BOLD, 10));
-	}
-	
+	/**
+	 * Erstellt aus angegebenen Werten Buttons
+	 * @param btnBACK
+	 * @param x
+	 * @param y
+	 * @param breite
+	 * @param höhe
+	 * @param ColorNum
+	 */
+	public void createOne(JButton defaultButton, int x, int y, int breite, int höhe, int ColorNum){
+		defaultButton.setBounds(x, y, breite, höhe);
+		defaultButton.setBackground(new Color(ColorNum,ColorNum,ColorNum));
+		defaultButton.setFont(new Font("Arial", Font.BOLD, 10));
+	}	
 }

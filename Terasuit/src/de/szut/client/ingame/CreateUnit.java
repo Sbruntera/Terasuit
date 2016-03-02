@@ -1,15 +1,9 @@
 package de.szut.client.ingame;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -26,10 +20,28 @@ public class CreateUnit {
 	ImageManipulator imgManipulator = new ImageManipulator();
 	UnitData UnitTable = new UnitData();
 	
+	/**
+	 * Mit dem inizalisieren der Klasse, werden auch die 16 x 14 Einheiten für das Spiel erzeugt
+	 * Dies kann 1-3 Sekunden dauern, je nach dem wie gut der PC ist
+	 */
 	public CreateUnit(){
 		UnitTable.createUnitData();
 	}
 	
+	/**
+	 * In dieser Methode werden aus den übergebenden Werten eine Unit erzeugt
+	 * Unit ist ein Objekt aus der Unit.java
+	 * @param field
+	 * @param game
+	 * @param Entitytype
+	 * @param color
+	 * @param airUnit
+	 * @param funktions
+	 * @param unitID
+	 * @param position
+	 * @param pics
+	 * @return
+	 */
 	public Unit createEntity(Panel field, Game game, String Entitytype, int color, boolean airUnit, Funktions funktions, short unitID, Point position, UnitPics pics) {
 		
 		// Generiert eine neue Hülle und gibt ihre eine ID
@@ -78,64 +90,22 @@ public class CreateUnit {
 		field.repaint();
 		return unit;
 	}
-	
-	public BufferedImage mark(String Entitytype, boolean directionLeft, int color, boolean deMark){
 
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(Entitytype));
-		} catch (IOException e) {
-		}
-		
-		img = imgManipulator.setnewColors(img, color);
-		if (deMark == true){
-
-		}else{
-			img = imgManipulator.setSelection(img);
-		}
-		
-		Image img2 = imgManipulator.setnewDimension(img, Entitytype);
-		img = this.toBufferedImage(img2);
-	
-		
-		if (directionLeft){
-			img = imgManipulator.rotate(img);
-		}
-		
-		return img;
-	}
-	
-	
 	// Zufällige Platzierung in der Welt
 	public int random(int zahl) {
 		int rand = (int) (Math.random() * zahl) + 1;
 		return rand;
 	}
 	
+	/**
+	 * Sucht aus einem Dateipfad den Namen raus
+	 * @param Unitname
+	 * @return
+	 */
 	public String splitUp(String Unitname){
 		String[] parts = Unitname.split("/");
 		Unitname = parts[2];
 		Unitname = Unitname.substring(0, Unitname.length()-4);	
 		return Unitname;
 	}
-	
-	public  BufferedImage toBufferedImage(Image img)
-	{
-	    if (img instanceof BufferedImage)
-	    {
-	        return (BufferedImage) img;
-	    }
-
-	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-	    // Draw the image on to the buffered image
-	    Graphics2D bGr = bimage.createGraphics();
-	    bGr.drawImage(img, 0, 0, null);
-	    bGr.dispose();
-
-	    // Return the buffered image
-	    return bimage;
-	}
-
 }

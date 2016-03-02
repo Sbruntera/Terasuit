@@ -33,6 +33,12 @@ public class ImageManipulator {
 		this.ySkalierung = ySkalierung;
 	}
 
+	/**
+	 * Ersetzt die RGB Farbe 255,0,255 durch einer der 4 Spielfarben
+	 * @param img
+	 * @param color
+	 * @return BufferedImage
+	 */
 	public BufferedImage setnewColors(BufferedImage img, int color) {
 		for (int y = 0; y < img.getHeight(); y++) {
 			for (int x = 0; x < img.getWidth(); x++) {
@@ -58,13 +64,22 @@ public class ImageManipulator {
 		return img;
 	}
 
-
+	/**
+	 * Sucht sich die Dimension für die Einheit raus und skaliert sie neu und gibt es wieder zurück als Image
+	 * @param img
+	 * @param Entitytype
+	 * @return Image
+	 */
 	public Image setnewDimension(BufferedImage img, String Entitytype) {
 		this.getUnitDeminsionSize(Entitytype);
 		return img.getScaledInstance(getxSkalierung(), getySkalierung(), Image.SCALE_AREA_AVERAGING);
 	}
 
-
+	/**
+	 * Iteriert über ein Bild und erhöht alle RGB-Werte
+	 * @param img
+	 * @return
+	 */
 	public BufferedImage setSelection(BufferedImage img) {
 		for (int y = 0; y < img.getHeight(); y++) {
 			for (int x = 0; x < img.getWidth(); x++) {
@@ -79,34 +94,11 @@ public class ImageManipulator {
 		return img;
 	}
 	
-	
-	public int newSelectionColor(int Color){
+	// Ermittlung der neuen Farbe
+	private int newSelectionColor(int Color){
 		Color = Color + Colorbrightness;
 		if (Color >= 256){
 			Color = 255;
-		}
-		return Color;
-	}
-	
-	public BufferedImage setDeSelection(BufferedImage img) {
-		for (int y = 0; y < img.getHeight(); y++) {
-			for (int x = 0; x < img.getWidth(); x++) {
-				Color imageColor = new Color(img.getRGB(x, y));
-				if ( (img.getRGB(x, y)>>24) == 0x00 ) {
-				}else{
-					imageColor = new Color(newDeSelectionColor(imageColor.getRed()), newDeSelectionColor(imageColor.getGreen()), newDeSelectionColor(imageColor.getBlue()));
-					img.setRGB(x, y, imageColor.getRGB());
-				}
-			}
-		}
-		return img;
-	}
-	
-	
-	public int newDeSelectionColor(int Color){
-		Color = Color - Colorbrightness;
-		if (Color >= 0){
-			Color = 0;
 		}
 		return Color;
 	}
@@ -194,8 +186,10 @@ public class ImageManipulator {
 	     }  
 	}
 
-	// Spiegel erhaltene ImageIcons
-	
+	/**
+	 * Spiegel erhaltene ImageIcons
+	 * @author Sbrun
+	 */
 	@SuppressWarnings("serial")
 	class MirrorImageIcon extends ImageIcon {
 
@@ -211,7 +205,8 @@ public class ImageManipulator {
 	    	super.paintIcon(c, g2, x, y);
 	    }
 	}
-
+	
+	// Rotiert das Bild
 	public BufferedImage rotate(BufferedImage img) {
 	    AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 	    tx.translate(-img.getWidth(null), 0);
