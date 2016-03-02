@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import de.szut.client.ingame.Unit;
 
 public class ActionUnit {
-	
-	/*
-	 * 
-	 */
+
 	Unit unit = new Unit();	
 	ArrayList<Unit> UpdateList = new ArrayList<Unit>();
 	

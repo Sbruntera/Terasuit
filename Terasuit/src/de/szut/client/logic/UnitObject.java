@@ -1,5 +1,9 @@
 package de.szut.client.logic;
 
+/**
+ * Aus den Arraylisten, der UnitData.java werden UnitDefaultWerte-Objekte erzeugt
+ * @author Sbrun
+ */
 public class UnitObject {
 	
 	String description = "";

@@ -29,7 +29,11 @@ public class LoginRegisterPanel {
 	public LoginRegisterPanel(ServerConnection connection) {
 		this.connection = connection;
 	}
-
+	
+	/**
+	 * Erstellt ein Fenster mit Knöpfen zum Einloggen
+	 * @param panel
+	 */
 	public void popupLogin(Panel panel) {
 
 		btnlogin = new JButton("Login");
@@ -73,7 +77,11 @@ public class LoginRegisterPanel {
 
 		panel.repaint();
 	}
-
+	
+	/**
+	 * Erstellt ein Fenster zum Registrieren
+	 * @param panel
+	 */
 	public void popupRegister(Panel panel) {
 
 		btnlogin = new JButton("Register");
@@ -145,14 +153,22 @@ public class LoginRegisterPanel {
 		panel.repaint();
 
 	}
-
+	
+	/**
+	 * Erstellt den Hintergrund für die Register Buttons/ die Login-Buttons
+	 * @param panel
+	 */
 	private void createpopup(Panel panel) {
 		registerPanel = new JLabel("");
 		registerPanel.setIcon(new ImageIcon("Wallpaper/LoginBackground.png"));
 		registerPanel.setBounds(770, 335, 500, 500);
 		panel.add(registerPanel);
 	}
-
+	
+	/**
+	 * Zerstört konsequent alle Login/Register Komponenten
+	 * @param panel
+	 */
 	public void popupdestroy(Panel panel) {
 		panel.remove(lbmail);
 		panel.remove(lbpassword);

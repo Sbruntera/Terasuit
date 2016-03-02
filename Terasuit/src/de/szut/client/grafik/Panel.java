@@ -33,7 +33,16 @@ public class Panel extends JPanel {
 	int h;
 	int minX;
 	int w;
-
+	
+	/**
+	 * Mit dem übergeben einenes Bildernames, wird ein neues Panel erzeugt und das alte damit getauscht
+	 * Alle Buttons gehen damit verloren, neue werden nach erstellen direkt mit drauf erzeugt
+	 * @param picName
+	 * @param func
+	 * @param HEIGHT
+	 * @param WIGTH
+	 * @param loader
+	 */
 	public Panel(String picName, Funktions func, int HEIGHT, int WIGTH,
 			Loader loader) {
 		super();
@@ -68,7 +77,8 @@ public class Panel extends JPanel {
 			console.setLayout(null);
 			console.setPreferredSize(new Dimension(WIGTH, 185));
 			add(console, BorderLayout.SOUTH);
-
+			
+			// Start des Spiels!
 			loader.init(this, field, console, func, scrollPane);
 
 		} else {
@@ -84,7 +94,10 @@ public class Panel extends JPanel {
 			buttons.setbuttons(this, picName, loader, func);
 		}
 	}
-
+	
+	/**
+	 * Canvas für das zeichnen eine Rechteck auf dem Spielfeld
+	 */
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D f2 = (Graphics2D) g;
@@ -93,7 +106,11 @@ public class Panel extends JPanel {
 		g.setColor(Color.RED);
 		g.drawRect(minX, minY, w, h);
 	}
-
+	
+	/**
+	 * MouseListener um das auswählen mehrere Einheiten zu triggern
+	 * @param loader
+	 */
 	private void addListenersForMouse(Loader loader) {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -117,7 +134,13 @@ public class Panel extends JPanel {
 			}
 		});
 	}
-
+	
+	/**
+	 * Ermittlung der Koordinaten des Rechteckt, damit es in alle Richtung möglich ist
+	 * Und das setzten der Linien, damit sie beim nächsten Paint angezeigt werden
+	 * @param x
+	 * @param y
+	 */
 	private void drawSquare(int x, int y) {
 
 		if (squareX > x) {
@@ -136,7 +159,10 @@ public class Panel extends JPanel {
 		}
 		repaint();
 	}
-
+	
+	/**
+	 * Repaintet die GUI
+	 */
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}

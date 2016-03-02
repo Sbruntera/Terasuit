@@ -4,16 +4,12 @@ import java.util.HashMap;
 
 public class UnitData {
 	
-
-//	UnitObject UnitO;
-//	String description, int money, int electricity,
-//	int human, int monarchy, int live, int speed, int dmg, int rpm,
-//	int splashDamage, int groundGround, int groundAir, int airAir
-	
 	HashMap<String, UnitObject> UnitDataHash = new HashMap<String, UnitObject>();
 	
-	
-	
+	/**
+	 * Lokale Unitdaten
+	 * String description, money, electricity, human, monarchy, live, speed, dmg, rpm, splashDamage, groundGround, groundAir, airAir
+	 */
 	public void createUnitData(){
 
 		UnitDataHash.put("Marine", new UnitObject("Light armor. Armed with shock rifles and rockets, effective against both ground and air.", 0, 2, 0, 0, 60, 20, 15, 10, 180, 0, 20, true, true));
@@ -38,7 +34,7 @@ public class UnitData {
 	
 	/**
 	 * Iteriert über die Hashmap mit den Einheitendaten und gibt sie zurück
-	 * @param Unitname (No Location => "Unit/Ground/Marine.png")
+	 * @param Unitname (No Location! => "Unit/Ground/Marine.png")
 	 * @return unitObject
 	 */
 	public UnitObject returnUnitData(String Unitname){

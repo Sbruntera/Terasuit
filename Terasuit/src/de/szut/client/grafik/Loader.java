@@ -6,7 +6,6 @@ import javax.swing.JScrollPane;
 
 import de.szut.client.ingame.Funktions;
 import de.szut.client.ingame.Game;
-import de.szut.client.logic.Debugger_Thread;
 import de.szut.client.logic.Lobby;
 import de.szut.client.logic.ServerConnection;
 
@@ -17,7 +16,6 @@ import de.szut.client.logic.ServerConnection;
  */
 public class Loader {
 
-	Debugger_Thread debugger = new Debugger_Thread();
 	public ServerConnection connection = new ServerConnection(this);
 	Thread connectionThread = new Thread(connection);
 	Funktions func = new Funktions();
@@ -102,9 +100,6 @@ public class Loader {
 		game.init(panel, field, console, this, func, 1, scrollPane);
 	}
 
-	public void startDebugger() {
-		debugger.startRound();
-	}
 
 	/**
 	 * Beendet das Progamm

@@ -11,7 +11,14 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import de.szut.client.ingame.ImageManipulator;
-
+/**
+ * Hier werden alle Einheitenbilder aus Defaultbildern generiert
+ * Aus 1 Bild werden 16 Bilder erzeugt:
+ * -> 4 verschiedene Farben
+ * -> 2 richtungen
+ * -> 2 Helligkeitsstufen
+ * @author Sbrun
+ */
 public class UnitPics {
 	
 	String picLocation = "";
@@ -19,9 +26,13 @@ public class UnitPics {
 	ImageManipulator imgMani = new ImageManipulator();
 	String [] entityGroundList = {"Marine", "Chronite Tank", "Gröditz", "A25-Roman", "Hover Tank", "Meditec", "Modified Sakata", "Sniper", "Sphinx", "Sakata-MK2", "Sakata", "Gladiator", "Sakata Spider"};
 	String [] entityAirList = {"Scout", "Phantom", "Black Queen", "Saint", "Modified Phantom"};
-	
 	HashMap<String, BufferedImage> UnitPicHash = new HashMap<String, BufferedImage>();
 	
+	/**
+	 * Läuft über die Array mit den Einheitennamen, sucht sich die Bilder auf und 
+	 * führt Funktionen aus, die die Bilder manipulieren. Diese werden dann in einer
+	 * Hashmap gespeichert <String(Name der Einheit als Key), Image>
+	 */
 	public void generateAllEntityPictures(){
 		for (int i = 0; i != entityGroundList.length; i++){
 			picLocation = "Unit/Ground/" + entityGroundList[i] + ".png";
@@ -35,6 +46,14 @@ public class UnitPics {
 		}
 	}
 	
+	/**
+	 * Sucht aus der Hashmap das passende Bild
+	 * @param EnityName
+	 * @param color
+	 * @param left
+	 * @param mark
+	 * @return ImageIcon
+	 */
 	public ImageIcon getEntityPic(String EnityName, int color, boolean left, boolean mark){
 		
 		String []splitEntityName = EnityName.split("/");
@@ -53,6 +72,11 @@ public class UnitPics {
 		return new ImageIcon(UnitPicHash.get(searchString));
 	}
 	
+	/**
+	 * Hier werden alle 16 Varianten der Einheit erzeugt
+	 * @param unitPicHash
+	 * @return
+	 */
 	private HashMap<String, BufferedImage> generate(HashMap<String, BufferedImage> unitPicHash){
 
 		// Bild der Einheite wird geladen
@@ -106,23 +130,21 @@ public class UnitPics {
 	}
 	
 	
-	
+	/**
+	 * Macht aus einem Image ein sicheres BufferesImage
+	 * @param img
+	 * @return
+	 */
 	public  BufferedImage toBufferedImage(Image img)
 	{
 	    if (img instanceof BufferedImage)
 	    {
 	        return (BufferedImage) img;
 	    }
-
-	    // Create a buffered image with transparency
 	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-	    // Draw the image on to the buffered image
 	    Graphics2D bGr = bimage.createGraphics();
 	    bGr.drawImage(img, 0, 0, null);
 	    bGr.dispose();
-
-	    // Return the buffered image
 	    return bimage;
 	}
 
