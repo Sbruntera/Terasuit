@@ -14,7 +14,7 @@ import de.szut.server.logic.Server;
  */
 public class START {
 
-	static boolean server = true;
+	static boolean server = false;
 	
 	public static void main(String[] args) {
 		// Server wird gestartet

@@ -34,7 +34,7 @@ public class ServerConnection implements Runnable {
 	public ServerConnection(Loader loader) {
 		Socket socket;
 		try {
-			socket = new Socket("localhost", 3142);
+			socket = new Socket("62.75.151.119", 3142);
 			this.reader = new BufferedInputStream(socket.getInputStream());
 			this.writer = socket.getOutputStream();
 			serverAccess = true;

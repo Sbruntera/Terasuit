@@ -348,7 +348,7 @@ public class BaseBuildings {
 			return new int[] { 80, 50, 00, 00 };
 		case "Forge":
 			return new int[] { 40, 30, 30, 00 };
-		case "Manufacture":
+		case "Manufactory":
 			return new int[] { 60, 30, 30, 00 };
 		case "Mechanics Terminal":
 			return new int[] { 70, 20, 00, 00 };
