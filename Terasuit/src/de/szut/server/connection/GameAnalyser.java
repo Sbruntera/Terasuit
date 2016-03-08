@@ -2,6 +2,7 @@ package de.szut.server.connection;
 
 import de.szut.server.logic.GameServer;
 import de.szut.server.logic.Logging;
+import de.szut.server.logic.Server;
 
 /**
  * 
@@ -10,9 +11,11 @@ import de.szut.server.logic.Logging;
  */
 public class GameAnalyser implements Analyser {
 
-	private GameServer server;
+	private GameServer gameServer;
 	private short id;
 	private byte position;
+	private Connection connection;
+	private Server server;
 
 	/**
 	 * Initialisiert einen GameAnalyser zum analysieren von Ingame-Nachrichten
@@ -24,10 +27,12 @@ public class GameAnalyser implements Analyser {
 	 * @param position
 	 *            Position des Spielers
 	 */
-	public GameAnalyser(GameServer server, short id, byte position) {
-		this.server = server;
+	public GameAnalyser(GameServer gameServer, short id, byte position, Connection connection, Server server) {
+		this.gameServer = gameServer;
 		this.id = id;
 		this.position = position;
+		this.connection = connection;
+		this.server = server;
 	}
 
 	/**
@@ -38,18 +43,25 @@ public class GameAnalyser implements Analyser {
 	 */
 	public void analyse(byte[] input) {
 		switch (input[0]) {
+		case (7): // Disconnect
+			Logging.log(connection.getName() + " hat sich ausgeloggt",
+					"STATUSUPDATE");
+			connection.loggOut();
+			gameServer.disconnect(id);
+			server.diconnect(id);
+			break;
 		case (32): // Gebäude (aus)bauen/zerstören
 			if (input.length == 3) {
 				if (input[2] < 127) {
-					server.build(position, input[1], input[2]);
+					gameServer.build(position, input[1], input[2]);
 				} else {
-					server.destroyBuilding((byte) (input[1]), position);
+					gameServer.destroyBuilding((byte) (input[1]), position);
 				}
 			}
 			break;
 		case (33): // Abbrechen
 			if (input.length == 2) {
-				server.cancelBuilding(position, (byte) (input[1]));
+				gameServer.cancelBuilding(position, (byte) (input[1]));
 			}
 			break;
 		case (34): // Einheit erstellen
@@ -57,20 +69,20 @@ public class GameAnalyser implements Analyser {
 				System.out.println("neue Einheit");
 				byte unitID = input[1];
 				byte buildingPlace = input[2];
-				server.createUnit(position, unitID, buildingPlace);
+				gameServer.createUnit(position, unitID, buildingPlace);
 			}
 			break;
 		case (35): // Einheit bewegen
 			if (input.length > 2) {
-				server.moveUnits(position, getUnits(input), input[1]);
+				gameServer.moveUnits(position, getUnits(input), input[1]);
 			}
 			break;
 		case (36): // Spiel verlassen
 			Logging.log(id + " hat das Spiel verlassen(Ingame)", "STATUSUPDATE");
-			server.disconnect(id);
+		gameServer.disconnect(id);
 			break;
 		case (20): // Chat
-			server.broadcast(split(input, 1), id);
+			gameServer.broadcast(split(input, 1), id);
 			break;
 		default: // Fehlerhafte Nachricht
 			Logging.log(

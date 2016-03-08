@@ -208,7 +208,7 @@ public class Connection implements Runnable {
 	 *            Die Lobby der beigetreten wurde
 	 */
 	private void joinLobby(Lobby lobby) {
-		setAnalyser(new LobbyAnalyser(lobby, id));
+		setAnalyser(new LobbyAnalyser(lobby, id, this, server));
 		queue.clear();
 	}
 
@@ -434,7 +434,7 @@ public class Connection implements Runnable {
 	 * Analyser auf Spiel
 	 */
 	public void sendStarting(GameServer server) {
-		setAnalyser(new GameAnalyser(server, id, server.getPosition(this)));
+		setAnalyser(new GameAnalyser(server, id, server.getPosition(this), this, this.server));
 		addMessage(new byte[] { 20 });
 	}
 

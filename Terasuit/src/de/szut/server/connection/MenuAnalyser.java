@@ -53,6 +53,7 @@ public class MenuAnalyser implements Analyser {
 			Logging.log(connection.getName() + " hat sich ausgeloggt",
 					"STATUSUPDATE");
 			connection.loggOut();
+			server.diconnect(id);
 			break;
 		case (2): // Serverliste
 			Lobby[] lobbyList = server.getLobbylist(getFilter(input));

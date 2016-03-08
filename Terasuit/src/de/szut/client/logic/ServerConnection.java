@@ -34,7 +34,7 @@ public class ServerConnection implements Runnable {
 	public ServerConnection(Loader loader) {
 		Socket socket;
 		try {
-			socket = new Socket("62.75.151.119", 3142);
+			socket = new Socket("localhost", 3142);
 			this.reader = new BufferedInputStream(socket.getInputStream());
 			this.writer = socket.getOutputStream();
 			serverAccess = true;
@@ -68,7 +68,12 @@ public class ServerConnection implements Runnable {
 							.toArray(new Byte[bytes.size()]))));
 				}
 				if (!queue.isEmpty()) {
-					writer.write(queue.remove());
+					byte[] msg = queue.remove();
+					System.out.println(msg.length);
+					if (msg.length >= 1) {
+						System.out.println(msg[0]);
+					}
+					writer.write(msg);
 				}
 				try {
 					Thread.sleep(20);

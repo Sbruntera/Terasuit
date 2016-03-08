@@ -95,19 +95,21 @@ public class Lobby {
 	 * @param position
 	 *            Position des zu entfernenden Spielers
 	 */
-	public void removePlayer(short senderID, byte playerNumber) {
+	public void removePlayer(short senderID, byte playerNumber, boolean notify) {
 		if ((getPosition(senderID) == playerNumber || senderID == host.getID())
 				&& playerList[playerNumber] != null) {
 			for (byte i = 0; i < playerList.length; i++) {
 				if (playerList[i] != null) {
 					if (i != playerNumber) {
 						playerList[i].sendPlayerLeftLobby(playerNumber);
-					} else {
+					} else if (notify) {
 						playerList[i].sendLeftLobby();
 					}
 				}
 			}
+			System.out.println("Disconnect");
 			if (playerList[playerNumber] == host) { // Der Spieler ist Host
+				System.out.println("host");
 				boolean playerFound = false;
 				int actualPlayer = 0;
 				while (!playerFound && actualPlayer < MAXPLAYERS) {
@@ -120,6 +122,7 @@ public class Lobby {
 					}
 				}
 				if (!playerFound) {
+					System.out.println("Close");
 					closeGame(true);
 				}
 			}

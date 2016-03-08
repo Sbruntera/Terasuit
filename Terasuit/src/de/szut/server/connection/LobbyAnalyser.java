@@ -2,6 +2,7 @@ package de.szut.server.connection;
 
 import de.szut.server.logic.Lobby;
 import de.szut.server.logic.Logging;
+import de.szut.server.logic.Server;
 
 /**
  * 
@@ -12,6 +13,9 @@ public class LobbyAnalyser implements Analyser {
 
 	private Lobby lobby;
 	private short id;
+	private Connection connection;
+	private Server server;
+	
 
 	/**
 	 * Initialisiert einen LobbyAnalyser zum analysieren von Lobby-Nachrichten
@@ -19,9 +23,11 @@ public class LobbyAnalyser implements Analyser {
 	 * @param lobby Lobby in der die Verbindung ist
 	 * @param id ID der Verbindung
 	 */
-	public LobbyAnalyser(Lobby lobby, short id) {
+	public LobbyAnalyser(Lobby lobby, short id, Connection connection, Server server) {
 		this.lobby = lobby;
 		this.id = id;
+		this.connection = connection;
+		this.server = server;
 	}
 
 	/**
@@ -33,6 +39,13 @@ public class LobbyAnalyser implements Analyser {
 	@Override
 	public void analyse(byte[] input) {
 		switch (input[0]) {
+		case (7): // Disconnect
+			Logging.log(connection.getName() + " hat sich ausgeloggt",
+					"STATUSUPDATE");
+			connection.loggOut();
+			lobby.removePlayer(id, lobby.getPosition(id), false);
+			server.diconnect(id);
+			break;
 		case (16): // Position wechseln
 			if (input.length == 2) {
 				lobby.switchPlayers(id, (byte) (input[1] >> 2),
@@ -40,13 +53,13 @@ public class LobbyAnalyser implements Analyser {
 			}
 			break;
 		case (17): // Spiel verlassen
-			lobby.removePlayer(id, lobby.getPosition(id));
+			lobby.removePlayer(id, lobby.getPosition(id), true);
 			Logging.log(
 					lobby.getPosition(id) + " hat die Lobby " + lobby.getName()
 							+ " verlassen", "STATUSUPDATE");
 			break;
 		case (18): // Spieler kicken
-			lobby.removePlayer(id, input[1]);
+			lobby.removePlayer(id, input[1], true);
 			Logging.log(input[1] + " wurde aus der Lobby " + lobby.getName()
 					+ " gekickt", "STATUSUPDATE");
 			break;

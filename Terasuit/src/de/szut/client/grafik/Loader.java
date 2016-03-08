@@ -1,5 +1,8 @@
 package de.szut.client.grafik;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -45,6 +48,17 @@ public class Loader {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				connection.close();
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e1) {
+				}
+				exit();
+			}
+		});
 		window.setVisible(true);
 		if (connection.isServerAccess()) {
 			connectionThread.start();
