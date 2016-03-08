@@ -13,6 +13,7 @@ import javax.swing.JProgressBar;
 
 import de.szut.client.grafik.Loader;
 import de.szut.client.grafik.Panel;
+import de.szut.client.logic.UnitData;
 
 /**
  * 
@@ -34,6 +35,7 @@ public class ActionButton {
 	JButton btn;
 	String[] noName;
 	private Loader loader;
+	UnitData dataOfUnit;
 
 	/**
 	 * Initialisiert ein ActionButton Objekt
@@ -43,6 +45,8 @@ public class ActionButton {
 	 */
 	public ActionButton(Loader loader) {
 		this.loader = loader;
+		this.dataOfUnit = new UnitData();
+		this.dataOfUnit.createUnitData();
 	}
 
 	/**
@@ -259,6 +263,24 @@ public class ActionButton {
 					}
 				}
 			});
+			int []cost = searchForPrice(noName[n]);
+			if (cost != null){
+				String costString = "";
+				for (int i = 0; i != cost.length; i++){
+					costString = costString + " " + cost[i];
+				}
+				btn.setToolTipText(costString);
+			}else{
+				if (dataOfUnit.returnUnitData(noName[n]) != null){
+					cost = dataOfUnit.returnUnitData(noName[n]).getPrice();
+					String costString = "";
+					for (int i = 0; i != cost.length; i++){
+						costString = costString + " " + cost[i];
+					}
+					btn.setToolTipText(costString);
+				}
+			}
+			
 			jButton.add(btn);
 			console.add(btn);
 		}
@@ -298,7 +320,49 @@ public class ActionButton {
 		}
 		console.repaint();
 	}
-
+	
+	/**
+	 * Preislisten für Gebäude
+	 * 
+	 * @param buildingName
+	 *            Name des Gebäudes
+	 * @return Preis des Gebäudes
+	 */
+	private int[] searchForPrice(String buildingName) {
+		switch (buildingName) {
+		case "Outpost":
+			return new int[] { 40, 30, 30, 00 };
+		case "Barracks":
+			return new int[] { 30, 00, 00, 00 };
+		case "Arsenal":
+			return new int[] { 80, 50, 00, 00 };
+		case "Forge":
+			return new int[] { 40, 30, 30, 00 };
+		case "Manufactory":
+			return new int[] { 60, 30, 30, 00 };
+		case "Mechanics Terminal":
+			return new int[] { 70, 20, 00, 00 };
+		case "Armory":
+			return new int[] { 60, 25, 25, 00 };
+		case "Generator":
+			return new int[] { 50, 00, 00, 00 };
+		case "Solar Grid":
+			return new int[] { 50, 00, 00, 00 };
+		case "Bank":
+			return new int[] { 50, 00, 00, 00 };
+		case "Treasury":
+			return new int[] { 50, 00, 00, 00 };
+		case "Hospital":
+			return new int[] { 40, 30, 10, 00 };
+		case "War Sanctum":
+			return new int[] { 65, 00, 00, 00 };
+		case "Special Operations":
+			return new int[] { 80, 30, 30, 00 };
+		default:
+			return null;
+		}
+	}
+	
 	/**
 	 * Schreibt die Beschreibung um auf der Konsole
 	 * 

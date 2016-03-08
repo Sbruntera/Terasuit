@@ -44,7 +44,12 @@ public class UnitData {
 	 */
 	public UnitObject returnUnitData(String Unitname){
 	    Unitname = replaceBlancs(Unitname);
-		return UnitDataHash.get(Unitname);
+	    if (UnitDataHash.containsKey(Unitname)){
+	    	return UnitDataHash.get(Unitname);
+	    }else{
+	    	return null;
+	    }
+		
 	}
 	
 	private String replaceBlancs(String Unitname){
